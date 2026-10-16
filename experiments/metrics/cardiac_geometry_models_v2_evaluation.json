@@ -1,0 +1,1900 @@
+{
+  "models": {
+    "data": {
+      "radii_m": {
+        "0.9": 2.857844530168608e-06,
+        "0.95": 3.457471370229944e-06
+      },
+      "calibration_geometry_count": 20,
+      "coverage_target": "all nodes and all four prescribed startup pressure loads jointly within a new parameter-drawn geometry",
+      "splits": {
+        "test": {
+          "n_geometries": 16,
+          "n_load_cases": 64,
+          "mean_nodal_l2_m": 3.5235541144107207e-07,
+          "geometry_bootstrap95_mean_nodal_l2_m": [
+            3.096632025990319e-07,
+            3.988893039879071e-07
+          ],
+          "mean_component_rmse_m": 2.5606788894689835e-07,
+          "mean_normalized_residual_rms": 0.00016867885055848786,
+          "coverage": [
+            {
+              "nominal": 0.9,
+              "radius_m": 2.857844530168608e-06,
+              "covered": 15,
+              "n_geometries": 16,
+              "coverage": 0.9375,
+              "binomial95": [
+                0.6976792615654681,
+                0.998418888277234
+              ]
+            },
+            {
+              "nominal": 0.95,
+              "radius_m": 3.457471370229944e-06,
+              "covered": 16,
+              "n_geometries": 16,
+              "coverage": 1.0,
+              "binomial95": [
+                0.7940927857921773,
+                1.0
+              ]
+            }
+          ],
+          "spearman_uncertainty_error": 0.75,
+          "selective_risk": [
+            {
+              "retained": 0.25,
+              "mean_nodal_l2_m": 2.962981493292978e-07
+            },
+            {
+              "retained": 0.5,
+              "mean_nodal_l2_m": 2.9400790437533654e-07
+            },
+            {
+              "retained": 0.75,
+              "mean_nodal_l2_m": 3.166453449617971e-07
+            },
+            {
+              "retained": 1.0,
+              "mean_nodal_l2_m": 3.52355411441072e-07
+            }
+          ],
+          "per_geometry": [
+            {
+              "geometry": 48,
+              "mean_nodal_l2_m": 2.593352977094194e-07,
+              "component_rmse_m": 1.8858970793404572e-07,
+              "max_nodal_l2_all_loads_m": 1.233051006136461e-06,
+              "variance_m2": 1.5764101261072085e-14,
+              "normalized_residual_rms": 5.7514708624214014e-05,
+              "mean_strain_frobenius_error": 3.7666212958177116e-05,
+              "mean_relative_elastic_energy_error": 0.002211510297895902,
+              "minimum_detF": 0.9664313934728948,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 49,
+              "mean_nodal_l2_m": 2.594850405814642e-07,
+              "component_rmse_m": 1.7813714265899676e-07,
+              "max_nodal_l2_all_loads_m": 1.2215872915066032e-06,
+              "variance_m2": 1.3113183003639123e-14,
+              "normalized_residual_rms": 7.513297750857542e-05,
+              "mean_strain_frobenius_error": 3.6499949970735184e-05,
+              "mean_relative_elastic_energy_error": 0.008221117868897678,
+              "minimum_detF": 0.9665427812650205,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 50,
+              "mean_nodal_l2_m": 4.292627629890491e-07,
+              "component_rmse_m": 2.9929087827298965e-07,
+              "max_nodal_l2_all_loads_m": 1.7870014450250197e-06,
+              "variance_m2": 2.1776143957471394e-14,
+              "normalized_residual_rms": 0.0002412143413989509,
+              "mean_strain_frobenius_error": 9.034029258842379e-05,
+              "mean_relative_elastic_energy_error": 0.027858937640244563,
+              "minimum_detF": 0.9669140307371404,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 51,
+              "mean_nodal_l2_m": 2.9418681125210235e-07,
+              "component_rmse_m": 2.188613919329099e-07,
+              "max_nodal_l2_all_loads_m": 1.502604943656199e-06,
+              "variance_m2": 1.5047586643674727e-14,
+              "normalized_residual_rms": 7.361355275325139e-05,
+              "mean_strain_frobenius_error": 4.408661968279645e-05,
+              "mean_relative_elastic_energy_error": 0.0031065776398345834,
+              "minimum_detF": 0.966494370231875,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 52,
+              "mean_nodal_l2_m": 5.34879756547228e-07,
+              "component_rmse_m": 3.8434726548848787e-07,
+              "max_nodal_l2_all_loads_m": 2.2079011935206572e-06,
+              "variance_m2": 3.959764888465794e-14,
+              "normalized_residual_rms": 0.00029125377829837984,
+              "mean_strain_frobenius_error": 0.00011416897101645158,
+              "mean_relative_elastic_energy_error": 0.03490913756668113,
+              "minimum_detF": 0.9670459819035607,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 53,
+              "mean_nodal_l2_m": 2.717269400311339e-07,
+              "component_rmse_m": 1.9213963061433892e-07,
+              "max_nodal_l2_all_loads_m": 1.2895885016993972e-06,
+              "variance_m2": 8.076187031001123e-15,
+              "normalized_residual_rms": 0.00016542388279604128,
+              "mean_strain_frobenius_error": 5.85297713936608e-05,
+              "mean_relative_elastic_energy_error": 0.016124422269240477,
+              "minimum_detF": 0.9666557085672803,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 54,
+              "mean_nodal_l2_m": 4.3410806807307834e-07,
+              "component_rmse_m": 3.197897798075584e-07,
+              "max_nodal_l2_all_loads_m": 2.801725797934824e-06,
+              "variance_m2": 2.077401690195599e-14,
+              "normalized_residual_rms": 0.00020304031445396274,
+              "mean_strain_frobenius_error": 8.376817905904866e-05,
+              "mean_relative_elastic_energy_error": 0.015035530669994723,
+              "minimum_detF": 0.9663405551811097,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 55,
+              "mean_nodal_l2_m": 2.820299816488664e-07,
+              "component_rmse_m": 2.0213916287109113e-07,
+              "max_nodal_l2_all_loads_m": 1.3742209896185093e-06,
+              "variance_m2": 8.615680774491708e-15,
+              "normalized_residual_rms": 0.00017572628475120728,
+              "mean_strain_frobenius_error": 6.182326749366232e-05,
+              "mean_relative_elastic_energy_error": 0.01720264384663686,
+              "minimum_detF": 0.9666719162501591,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 56,
+              "mean_nodal_l2_m": 2.0802861444795758e-07,
+              "component_rmse_m": 1.4302120264905836e-07,
+              "max_nodal_l2_all_loads_m": 1.149643470814506e-06,
+              "variance_m2": 6.020365803312017e-15,
+              "normalized_residual_rms": 8.137444964741957e-05,
+              "mean_strain_frobenius_error": 3.466724337311158e-05,
+              "mean_relative_elastic_energy_error": 0.005464290664564881,
+              "minimum_detF": 0.9664324244079332,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 57,
+              "mean_nodal_l2_m": 3.538634881425154e-07,
+              "component_rmse_m": 2.6840017451275567e-07,
+              "max_nodal_l2_all_loads_m": 1.921164713470848e-06,
+              "variance_m2": 1.5437321104832033e-14,
+              "normalized_residual_rms": 9.828173490102329e-05,
+              "mean_strain_frobenius_error": 5.3954603292860274e-05,
+              "mean_relative_elastic_energy_error": 0.007214129106108179,
+              "minimum_detF": 0.9666184915933284,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 58,
+              "mean_nodal_l2_m": 3.9500051930989013e-07,
+              "component_rmse_m": 3.145112486293557e-07,
+              "max_nodal_l2_all_loads_m": 2.980789390449137e-06,
+              "variance_m2": 1.6893754803406923e-14,
+              "normalized_residual_rms": 0.0001433017224557721,
+              "mean_strain_frobenius_error": 6.734162465084367e-05,
+              "mean_relative_elastic_energy_error": 0.006383899221929747,
+              "minimum_detF": 0.9665073153622454,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 59,
+              "mean_nodal_l2_m": 4.396918559062323e-07,
+              "component_rmse_m": 3.1746743738678755e-07,
+              "max_nodal_l2_all_loads_m": 2.2914745013996756e-06,
+              "variance_m2": 2.148179487126718e-14,
+              "normalized_residual_rms": 0.00028274633560867535,
+              "mean_strain_frobenius_error": 0.0001017104495555994,
+              "mean_relative_elastic_energy_error": 0.030848229598441655,
+              "minimum_detF": 0.9669123140754393,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 60,
+              "mean_nodal_l2_m": 3.761484128947544e-07,
+              "component_rmse_m": 2.5805954856468703e-07,
+              "max_nodal_l2_all_loads_m": 1.6018773353564013e-06,
+              "variance_m2": 1.749959299404695e-14,
+              "normalized_residual_rms": 0.00021632937051306199,
+              "mean_strain_frobenius_error": 7.914999190630632e-05,
+              "mean_relative_elastic_energy_error": 0.024244303374019845,
+              "minimum_detF": 0.9668429528037498,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 61,
+              "mean_nodal_l2_m": 2.525856335115593e-07,
+              "component_rmse_m": 2.045535069782771e-07,
+              "max_nodal_l2_all_loads_m": 1.8672098308622115e-06,
+              "variance_m2": 1.7239266062123333e-14,
+              "normalized_residual_rms": 8.037208021520817e-05,
+              "mean_strain_frobenius_error": 4.111205395692989e-05,
+              "mean_relative_elastic_energy_error": 0.002254447715465014,
+              "minimum_detF": 0.9661801127753238,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 62,
+              "mean_nodal_l2_m": 4.2394633882266877e-07,
+              "component_rmse_m": 3.049930534787443e-07,
+              "max_nodal_l2_all_loads_m": 2.181887952921668e-06,
+              "variance_m2": 2.0270383876195556e-14,
+              "normalized_residual_rms": 0.00027185567542987326,
+              "mean_strain_frobenius_error": 9.766908034778495e-05,
+              "mean_relative_elastic_energy_error": 0.029679684957117154,
+              "minimum_detF": 0.9668993524404028,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 63,
+              "mean_nodal_l2_m": 4.234070611892334e-07,
+              "component_rmse_m": 3.027850913702893e-07,
+              "max_nodal_l2_all_loads_m": 1.6937402227021253e-06,
+              "variance_m2": 1.2758276243169446e-14,
+              "normalized_residual_rms": 0.00024168039958018944,
+              "mean_strain_frobenius_error": 8.97815527837362e-05,
+              "mean_relative_elastic_energy_error": 0.02577894705789953,
+              "minimum_detF": 0.9657777479071862,
+              "inverted_element_fraction": 0.0
+            }
+          ],
+          "per_seed_geometry": [
+            {
+              "seed": 11,
+              "geometry": 48,
+              "component_rmse_m": 1.8528233470545634e-07,
+              "normalized_residual_rms": 5.793305761778343e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 48,
+              "component_rmse_m": 2.0156002871302258e-07,
+              "normalized_residual_rms": 7.219366929023973e-05
+            },
+            {
+              "seed": 33,
+              "geometry": 48,
+              "component_rmse_m": 2.3823224070392015e-07,
+              "normalized_residual_rms": 7.512997406293732e-05
+            },
+            {
+              "seed": 44,
+              "geometry": 48,
+              "component_rmse_m": 2.2672254342033597e-07,
+              "normalized_residual_rms": 6.285734004032937e-05
+            },
+            {
+              "seed": 55,
+              "geometry": 48,
+              "component_rmse_m": 2.403603415770488e-07,
+              "normalized_residual_rms": 0.00012061204861180065
+            },
+            {
+              "seed": 11,
+              "geometry": 49,
+              "component_rmse_m": 1.8495492441936174e-07,
+              "normalized_residual_rms": 8.41373917313974e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 49,
+              "component_rmse_m": 1.9206083388137907e-07,
+              "normalized_residual_rms": 8.6203328380585e-05
+            },
+            {
+              "seed": 33,
+              "geometry": 49,
+              "component_rmse_m": 2.3751703613368276e-07,
+              "normalized_residual_rms": 0.00010840135769141562
+            },
+            {
+              "seed": 44,
+              "geometry": 49,
+              "component_rmse_m": 2.0711690495564124e-07,
+              "normalized_residual_rms": 8.005862214677137e-05
+            },
+            {
+              "seed": 55,
+              "geometry": 49,
+              "component_rmse_m": 2.0176594667534826e-07,
+              "normalized_residual_rms": 8.520391692391087e-05
+            },
+            {
+              "seed": 11,
+              "geometry": 50,
+              "component_rmse_m": 2.8231990517237865e-07,
+              "normalized_residual_rms": 0.0002442570922301226
+            },
+            {
+              "seed": 22,
+              "geometry": 50,
+              "component_rmse_m": 3.778018695141225e-07,
+              "normalized_residual_rms": 0.0002856558027761447
+            },
+            {
+              "seed": 33,
+              "geometry": 50,
+              "component_rmse_m": 3.2758805589966855e-07,
+              "normalized_residual_rms": 0.0002442956992676449
+            },
+            {
+              "seed": 44,
+              "geometry": 50,
+              "component_rmse_m": 3.2881795650127177e-07,
+              "normalized_residual_rms": 0.00027307375137394557
+            },
+            {
+              "seed": 55,
+              "geometry": 50,
+              "component_rmse_m": 3.1161797214902325e-07,
+              "normalized_residual_rms": 0.00022387143039947094
+            },
+            {
+              "seed": 11,
+              "geometry": 51,
+              "component_rmse_m": 1.935922261360549e-07,
+              "normalized_residual_rms": 7.884475602723411e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 51,
+              "component_rmse_m": 2.3274764591722675e-07,
+              "normalized_residual_rms": 8.582723287508387e-05
+            },
+            {
+              "seed": 33,
+              "geometry": 51,
+              "component_rmse_m": 2.550098314372492e-07,
+              "normalized_residual_rms": 8.574797655435792e-05
+            },
+            {
+              "seed": 44,
+              "geometry": 51,
+              "component_rmse_m": 2.602446543251337e-07,
+              "normalized_residual_rms": 8.092015871300868e-05
+            },
+            {
+              "seed": 55,
+              "geometry": 51,
+              "component_rmse_m": 2.7438144987219217e-07,
+              "normalized_residual_rms": 0.00014326404454943523
+            },
+            {
+              "seed": 11,
+              "geometry": 52,
+              "component_rmse_m": 3.6148814670996257e-07,
+              "normalized_residual_rms": 0.00031048179666322707
+            },
+            {
+              "seed": 22,
+              "geometry": 52,
+              "component_rmse_m": 4.779901754491518e-07,
+              "normalized_residual_rms": 0.0003450592201308663
+            },
+            {
+              "seed": 33,
+              "geometry": 52,
+              "component_rmse_m": 4.496631665808366e-07,
+              "normalized_residual_rms": 0.0003121584700622846
+            },
+            {
+              "seed": 44,
+              "geometry": 52,
+              "component_rmse_m": 4.1785586917022997e-07,
+              "normalized_residual_rms": 0.00032663603718067113
+            },
+            {
+              "seed": 55,
+              "geometry": 52,
+              "component_rmse_m": 4.013177284444273e-07,
+              "normalized_residual_rms": 0.00025512233116263647
+            },
+            {
+              "seed": 11,
+              "geometry": 53,
+              "component_rmse_m": 1.5716041350519194e-07,
+              "normalized_residual_rms": 0.00012144678635128106
+            },
+            {
+              "seed": 22,
+              "geometry": 53,
+              "component_rmse_m": 2.166222225584103e-07,
+              "normalized_residual_rms": 0.00018957333248975733
+            },
+            {
+              "seed": 33,
+              "geometry": 53,
+              "component_rmse_m": 1.5074908450834e-07,
+              "normalized_residual_rms": 0.00012665318179647038
+            },
+            {
+              "seed": 44,
+              "geometry": 53,
+              "component_rmse_m": 2.4421019808883763e-07,
+              "normalized_residual_rms": 0.00020284797242759855
+            },
+            {
+              "seed": 55,
+              "geometry": 53,
+              "component_rmse_m": 2.508075879576158e-07,
+              "normalized_residual_rms": 0.0002071637439543838
+            },
+            {
+              "seed": 11,
+              "geometry": 54,
+              "component_rmse_m": 2.451085879581552e-07,
+              "normalized_residual_rms": 0.00014321500511371975
+            },
+            {
+              "seed": 22,
+              "geometry": 54,
+              "component_rmse_m": 3.191674055639126e-07,
+              "normalized_residual_rms": 0.00022821388791340004
+            },
+            {
+              "seed": 33,
+              "geometry": 54,
+              "component_rmse_m": 2.765319173597445e-07,
+              "normalized_residual_rms": 0.0001704715087861267
+            },
+            {
+              "seed": 44,
+              "geometry": 54,
+              "component_rmse_m": 3.552843897245578e-07,
+              "normalized_residual_rms": 0.0002123284152806357
+            },
+            {
+              "seed": 55,
+              "geometry": 54,
+              "component_rmse_m": 4.793543912272104e-07,
+              "normalized_residual_rms": 0.00031645532815638585
+            },
+            {
+              "seed": 11,
+              "geometry": 55,
+              "component_rmse_m": 1.653746109795369e-07,
+              "normalized_residual_rms": 0.00013034297840711285
+            },
+            {
+              "seed": 22,
+              "geometry": 55,
+              "component_rmse_m": 2.294436796010862e-07,
+              "normalized_residual_rms": 0.000200884519946406
+            },
+            {
+              "seed": 33,
+              "geometry": 55,
+              "component_rmse_m": 1.5868463116299217e-07,
+              "normalized_residual_rms": 0.00013291219547288306
+            },
+            {
+              "seed": 44,
+              "geometry": 55,
+              "component_rmse_m": 2.556021587620536e-07,
+              "normalized_residual_rms": 0.0002156063652625977
+            },
+            {
+              "seed": 55,
+              "geometry": 55,
+              "component_rmse_m": 2.612613425909361e-07,
+              "normalized_residual_rms": 0.0002173948001748124
+            },
+            {
+              "seed": 11,
+              "geometry": 56,
+              "component_rmse_m": 1.0989335690180477e-07,
+              "normalized_residual_rms": 4.788133626708323e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 56,
+              "component_rmse_m": 1.3456309669858668e-07,
+              "normalized_residual_rms": 9.162361726410622e-05
+            },
+            {
+              "seed": 33,
+              "geometry": 56,
+              "component_rmse_m": 1.2080992471942979e-07,
+              "normalized_residual_rms": 6.598702476130018e-05
+            },
+            {
+              "seed": 44,
+              "geometry": 56,
+              "component_rmse_m": 1.7572458498787832e-07,
+              "normalized_residual_rms": 9.736597741691531e-05
+            },
+            {
+              "seed": 55,
+              "geometry": 56,
+              "component_rmse_m": 2.251640306199596e-07,
+              "normalized_residual_rms": 0.00014312561670739722
+            },
+            {
+              "seed": 11,
+              "geometry": 57,
+              "component_rmse_m": 2.2909798059494695e-07,
+              "normalized_residual_rms": 0.00012202955044407835
+            },
+            {
+              "seed": 22,
+              "geometry": 57,
+              "component_rmse_m": 2.847919504318378e-07,
+              "normalized_residual_rms": 0.00011284384546459797
+            },
+            {
+              "seed": 33,
+              "geometry": 57,
+              "component_rmse_m": 2.983943622018677e-07,
+              "normalized_residual_rms": 0.00011674720419979485
+            },
+            {
+              "seed": 44,
+              "geometry": 57,
+              "component_rmse_m": 3.087613650471052e-07,
+              "normalized_residual_rms": 0.00011456956567051013
+            },
+            {
+              "seed": 55,
+              "geometry": 57,
+              "component_rmse_m": 3.224553257873909e-07,
+              "normalized_residual_rms": 0.00015150203485118457
+            },
+            {
+              "seed": 11,
+              "geometry": 58,
+              "component_rmse_m": 2.3526201115594643e-07,
+              "normalized_residual_rms": 8.391606852396503e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 58,
+              "component_rmse_m": 3.1185280334734035e-07,
+              "normalized_residual_rms": 0.00015115402761585356
+            },
+            {
+              "seed": 33,
+              "geometry": 58,
+              "component_rmse_m": 2.828641106347649e-07,
+              "normalized_residual_rms": 0.00013513409926356807
+            },
+            {
+              "seed": 44,
+              "geometry": 58,
+              "component_rmse_m": 3.5693051909110637e-07,
+              "normalized_residual_rms": 0.00014617517028269294
+            },
+            {
+              "seed": 55,
+              "geometry": 58,
+              "component_rmse_m": 4.4961067757898157e-07,
+              "normalized_residual_rms": 0.000252509793444354
+            },
+            {
+              "seed": 11,
+              "geometry": 59,
+              "component_rmse_m": 3.03492042285205e-07,
+              "normalized_residual_rms": 0.00025353592361960033
+            },
+            {
+              "seed": 22,
+              "geometry": 59,
+              "component_rmse_m": 3.851931225000829e-07,
+              "normalized_residual_rms": 0.00032486739938816333
+            },
+            {
+              "seed": 33,
+              "geometry": 59,
+              "component_rmse_m": 2.904943676289264e-07,
+              "normalized_residual_rms": 0.00023425177972849256
+            },
+            {
+              "seed": 44,
+              "geometry": 59,
+              "component_rmse_m": 3.672636715315232e-07,
+              "normalized_residual_rms": 0.0003329090584047205
+            },
+            {
+              "seed": 55,
+              "geometry": 59,
+              "component_rmse_m": 3.6069974367468743e-07,
+              "normalized_residual_rms": 0.00029680584981048373
+            },
+            {
+              "seed": 11,
+              "geometry": 60,
+              "component_rmse_m": 2.4585319414171013e-07,
+              "normalized_residual_rms": 0.00020667424724808817
+            },
+            {
+              "seed": 22,
+              "geometry": 60,
+              "component_rmse_m": 3.2189038357965217e-07,
+              "normalized_residual_rms": 0.000254857924915209
+            },
+            {
+              "seed": 33,
+              "geometry": 60,
+              "component_rmse_m": 2.715658080181312e-07,
+              "normalized_residual_rms": 0.00020741954694387048
+            },
+            {
+              "seed": 44,
+              "geometry": 60,
+              "component_rmse_m": 2.9917353397733986e-07,
+              "normalized_residual_rms": 0.0002486685482635874
+            },
+            {
+              "seed": 55,
+              "geometry": 60,
+              "component_rmse_m": 2.7506730335587e-07,
+              "normalized_residual_rms": 0.0002134537346614886
+            },
+            {
+              "seed": 11,
+              "geometry": 61,
+              "component_rmse_m": 1.7332925862476228e-07,
+              "normalized_residual_rms": 8.981443001717803e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 61,
+              "component_rmse_m": 2.188243198390854e-07,
+              "normalized_residual_rms": 0.00010101475492079302
+            },
+            {
+              "seed": 33,
+              "geometry": 61,
+              "component_rmse_m": 2.4425224970643076e-07,
+              "normalized_residual_rms": 7.859293940602408e-05
+            },
+            {
+              "seed": 44,
+              "geometry": 61,
+              "component_rmse_m": 2.3205267153751296e-07,
+              "normalized_residual_rms": 8.470995197916158e-05
+            },
+            {
+              "seed": 55,
+              "geometry": 61,
+              "component_rmse_m": 2.945047225958459e-07,
+              "normalized_residual_rms": 0.0001437423051219644
+            },
+            {
+              "seed": 11,
+              "geometry": 62,
+              "component_rmse_m": 2.9062765343675635e-07,
+              "normalized_residual_rms": 0.0002441164140535765
+            },
+            {
+              "seed": 22,
+              "geometry": 62,
+              "component_rmse_m": 3.714290468456316e-07,
+              "normalized_residual_rms": 0.00031330588852548186
+            },
+            {
+              "seed": 33,
+              "geometry": 62,
+              "component_rmse_m": 2.808573562644299e-07,
+              "normalized_residual_rms": 0.00022782433166697828
+            },
+            {
+              "seed": 44,
+              "geometry": 62,
+              "component_rmse_m": 3.545802218552477e-07,
+              "normalized_residual_rms": 0.00031985941933148374
+            },
+            {
+              "seed": 55,
+              "geometry": 62,
+              "component_rmse_m": 3.451860234346859e-07,
+              "normalized_residual_rms": 0.00028470913831752157
+            },
+            {
+              "seed": 11,
+              "geometry": 63,
+              "component_rmse_m": 2.783760134895165e-07,
+              "normalized_residual_rms": 0.00022406630321655335
+            },
+            {
+              "seed": 22,
+              "geometry": 63,
+              "component_rmse_m": 3.660988236209551e-07,
+              "normalized_residual_rms": 0.0002984777737625007
+            },
+            {
+              "seed": 33,
+              "geometry": 63,
+              "component_rmse_m": 3.2032080576609223e-07,
+              "normalized_residual_rms": 0.000211802330032926
+            },
+            {
+              "seed": 44,
+              "geometry": 63,
+              "component_rmse_m": 3.636197809169615e-07,
+              "normalized_residual_rms": 0.000310638451136766
+            },
+            {
+              "seed": 55,
+              "geometry": 63,
+              "component_rmse_m": 2.511590044763471e-07,
+              "normalized_residual_rms": 0.00020423293758643895
+            }
+          ]
+        },
+        "shift": {
+          "n_geometries": 4,
+          "n_load_cases": 16,
+          "mean_nodal_l2_m": 3.639147029012481e-06,
+          "geometry_bootstrap95_mean_nodal_l2_m": null,
+          "mean_component_rmse_m": 2.724876265203168e-06,
+          "mean_normalized_residual_rms": 0.0009966975676610566,
+          "coverage": [
+            {
+              "nominal": 0.9,
+              "radius_m": 2.857844530168608e-06,
+              "covered": 0,
+              "n_geometries": 4,
+              "coverage": 0.0
+            },
+            {
+              "nominal": 0.95,
+              "radius_m": 3.457471370229944e-06,
+              "covered": 0,
+              "n_geometries": 4,
+              "coverage": 0.0
+            }
+          ],
+          "spearman_uncertainty_error": 0.6000000000000001,
+          "selective_risk": [
+            {
+              "retained": 0.25,
+              "mean_nodal_l2_m": 3.573753213798781e-06
+            },
+            {
+              "retained": 0.5,
+              "mean_nodal_l2_m": 3.40533030701586e-06
+            },
+            {
+              "retained": 0.75,
+              "mean_nodal_l2_m": 3.570601962292946e-06
+            },
+            {
+              "retained": 1.0,
+              "mean_nodal_l2_m": 3.639147029012481e-06
+            }
+          ],
+          "per_geometry": [
+            {
+              "geometry": 64,
+              "mean_nodal_l2_m": 3.573753213798781e-06,
+              "component_rmse_m": 2.4832662823427738e-06,
+              "max_nodal_l2_all_loads_m": 1.5142184469448406e-05,
+              "variance_m2": 2.6677592082871965e-12,
+              "normalized_residual_rms": 0.0006903002888768244,
+              "mean_strain_frobenius_error": 0.00032272785503567147,
+              "mean_relative_elastic_energy_error": 0.02910057594511348,
+              "minimum_detF": 0.9646078151810779,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 65,
+              "mean_nodal_l2_m": 3.901145272847117e-06,
+              "component_rmse_m": 2.968120556839147e-06,
+              "max_nodal_l2_all_loads_m": 3.152103928830914e-05,
+              "variance_m2": 3.830092922824579e-12,
+              "normalized_residual_rms": 0.0010588893797320044,
+              "mean_strain_frobenius_error": 0.0004656036450928951,
+              "mean_relative_elastic_energy_error": 0.027705741739165967,
+              "minimum_detF": 0.9687000848010316,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 66,
+              "mean_nodal_l2_m": 3.236907400232939e-06,
+              "component_rmse_m": 2.5089050603754316e-06,
+              "max_nodal_l2_all_loads_m": 1.7766215976713553e-05,
+              "variance_m2": 2.773130812068875e-12,
+              "normalized_residual_rms": 0.001216269097103903,
+              "mean_strain_frobenius_error": 0.000587769310662124,
+              "mean_relative_elastic_energy_error": 0.09345205287243329,
+              "minimum_detF": 0.9651292929084715,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 67,
+              "mean_nodal_l2_m": 3.844782229171087e-06,
+              "component_rmse_m": 2.939213161255319e-06,
+              "max_nodal_l2_all_loads_m": 2.4432156979234068e-05,
+              "variance_m2": 5.448456642498589e-12,
+              "normalized_residual_rms": 0.0010213315049314947,
+              "mean_strain_frobenius_error": 0.0006338158510865693,
+              "mean_relative_elastic_energy_error": 0.1548330346130014,
+              "minimum_detF": 0.9687944628540309,
+              "inverted_element_fraction": 0.0
+            }
+          ],
+          "per_seed_geometry": []
+        }
+      }
+    },
+    "physics_lambda1": {
+      "radii_m": {
+        "0.9": 2.8591859382762235e-06,
+        "0.95": 3.4581401629683816e-06
+      },
+      "calibration_geometry_count": 20,
+      "coverage_target": "all nodes and all four prescribed startup pressure loads jointly within a new parameter-drawn geometry",
+      "splits": {
+        "test": {
+          "n_geometries": 16,
+          "n_load_cases": 64,
+          "mean_nodal_l2_m": 3.529088640826517e-07,
+          "geometry_bootstrap95_mean_nodal_l2_m": [
+            3.0706019748940327e-07,
+            3.995160579023251e-07
+          ],
+          "mean_component_rmse_m": 2.56391083323909e-07,
+          "mean_normalized_residual_rms": 0.00016888652044945633,
+          "coverage": [
+            {
+              "nominal": 0.9,
+              "radius_m": 2.8591859382762235e-06,
+              "covered": 15,
+              "n_geometries": 16,
+              "coverage": 0.9375,
+              "binomial95": [
+                0.6976792615654681,
+                0.998418888277234
+              ]
+            },
+            {
+              "nominal": 0.95,
+              "radius_m": 3.4581401629683816e-06,
+              "covered": 16,
+              "n_geometries": 16,
+              "coverage": 1.0,
+              "binomial95": [
+                0.7940927857921773,
+                1.0
+              ]
+            }
+          ],
+          "spearman_uncertainty_error": 0.75,
+          "selective_risk": [
+            {
+              "retained": 0.25,
+              "mean_nodal_l2_m": 2.9687033131007957e-07
+            },
+            {
+              "retained": 0.5,
+              "mean_nodal_l2_m": 2.945466732283551e-07
+            },
+            {
+              "retained": 0.75,
+              "mean_nodal_l2_m": 3.171696238150806e-07
+            },
+            {
+              "retained": 1.0,
+              "mean_nodal_l2_m": 3.529088640826517e-07
+            }
+          ],
+          "per_geometry": [
+            {
+              "geometry": 48,
+              "mean_nodal_l2_m": 2.5962966939543905e-07,
+              "component_rmse_m": 1.887676302358537e-07,
+              "max_nodal_l2_all_loads_m": 1.232256411293289e-06,
+              "variance_m2": 1.5765499279976032e-14,
+              "normalized_residual_rms": 5.746554617935636e-05,
+              "mean_strain_frobenius_error": 3.7689500102325014e-05,
+              "mean_relative_elastic_energy_error": 0.002268564137499463,
+              "minimum_detF": 0.9664295677487027,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 49,
+              "mean_nodal_l2_m": 2.6040280323758134e-07,
+              "component_rmse_m": 1.7861038760106888e-07,
+              "max_nodal_l2_all_loads_m": 1.2241337034157187e-06,
+              "variance_m2": 1.3095514574626783e-14,
+              "normalized_residual_rms": 7.562576287760612e-05,
+              "mean_strain_frobenius_error": 3.66647251333758e-05,
+              "mean_relative_elastic_energy_error": 0.008285375585611595,
+              "minimum_detF": 0.9665412650038918,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 50,
+              "mean_nodal_l2_m": 4.3034987940941414e-07,
+              "component_rmse_m": 2.999937092100015e-07,
+              "max_nodal_l2_all_loads_m": 1.7932692818245924e-06,
+              "variance_m2": 2.177944216964158e-14,
+              "normalized_residual_rms": 0.00024178163385722357,
+              "mean_strain_frobenius_error": 9.053703990943962e-05,
+              "mean_relative_elastic_energy_error": 0.027931945128201182,
+              "minimum_detF": 0.96691303641478,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 51,
+              "mean_nodal_l2_m": 2.9452732348775636e-07,
+              "component_rmse_m": 2.1901542357259102e-07,
+              "max_nodal_l2_all_loads_m": 1.5021394210321849e-06,
+              "variance_m2": 1.5042302961835313e-14,
+              "normalized_residual_rms": 7.362128421957584e-05,
+              "mean_strain_frobenius_error": 4.409950646505206e-05,
+              "mean_relative_elastic_energy_error": 0.003182380713518433,
+              "minimum_detF": 0.9664926114658297,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 52,
+              "mean_nodal_l2_m": 5.360918317969357e-07,
+              "component_rmse_m": 3.8510156913840217e-07,
+              "max_nodal_l2_all_loads_m": 2.2141703012725126e-06,
+              "variance_m2": 3.9620470933278835e-14,
+              "normalized_residual_rms": 0.000291926292590742,
+              "mean_strain_frobenius_error": 0.00011441092115757045,
+              "mean_relative_elastic_energy_error": 0.03499666546537749,
+              "minimum_detF": 0.9670452021050037,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 53,
+              "mean_nodal_l2_m": 2.724397504620107e-07,
+              "component_rmse_m": 1.926034327392162e-07,
+              "max_nodal_l2_all_loads_m": 1.2893603817593941e-06,
+              "variance_m2": 8.093086190218494e-15,
+              "normalized_residual_rms": 0.0001657854131574469,
+              "mean_strain_frobenius_error": 5.866370877964865e-05,
+              "mean_relative_elastic_energy_error": 0.01616961124275969,
+              "minimum_detF": 0.966654593365076,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 54,
+              "mean_nodal_l2_m": 4.334828842947773e-07,
+              "component_rmse_m": 3.1934611254859634e-07,
+              "max_nodal_l2_all_loads_m": 2.802002707997633e-06,
+              "variance_m2": 2.079118393342587e-14,
+              "normalized_residual_rms": 0.00020253993175078726,
+              "mean_strain_frobenius_error": 8.355315844119136e-05,
+              "mean_relative_elastic_energy_error": 0.014966142507795682,
+              "minimum_detF": 0.966338027967261,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 55,
+              "mean_nodal_l2_m": 2.8274102301044e-07,
+              "component_rmse_m": 2.0258999433674189e-07,
+              "max_nodal_l2_all_loads_m": 1.3811781866648955e-06,
+              "variance_m2": 8.632345111540007e-15,
+              "normalized_residual_rms": 0.000176080139204074,
+              "mean_strain_frobenius_error": 6.195544944865284e-05,
+              "mean_relative_elastic_energy_error": 0.017247386280441323,
+              "minimum_detF": 0.9666708245350625,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 56,
+              "mean_nodal_l2_m": 2.0857780049347146e-07,
+              "component_rmse_m": 1.43391886711826e-07,
+              "max_nodal_l2_all_loads_m": 1.1554468024441018e-06,
+              "variance_m2": 6.033950929807439e-15,
+              "normalized_residual_rms": 8.168867319649332e-05,
+              "mean_strain_frobenius_error": 3.4796856198570346e-05,
+              "mean_relative_elastic_energy_error": 0.005504620663565752,
+              "minimum_detF": 0.9664311074182816,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 57,
+              "mean_nodal_l2_m": 3.5433226446574597e-07,
+              "component_rmse_m": 2.686199025932377e-07,
+              "max_nodal_l2_all_loads_m": 1.9238668804279118e-06,
+              "variance_m2": 1.5412310772891623e-14,
+              "normalized_residual_rms": 9.85296004025008e-05,
+              "mean_strain_frobenius_error": 5.401956363806067e-05,
+              "mean_relative_elastic_energy_error": 0.007297695685417775,
+              "minimum_detF": 0.9666169861228807,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 58,
+              "mean_nodal_l2_m": 3.946936848156322e-07,
+              "component_rmse_m": 3.1430075359495926e-07,
+              "max_nodal_l2_all_loads_m": 2.982020779512285e-06,
+              "variance_m2": 1.6884914333941985e-14,
+              "normalized_residual_rms": 0.0001429402627079693,
+              "mean_strain_frobenius_error": 6.723479794331108e-05,
+              "mean_relative_elastic_energy_error": 0.00632248685582912,
+              "minimum_detF": 0.9665053192498787,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 59,
+              "mean_nodal_l2_m": 4.4058174404033245e-07,
+              "component_rmse_m": 3.179816876874478e-07,
+              "max_nodal_l2_all_loads_m": 2.297649668072695e-06,
+              "variance_m2": 2.1488547372491286e-14,
+              "normalized_residual_rms": 0.00028314111768800587,
+              "mean_strain_frobenius_error": 0.00010186021831039337,
+              "mean_relative_elastic_energy_error": 0.030904243295540135,
+              "minimum_detF": 0.9669114169187208,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 60,
+              "mean_nodal_l2_m": 3.7717070687766537e-07,
+              "component_rmse_m": 2.5872161711272237e-07,
+              "max_nodal_l2_all_loads_m": 1.6082264269140348e-06,
+              "variance_m2": 1.7501224812110676e-14,
+              "normalized_residual_rms": 0.00021683426204321488,
+              "mean_strain_frobenius_error": 7.932596373790796e-05,
+              "mean_relative_elastic_energy_error": 0.024308858726942384,
+              "minimum_detF": 0.9668418915703773,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 61,
+              "mean_nodal_l2_m": 2.529427402747511e-07,
+              "component_rmse_m": 2.047452171868994e-07,
+              "max_nodal_l2_all_loads_m": 1.864227035756707e-06,
+              "variance_m2": 1.7235894950339687e-14,
+              "normalized_residual_rms": 8.042023238689192e-05,
+              "mean_strain_frobenius_error": 4.115000381114046e-05,
+              "mean_relative_elastic_energy_error": 0.002228600217163167,
+              "minimum_detF": 0.9661786878491389,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 62,
+              "mean_nodal_l2_m": 4.248549679860781e-07,
+              "component_rmse_m": 3.0552563276535906e-07,
+              "max_nodal_l2_all_loads_m": 2.188102164997467e-06,
+              "variance_m2": 2.0277068398779652e-14,
+              "normalized_residual_rms": 0.00027226173027572687,
+              "mean_strain_frobenius_error": 9.782108426812751e-05,
+              "mean_relative_elastic_energy_error": 0.029736218891170146,
+              "minimum_detF": 0.9668984318690443,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 63,
+              "mean_nodal_l2_m": 4.2372275127439607e-07,
+              "component_rmse_m": 3.0294237614762056e-07,
+              "max_nodal_l2_all_loads_m": 1.6930814103696264e-06,
+              "variance_m2": 1.2689868050171111e-14,
+              "normalized_residual_rms": 0.00024154244465368613,
+              "mean_strain_frobenius_error": 8.975106188958794e-05,
+              "mean_relative_elastic_energy_error": 0.02576388682364161,
+              "minimum_detF": 0.9657756103637293,
+              "inverted_element_fraction": 0.0
+            }
+          ],
+          "per_seed_geometry": [
+            {
+              "seed": 11,
+              "geometry": 48,
+              "component_rmse_m": 1.8533412616794357e-07,
+              "normalized_residual_rms": 5.808134445864248e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 48,
+              "component_rmse_m": 2.0182364473928125e-07,
+              "normalized_residual_rms": 7.206833096236063e-05
+            },
+            {
+              "seed": 33,
+              "geometry": 48,
+              "component_rmse_m": 2.3828870641311005e-07,
+              "normalized_residual_rms": 7.533748088567358e-05
+            },
+            {
+              "seed": 44,
+              "geometry": 48,
+              "component_rmse_m": 2.2695181067436878e-07,
+              "normalized_residual_rms": 6.275840233394591e-05
+            },
+            {
+              "seed": 55,
+              "geometry": 48,
+              "component_rmse_m": 2.40536763039485e-07,
+              "normalized_residual_rms": 0.00012021647341536689
+            },
+            {
+              "seed": 11,
+              "geometry": 49,
+              "component_rmse_m": 1.8523711909268802e-07,
+              "normalized_residual_rms": 8.453810175043509e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 49,
+              "component_rmse_m": 1.925108333765164e-07,
+              "normalized_residual_rms": 8.672377684558461e-05
+            },
+            {
+              "seed": 33,
+              "geometry": 49,
+              "component_rmse_m": 2.377160226884662e-07,
+              "normalized_residual_rms": 0.00010865333951501707
+            },
+            {
+              "seed": 44,
+              "geometry": 49,
+              "component_rmse_m": 2.076465077699792e-07,
+              "normalized_residual_rms": 8.048559231836714e-05
+            },
+            {
+              "seed": 55,
+              "geometry": 49,
+              "component_rmse_m": 2.0221577634931652e-07,
+              "normalized_residual_rms": 8.563264477794724e-05
+            },
+            {
+              "seed": 11,
+              "geometry": 50,
+              "component_rmse_m": 2.830651280127443e-07,
+              "normalized_residual_rms": 0.0002448807214474832
+            },
+            {
+              "seed": 22,
+              "geometry": 50,
+              "component_rmse_m": 3.7880904892170756e-07,
+              "normalized_residual_rms": 0.00028648540417028405
+            },
+            {
+              "seed": 33,
+              "geometry": 50,
+              "component_rmse_m": 3.2767605712355e-07,
+              "normalized_residual_rms": 0.00024451119273269665
+            },
+            {
+              "seed": 44,
+              "geometry": 50,
+              "component_rmse_m": 3.2902573061101124e-07,
+              "normalized_residual_rms": 0.0002731111581367475
+            },
+            {
+              "seed": 55,
+              "geometry": 50,
+              "component_rmse_m": 3.128053779084613e-07,
+              "normalized_residual_rms": 0.00022468532121449193
+            },
+            {
+              "seed": 11,
+              "geometry": 51,
+              "component_rmse_m": 1.936516241524212e-07,
+              "normalized_residual_rms": 7.899130909822118e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 51,
+              "component_rmse_m": 2.3315676059296775e-07,
+              "normalized_residual_rms": 8.578527070020625e-05
+            },
+            {
+              "seed": 33,
+              "geometry": 51,
+              "component_rmse_m": 2.5499885721405415e-07,
+              "normalized_residual_rms": 8.611411548555497e-05
+            },
+            {
+              "seed": 44,
+              "geometry": 51,
+              "component_rmse_m": 2.602893567284353e-07,
+              "normalized_residual_rms": 8.076496759111936e-05
+            },
+            {
+              "seed": 55,
+              "geometry": 51,
+              "component_rmse_m": 2.7453596796612097e-07,
+              "normalized_residual_rms": 0.00014279506401505802
+            },
+            {
+              "seed": 11,
+              "geometry": 52,
+              "component_rmse_m": 3.6229606211560964e-07,
+              "normalized_residual_rms": 0.00031110998924657296
+            },
+            {
+              "seed": 22,
+              "geometry": 52,
+              "component_rmse_m": 4.790883671871583e-07,
+              "normalized_residual_rms": 0.00034581735296325227
+            },
+            {
+              "seed": 33,
+              "geometry": 52,
+              "component_rmse_m": 4.497348868280382e-07,
+              "normalized_residual_rms": 0.00031256866622203256
+            },
+            {
+              "seed": 44,
+              "geometry": 52,
+              "component_rmse_m": 4.179774895486065e-07,
+              "normalized_residual_rms": 0.0003267167671698737
+            },
+            {
+              "seed": 55,
+              "geometry": 52,
+              "component_rmse_m": 4.02799237957688e-07,
+              "normalized_residual_rms": 0.0002561811998981373
+            },
+            {
+              "seed": 11,
+              "geometry": 53,
+              "component_rmse_m": 1.5758476530735357e-07,
+              "normalized_residual_rms": 0.00012181453461607974
+            },
+            {
+              "seed": 22,
+              "geometry": 53,
+              "component_rmse_m": 2.1761547528889992e-07,
+              "normalized_residual_rms": 0.00019057593380279834
+            },
+            {
+              "seed": 33,
+              "geometry": 53,
+              "component_rmse_m": 1.5073948378793412e-07,
+              "normalized_residual_rms": 0.0001264929575145749
+            },
+            {
+              "seed": 44,
+              "geometry": 53,
+              "component_rmse_m": 2.445501314132635e-07,
+              "normalized_residual_rms": 0.00020289678128260699
+            },
+            {
+              "seed": 55,
+              "geometry": 53,
+              "component_rmse_m": 2.512690673092057e-07,
+              "normalized_residual_rms": 0.00020753118295944068
+            },
+            {
+              "seed": 11,
+              "geometry": 54,
+              "component_rmse_m": 2.4480055727521665e-07,
+              "normalized_residual_rms": 0.0001428855607080139
+            },
+            {
+              "seed": 22,
+              "geometry": 54,
+              "component_rmse_m": 3.195967467742526e-07,
+              "normalized_residual_rms": 0.0002283501928448287
+            },
+            {
+              "seed": 33,
+              "geometry": 54,
+              "component_rmse_m": 2.7590160124261794e-07,
+              "normalized_residual_rms": 0.0001697385459001203
+            },
+            {
+              "seed": 44,
+              "geometry": 54,
+              "component_rmse_m": 3.545308678126761e-07,
+              "normalized_residual_rms": 0.0002113663726145364
+            },
+            {
+              "seed": 55,
+              "geometry": 54,
+              "component_rmse_m": 4.787391884335512e-07,
+              "normalized_residual_rms": 0.0003154041412054701
+            },
+            {
+              "seed": 11,
+              "geometry": 55,
+              "component_rmse_m": 1.657887493997361e-07,
+              "normalized_residual_rms": 0.00013071603271551605
+            },
+            {
+              "seed": 22,
+              "geometry": 55,
+              "component_rmse_m": 2.3046152169324398e-07,
+              "normalized_residual_rms": 0.00020190448841290778
+            },
+            {
+              "seed": 33,
+              "geometry": 55,
+              "component_rmse_m": 1.5865371541073248e-07,
+              "normalized_residual_rms": 0.00013274048853592952
+            },
+            {
+              "seed": 44,
+              "geometry": 55,
+              "component_rmse_m": 2.558882635243202e-07,
+              "normalized_residual_rms": 0.00021561890315533003
+            },
+            {
+              "seed": 55,
+              "geometry": 55,
+              "component_rmse_m": 2.6171488731279653e-07,
+              "normalized_residual_rms": 0.00021777260147901053
+            },
+            {
+              "seed": 11,
+              "geometry": 56,
+              "component_rmse_m": 1.1013549750272768e-07,
+              "normalized_residual_rms": 4.7942844494994174e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 56,
+              "component_rmse_m": 1.3515131976332403e-07,
+              "normalized_residual_rms": 9.239534282393764e-05
+            },
+            {
+              "seed": 33,
+              "geometry": 56,
+              "component_rmse_m": 1.2074365526539512e-07,
+              "normalized_residual_rms": 6.584593860620703e-05
+            },
+            {
+              "seed": 44,
+              "geometry": 56,
+              "component_rmse_m": 1.7636547418379234e-07,
+              "normalized_residual_rms": 9.767258447935894e-05
+            },
+            {
+              "seed": 55,
+              "geometry": 56,
+              "component_rmse_m": 2.255270533178924e-07,
+              "normalized_residual_rms": 0.00014333805104203563
+            },
+            {
+              "seed": 11,
+              "geometry": 57,
+              "component_rmse_m": 2.2921548137047302e-07,
+              "normalized_residual_rms": 0.00012213208636281453
+            },
+            {
+              "seed": 22,
+              "geometry": 57,
+              "component_rmse_m": 2.8538880799404113e-07,
+              "normalized_residual_rms": 0.00011298684861566388
+            },
+            {
+              "seed": 33,
+              "geometry": 57,
+              "component_rmse_m": 2.983213526637366e-07,
+              "normalized_residual_rms": 0.00011732448545993346
+            },
+            {
+              "seed": 44,
+              "geometry": 57,
+              "component_rmse_m": 3.086527732127053e-07,
+              "normalized_residual_rms": 0.000114446257795786
+            },
+            {
+              "seed": 55,
+              "geometry": 57,
+              "component_rmse_m": 3.227752018702747e-07,
+              "normalized_residual_rms": 0.00015110874490359454
+            },
+            {
+              "seed": 11,
+              "geometry": 58,
+              "component_rmse_m": 2.3509605957437463e-07,
+              "normalized_residual_rms": 8.390632312036956e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 58,
+              "component_rmse_m": 3.124076527807536e-07,
+              "normalized_residual_rms": 0.00015122937949813635
+            },
+            {
+              "seed": 33,
+              "geometry": 58,
+              "component_rmse_m": 2.8229586419849747e-07,
+              "normalized_residual_rms": 0.00013466490959422513
+            },
+            {
+              "seed": 44,
+              "geometry": 58,
+              "component_rmse_m": 3.5646575973963275e-07,
+              "normalized_residual_rms": 0.00014563902125877597
+            },
+            {
+              "seed": 55,
+              "geometry": 58,
+              "component_rmse_m": 4.492627119335152e-07,
+              "normalized_residual_rms": 0.00025175556142336455
+            },
+            {
+              "seed": 11,
+              "geometry": 59,
+              "component_rmse_m": 3.040047901710504e-07,
+              "normalized_residual_rms": 0.0002541006831043106
+            },
+            {
+              "seed": 22,
+              "geometry": 59,
+              "component_rmse_m": 3.8620504656714514e-07,
+              "normalized_residual_rms": 0.00032589908390025273
+            },
+            {
+              "seed": 33,
+              "geometry": 59,
+              "component_rmse_m": 2.9047170463450213e-07,
+              "normalized_residual_rms": 0.00023417439921326187
+            },
+            {
+              "seed": 44,
+              "geometry": 59,
+              "component_rmse_m": 3.6728442635364537e-07,
+              "normalized_residual_rms": 0.00033274044656555167
+            },
+            {
+              "seed": 55,
+              "geometry": 59,
+              "component_rmse_m": 3.6148450386797754e-07,
+              "normalized_residual_rms": 0.0002974122757825244
+            },
+            {
+              "seed": 11,
+              "geometry": 60,
+              "component_rmse_m": 2.465074698517093e-07,
+              "normalized_residual_rms": 0.00020726257212656238
+            },
+            {
+              "seed": 22,
+              "geometry": 60,
+              "component_rmse_m": 3.2285285462980736e-07,
+              "normalized_residual_rms": 0.00025574424369677063
+            },
+            {
+              "seed": 33,
+              "geometry": 60,
+              "component_rmse_m": 2.716864067028743e-07,
+              "normalized_residual_rms": 0.00020752473907845382
+            },
+            {
+              "seed": 44,
+              "geometry": 60,
+              "component_rmse_m": 2.994473846789845e-07,
+              "normalized_residual_rms": 0.0002487008518344343
+            },
+            {
+              "seed": 55,
+              "geometry": 60,
+              "component_rmse_m": 2.760564015596147e-07,
+              "normalized_residual_rms": 0.00021411986620972583
+            },
+            {
+              "seed": 11,
+              "geometry": 61,
+              "component_rmse_m": 1.732890366082243e-07,
+              "normalized_residual_rms": 8.96900202013379e-05
+            },
+            {
+              "seed": 22,
+              "geometry": 61,
+              "component_rmse_m": 2.192160843490431e-07,
+              "normalized_residual_rms": 0.00010096699657938956
+            },
+            {
+              "seed": 33,
+              "geometry": 61,
+              "component_rmse_m": 2.4388314008572153e-07,
+              "normalized_residual_rms": 7.84440122085528e-05
+            },
+            {
+              "seed": 44,
+              "geometry": 61,
+              "component_rmse_m": 2.322520615355126e-07,
+              "normalized_residual_rms": 8.476504090123045e-05
+            },
+            {
+              "seed": 55,
+              "geometry": 61,
+              "component_rmse_m": 2.9502849295349683e-07,
+              "normalized_residual_rms": 0.00014384406640495265
+            },
+            {
+              "seed": 11,
+              "geometry": 62,
+              "component_rmse_m": 2.911610407791113e-07,
+              "normalized_residual_rms": 0.0002446855467675582
+            },
+            {
+              "seed": 22,
+              "geometry": 62,
+              "component_rmse_m": 3.7243938585125907e-07,
+              "normalized_residual_rms": 0.00031432354505362586
+            },
+            {
+              "seed": 33,
+              "geometry": 62,
+              "component_rmse_m": 2.8085544192048677e-07,
+              "normalized_residual_rms": 0.00022776278008945015
+            },
+            {
+              "seed": 44,
+              "geometry": 62,
+              "component_rmse_m": 3.5463865816038675e-07,
+              "normalized_residual_rms": 0.00031971678379948707
+            },
+            {
+              "seed": 55,
+              "geometry": 62,
+              "component_rmse_m": 3.45982123901646e-07,
+              "normalized_residual_rms": 0.00028531341699050423
+            },
+            {
+              "seed": 11,
+              "geometry": 63,
+              "component_rmse_m": 2.785235073809204e-07,
+              "normalized_residual_rms": 0.00022399654090002802
+            },
+            {
+              "seed": 22,
+              "geometry": 63,
+              "component_rmse_m": 3.6631442398653023e-07,
+              "normalized_residual_rms": 0.0002985661053202358
+            },
+            {
+              "seed": 33,
+              "geometry": 63,
+              "component_rmse_m": 3.2019180149321736e-07,
+              "normalized_residual_rms": 0.00021143636326935298
+            },
+            {
+              "seed": 44,
+              "geometry": 63,
+              "component_rmse_m": 3.630195252133413e-07,
+              "normalized_residual_rms": 0.000309676821568214
+            },
+            {
+              "seed": 55,
+              "geometry": 63,
+              "component_rmse_m": 2.521156911351845e-07,
+              "normalized_residual_rms": 0.00020454201826282435
+            }
+          ]
+        },
+        "shift": {
+          "n_geometries": 4,
+          "n_load_cases": 16,
+          "mean_nodal_l2_m": 3.6401265591231573e-06,
+          "geometry_bootstrap95_mean_nodal_l2_m": null,
+          "mean_component_rmse_m": 2.7255962274534957e-06,
+          "mean_normalized_residual_rms": 0.0009966273092419662,
+          "coverage": [
+            {
+              "nominal": 0.9,
+              "radius_m": 2.8591859382762235e-06,
+              "covered": 0,
+              "n_geometries": 4,
+              "coverage": 0.0
+            },
+            {
+              "nominal": 0.95,
+              "radius_m": 3.4581401629683816e-06,
+              "covered": 0,
+              "n_geometries": 4,
+              "coverage": 0.0
+            }
+          ],
+          "spearman_uncertainty_error": 0.6000000000000001,
+          "selective_risk": [
+            {
+              "retained": 0.25,
+              "mean_nodal_l2_m": 3.5724359681230573e-06
+            },
+            {
+              "retained": 0.5,
+              "mean_nodal_l2_m": 3.4046778233871647e-06
+            },
+            {
+              "retained": 0.75,
+              "mean_nodal_l2_m": 3.5698519775468924e-06
+            },
+            {
+              "retained": 1.0,
+              "mean_nodal_l2_m": 3.6401265591231573e-06
+            }
+          ],
+          "per_geometry": [
+            {
+              "geometry": 64,
+              "mean_nodal_l2_m": 3.5724359681230573e-06,
+              "component_rmse_m": 2.482819952081738e-06,
+              "max_nodal_l2_all_loads_m": 1.5124434165168467e-05,
+              "variance_m2": 2.666024246004583e-12,
+              "normalized_residual_rms": 0.0006902270366208851,
+              "mean_strain_frobenius_error": 0.0003224544367756439,
+              "mean_relative_elastic_energy_error": 0.02908100001223681,
+              "minimum_detF": 0.9646058829758949,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 65,
+              "mean_nodal_l2_m": 3.9002002858663474e-06,
+              "component_rmse_m": 2.9679568408798592e-06,
+              "max_nodal_l2_all_loads_m": 3.153319100306342e-05,
+              "variance_m2": 3.839689324868758e-12,
+              "normalized_residual_rms": 0.0010571743768479727,
+              "mean_strain_frobenius_error": 0.00046492255960488293,
+              "mean_relative_elastic_energy_error": 0.027570239788546724,
+              "minimum_detF": 0.9686970784635208,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 66,
+              "mean_nodal_l2_m": 3.236919678651272e-06,
+              "component_rmse_m": 2.50832602627283e-06,
+              "max_nodal_l2_all_loads_m": 1.7762566294091817e-05,
+              "variance_m2": 2.7712430379558867e-12,
+              "normalized_residual_rms": 0.0012163817073768857,
+              "mean_strain_frobenius_error": 0.0005876716360239086,
+              "mean_relative_elastic_energy_error": 0.09334682149224127,
+              "minimum_detF": 0.9651263720229645,
+              "inverted_element_fraction": 0.0
+            },
+            {
+              "geometry": 67,
+              "mean_nodal_l2_m": 3.850950303851953e-06,
+              "component_rmse_m": 2.9432820905795555e-06,
+              "max_nodal_l2_all_loads_m": 2.4456518404269044e-05,
+              "variance_m2": 5.454137843603164e-12,
+              "normalized_residual_rms": 0.001022726116122121,
+              "mean_strain_frobenius_error": 0.0006346034666082831,
+              "mean_relative_elastic_energy_error": 0.15504407298600192,
+              "minimum_detF": 0.9687970333815081,
+              "inverted_element_fraction": 0.0
+            }
+          ],
+          "per_seed_geometry": []
+        }
+      }
+    }
+  },
+  "natural_boundary_interior_ablations_single_seed": {
+    "interior": {
+      "seed": 11,
+      "n_geometries": 16,
+      "per_geometry": [
+        {
+          "geometry": 48,
+          "component_rmse_m": 1.8528197675710743e-07,
+          "normalized_full_residual_rms": 5.7956277816954905e-05
+        },
+        {
+          "geometry": 49,
+          "component_rmse_m": 1.8495842224696252e-07,
+          "normalized_full_residual_rms": 8.415919646114072e-05
+        },
+        {
+          "geometry": 50,
+          "component_rmse_m": 2.8231752855320016e-07,
+          "normalized_full_residual_rms": 0.0002442565689969854
+        },
+        {
+          "geometry": 51,
+          "component_rmse_m": 1.9359745259504142e-07,
+          "normalized_full_residual_rms": 7.887870734961172e-05
+        },
+        {
+          "geometry": 52,
+          "component_rmse_m": 3.6149258436234994e-07,
+          "normalized_full_residual_rms": 0.00031048556955870824
+        },
+        {
+          "geometry": 53,
+          "component_rmse_m": 1.5714434800818124e-07,
+          "normalized_full_residual_rms": 0.00012143955894049429
+        },
+        {
+          "geometry": 54,
+          "component_rmse_m": 2.4505278097413147e-07,
+          "normalized_full_residual_rms": 0.00014316094231191825
+        },
+        {
+          "geometry": 55,
+          "component_rmse_m": 1.653568818299808e-07,
+          "normalized_full_residual_rms": 0.00013033348861540638
+        },
+        {
+          "geometry": 56,
+          "component_rmse_m": 1.09881827900583e-07,
+          "normalized_full_residual_rms": 4.7878714518057884e-05
+        },
+        {
+          "geometry": 57,
+          "component_rmse_m": 2.2911199866754562e-07,
+          "normalized_full_residual_rms": 0.00012207003788966268
+        },
+        {
+          "geometry": 58,
+          "component_rmse_m": 2.3524006800304857e-07,
+          "normalized_full_residual_rms": 8.392395344239688e-05
+        },
+        {
+          "geometry": 59,
+          "component_rmse_m": 3.0347363538579493e-07,
+          "normalized_full_residual_rms": 0.00025351440098041634
+        },
+        {
+          "geometry": 60,
+          "component_rmse_m": 2.458464282676699e-07,
+          "normalized_full_residual_rms": 0.00020667114804806292
+        },
+        {
+          "geometry": 61,
+          "component_rmse_m": 1.733120678938986e-07,
+          "normalized_full_residual_rms": 8.979410426581045e-05
+        },
+        {
+          "geometry": 62,
+          "component_rmse_m": 2.9061017904934067e-07,
+          "normalized_full_residual_rms": 0.00024409764828210492
+        },
+        {
+          "geometry": 63,
+          "component_rmse_m": 2.7831227153496784e-07,
+          "normalized_full_residual_rms": 0.0002239632913380065
+        }
+      ],
+      "mean_component_rmse_m": 2.2756190325186273e-07,
+      "mean_normalized_full_residual_rms": 0.00015266147555098364
+    },
+    "boundary": {
+      "seed": 11,
+      "n_geometries": 16,
+      "per_geometry": [
+        {
+          "geometry": 48,
+          "component_rmse_m": 1.853122762857461e-07,
+          "normalized_full_residual_rms": 5.8057031811985626e-05
+        },
+        {
+          "geometry": 49,
+          "component_rmse_m": 1.8522695095790135e-07,
+          "normalized_full_residual_rms": 8.452430046176771e-05
+        },
+        {
+          "geometry": 50,
+          "component_rmse_m": 2.8306494679679525e-07,
+          "normalized_full_residual_rms": 0.00024488688012380986
+        },
+        {
+          "geometry": 51,
+          "component_rmse_m": 1.9361595668917372e-07,
+          "normalized_full_residual_rms": 7.89576658373859e-05
+        },
+        {
+          "geometry": 52,
+          "component_rmse_m": 3.622844967625354e-07,
+          "normalized_full_residual_rms": 0.00031111121371207905
+        },
+        {
+          "geometry": 53,
+          "component_rmse_m": 1.5758935245864698e-07,
+          "normalized_full_residual_rms": 0.00012181668959112762
+        },
+        {
+          "geometry": 54,
+          "component_rmse_m": 2.448005003697636e-07,
+          "normalized_full_residual_rms": 0.00014290950410793783
+        },
+        {
+          "geometry": 55,
+          "component_rmse_m": 1.6579340498962045e-07,
+          "normalized_full_residual_rms": 0.00013071964603324692
+        },
+        {
+          "geometry": 56,
+          "component_rmse_m": 1.101327618983177e-07,
+          "normalized_full_residual_rms": 4.794106086070659e-05
+        },
+        {
+          "geometry": 57,
+          "component_rmse_m": 2.2916815860854994e-07,
+          "normalized_full_residual_rms": 0.00012209211851751202
+        },
+        {
+          "geometry": 58,
+          "component_rmse_m": 2.3507072028282366e-07,
+          "normalized_full_residual_rms": 8.388597340780319e-05
+        },
+        {
+          "geometry": 59,
+          "component_rmse_m": 3.040125385569376e-07,
+          "normalized_full_residual_rms": 0.0002541184714212365
+        },
+        {
+          "geometry": 60,
+          "component_rmse_m": 2.465127210582671e-07,
+          "normalized_full_residual_rms": 0.00020727010855791658
+        },
+        {
+          "geometry": 61,
+          "component_rmse_m": 1.7327819807677372e-07,
+          "normalized_full_residual_rms": 8.971144166286383e-05
+        },
+        {
+          "geometry": 62,
+          "component_rmse_m": 2.9116936659848686e-07,
+          "normalized_full_residual_rms": 0.0002447017619805675
+        },
+        {
+          "geometry": 63,
+          "component_rmse_m": 2.7858120309147455e-07,
+          "normalized_full_residual_rms": 0.0002241053554958681
+        }
+      ],
+      "mean_component_rmse_m": 2.2785084709261339e-07,
+      "mean_normalized_full_residual_rms": 0.00015292557647398844
+    }
+  },
+  "inference_precision": "CPU float64 arithmetic with frozen float32-trained weights/buffers cast to float64; native mechanics always float64",
+  "matched_seed_comparisons": [
+    {
+      "seed": 11,
+      "data_residual_rms": 0.0001526683210957501,
+      "physics_residual_rms": 0.00015292088819493375,
+      "displacement_RMSE_ratio": 1.0012299074411353
+    },
+    {
+      "seed": 22,
+      "data_residual_rms": 0.0001963597641036993,
+      "physics_residual_rms": 0.0001968638935118897,
+      "displacement_RMSE_ratio": 1.00236977117318
+    },
+    {
+      "seed": 33,
+      "data_residual_rms": 0.0001583456012310672,
+      "physics_residual_rms": 0.0001583334008944398,
+      "displacement_RMSE_ratio": 0.999672596738136
+    },
+    {
+      "seed": 44,
+      "data_residual_rms": 0.00019432655030696223,
+      "physics_residual_rms": 0.00019419229705033535,
+      "displacement_RMSE_ratio": 1.0002156511723113
+    },
+    {
+      "seed": 55,
+      "data_residual_rms": 0.00020369806590210434,
+      "physics_residual_rms": 0.00020385328937402804,
+      "displacement_RMSE_ratio": 1.0016451619790048
+    }
+  ],
+  "paired_ensemble_residual_difference": 2.0766989096844536e-07,
+  "paired_geometry_bootstrap95_residual_difference": [
+    3.305252562804678e-08,
+    3.5890349685049275e-07
+  ],
+  "ensemble_displacement_RMSE_ratio": 1.0012621433258961,
+  "H1_descriptive_supported": false,
+  "split_unit": "independent parameter-drawn numerical geometry; all loads clustered",
+  "bootstrap_scope": "conditional on the five trained members, excluding retraining uncertainty; seed comparisons reported separately",
+  "limitations": [
+    "same benchmark ellipsoid family, not independent anatomical sources",
+    "four startup loads from rest per geometry, not trajectories",
+    "20 calibration geometries and16 test geometries: wide coverage intervals",
+    "shift consists of four deterministic extrapolation corners; no exchangeability guarantee",
+    "P1 FE discretization uncertainty is additional to surrogate error",
+    "physics conclusions specific to this numerical parameter distribution"
+  ]
+}

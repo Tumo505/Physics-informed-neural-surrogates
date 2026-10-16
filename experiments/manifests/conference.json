@@ -1,0 +1,30 @@
+{
+  "verified_date": "2026-10-16",
+  "submission_page": "https://www.cmbbe-symposium.com/2027/abstract-submission/",
+  "deadline": "2026-11-15 23:59 CET",
+  "title_max_characters_including_spaces": 200,
+  "template_required": true,
+  "template_url": "https://www.cmbbe-symposium.com/2027/wp-content/uploads/sites/35/2026/09/CMBBE2027_Abstract_Template_.docx",
+  "template_sha256": "61e17482743c1328d8a59421de311b0fa069a7b4322553468505c4bf5ef6a868",
+  "candidate_categories": [
+    "Computational cardiology",
+    "Verification, validation and uncertainty quantification"
+  ],
+  "submitted": false,
+  "paper_directory": "excluded by explicit user instruction",
+  "template_requirements": {
+    "maximum_pages": 1,
+    "paper_size": "A4",
+    "columns": 2,
+    "body_font": "Calibri11",
+    "figures_and_tables": "included within one-page limit",
+    "required_sections": [
+      "Introduction",
+      "Materials and Methods",
+      "Results",
+      "Discussion and Conclusions",
+      "References"
+    ],
+    "formatting_source": "downloaded official DOCX template; no manuscript generated"
+  }
+}

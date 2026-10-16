@@ -1,0 +1,40 @@
+{
+  "name": "physics_lambda100",
+  "seed": 11,
+  "lambda": 100.0,
+  "region": "all",
+  "complete": false,
+  "steps_completed": 51,
+  "best_validation": {
+    "component_mse_m2": 1.0294533191149418e-11,
+    "component_rmse_m": 3.2085094968145907e-06,
+    "full_residual_loss": 1.180385144665036e-06,
+    "region_residual_loss": 1.180385144665036e-06
+  },
+  "seconds": 23.457503832993098,
+  "history": [
+    {
+      "step": 0,
+      "train_scaled_data_mse": 1.0274320796821999,
+      "validation": {
+        "component_mse_m2": 1.7457746672371551e-09,
+        "component_rmse_m": 4.1782468419627326e-05,
+        "full_residual_loss": 5.7122045061450115e-05,
+        "region_residual_loss": 5.7122045061450115e-05
+      },
+      "selection_score": 0.828428886268647
+    },
+    {
+      "step": 50,
+      "train_scaled_data_mse": 0.004941446074215525,
+      "validation": {
+        "component_mse_m2": 1.0294533191149418e-11,
+        "component_rmse_m": 3.2085094968145907e-06,
+        "full_residual_loss": 1.180385144665036e-06,
+        "region_residual_loss": 1.180385144665036e-06
+      },
+      "selection_score": 0.0049694573981647686
+    }
+  ],
+  "parameters": 22076
+}

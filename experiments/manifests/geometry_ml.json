@@ -1,0 +1,46 @@
+{
+  "splits": {
+    "train": {
+      "geometry_ids": [
+        0,
+        20
+      ],
+      "case_count": 80
+    },
+    "validation": {
+      "geometry_ids": [
+        20,
+        28
+      ],
+      "case_count": 32
+    },
+    "calibration": {
+      "geometry_ids": [
+        28,
+        48
+      ],
+      "case_count": 80
+    },
+    "test": {
+      "geometry_ids": [
+        48,
+        64
+      ],
+      "case_count": 64
+    },
+    "shift": {
+      "geometry_ids": [
+        64,
+        68
+      ],
+      "case_count": 16
+    }
+  },
+  "normalizers_fit": "training20 geometries/80 startup load cases only",
+  "pod_rank": 12,
+  "coarse_nodes": 64,
+  "directed_edges": 368,
+  "normalizer_sha256": "8fa3ca1c8574843249d12002982dd762675545b28b9e89d08e3af8197f15f3ce",
+  "node_correspondence": "exact source affine mapping; not an assumption across unrelated anatomies",
+  "source_sha256": "960d295a9072b7cf5e5e607144c159c5c7dbf6868b476cf7bc5a889a04863a26"
+}

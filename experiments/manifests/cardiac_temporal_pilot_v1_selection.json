@@ -1,0 +1,53 @@
+{
+  "config": {
+    "name": "cardiac_temporal_pilot_v1",
+    "seed": 11,
+    "train_steps": [
+      0,
+      600
+    ],
+    "validation_steps": [
+      600,
+      800
+    ],
+    "test_steps": [
+      800,
+      999
+    ],
+    "pod_rank": 16,
+    "training_updates": 400,
+    "batch_size": 64,
+    "learning_rate": 0.003,
+    "physics_lambdas": [
+      1.0,
+      100.0
+    ],
+    "validation_every": 50,
+    "validation_residual_frames": 8,
+    "scope": "one pressure trajectory and one fixed geometry; contiguous time holdout is not independent geometry/trajectory validation",
+    "prediction": "POD correction to old acceleration, then exact Newmark displacement update; causal u/v/a histories and prescribed next load as inputs",
+    "supervision": "displacement correction MSE scaled by training correction variance, equivalent to supervised acceleration-increment MSE under fixed dt",
+    "rollout": "start from exact state at test boundary and recursively update predicted u/v/a; report invalid Jacobians or nonfinite predictions as failures"
+  },
+  "selected": "physics_lambda100",
+  "meets_10percent_constraint": true,
+  "validation": {
+    "data": {
+      "scaled_correction_mse": 0.027046483751284642,
+      "component_rmse_m": 3.939566524228576e-07,
+      "residual_loss_eight_frames": 5.760274183329946e-09
+    },
+    "physics_lambda1": {
+      "scaled_correction_mse": 0.02704648597514967,
+      "component_rmse_m": 3.939566686191663e-07,
+      "residual_loss_eight_frames": 5.76027269624787e-09
+    },
+    "physics_lambda100": {
+      "scaled_correction_mse": 0.02704691795861242,
+      "component_rmse_m": 3.939598147226289e-07,
+      "residual_loss_eight_frames": 5.760036972556312e-09
+    }
+  },
+  "calibration_test_read": false,
+  "complete": true
+}

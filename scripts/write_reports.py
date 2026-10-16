@@ -43,7 +43,9 @@ if cost.exists():
  c=json.loads(cost.read_text());rows+=['',f'Observed training cost: full-data graph ensemble stages summed {c["full_multiscale_v1"]["graph_training_seconds_sum"]+c["full_multiscale_v2"]["graph_training_seconds_sum"]:.1f}s; cardiac data/physics validation grid {c["cardiac"]["training_and_validation_grid_seconds_sum"]:.1f}s plus summed corpus solver steps {c["cardiac"]["corpus_solver_seconds_sum"]:.1f}s. These costs are separate from latency ratios and exclude installation/diagnostics.']
 rows+=['','![Released prediction on an actual graph](figures/reference_prediction.png)']
 if (P/'reports/figures/full_results.png').exists():rows+=['','![Full-data results](figures/full_results.png)']
+from report_research_extension import extension_rows
+rows=rows[:3]+extension_rows(P)+rows[3:]
 (P/'reports/results.md').write_text('\n'.join(rows)+'\n')
-patterns=['experiments/checkpoints/**/*.pt','scripts/*.py','src/**/*.py','configs/**/*.yaml','*lock*']
+patterns=['experiments/checkpoints/**/*.pt','scripts/*.py','src/**/*.py','configs/**/*.yaml','configs/**/*.json','*lock*']
 manifest={'sha256':{str(p.relative_to(P)):hashlib.sha256(p.read_bytes()).hexdigest() for pattern in patterns for p in P.glob(pattern) if p.is_file()},'note':'Working notes and paper directory intentionally ignored; no manuscript generated.'}
 (P/'experiments/manifests/artifacts.json').write_text(json.dumps(manifest,indent=2));print('consolidated report written')

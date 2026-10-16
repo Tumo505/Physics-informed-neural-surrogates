@@ -1,0 +1,7 @@
+{
+  "coarse_nodes": 848,
+  "directed_edges": 4892,
+  "normalization_fit": "original training2250 only",
+  "shared_arrays": "hardlinks to immutable normalized points, globals and physical targets; do not mutate",
+  "normalizers_sha256": "06c13f13338be142d9c2407d6426b5923c183e32cc7e0a7f9880a9664b9e1b13"
+}

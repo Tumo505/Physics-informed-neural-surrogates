@@ -1,0 +1,50 @@
+{
+  "config": {
+    "run_name": "control_v4",
+    "seeds": [
+      11,
+      22,
+      33,
+      44,
+      55
+    ],
+    "baseline_seeds": [],
+    "epochs": 160,
+    "batch_size": 32,
+    "sample_nodes": 128,
+    "width": 64,
+    "steps": 3,
+    "lr": 0.001,
+    "minimum_lr": 1e-05,
+    "weight_decay": 1e-05,
+    "validation_every": 5,
+    "patience_checks": 10,
+    "validation_ids": [
+      0,
+      16
+    ],
+    "calibration_ids": [
+      16,
+      150
+    ],
+    "test_ids": [
+      64,
+      567
+    ],
+    "training_split": "all_2250_original_training_cases",
+    "device": "mps",
+    "seed_split": 2027,
+    "data_root": "data/processed/full",
+    "study": "validation-only representation/capacity screening; seed11 then expand selected design to five seeds",
+    "test_status": "previously evaluated; no test/calibration used for screening",
+    "screening_selection": "frozen in experiments/metrics/graph_study_selection.json before new calibration/test reads"
+  },
+  "sha256": {
+    "gnn_11_best.pt": "d871e595447d6b40760ffb9dc25dffbfb4c00ab696c530d61153a5fdebc2ab47",
+    "gnn_22_best.pt": "6651488f35ef4802c426f3d118e2861e026ae8b50355eed46a4aeaa1f7066cfa",
+    "gnn_33_best.pt": "f80a3b79f3b8fac6b7b9d31c91e30f0800038ba998017859daee6e20ca7ece6b",
+    "gnn_44_best.pt": "186da59558020bd829cf2185be3159374bafbae784036c626386af975c996fb3",
+    "gnn_55_best.pt": "6f1cc7fc33a98d7b15392c8a7232762b0493c611f5d43c0b76c89aa3c47f273a"
+  },
+  "status": "repeated benchmark on already inspected test503; architecture selection used validation only"
+}

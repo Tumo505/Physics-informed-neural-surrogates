@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "task": "startup",
+      "relative_residual_error": 1.6481945574552479e-12,
+      "VJP_fd_relative_error": 5.177247079961124e-10,
+      "independent_autodiff_relative_gradient_error": 1.4674695249724911e-12,
+      "converged_reference_normalized_residual_loss": 2.365194700145715e-28,
+      "boundary_interior_partition_additivity": true
+    },
+    {
+      "task": "geometry0",
+      "relative_residual_error": 1.6373673994315175e-12,
+      "VJP_fd_relative_error": 1.1395359117770072e-09,
+      "independent_autodiff_relative_gradient_error": 1.4744156641286221e-12,
+      "converged_reference_normalized_residual_loss": 2.8079138225840363e-25,
+      "boundary_interior_partition_additivity": true
+    },
+    {
+      "task": "geometry1",
+      "relative_residual_error": 1.7268760004025855e-12,
+      "VJP_fd_relative_error": 1.0631748499957196e-09,
+      "independent_autodiff_relative_gradient_error": 1.5978224023074301e-12,
+      "converged_reference_normalized_residual_loss": 1.68736227492225e-25,
+      "boundary_interior_partition_additivity": true
+    },
+    {
+      "task": "temporal_step10",
+      "relative_residual_error": 1.6990211002689324e-12,
+      "VJP_fd_relative_error": 3.0058752155739097e-09,
+      "independent_autodiff_relative_gradient_error": 1.5508386410312368e-12,
+      "converged_reference_normalized_residual_loss": 3.1400466895386377e-31,
+      "boundary_interior_partition_additivity": true
+    },
+    {
+      "task": "temporal_step100",
+      "relative_residual_error": 1.8964399288390687e-12,
+      "VJP_fd_relative_error": 2.219974179974103e-09,
+      "independent_autodiff_relative_gradient_error": 1.6854822759765973e-12,
+      "converged_reference_normalized_residual_loss": 4.251443163657352e-31,
+      "boundary_interior_partition_additivity": true
+    },
+    {
+      "task": "temporal_step400",
+      "relative_residual_error": 1.5495193090850244e-11,
+      "VJP_fd_relative_error": 4.131387159062793e-09,
+      "independent_autodiff_relative_gradient_error": 1.5418656962462547e-11,
+      "converged_reference_normalized_residual_loss": 2.8563450919648405e-26,
+      "boundary_interior_partition_additivity": true
+    },
+    {
+      "task": "startup_after_history_switch",
+      "relative_residual_error": 1.6654383083563852e-12,
+      "VJP_fd_relative_error": 2.4014830647498525e-09,
+      "independent_autodiff_relative_gradient_error": 1.5107507225404003e-12,
+      "converged_reference_normalized_residual_loss": 2.365194700145715e-28,
+      "boundary_interior_partition_additivity": true
+    }
+  ],
+  "scope": "two numerical geometries and nonzero dynamic histories; independent assembly, full autodiff, exact tangent FD and natural-boundary partition checks"
+}

@@ -1,0 +1,12 @@
+"""Choose a meaningful temporal lambda grid from TRAINING parameter gradients only."""
+from pathlib import Path
+import json,sys
+import numpy as np,torch
+P=Path(__file__).resolve().parents[1];sys.path.insert(0,str(P/'src'))
+from lv_surrogate.models.temporal_pod import TemporalPOD
+from lv_surrogate.physics.cardiac_residual import CardiacFirstStep
+torch.set_num_threads(2);stats=dict(np.load(P/'data/processed/cardiac_temporal_ml/normalizers.npz'));a=dict(np.load(P/'data/processed/cardiac_temporal_ml/train.npz'));cfg=json.loads((P/'configs/physics/temporal_model.json').read_text());torch.manual_seed(cfg['seed']);net=TemporalPOD(stats).double();own=CardiacFirstStep(np.load(P/'data/processed/cardiac/cohort.npz'),analytic_piola=True);scale=float(np.load(P/'data/processed/cardiac/cohort.npz')['force_scale_N']);records=[];dt=float(stats['dt'])
+for i in np.linspace(0,len(a['features'])-1,8,dtype=int):
+ net.zero_grad();da=net(torch.tensor(a['features'][i:i+1]));loss=((da-torch.tensor(a['delta'][i:i+1]))/float(stats['delta_scale'])).square().mean();loss.backward();gd=float(sum(p.grad.square().sum() for p in net.parameters()).sqrt());net.zero_grad();da=net(torch.tensor(a['features'][i:i+1]));u=torch.tensor(a['u_old'][i]+dt*a['v_old'][i]+.5*dt**2*a['a_old'][i])+.36*dt**2*da.reshape(a['u_old'][i].shape);R=own(u,float(a['pressure'][i]),create_graph=True,history={k:a[k][i] for k in ['u_old','v_old','a_old']});eq=(R/scale).square().mean();eq.backward();ge=float(sum(p.grad.square().sum() for p in net.parameters()).sqrt());records.append({'training_frame':int(i),'data_gradient_norm':gd,'physics_gradient_norm':ge,'gradient_balance_lambda':gd/max(ge,1e-30)})
+center=float(10**np.round(np.log10(np.median([r['gradient_balance_lambda'] for r in records]))));grid=[center/10,center,center*10];cfg.update(name='cardiac_temporal_balanced_v2',physics_lambdas=grid,lambda_grid_reason='training-only median data/physics parameter-gradient norm ratio, rounded to decade; one decade below/above',evaluation_scope='same temporal test already evaluated by earlier pilot; repeated exploratory temporal evaluation, not confirmatory')
+(P/'configs/physics/temporal_balanced.json').write_text(json.dumps(cfg,indent=2));(P/'experiments/metrics/temporal_loss_scaling.json').write_text(json.dumps({'read_splits':['train'],'records':records,'lambda_grid':grid,'previous_grid':[1,100],'reason':'meaningful loss weighting requires checking gradient magnitudes; no test outcome used to choose grid'},indent=2));print('TRAINING-ONLY GRID',grid,flush=True)

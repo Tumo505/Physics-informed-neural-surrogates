@@ -16,6 +16,8 @@ def atomic_save(obj,path):
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--config',default='configs/gnn/full.yaml');ap.add_argument('--seed',type=int);ap.add_argument('--kind',choices=['gnn','point']);ap.add_argument('--device');ap.add_argument('--benchmark-only',action='store_true');args=ap.parse_args()
  cfg=yaml.safe_load((P/args.config).read_text());device=torch.device(args.device or cfg['device']);torch.set_num_threads(4)
+ global D
+ D=P/cfg.get('data_root','data/processed/full')
  if device.type=='mps' and not torch.backends.mps.is_available():raise RuntimeError('MPS unavailable; request GPU-capable host execution or explicitly use --device cpu')
  names=['points','coarse','globals','edges','targets'];train={n:np.load(D/f'train_{n}.npy',mmap_mode='r') for n in names};valid={n:np.load(D/f'validation_{n}.npy',mmap_mode='r') for n in names};norm=np.load(D/'normalizers.npz')
  topology=torch.from_numpy(np.load(D/'topology.npy')).to(device);parents=np.load(D/'parents.npy');ustd=torch.from_numpy(norm['targets_std']).to(device);umean=torch.from_numpy(norm['targets_mean']).to(device);scale=float(np.mean(norm['targets_std']**2))

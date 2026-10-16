@@ -1,0 +1,16 @@
+{
+ "name": "cardiac_geometry_v1",
+ "seed_geometry": 31415,
+ "iid_geometry_count": 64,
+ "scale_bounds": [0.95,1.05],
+ "parameter_order": ["radial_scale","longitudinal_scale"],
+ "long_axis": "x, confirmed in pinned source ellipsoid_point and microstructure.compute_system",
+ "parameter_space_role": "controlled numerical sensitivity distribution around documented benchmark ellipsoid; not an empirical or physiological shape distribution",
+ "bounds_reason": "predeclared small 5-percent numerical perturbation of benchmark radii; no claim of anatomical population validity",
+ "shift_scales": [[0.9,0.9],[0.9,1.1],[1.1,0.9],[1.1,1.1]],
+ "shift_role": "predeclared numerical extrapolation corners; no conformal coverage guarantee",
+ "pressure_fractions_of_documented_waveform_max": [0.25,0.5,0.75,1.0],
+ "splits": {"train":[0,20],"validation":[20,28],"calibration":[28,48],"test":[48,64],"shift":[64,68]},
+ "scope": "passive startup from rest, one affine ellipsoid family with shared mesh connectivity; independent parameter draws, not independent anatomical sources",
+ "material_and_BC": "unchanged pinned benchmark defaults; P1 displacement and source microstructure algorithm on every geometry"
+}

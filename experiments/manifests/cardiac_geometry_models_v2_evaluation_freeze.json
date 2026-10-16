@@ -1,0 +1,43 @@
+{
+  "checkpoint_sha256": {
+    "data_seed11_best.pt": "a7923034f1fc90235e45119a3cb45c00d11e45734e1112acb96a51762fbac710",
+    "data_seed22_best.pt": "f2b0004714bd65678e687d75564848493645a1dcdaa2abb9faa4190753744eba",
+    "data_seed33_best.pt": "3bc98c7d45729ea2a2160473b0bfcaff2b1c99487ab7374a6424e36fbabd126b",
+    "data_seed44_best.pt": "dd1ac8419c42f4b927dededf7b4bda3a5eeb678d2883c48f7a8f6f0a9c786d66",
+    "data_seed55_best.pt": "5946654d18b0c106c2e1fc999c1f2a4eef5834af295ae0c1d70cae2da8f7b313",
+    "physics_lambda1_seed11_best.pt": "83487adf040c6030c8e1225fbd2c1c803d891a4cafb303dc78ecb8deb164df65",
+    "physics_lambda1_seed22_best.pt": "44d6c18b41c3d4c2eb380addf8131a27e2f2c4e48d2f5a451c311135b44e2e2b",
+    "physics_lambda1_seed33_best.pt": "f6c6af81cc59a2d3236b99d49691773e897e1174a2927c26d840fa8c12530fd9",
+    "physics_lambda1_seed44_best.pt": "1b28fb7db024ef5bfd78eda2fd23ace7517e76bc9037bc862c1e702a673262e2",
+    "physics_lambda1_seed55_best.pt": "052661f9a26e58b99bbc2cedff9ebf3b570918152447200b2113400f066c12ce"
+  },
+  "selection": {
+    "selected_label": "physics_lambda1",
+    "lambda": 1.0,
+    "meets_10percent_constraint": true,
+    "screening_seed": 11,
+    "validation_only": true,
+    "screen": {
+      "data": {
+        "component_mse_m2": 9.301496721869385e-14,
+        "component_rmse_m": 3.0498355237404826e-07,
+        "full_residual_loss": 5.8842889386620506e-08,
+        "region_residual_loss": 5.8842889386620506e-08
+      },
+      "physics_lambda1": {
+        "component_mse_m2": 9.319485288948755e-14,
+        "component_rmse_m": 3.052783203725537e-07,
+        "full_residual_loss": 5.8927867945171135e-08,
+        "region_residual_loss": 5.8927867945171135e-08
+      },
+      "physics_lambda100": {
+        "component_mse_m2": 1.379459326128416e-13,
+        "component_rmse_m": 3.7141073303398437e-07,
+        "full_residual_loss": 7.069161931194127e-08,
+        "region_residual_loss": 7.069161931194127e-08
+      }
+    },
+    "test_and_calibration_opened": false
+  },
+  "declaration": "All model choices frozen before opening calibration/test/shift target arrays; this is a new cohort with no historical test reuse."
+}

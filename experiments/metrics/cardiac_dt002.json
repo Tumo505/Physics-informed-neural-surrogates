@@ -1,0 +1,209 @@
+{
+  "config": {
+    "name": "cardiac_passive_trajectory_v1",
+    "dt_s": 0.001,
+    "end_s": 1.0,
+    "activation": "zero",
+    "pressure": "exact_benchmark1_default_waveform_at_generalized_alpha_times",
+    "scope": "passive_numerical_LV_pressure_cycle_on_one_archived_geometry_not_active_electromechanics",
+    "store_every": 1,
+    "checkpoint_every": 100
+  },
+  "name": "cardiac_dt002",
+  "dt_s": 0.002,
+  "end_s": 0.0401,
+  "n_steps": 20,
+  "completed_steps": 20,
+  "complete": true,
+  "independent_geometries": 1,
+  "pressure_timing": "t_n+(1-alpha_f)*dt; pinned source convention",
+  "initial_state": "u=v=a=0",
+  "activation": "zero throughout; passive variant, not full active benchmark",
+  "seconds": 40.27559145796113,
+  "steps": [
+    {
+      "step": 0,
+      "time_s": 0.002,
+      "pressure_Pa": 8.28007675758021,
+      "iterations": 2,
+      "residual_l2_N": 1.4201924595244404e-13,
+      "seconds": 10.799702332937159,
+      "max_nodal_displacement_m": 1.047793979251611e-06
+    },
+    {
+      "step": 1,
+      "time_s": 0.004,
+      "pressure_Pa": 21.560763389916218,
+      "iterations": 2,
+      "residual_l2_N": 1.4069730951689127e-13,
+      "seconds": 1.623375750030391,
+      "max_nodal_displacement_m": 4.120720483684826e-06
+    },
+    {
+      "step": 2,
+      "time_s": 0.006,
+      "pressure_Pa": 34.22040443742234,
+      "iterations": 2,
+      "residual_l2_N": 1.4644924709783997e-13,
+      "seconds": 1.6103099581087008,
+      "max_nodal_displacement_m": 9.470582862471227e-06
+    },
+    {
+      "step": 3,
+      "time_s": 0.008,
+      "pressure_Pa": 46.28639612491756,
+      "iterations": 2,
+      "residual_l2_N": 1.5823324495856662e-13,
+      "seconds": 1.6382868340006098,
+      "max_nodal_displacement_m": 1.7107454442921225e-05
+    },
+    {
+      "step": 4,
+      "time_s": 0.01,
+      "pressure_Pa": 57.78613467722084,
+      "iterations": 2,
+      "residual_l2_N": 1.9197664138050273e-13,
+      "seconds": 1.6359021249227226,
+      "max_nodal_displacement_m": 2.7003903401863112e-05
+    },
+    {
+      "step": 5,
+      "time_s": 0.012,
+      "pressure_Pa": 68.74481057655935,
+      "iterations": 2,
+      "residual_l2_N": 2.522113187937157e-13,
+      "seconds": 1.621195666026324,
+      "max_nodal_displacement_m": 3.9143224649358545e-05
+    },
+    {
+      "step": 6,
+      "time_s": 0.014,
+      "pressure_Pa": 79.1885938373627,
+      "iterations": 2,
+      "residual_l2_N": 3.539589472983532e-13,
+      "seconds": 1.6512422090163454,
+      "max_nodal_displacement_m": 5.340864044483933e-05
+    },
+    {
+      "step": 7,
+      "time_s": 0.016,
+      "pressure_Pa": 89.14812757593629,
+      "iterations": 2,
+      "residual_l2_N": 4.856240527652839e-13,
+      "seconds": 1.6249730839626864,
+      "max_nodal_displacement_m": 6.967424668514591e-05
+    },
+    {
+      "step": 8,
+      "time_s": 0.018000000000000002,
+      "pressure_Pa": 98.64293271450518,
+      "iterations": 2,
+      "residual_l2_N": 6.438101363939152e-13,
+      "seconds": 1.6196997499791905,
+      "max_nodal_displacement_m": 8.782141397359452e-05
+    },
+    {
+      "step": 9,
+      "time_s": 0.02,
+      "pressure_Pa": 107.69253017529445,
+      "iterations": 2,
+      "residual_l2_N": 8.591608661189968e-13,
+      "seconds": 1.6080960410181433,
+      "max_nodal_displacement_m": 0.00010767919164940115
+    },
+    {
+      "step": 10,
+      "time_s": 0.022,
+      "pressure_Pa": 116.31644088052917,
+      "iterations": 2,
+      "residual_l2_N": 1.11648674536999e-12,
+      "seconds": 1.6352194170467556,
+      "max_nodal_displacement_m": 0.00012937528456791645
+    },
+    {
+      "step": 11,
+      "time_s": 0.024,
+      "pressure_Pa": 124.53418575243447,
+      "iterations": 2,
+      "residual_l2_N": 1.4410909488710443e-12,
+      "seconds": 1.6292697089957073,
+      "max_nodal_displacement_m": 0.00015262132235179443
+    },
+    {
+      "step": 12,
+      "time_s": 0.026000000000000002,
+      "pressure_Pa": 132.36528571323538,
+      "iterations": 2,
+      "residual_l2_N": 1.8240240274846814e-12,
+      "seconds": 1.621248707990162,
+      "max_nodal_displacement_m": 0.0001771534383119412
+    },
+    {
+      "step": 13,
+      "time_s": 0.028,
+      "pressure_Pa": 139.829261685157,
+      "iterations": 2,
+      "residual_l2_N": 2.2623890158872285e-12,
+      "seconds": 1.6047412909101695,
+      "max_nodal_displacement_m": 0.0002028112296215056
+    },
+    {
+      "step": 14,
+      "time_s": 0.03,
+      "pressure_Pa": 146.93855826226263,
+      "iterations": 2,
+      "residual_l2_N": 2.73268373682806e-12,
+      "seconds": 1.6089623330626637,
+      "max_nodal_displacement_m": 0.00022943417445118848
+    },
+    {
+      "step": 15,
+      "time_s": 0.032,
+      "pressure_Pa": 153.71658832909182,
+      "iterations": 2,
+      "residual_l2_N": 3.220625702645369e-12,
+      "seconds": 1.611918041948229,
+      "max_nodal_displacement_m": 0.00025686356715923095
+    },
+    {
+      "step": 16,
+      "time_s": 0.034,
+      "pressure_Pa": 160.18289905336215,
+      "iterations": 2,
+      "residual_l2_N": 3.685988539095466e-12,
+      "seconds": 1.613147292053327,
+      "max_nodal_displacement_m": 0.00028495762243223473
+    },
+    {
+      "step": 17,
+      "time_s": 0.036000000000000004,
+      "pressure_Pa": 166.3493668065496,
+      "iterations": 2,
+      "residual_l2_N": 4.112915789300716e-12,
+      "seconds": 1.3915730840526521,
+      "max_nodal_displacement_m": 0.0003135787500643237
+    },
+    {
+      "step": 18,
+      "time_s": 0.038,
+      "pressure_Pa": 172.22786796013006,
+      "iterations": 2,
+      "residual_l2_N": 4.477597685162661e-12,
+      "seconds": 1.1109756670193747,
+      "max_nodal_displacement_m": 0.00034259829885730295
+    },
+    {
+      "step": 19,
+      "time_s": 0.04,
+      "pressure_Pa": 177.83027888557953,
+      "iterations": 2,
+      "residual_l2_N": 4.756237611450184e-12,
+      "seconds": 1.0084290830418468,
+      "max_nodal_displacement_m": 0.0003719005652423378
+    }
+  ],
+  "source_sha256": {
+    "scripts/generate_cardiac_trajectory.py": "e87775f33e3210bdd5c58dec8228d897adc806c045b251616f031117859ee6d3",
+    "src/lv_surrogate/physics/reference_fem.py": "437300455595263276a94840a68af76b802e4b6f62ba45436341607074b6f5d3"
+  }
+}

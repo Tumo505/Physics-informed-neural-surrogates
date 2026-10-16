@@ -1,0 +1,129 @@
+{
+  "candidates": {
+    "control_v4": {
+      "validation_component_rmse_cm": 0.06838479476804246,
+      "parameters": 138563,
+      "epochs_completed": 141,
+      "config": {
+        "run_name": "control_v4",
+        "seeds": [
+          11
+        ],
+        "baseline_seeds": [],
+        "epochs": 160,
+        "batch_size": 32,
+        "sample_nodes": 128,
+        "width": 64,
+        "steps": 3,
+        "lr": 0.001,
+        "minimum_lr": 1e-05,
+        "weight_decay": 1e-05,
+        "validation_every": 5,
+        "patience_checks": 10,
+        "validation_ids": [
+          0,
+          16
+        ],
+        "calibration_ids": [
+          16,
+          150
+        ],
+        "test_ids": [
+          64,
+          567
+        ],
+        "training_split": "all_2250_original_training_cases",
+        "device": "mps",
+        "seed_split": 2027,
+        "data_root": "data/processed/full",
+        "study": "validation-only representation/capacity screening; seed11 then expand selected design to five seeds",
+        "test_status": "previously evaluated; no test/calibration used for screening"
+      }
+    },
+    "capacity_v4": {
+      "validation_component_rmse_cm": 0.08506245074322812,
+      "parameters": 665091,
+      "epochs_completed": 160,
+      "config": {
+        "run_name": "capacity_v4",
+        "seeds": [
+          11
+        ],
+        "baseline_seeds": [],
+        "epochs": 160,
+        "batch_size": 32,
+        "sample_nodes": 128,
+        "width": 128,
+        "steps": 5,
+        "lr": 0.001,
+        "minimum_lr": 1e-05,
+        "weight_decay": 1e-05,
+        "validation_every": 5,
+        "patience_checks": 10,
+        "validation_ids": [
+          0,
+          16
+        ],
+        "calibration_ids": [
+          16,
+          150
+        ],
+        "test_ids": [
+          64,
+          567
+        ],
+        "training_split": "all_2250_original_training_cases",
+        "device": "mps",
+        "seed_split": 2027,
+        "data_root": "data/processed/full",
+        "study": "validation-only representation/capacity screening; seed11 then expand selected design to five seeds",
+        "test_status": "previously evaluated; no test/calibration used for screening"
+      }
+    },
+    "fine_graph_v4": {
+      "validation_component_rmse_cm": 0.0797118868616008,
+      "parameters": 138563,
+      "epochs_completed": 141,
+      "config": {
+        "run_name": "fine_graph_v4",
+        "seeds": [
+          11
+        ],
+        "baseline_seeds": [],
+        "epochs": 160,
+        "batch_size": 32,
+        "sample_nodes": 128,
+        "width": 64,
+        "steps": 3,
+        "lr": 0.001,
+        "minimum_lr": 1e-05,
+        "weight_decay": 1e-05,
+        "validation_every": 5,
+        "patience_checks": 10,
+        "validation_ids": [
+          0,
+          16
+        ],
+        "calibration_ids": [
+          16,
+          150
+        ],
+        "test_ids": [
+          64,
+          567
+        ],
+        "training_split": "all_2250_original_training_cases",
+        "device": "mps",
+        "seed_split": 2027,
+        "data_root": "data/processed/full_level1",
+        "study": "validation-only representation/capacity screening; seed11 then expand selected design to five seeds",
+        "test_status": "previously evaluated; no test/calibration used for screening"
+      }
+    }
+  },
+  "selected": "control_v4",
+  "previous_seed11_validation_rmse_cm": 0.07860163880943148,
+  "improves_previous_seed11": true,
+  "decision_scope": "one-seed screening; selected family expanded only if it improves prior seed11 validation accuracy; all test comparisons are repeated benchmark evaluations",
+  "calibration_or_test_opened": false
+}

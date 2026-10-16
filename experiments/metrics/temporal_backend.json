@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "backend": "CPU float64 analytic Piola with full autodiff",
+  "state": "time0.401s, source passive trajectory, nonzero histories",
+  "relative_force_error": 1.5562135504360206e-11,
+  "relative_gradient_error": 1.5570003915001108e-11,
+  "median_forward_backward_s": 0.11317683395463973
+}

@@ -1,0 +1,8 @@
+{
+  "device": "mps",
+  "seconds_per_batch": 0.028123452101135628,
+  "loss": 0.08927343785762787,
+  "parameters": 665091,
+  "batch_size": 32,
+  "nodes_per_geometry": 128
+}

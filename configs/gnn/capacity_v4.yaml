@@ -1,0 +1,30 @@
+run_name: capacity_v4
+seeds:
+- 11
+baseline_seeds: []
+epochs: 160
+batch_size: 32
+sample_nodes: 128
+width: 128
+steps: 5
+lr: 0.001
+minimum_lr: 1.0e-05
+weight_decay: 1.0e-05
+validation_every: 5
+patience_checks: 10
+validation_ids:
+- 0
+- 16
+calibration_ids:
+- 16
+- 150
+test_ids:
+- 64
+- 567
+training_split: all_2250_original_training_cases
+device: mps
+seed_split: 2027
+data_root: data/processed/full
+study: validation-only representation/capacity screening; seed11 then expand selected
+  design to five seeds
+test_status: previously evaluated; no test/calibration used for screening

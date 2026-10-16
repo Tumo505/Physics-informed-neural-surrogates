@@ -1,0 +1,24 @@
+{
+  "current_protocol": "Numerical LV surrogate research, source benchmark mechanics; no clinical claims",
+  "track_A": "Original Dalton split, previously evaluated test503; new architecture selection validation-only, repeated final benchmark clearly labelled",
+  "track_B_geometry": "Independent IID numerical radius-scale draws within one affine benchmark ellipsoid family; all load cases grouped by geometry, no anatomical population inference",
+  "track_B_temporal": "One passive pressure cycle with zero activation; nonzero generalized-alpha histories; contiguous temporal holdout, no IID frame statistics",
+  "physics_comparison": "Matched network initialization/optimization budget; exact trusted nonlinear weak residual VJP verified independently, natural-boundary/interior partitions sum to full loss",
+  "calibration": "Geometry calibration20, held-out test16 on new numerical cohort; score max over all nodes AND all4 loads, 90/95% finite-sample corrected quantiles",
+  "packaging": "Use existing results report and JSON provenance. User prohibits paper/ and unnecessary Markdown. No submission performed.",
+  "references": [
+    {
+      "title": "Learning Mesh-Based Simulation with Graph Networks",
+      "url": "https://arxiv.org/abs/2010.03409",
+      "doi": "10.48550/arXiv.2010.03409",
+      "distinction": "Mesh graph architecture alone does not verify finite-strain cardiac equilibrium"
+    },
+    {
+      "title": "A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification",
+      "url": "https://arxiv.org/abs/2107.07511",
+      "doi": "10.48550/arXiv.2107.07511",
+      "distinction": "Exchangeable geometry-level split calibration; no guarantee for deterministic shifted corners or contiguous time frames"
+    }
+  ],
+  "access_date": "2026-10-16"
+}

@@ -1,0 +1,25 @@
+{
+  "status": "completed one matched seed pair; lambda100 screening interrupted when switching backend",
+  "reason_for_backend_switch": "GPU analytic Piola gradient agreed with trusted float64 FE within0.1% at perturbation tests; measured forward/backward about18ms versus explicit FE VJP about730ms on this host during concurrent work",
+  "selection_and_test": "no calibration/test arrays read by training; CPU pilot not used for final family or lambda selection",
+  "completed_pair_validation": {
+    "data": {
+      "component_mse_m2": 9.30145971427585e-14,
+      "component_rmse_m": 3.049829456588655e-07,
+      "full_residual_loss": 5.884256932029882e-08,
+      "region_residual_loss": 5.884256932029882e-08
+    },
+    "physics_lambda1": {
+      "component_mse_m2": 9.319432043770543e-14,
+      "component_rmse_m": 3.05277448295326e-07,
+      "full_residual_loss": 5.8927637190234154e-08,
+      "region_residual_loss": 5.8927637190234154e-08
+    }
+  },
+  "completed_pair_seconds": {
+    "data": 210.34013770788442,
+    "physics_lambda1": 546.9657511659898
+  },
+  "superseded_by": "cardiac_geometry_models_v2",
+  "precision_disclosure": "GPU float32 during optimization/checkpoint selection; final lambda comparison and evaluation use float64 trusted residuals"
+}

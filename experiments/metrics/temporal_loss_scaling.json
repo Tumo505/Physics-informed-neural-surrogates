@@ -1,0 +1,65 @@
+{
+  "read_splits": [
+    "train"
+  ],
+  "records": [
+    {
+      "training_frame": 0,
+      "data_gradient_norm": 0.16968904361199652,
+      "physics_gradient_norm": 1.0964540922274411e-07,
+      "gradient_balance_lambda": 1547616.4922443226
+    },
+    {
+      "training_frame": 85,
+      "data_gradient_norm": 0.17089579933305973,
+      "physics_gradient_norm": 1.0549958692502253e-07,
+      "gradient_balance_lambda": 1619871.7389719603
+    },
+    {
+      "training_frame": 171,
+      "data_gradient_norm": 0.16777904648010908,
+      "physics_gradient_norm": 1.0304125301139272e-07,
+      "gradient_balance_lambda": 1628270.635078153
+    },
+    {
+      "training_frame": 256,
+      "data_gradient_norm": 8.480061584731947,
+      "physics_gradient_norm": 4.7682866031015813e-07,
+      "gradient_balance_lambda": 17784295.05310357
+    },
+    {
+      "training_frame": 342,
+      "data_gradient_norm": 0.49199444667543174,
+      "physics_gradient_norm": 1.1584604135466078e-07,
+      "gradient_balance_lambda": 4246968.13911145
+    },
+    {
+      "training_frame": 427,
+      "data_gradient_norm": 0.4953167906162209,
+      "physics_gradient_norm": 1.765541358680339e-07,
+      "gradient_balance_lambda": 2805466.936138202
+    },
+    {
+      "training_frame": 513,
+      "data_gradient_norm": 0.23361871438575088,
+      "physics_gradient_norm": 1.9482413490061014e-07,
+      "gradient_balance_lambda": 1199126.1478200934
+    },
+    {
+      "training_frame": 599,
+      "data_gradient_norm": 0.7634323407610513,
+      "physics_gradient_norm": 2.597489936553638e-07,
+      "gradient_balance_lambda": 2939115.6824806677
+    }
+  ],
+  "lambda_grid": [
+    100000.0,
+    1000000.0,
+    10000000.0
+  ],
+  "previous_grid": [
+    1,
+    100
+  ],
+  "reason": "meaningful loss weighting requires checking gradient magnitudes; no test outcome used to choose grid"
+}

@@ -1,0 +1,35 @@
+{
+  "name": "cardiac_geometry_models_v2",
+  "seeds": [
+    11,
+    22,
+    33,
+    44,
+    55
+  ],
+  "steps": 800,
+  "validation_every": 50,
+  "learning_rate": 0.003,
+  "minimum_lr": 0.0001,
+  "physics_lambdas": [
+    1.0,
+    100.0
+  ],
+  "lambda_screen_seed": 11,
+  "lambda_selection": "minimum validation full residual subject to component RMSE at most 10% above matched data-only",
+  "checkpoint_selection": "validation scaled data MSE plus lambda times full or specified-region residual loss; all32 validation loads",
+  "physics_schedule": "20 updates per training geometry, cyclic four pressures; every geometry visited in first400 updates",
+  "ablation_regions": [
+    "interior",
+    "boundary"
+  ],
+  "ablation_seeds": [
+    11
+  ],
+  "residual_partition": "all = interior DOF contribution + natural-boundary DOF contribution, both normalized by total DOF count; includes full assembled weak form, not zero external traction",
+  "scope": "affine numerical shape distribution, startup only; separate from passive full trajectory",
+  "backend": "MPS float32 analytic Piola residual, exact analytic stress with autodiff tangent",
+  "backend_gate": "physics_backend.json: force and gradient relative error below1%; float64 analytic tangent also checked against trusted FE",
+  "final_validation": "trusted float64 assembly for lambda selection and final checkpoint reporting",
+  "supersedes": "CPU v1 pilot retained; switched for measured performance, before calibration/test access"
+}

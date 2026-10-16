@@ -1,0 +1,12 @@
+{
+  "explicit_Jacobian": {
+    "median_s": 0.730507166008465,
+    "repetitions": 5
+  },
+  "adjoint_action": {
+    "median_s": 0.5675532079767436,
+    "repetitions": 5
+  },
+  "relative_gradient_difference": 2.961116572931484e-16,
+  "same_residual_and_full_nonlinear_tangent": true
+}

@@ -1,0 +1,51 @@
+{
+  "config": {
+    "run_name": "fine_graph_v4",
+    "seeds": [
+      11
+    ],
+    "baseline_seeds": [],
+    "epochs": 160,
+    "batch_size": 32,
+    "sample_nodes": 128,
+    "width": 64,
+    "steps": 3,
+    "lr": 0.001,
+    "minimum_lr": 1e-05,
+    "weight_decay": 1e-05,
+    "validation_every": 5,
+    "patience_checks": 10,
+    "validation_ids": [
+      0,
+      16
+    ],
+    "calibration_ids": [
+      16,
+      150
+    ],
+    "test_ids": [
+      64,
+      567
+    ],
+    "training_split": "all_2250_original_training_cases",
+    "device": "mps",
+    "seed_split": 2027,
+    "data_root": "data/processed/full_level1",
+    "study": "validation-only representation/capacity screening; seed11 then expand selected design to five seeds",
+    "test_status": "previously evaluated; no test/calibration used for screening"
+  },
+  "kind": "gnn",
+  "seed": 11,
+  "torch": "2.14.1",
+  "device": "mps",
+  "determinism": "fixed RNG; MPS indexed reductions may be nondeterministic",
+  "normalizer_sha256": "06c13f13338be142d9c2407d6426b5923c183e32cc7e0a7f9880a9664b9e1b13",
+  "source_sha256": {
+    "scripts/train_full.py": "8e984f4253936a853f453a01d2be4e4036b59c4c0c844496180f199c27b936f3",
+    "src/lv_surrogate/models/multiscale.py": "469366e0b56f76c42aa5eeccc5aeae8bdfd88c1fbaed2c01e1daf3cb9e6812fb"
+  },
+  "parameters": 138563,
+  "initialization": "random; no released checkpoint or latents",
+  "training_geometries": 2250,
+  "validation_geometries": 16
+}

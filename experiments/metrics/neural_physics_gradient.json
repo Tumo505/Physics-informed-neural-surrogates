@@ -1,0 +1,8 @@
+{
+  "physics_only_parameter_gradient_norm": 6.290369128691964e-06,
+  "relative_difference_vs_native_VJP_through_same_network_graph": 3.3166292269015685e-05,
+  "below_one_percent_gate": true,
+  "trained_state": "seed11, geometry0, maximum startup pressure",
+  "data_loss_used": false,
+  "scope": "actual trained graph/POD model; float32 residual compared with native float64 tangent gradient at exactly the same predicted field"
+}

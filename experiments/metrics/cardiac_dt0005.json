@@ -1,0 +1,749 @@
+{
+  "config": {
+    "name": "cardiac_passive_trajectory_v1",
+    "dt_s": 0.001,
+    "end_s": 1.0,
+    "activation": "zero",
+    "pressure": "exact_benchmark1_default_waveform_at_generalized_alpha_times",
+    "scope": "passive_numerical_LV_pressure_cycle_on_one_archived_geometry_not_active_electromechanics",
+    "store_every": 1,
+    "checkpoint_every": 100
+  },
+  "name": "cardiac_dt0005",
+  "dt_s": 0.0005,
+  "end_s": 0.0401,
+  "n_steps": 80,
+  "completed_steps": 80,
+  "complete": true,
+  "independent_geometries": 1,
+  "pressure_timing": "t_n+(1-alpha_f)*dt; pinned source convention",
+  "initial_state": "u=v=a=0",
+  "activation": "zero throughout; passive variant, not full active benchmark",
+  "seconds": 179.82054866699036,
+  "steps": [
+    {
+      "step": 0,
+      "time_s": 0.0005,
+      "pressure_Pa": 2.092458010076731,
+      "iterations": 1,
+      "residual_l2_N": 7.521032342524792e-09,
+      "seconds": 10.220853750011884,
+      "max_nodal_displacement_m": 9.603932425708582e-08
+    },
+    {
+      "step": 1,
+      "time_s": 0.001,
+      "pressure_Pa": 5.5465824937993276,
+      "iterations": 2,
+      "residual_l2_N": 1.17145178257797e-13,
+      "seconds": 1.884651790955104,
+      "max_nodal_displacement_m": 2.851680164327093e-07
+    },
+    {
+      "step": 2,
+      "time_s": 0.0015,
+      "pressure_Pa": 8.959283851057362,
+      "iterations": 2,
+      "residual_l2_N": 1.2689354723944514e-13,
+      "seconds": 2.0062959999777377,
+      "max_nodal_displacement_m": 5.775291941592949e-07
+    },
+    {
+      "step": 3,
+      "time_s": 0.002,
+      "pressure_Pa": 12.33112260906488,
+      "iterations": 2,
+      "residual_l2_N": 1.3145712914533116e-13,
+      "seconds": 2.011645458987914,
+      "max_nodal_displacement_m": 9.986284421841173e-07
+    },
+    {
+      "step": 4,
+      "time_s": 0.0025,
+      "pressure_Pa": 15.6629474331847,
+      "iterations": 2,
+      "residual_l2_N": 1.3430337729847403e-13,
+      "seconds": 2.0913867090130225,
+      "max_nodal_displacement_m": 1.5620507807146131e-06
+    },
+    {
+      "step": 5,
+      "time_s": 0.003,
+      "pressure_Pa": 18.955186389429613,
+      "iterations": 2,
+      "residual_l2_N": 1.384652625939277e-13,
+      "seconds": 2.080756291979924,
+      "max_nodal_displacement_m": 2.2661925579140633e-06
+    },
+    {
+      "step": 6,
+      "time_s": 0.0035,
+      "pressure_Pa": 22.208267543812426,
+      "iterations": 2,
+      "residual_l2_N": 1.387181219874356e-13,
+      "seconds": 1.9748433340573683,
+      "max_nodal_displacement_m": 3.1118137339561517e-06
+    },
+    {
+      "step": 7,
+      "time_s": 0.004,
+      "pressure_Pa": 25.42261896234593,
+      "iterations": 2,
+      "residual_l2_N": 1.3920934862156616e-13,
+      "seconds": 1.9019865830196068,
+      "max_nodal_displacement_m": 4.094377448149304e-06
+    },
+    {
+      "step": 8,
+      "time_s": 0.0045000000000000005,
+      "pressure_Pa": 28.59866871104292,
+      "iterations": 2,
+      "residual_l2_N": 1.3958079612838198e-13,
+      "seconds": 1.9776664590463042,
+      "max_nodal_displacement_m": 5.2121365548268235e-06
+    },
+    {
+      "step": 9,
+      "time_s": 0.005,
+      "pressure_Pa": 31.736844855916196,
+      "iterations": 2,
+      "residual_l2_N": 1.4219578889496276e-13,
+      "seconds": 2.0009432079968974,
+      "max_nodal_displacement_m": 6.468576602676525e-06
+    },
+    {
+      "step": 10,
+      "time_s": 0.0055,
+      "pressure_Pa": 34.83757546297855,
+      "iterations": 2,
+      "residual_l2_N": 1.3874960356922185e-13,
+      "seconds": 1.9511127079604194,
+      "max_nodal_displacement_m": 7.869586701156115e-06
+    },
+    {
+      "step": 11,
+      "time_s": 0.006,
+      "pressure_Pa": 37.901288598242786,
+      "iterations": 2,
+      "residual_l2_N": 1.431265210394814e-13,
+      "seconds": 1.838476541917771,
+      "max_nodal_displacement_m": 9.41764495152648e-06
+    },
+    {
+      "step": 12,
+      "time_s": 0.006500000000000001,
+      "pressure_Pa": 40.928412327721695,
+      "iterations": 2,
+      "residual_l2_N": 1.4212197557570827e-13,
+      "seconds": 1.957104790955782,
+      "max_nodal_displacement_m": 1.111098654282761e-05
+    },
+    {
+      "step": 13,
+      "time_s": 0.007,
+      "pressure_Pa": 43.91937471742808,
+      "iterations": 2,
+      "residual_l2_N": 1.425649272898534e-13,
+      "seconds": 1.913917458965443,
+      "max_nodal_displacement_m": 1.2946778622457372e-05
+    },
+    {
+      "step": 14,
+      "time_s": 0.0075,
+      "pressure_Pa": 46.874603833374714,
+      "iterations": 2,
+      "residual_l2_N": 1.4261594562274022e-13,
+      "seconds": 1.8609255000483245,
+      "max_nodal_displacement_m": 1.4924332524565076e-05
+    },
+    {
+      "step": 15,
+      "time_s": 0.008,
+      "pressure_Pa": 49.794527741574434,
+      "iterations": 2,
+      "residual_l2_N": 1.402475038631635e-13,
+      "seconds": 1.9442319159861654,
+      "max_nodal_displacement_m": 1.7045082616361367e-05
+    },
+    {
+      "step": 16,
+      "time_s": 0.0085,
+      "pressure_Pa": 52.679574508040005,
+      "iterations": 2,
+      "residual_l2_N": 1.4315803848938543e-13,
+      "seconds": 1.938966833986342,
+      "max_nodal_displacement_m": 1.9310255565616846e-05
+    },
+    {
+      "step": 17,
+      "time_s": 0.009000000000000001,
+      "pressure_Pa": 55.530172198784236,
+      "iterations": 2,
+      "residual_l2_N": 1.4026925192979047e-13,
+      "seconds": 1.9000278329476714,
+      "max_nodal_displacement_m": 2.1719191610150435e-05
+    },
+    {
+      "step": 18,
+      "time_s": 0.0095,
+      "pressure_Pa": 58.346748879819906,
+      "iterations": 2,
+      "residual_l2_N": 1.4217156275491724e-13,
+      "seconds": 1.9602973749861121,
+      "max_nodal_displacement_m": 2.426979577077203e-05
+    },
+    {
+      "step": 19,
+      "time_s": 0.01,
+      "pressure_Pa": 61.12973261715985,
+      "iterations": 2,
+      "residual_l2_N": 1.4184882283166328e-13,
+      "seconds": 1.8351717499317601,
+      "max_nodal_displacement_m": 2.696009388030701e-05
+    },
+    {
+      "step": 20,
+      "time_s": 0.0105,
+      "pressure_Pa": 63.87955147681683,
+      "iterations": 2,
+      "residual_l2_N": 1.4060892055829265e-13,
+      "seconds": 1.9033565409481525,
+      "max_nodal_displacement_m": 2.978908553176981e-05
+    },
+    {
+      "step": 21,
+      "time_s": 0.011,
+      "pressure_Pa": 66.59622614057528,
+      "iterations": 2,
+      "residual_l2_N": 1.3912364363819385e-13,
+      "seconds": 1.8967790839960799,
+      "max_nodal_displacement_m": 3.275627186787952e-05
+    },
+    {
+      "step": 22,
+      "time_s": 0.0115,
+      "pressure_Pa": 69.27880201998931,
+      "iterations": 2,
+      "residual_l2_N": 1.430787600690825e-13,
+      "seconds": 1.8612180829513818,
+      "max_nodal_displacement_m": 3.58606834815707e-05
+    },
+    {
+      "step": 23,
+      "time_s": 0.012,
+      "pressure_Pa": 71.92995324950687,
+      "iterations": 2,
+      "residual_l2_N": 1.423255153471834e-13,
+      "seconds": 1.9133451249217615,
+      "max_nodal_displacement_m": 3.910054149249225e-05
+    },
+    {
+      "step": 24,
+      "time_s": 0.0125,
+      "pressure_Pa": 74.54998484353771,
+      "iterations": 2,
+      "residual_l2_N": 1.4351180088960212e-13,
+      "seconds": 1.8664793750504032,
+      "max_nodal_displacement_m": 4.247366890685957e-05
+    },
+    {
+      "step": 25,
+      "time_s": 0.013000000000000001,
+      "pressure_Pa": 77.13920181649162,
+      "iterations": 2,
+      "residual_l2_N": 1.438544981069985e-13,
+      "seconds": 1.8765220829518512,
+      "max_nodal_displacement_m": 4.5978047402539555e-05
+    },
+    {
+      "step": 26,
+      "time_s": 0.0135,
+      "pressure_Pa": 79.69790918277835,
+      "iterations": 2,
+      "residual_l2_N": 1.4273457311413072e-13,
+      "seconds": 2.3329353330191225,
+      "max_nodal_displacement_m": 4.961199327907181e-05
+    },
+    {
+      "step": 27,
+      "time_s": 0.014,
+      "pressure_Pa": 82.22641195680767,
+      "iterations": 2,
+      "residual_l2_N": 1.4468618304031776e-13,
+      "seconds": 2.255340666975826,
+      "max_nodal_displacement_m": 5.3373888057486135e-05
+    },
+    {
+      "step": 28,
+      "time_s": 0.0145,
+      "pressure_Pa": 84.72501515298936,
+      "iterations": 2,
+      "residual_l2_N": 1.4244055302642532e-13,
+      "seconds": 1.9631079999962822,
+      "max_nodal_displacement_m": 5.726183603084854e-05
+    },
+    {
+      "step": 29,
+      "time_s": 0.015,
+      "pressure_Pa": 87.19402378573315,
+      "iterations": 2,
+      "residual_l2_N": 1.4448606948764763e-13,
+      "seconds": 2.0880110419820994,
+      "max_nodal_displacement_m": 6.127359616300535e-05
+    },
+    {
+      "step": 30,
+      "time_s": 0.0155,
+      "pressure_Pa": 89.63374286944885,
+      "iterations": 2,
+      "residual_l2_N": 1.4331358441994985e-13,
+      "seconds": 1.9868235000176355,
+      "max_nodal_displacement_m": 6.540678283743003e-05
+    },
+    {
+      "step": 31,
+      "time_s": 0.016,
+      "pressure_Pa": 92.04447741854622,
+      "iterations": 2,
+      "residual_l2_N": 1.4124102129805184e-13,
+      "seconds": 2.005280875018798,
+      "max_nodal_displacement_m": 6.965908262671374e-05
+    },
+    {
+      "step": 32,
+      "time_s": 0.0165,
+      "pressure_Pa": 94.42653244743501,
+      "iterations": 2,
+      "residual_l2_N": 1.4224938222470409e-13,
+      "seconds": 2.010354124940932,
+      "max_nodal_displacement_m": 7.40282883768072e-05
+    },
+    {
+      "step": 33,
+      "time_s": 0.017,
+      "pressure_Pa": 96.78021297052499,
+      "iterations": 2,
+      "residual_l2_N": 1.443421064189562e-13,
+      "seconds": 2.0060877091018483,
+      "max_nodal_displacement_m": 7.851217089222725e-05
+    },
+    {
+      "step": 34,
+      "time_s": 0.0175,
+      "pressure_Pa": 99.10582400222593,
+      "iterations": 2,
+      "residual_l2_N": 1.451452966792271e-13,
+      "seconds": 2.0163426670478657,
+      "max_nodal_displacement_m": 8.310835294711774e-05
+    },
+    {
+      "step": 35,
+      "time_s": 0.018000000000000002,
+      "pressure_Pa": 101.40367055694759,
+      "iterations": 2,
+      "residual_l2_N": 1.44230419683322e-13,
+      "seconds": 2.0027915419777855,
+      "max_nodal_displacement_m": 8.781430796418217e-05
+    },
+    {
+      "step": 36,
+      "time_s": 0.0185,
+      "pressure_Pa": 103.67405764909974,
+      "iterations": 2,
+      "residual_l2_N": 1.4318131199266583e-13,
+      "seconds": 2.005468584015034,
+      "max_nodal_displacement_m": 9.26274602972577e-05
+    },
+    {
+      "step": 37,
+      "time_s": 0.019,
+      "pressure_Pa": 105.91729029309215,
+      "iterations": 2,
+      "residual_l2_N": 1.4585391616721027e-13,
+      "seconds": 2.0142150829778984,
+      "max_nodal_displacement_m": 9.754527414823165e-05
+    },
+    {
+      "step": 38,
+      "time_s": 0.0195,
+      "pressure_Pa": 108.13367350333459,
+      "iterations": 2,
+      "residual_l2_N": 1.4562730827621404e-13,
+      "seconds": 1.931811291957274,
+      "max_nodal_displacement_m": 0.00010256525384451408
+    },
+    {
+      "step": 39,
+      "time_s": 0.02,
+      "pressure_Pa": 110.32351229423685,
+      "iterations": 2,
+      "residual_l2_N": 1.4455106064401512e-13,
+      "seconds": 2.014601166942157,
+      "max_nodal_displacement_m": 0.00010768487899182141
+    },
+    {
+      "step": 40,
+      "time_s": 0.0205,
+      "pressure_Pa": 112.48711168020866,
+      "iterations": 2,
+      "residual_l2_N": 1.4317650102592419e-13,
+      "seconds": 2.03003833303228,
+      "max_nodal_displacement_m": 0.00011290155538367175
+    },
+    {
+      "step": 41,
+      "time_s": 0.021,
+      "pressure_Pa": 114.6247766756598,
+      "iterations": 2,
+      "residual_l2_N": 1.444830180887285e-13,
+      "seconds": 2.016129625029862,
+      "max_nodal_displacement_m": 0.0001182966400863496
+    },
+    {
+      "step": 42,
+      "time_s": 0.021500000000000002,
+      "pressure_Pa": 116.73681229500002,
+      "iterations": 2,
+      "residual_l2_N": 1.4410916333950918e-13,
+      "seconds": 2.005333040957339,
+      "max_nodal_displacement_m": 0.00012379517132917177
+    },
+    {
+      "step": 43,
+      "time_s": 0.022,
+      "pressure_Pa": 118.8235235526391,
+      "iterations": 2,
+      "residual_l2_N": 1.4759244832258117e-13,
+      "seconds": 1.9506203329656273,
+      "max_nodal_displacement_m": 0.00012938736795061717
+    },
+    {
+      "step": 44,
+      "time_s": 0.0225,
+      "pressure_Pa": 120.88521546298682,
+      "iterations": 2,
+      "residual_l2_N": 1.4529801380852456e-13,
+      "seconds": 2.015708417049609,
+      "max_nodal_displacement_m": 0.00013507062078273183
+    },
+    {
+      "step": 45,
+      "time_s": 0.023,
+      "pressure_Pa": 122.92219304045295,
+      "iterations": 2,
+      "residual_l2_N": 1.4547013720269626e-13,
+      "seconds": 2.1919722500024363,
+      "max_nodal_displacement_m": 0.00014084230759764166
+    },
+    {
+      "step": 46,
+      "time_s": 0.0235,
+      "pressure_Pa": 124.93476129944725,
+      "iterations": 2,
+      "residual_l2_N": 1.4401298243803297e-13,
+      "seconds": 2.2595917499857023,
+      "max_nodal_displacement_m": 0.00014669977879138584
+    },
+    {
+      "step": 47,
+      "time_s": 0.024,
+      "pressure_Pa": 126.92322525437945,
+      "iterations": 2,
+      "residual_l2_N": 1.4587322065010483e-13,
+      "seconds": 2.312409457983449,
+      "max_nodal_displacement_m": 0.00015264037612704694
+    },
+    {
+      "step": 48,
+      "time_s": 0.0245,
+      "pressure_Pa": 128.88788991965936,
+      "iterations": 2,
+      "residual_l2_N": 1.475785405173038e-13,
+      "seconds": 2.2118410000111908,
+      "max_nodal_displacement_m": 0.00015866146180135182
+    },
+    {
+      "step": 49,
+      "time_s": 0.025,
+      "pressure_Pa": 130.82906030969673,
+      "iterations": 2,
+      "residual_l2_N": 1.4854281795547465e-13,
+      "seconds": 2.300121458945796,
+      "max_nodal_displacement_m": 0.00016476042928251946
+    },
+    {
+      "step": 50,
+      "time_s": 0.025500000000000002,
+      "pressure_Pa": 132.74704143890136,
+      "iterations": 2,
+      "residual_l2_N": 1.4808634058953303e-13,
+      "seconds": 2.1800529999891296,
+      "max_nodal_displacement_m": 0.00017093469168396824
+    },
+    {
+      "step": 51,
+      "time_s": 0.026000000000000002,
+      "pressure_Pa": 134.64213832168295,
+      "iterations": 2,
+      "residual_l2_N": 1.475326187015774e-13,
+      "seconds": 2.182125417049974,
+      "max_nodal_displacement_m": 0.0001771816669598899
+    },
+    {
+      "step": 52,
+      "time_s": 0.0265,
+      "pressure_Pa": 136.5146559724513,
+      "iterations": 2,
+      "residual_l2_N": 1.4723534995687435e-13,
+      "seconds": 2.1889037920627743,
+      "max_nodal_displacement_m": 0.00018349877813755302
+    },
+    {
+      "step": 53,
+      "time_s": 0.027,
+      "pressure_Pa": 138.3648994056162,
+      "iterations": 2,
+      "residual_l2_N": 1.4753410510979746e-13,
+      "seconds": 2.19071291689761,
+      "max_nodal_displacement_m": 0.00018988346741792672
+    },
+    {
+      "step": 54,
+      "time_s": 0.0275,
+      "pressure_Pa": 140.1931736355874,
+      "iterations": 2,
+      "residual_l2_N": 1.4799469679835003e-13,
+      "seconds": 2.1961713330820203,
+      "max_nodal_displacement_m": 0.00019633320898658369
+    },
+    {
+      "step": 55,
+      "time_s": 0.028,
+      "pressure_Pa": 141.99978367677465,
+      "iterations": 2,
+      "residual_l2_N": 1.4760457944252218e-13,
+      "seconds": 2.1657773749902844,
+      "max_nodal_displacement_m": 0.00020284550991447864
+    },
+    {
+      "step": 56,
+      "time_s": 0.0285,
+      "pressure_Pa": 143.78358198595458,
+      "iterations": 2,
+      "residual_l2_N": 1.460666836855791e-13,
+      "seconds": 2.4301602919586003,
+      "max_nodal_displacement_m": 0.00020941788319286912
+    },
+    {
+      "step": 57,
+      "time_s": 0.029,
+      "pressure_Pa": 145.54450080709987,
+      "iterations": 2,
+      "residual_l2_N": 1.4708973781739932e-13,
+      "seconds": 2.3881771670421585,
+      "max_nodal_displacement_m": 0.000216047836294906
+    },
+    {
+      "step": 58,
+      "time_s": 0.029500000000000002,
+      "pressure_Pa": 147.28504644147455,
+      "iterations": 2,
+      "residual_l2_N": 1.4605018993402161e-13,
+      "seconds": 2.788765999954194,
+      "max_nodal_displacement_m": 0.0002227329176505213
+    },
+    {
+      "step": 59,
+      "time_s": 0.03,
+      "pressure_Pa": 149.0054044573829,
+      "iterations": 2,
+      "residual_l2_N": 1.4727626764235192e-13,
+      "seconds": 2.519513165927492,
+      "max_nodal_displacement_m": 0.00022947072923313632
+    },
+    {
+      "step": 60,
+      "time_s": 0.0305,
+      "pressure_Pa": 150.70576042312925,
+      "iterations": 2,
+      "residual_l2_N": 1.5075069937608621e-13,
+      "seconds": 2.500622915918939,
+      "max_nodal_displacement_m": 0.00023625891050944528
+    },
+    {
+      "step": 61,
+      "time_s": 0.031,
+      "pressure_Pa": 152.38629990701793,
+      "iterations": 2,
+      "residual_l2_N": 1.4747317334346212e-13,
+      "seconds": 2.4913557909894735,
+      "max_nodal_displacement_m": 0.00024309514483796695
+    },
+    {
+      "step": 62,
+      "time_s": 0.0315,
+      "pressure_Pa": 154.04720847735322,
+      "iterations": 2,
+      "residual_l2_N": 1.4649890043867697e-13,
+      "seconds": 2.5408967919647694,
+      "max_nodal_displacement_m": 0.0002499771590127314
+    },
+    {
+      "step": 63,
+      "time_s": 0.032,
+      "pressure_Pa": 155.68867170243945,
+      "iterations": 2,
+      "residual_l2_N": 1.4718529955432554e-13,
+      "seconds": 2.5720428749918938,
+      "max_nodal_displacement_m": 0.0002569027097927235
+    },
+    {
+      "step": 64,
+      "time_s": 0.0325,
+      "pressure_Pa": 157.31087515058093,
+      "iterations": 2,
+      "residual_l2_N": 1.4847083584276763e-13,
+      "seconds": 2.636934791924432,
+      "max_nodal_displacement_m": 0.0002638695779202002
+    },
+    {
+      "step": 65,
+      "time_s": 0.033,
+      "pressure_Pa": 158.91400439008194,
+      "iterations": 2,
+      "residual_l2_N": 1.4841174351718848e-13,
+      "seconds": 2.4664615830406547,
+      "max_nodal_displacement_m": 0.0002708755729755049
+    },
+    {
+      "step": 66,
+      "time_s": 0.0335,
+      "pressure_Pa": 160.49824498924684,
+      "iterations": 2,
+      "residual_l2_N": 1.499800831920545e-13,
+      "seconds": 2.561990209040232,
+      "max_nodal_displacement_m": 0.00027791854157179885
+    },
+    {
+      "step": 67,
+      "time_s": 0.034,
+      "pressure_Pa": 162.06378251637994,
+      "iterations": 2,
+      "residual_l2_N": 1.4743385765203952e-13,
+      "seconds": 2.3338292500702664,
+      "max_nodal_displacement_m": 0.00028499637123469997
+    },
+    {
+      "step": 68,
+      "time_s": 0.0345,
+      "pressure_Pa": 163.6108025397855,
+      "iterations": 2,
+      "residual_l2_N": 1.5216893142612948e-13,
+      "seconds": 2.3169918339699507,
+      "max_nodal_displacement_m": 0.00029210698780501024
+    },
+    {
+      "step": 69,
+      "time_s": 0.035,
+      "pressure_Pa": 165.13949062776788,
+      "iterations": 2,
+      "residual_l2_N": 1.4833100572205658e-13,
+      "seconds": 2.4195177500369027,
+      "max_nodal_displacement_m": 0.00029924835132921757
+    },
+    {
+      "step": 70,
+      "time_s": 0.035500000000000004,
+      "pressure_Pa": 166.65003234863138,
+      "iterations": 2,
+      "residual_l2_N": 1.4838729993831607e-13,
+      "seconds": 2.449405499966815,
+      "max_nodal_displacement_m": 0.00030641845536550104
+    },
+    {
+      "step": 71,
+      "time_s": 0.036000000000000004,
+      "pressure_Pa": 168.14261327068033,
+      "iterations": 2,
+      "residual_l2_N": 1.4933821627518928e-13,
+      "seconds": 2.3304201669525355,
+      "max_nodal_displacement_m": 0.0003136153296606702
+    },
+    {
+      "step": 72,
+      "time_s": 0.0365,
+      "pressure_Pa": 169.61741896221895,
+      "iterations": 2,
+      "residual_l2_N": 1.482929353264308e-13,
+      "seconds": 2.2795232919743285,
+      "max_nodal_displacement_m": 0.0003208370429873825
+    },
+    {
+      "step": 73,
+      "time_s": 0.037,
+      "pressure_Pa": 171.07463499155168,
+      "iterations": 2,
+      "residual_l2_N": 1.4773691141375398e-13,
+      "seconds": 2.260416749981232,
+      "max_nodal_displacement_m": 0.0003280817036904753
+    },
+    {
+      "step": 74,
+      "time_s": 0.0375,
+      "pressure_Pa": 172.51444692698274,
+      "iterations": 2,
+      "residual_l2_N": 1.4928520414432817e-13,
+      "seconds": 2.2823606659658253,
+      "max_nodal_displacement_m": 0.00033534745836832875
+    },
+    {
+      "step": 75,
+      "time_s": 0.038,
+      "pressure_Pa": 173.9370403368165,
+      "iterations": 2,
+      "residual_l2_N": 1.525096072215552e-13,
+      "seconds": 2.358789583086036,
+      "max_nodal_displacement_m": 0.0003426324907355456
+    },
+    {
+      "step": 76,
+      "time_s": 0.0385,
+      "pressure_Pa": 175.34260078935722,
+      "iterations": 2,
+      "residual_l2_N": 1.491873821303009e-13,
+      "seconds": 2.380354749970138,
+      "max_nodal_displacement_m": 0.00034993502183868017
+    },
+    {
+      "step": 77,
+      "time_s": 0.039,
+      "pressure_Pa": 176.73131385290927,
+      "iterations": 2,
+      "residual_l2_N": 1.4910190162533127e-13,
+      "seconds": 2.324854917009361,
+      "max_nodal_displacement_m": 0.00035725331109733087
+    },
+    {
+      "step": 78,
+      "time_s": 0.0395,
+      "pressure_Pa": 178.1033650957769,
+      "iterations": 2,
+      "residual_l2_N": 1.5056906901230037e-13,
+      "seconds": 2.269435541005805,
+      "max_nodal_displacement_m": 0.0003645856569894501
+    },
+    {
+      "step": 79,
+      "time_s": 0.04,
+      "pressure_Pa": 179.45894008626448,
+      "iterations": 2,
+      "residual_l2_N": 1.492408720255101e-13,
+      "seconds": 2.282334249932319,
+      "max_nodal_displacement_m": 0.00037193039685908495
+    }
+  ],
+  "source_sha256": {
+    "scripts/generate_cardiac_trajectory.py": "e87775f33e3210bdd5c58dec8228d897adc806c045b251616f031117859ee6d3",
+    "src/lv_surrogate/physics/reference_fem.py": "437300455595263276a94840a68af76b802e4b6f62ba45436341607074b6f5d3"
+  }
+}

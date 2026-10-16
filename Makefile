@@ -58,3 +58,44 @@ query-density:
 mesh-sensitivity:
 	env FI_PROVIDER=tcp FI_TCP_IFACE=$(MPI_IFACE) XDG_CACHE_HOME=$(CURDIR)/.cache DIJITSO_CACHE_DIR=$(CURDIR)/.fenics-cache-activated MAMBA_ROOT_PREFIX=$(CURDIR)/.mamba OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .tools/bin/micromamba run -p $(CURDIR)/.fenics python scripts/check_mesh_sensitivity.py
 	$(PY) scripts/plot_mesh_sensitivity.py
+
+# Requires the original data caches and isolated .fenics environment above.
+FEM_RUN = env FI_PROVIDER=tcp FI_TCP_IFACE=$(MPI_IFACE) XDG_CACHE_HOME=$(CURDIR)/.cache DIJITSO_CACHE_DIR=$(CURDIR)/.fenics-cache-activated MAMBA_ROOT_PREFIX=$(CURDIR)/.mamba OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .tools/bin/micromamba run -p $(CURDIR)/.fenics python
+.PHONY: graph-study geometry-cohort cardiac-trajectory extended-mechanics geometry-study temporal-study
+
+graph-study:
+	$(PY) scripts/prepare_graph_resolution.py
+	$(PY) scripts/train_full.py --config configs/gnn/control_v4.yaml --kind gnn --seed 11
+	$(PY) scripts/train_full.py --config configs/gnn/capacity_v4.yaml --kind gnn --seed 11
+	$(PY) scripts/train_full.py --config configs/gnn/fine_graph_v4.yaml --kind gnn --seed 11
+	$(PY) scripts/select_graph_study.py --expand
+	$(PY) scripts/train_full.py --config configs/gnn/selected_v4.yaml --kind gnn
+	$(PY) scripts/evaluate_graph_study.py
+	$(PY) scripts/plot_graph_study.py
+geometry-cohort:
+	$(FEM_RUN) scripts/generate_geometry_cohort.py
+	$(PY) scripts/audit_geometry_cohort.py
+	$(PY) scripts/prepare_geometry_data.py
+cardiac-trajectory:
+	$(FEM_RUN) scripts/generate_cardiac_trajectory.py
+	$(FEM_RUN) scripts/generate_cardiac_trajectory.py --dt 0.002 --end 0.0401 --name cardiac_dt002
+	$(FEM_RUN) scripts/generate_cardiac_trajectory.py --dt 0.0005 --end 0.0401 --name cardiac_dt0005
+	$(PY) scripts/analyze_trajectory.py
+extended-mechanics:
+	$(PY) scripts/verify_extended_mechanics.py
+	$(PY) scripts/check_physics_backend.py
+	$(PY) scripts/check_temporal_backend.py
+geometry-study: geometry-cohort cardiac-trajectory extended-mechanics
+	$(PY) scripts/train_geometry_models_gpu.py
+	$(PY) scripts/evaluate_geometry_models.py
+	$(PY) scripts/verify_neural_physics_gradient.py
+	$(PY) scripts/plot_geometry_study.py
+	$(PY) scripts/benchmark_geometry_study.py
+temporal-study: cardiac-trajectory extended-mechanics
+	env OPENBLAS_NUM_THREADS=2 $(PY) scripts/prepare_temporal_data.py
+	$(PY) scripts/train_temporal_model.py
+	$(PY) scripts/evaluate_temporal_model.py
+	$(PY) scripts/diagnose_temporal_loss_scale.py
+	$(PY) scripts/train_temporal_model.py --config configs/physics/temporal_balanced.json
+	$(PY) scripts/evaluate_temporal_model.py --run cardiac_temporal_balanced_v2
+	$(PY) scripts/plot_temporal_study.py

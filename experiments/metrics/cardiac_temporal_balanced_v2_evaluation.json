@@ -1,0 +1,53 @@
+{
+  "models": {
+    "data": {
+      "teacher_forced_component_rmse_m": 2.429874531525692e-07,
+      "teacher_forced_mean_normalized_residual_rms": 6.749984445500677e-05,
+      "teacher_forced_minimum_detF": 0.9963096616371165,
+      "rollout_completed": false,
+      "rollout_steps_completed": 28,
+      "rollout_steps_required": 199,
+      "rollout_component_rmse_m_on_valid_prefix": 0.0008084122934696653,
+      "rollout_relative_component_rmse_on_valid_prefix": 5.381057873793264,
+      "rollout_final_valid_frame_component_rmse_m": 0.0020251336350407905,
+      "rollout_minimum_detF_valid_prefix": 0.18824643848269415,
+      "failure": {
+        "step": 28,
+        "time_s": 0.8290000000000001,
+        "reason": "nonpositive element determinant",
+        "minimum_detF": -0.022010433009817303
+      }
+    },
+    "physics_lambda1e+06": {
+      "teacher_forced_component_rmse_m": 2.210510679763992e-07,
+      "teacher_forced_mean_normalized_residual_rms": 5.123624883822994e-05,
+      "teacher_forced_minimum_detF": 0.9962984185060985,
+      "rollout_completed": false,
+      "rollout_steps_completed": 25,
+      "rollout_steps_required": 199,
+      "rollout_component_rmse_m_on_valid_prefix": 0.00044659010710113717,
+      "rollout_relative_component_rmse_on_valid_prefix": 2.8784858673346854,
+      "rollout_final_valid_frame_component_rmse_m": 0.001103077521886882,
+      "rollout_minimum_detF_valid_prefix": 0.057948375468233324,
+      "failure": {
+        "step": 25,
+        "time_s": 0.8260000000000001,
+        "reason": "nonpositive element determinant",
+        "minimum_detF": -0.13865968433377865
+      }
+    }
+  },
+  "n_independent_geometries": 1,
+  "n_independent_trajectories": 1,
+  "n_test_time_steps": 199,
+  "test_block_s": [
+    0.801,
+    0.999
+  ],
+  "scope": "single-seed temporal pilot; teacher forcing uses true histories; rollout uses only initial true state and prescribed future loads",
+  "limitations": [
+    "contiguous time holdout is not independent trajectory or geometry generalization",
+    "no conformal coverage or population-level confidence claim for temporal frames",
+    "valid-prefix rollout errors do not represent successful full rollouts"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "device": "MPS float32, analytic exact Piola with autodiff tangent",
+  "reference": "trusted FEniCS float64 exact nonlinear weak residual and VJP",
+  "gate": "both residual and full gradient relative L2 error below1% at controlled perturbed startup states on two numerical geometries",
+  "cases": [
+    {
+      "geometry": 0,
+      "analytic_piola_float64_gradient_relative_error": 7.770246557114263e-13,
+      "relative_force_error_at_1e_minus7_m_perturbation": 0.0007759355427457197,
+      "relative_loss_gradient_error": 0.0007055748275860747,
+      "forward_backward_median_s": 0.017950603971257806
+    },
+    {
+      "geometry": 1,
+      "analytic_piola_float64_gradient_relative_error": 8.234682122695579e-13,
+      "relative_force_error_at_1e_minus7_m_perturbation": 0.000827951774023629,
+      "relative_loss_gradient_error": 0.0007408561906691693,
+      "forward_backward_median_s": 0.018109146039932966
+    }
+  ],
+  "scope": "training backend only; final mechanics evaluation uses float64 trusted solver; no near-machine-tolerance residual claim from float32"
+}

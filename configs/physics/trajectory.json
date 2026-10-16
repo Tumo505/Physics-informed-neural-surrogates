@@ -1,0 +1,10 @@
+{
+  "name": "cardiac_passive_trajectory_v1",
+  "dt_s": 0.001,
+  "end_s": 1.0,
+  "activation": "zero",
+  "pressure": "exact_benchmark1_default_waveform_at_generalized_alpha_times",
+  "scope": "passive_numerical_LV_pressure_cycle_on_one_archived_geometry_not_active_electromechanics",
+  "store_every": 1,
+  "checkpoint_every": 100
+}
