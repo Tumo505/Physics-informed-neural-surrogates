@@ -4,6 +4,8 @@ All results are computational. Released-model inference uses unedited author equ
 
 **Executed extension studies (2026-10-16).** The experiments below are separate from the earlier pilots. Negative and failed outcomes are retained. The full research claim of robust autonomous prediction across shapes and trajectories is not established.
 
+**Full-cycle extension in progress (2026-10-17).** Reference trajectories completed: 11/47, including the full-cycle convergence variants. The preregistered cohort has32 numerical geometries and44 passive trajectories:8 training,4 selection,20 calibration,4 primary test,4 loading-only shift and4 combined shape/loading shift. All steps use strict positive SNES reason, finite residual and positive endpoint-Jacobian gates. The failed10ms attempt is retained and excluded; the main study uses5ms. A bounded causal graph/POD recurrence is trained through its complete predicted200-step history, with matched data/physics refinement and a separate one-geometry limited-data regime. No final full-cycle neural performance or convergence claim is made until evaluation artifacts exist.
+
 **Dalton architecture study and updated five-seed ensemble.** All2250 original training geometries; selection remains validation0:16. Three seed11 candidates share the160-epoch maximum schedule; early stopping can shorten actual runs. This screens candidate designs, not a population-level architecture ranking.
 
 | Candidate | Graph nodes | Parameters | Best selection RMSE(cm) | Epochs completed |

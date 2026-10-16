@@ -1,0 +1,150 @@
+{
+  "scope": "failed 10ms nonlinear FE attempt; retained, excluded from ML; no target-based case filtering",
+  "cause": "source solver convergence flag can be negative/truthy; explicit positive convergence reason, residual and determinant gates added",
+  "cases": [
+    {
+      "case": {
+        "id": "g001_l1",
+        "geometry": 1,
+        "split": "train",
+        "scales": [
+          1.0176695070226205,
+          1.0202129041622514
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "completed_steps": 100,
+      "finite_residuals": true,
+      "maximum_finite_residual": 5.183038989580778e+27
+    },
+    {
+      "case": {
+        "id": "g001_l0",
+        "geometry": 1,
+        "split": "train",
+        "scales": [
+          1.0176695070226205,
+          1.0202129041622514
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "completed_steps": 100,
+      "finite_residuals": false,
+      "maximum_finite_residual": 264729121399463.97
+    },
+    {
+      "case": {
+        "id": "g000_l0",
+        "geometry": 0,
+        "split": "train",
+        "scales": [
+          1.0243222738640203,
+          1.0279061848946924
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "completed_steps": 100,
+      "finite_residuals": false,
+      "maximum_finite_residual": 1553186983241.965
+    },
+    {
+      "case": {
+        "id": "g000_l1",
+        "geometry": 0,
+        "split": "train",
+        "scales": [
+          1.0243222738640203,
+          1.0279061848946924
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "completed_steps": 100,
+      "finite_residuals": true,
+      "maximum_finite_residual": 6.445026450325977e+62
+    },
+    {
+      "case": {
+        "id": "g003_l0",
+        "geometry": 3,
+        "split": "train",
+        "scales": [
+          1.0120888632497704,
+          1.0243351172072461
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "completed_steps": 60,
+      "finite_residuals": false,
+      "maximum_finite_residual": 1.0172656084698626e+17
+    },
+    {
+      "case": {
+        "id": "g003_l1",
+        "geometry": 3,
+        "split": "train",
+        "scales": [
+          1.0120888632497704,
+          1.0243351172072461
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "completed_steps": 10,
+      "finite_residuals": true,
+      "maximum_finite_residual": 7.2556969936679266e-09
+    },
+    {
+      "case": {
+        "id": "g002_l1",
+        "geometry": 2,
+        "split": "train",
+        "scales": [
+          0.9905236570281397,
+          1.0153408614895578
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "completed_steps": 100,
+      "finite_residuals": false,
+      "maximum_finite_residual": 8.563838627182245e+18
+    },
+    {
+      "case": {
+        "id": "g002_l0",
+        "geometry": 2,
+        "split": "train",
+        "scales": [
+          0.9905236570281397,
+          1.0153408614895578
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "completed_steps": 100,
+      "finite_residuals": false,
+      "maximum_finite_residual": 2474852755951.475
+    }
+  ]
+}

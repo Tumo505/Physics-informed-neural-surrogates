@@ -1,0 +1,40 @@
+{
+  "name": "cardiac_dynamic_graph_v1",
+  "seeds": [
+    11,
+    22,
+    33,
+    44,
+    55
+  ],
+  "warm_updates": 400,
+  "refinement_updates": 250,
+  "validation_every": 50,
+  "warm_lr": 0.002,
+  "refinement_lr": 0.0002,
+  "minimum_lr": 2e-05,
+  "device": "cpu",
+  "physics_frames_per_update": 1,
+  "validation_residual_frames": [
+    9,
+    29,
+    49,
+    69,
+    99,
+    129,
+    159,
+    199
+  ],
+  "lambda_screen": "training-only gradient balance at warm seed11; grid decade below/at/above rounded median",
+  "lambda_selection": "lowest validation full weak residual among candidates with full-cycle displacement RMSE no more than10percent above matched data-only; report if no eligible candidate",
+  "checkpoint_selection": "validation full-cycle displacement MSE plus weighted validation full weak residual; initial warm checkpoint eligible",
+  "loss": "full free rollout normalized POD coefficient MSE +0.1 normalized first-difference MSE +0.01 normalized second-difference MSE +lambda exact weak residual",
+  "rollout": "zero initial displacement/hidden state; known current/past pressures and graph geometry only; no true history supplied",
+  "regimes": [
+    "full",
+    "limited"
+  ],
+  "scope": "new passive numerical ellipsoid family, not anatomical or clinical validation",
+  "physics_device": "mps",
+  "backend_reason": "measured recurrent forward/back CPU~33ms versus MPS~109ms at batch8/200steps; CPU neural recurrence with differentiable device transfers to verified MPS FE residual"
+}

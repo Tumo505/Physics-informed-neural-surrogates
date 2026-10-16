@@ -59,8 +59,11 @@ def residual(problem):return df.assemble(problem._problem._F)
 def solve_at_pressure(problem,p):
  for f in [problem.u,problem.u_old,problem.v_old,problem.a_old]:f.vector().zero()
  problem.parameters['p'].assign(float(p));r0=residual(problem).norm('l2');t=time.perf_counter();iterations,ok=problem.solver.solve();elapsed=time.perf_counter()-t
- if not ok:raise RuntimeError(f'Failed solve pressure={p}')
- r=residual(problem);u=problem.u.compute_vertex_values(problem.geometry.mesh).reshape(3,-1).T
+ reason=int(problem.solver._snes.getConvergedReason())
+ if reason<=0:raise RuntimeError(f'Failed solve pressure={p}, SNES reason={reason}')
+ r=residual(problem)
+ if not np.isfinite(r.norm('l2')):raise RuntimeError('Nonfinite reference residual')
+ u=problem.u.compute_vertex_values(problem.geometry.mesh).reshape(3,-1).T
  np.testing.assert_allclose(u,problem.u.vector().get_local()[vertex_map(problem)].reshape(-1,3),atol=1e-14)
  return u,{'pressure_Pa':float(p),'converged':True,'residual_l2_N':r.norm('l2'),'initial_residual_l2_N':r0,'seconds':elapsed,'iterations':int(iterations)}
 

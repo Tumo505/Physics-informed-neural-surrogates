@@ -1,0 +1,1153 @@
+{
+  "complete": false,
+  "planned_accepted_trajectories": 47,
+  "completed_accepted_trajectories": 11,
+  "recorded_valid_steps": 2570,
+  "records": [
+    {
+      "case": {
+        "id": "g000_l0",
+        "geometry": 0,
+        "split": "train",
+        "scales": [
+          1.0243222738640203,
+          1.0279061848946924
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 276.66590162506327,
+      "maximum_residual_l2_N": 9.63195793518502e-09,
+      "minimum_recorded_endpoint_detF": 0.6859734333422696,
+      "trajectory_sha256": "cf6fbbd2832cf31a054b0ab48da0139fc140939b343543b575fe6e450635103d",
+      "geometry_sha256": "d18fc71e1a43771d791fd83f9bcaedd8c1b35f5e1fac712be42401f2d5ef7515",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g000_l1",
+        "geometry": 0,
+        "split": "train",
+        "scales": [
+          1.0243222738640203,
+          1.0279061848946924
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 284.34041587496176,
+      "maximum_residual_l2_N": 4.2497215411686175e-08,
+      "minimum_recorded_endpoint_detF": 0.600440184740084,
+      "trajectory_sha256": "d38513278eeccdf9bf062a1fa88c363839cceaf70923b6b4841dc02922295905",
+      "geometry_sha256": "d18fc71e1a43771d791fd83f9bcaedd8c1b35f5e1fac712be42401f2d5ef7515",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g001_l0",
+        "geometry": 1,
+        "split": "train",
+        "scales": [
+          1.0176695070226205,
+          1.0202129041622514
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 276.5817100830609,
+      "maximum_residual_l2_N": 2.0397332035096543e-08,
+      "minimum_recorded_endpoint_detF": 0.684938311026829,
+      "trajectory_sha256": "880a605ce74b474f78c70de818378c709bdda0aa0439382e5f97d5063df31da3",
+      "geometry_sha256": "7b3f167c2cb7debd03a9c35c03c4103f44552ef7b7da2d5a20de600227f054e4",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g001_l1",
+        "geometry": 1,
+        "split": "train",
+        "scales": [
+          1.0176695070226205,
+          1.0202129041622514
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 284.9397187080467,
+      "maximum_residual_l2_N": 2.4013427051477748e-08,
+      "minimum_recorded_endpoint_detF": 0.6006925935747409,
+      "trajectory_sha256": "32c2301f5fadc49c28775d5b4be52a686c13d033c5fece515ded8e886015e53b",
+      "geometry_sha256": "7b3f167c2cb7debd03a9c35c03c4103f44552ef7b7da2d5a20de600227f054e4",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g002_l0",
+        "geometry": 2,
+        "split": "train",
+        "scales": [
+          0.9905236570281397,
+          1.0153408614895578
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 275.4148654170567,
+      "maximum_residual_l2_N": 3.0611712088648527e-08,
+      "minimum_recorded_endpoint_detF": 0.6701287342740677,
+      "trajectory_sha256": "417c3ae926d1aa5d0bf55e4c1a099826f596b1c54859622e06a4e2c6125046e8",
+      "geometry_sha256": "bdd89ca1fa8975a9c1a138e429526633edf8709598ec721c45903b6ba26a7b8e",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g002_l1",
+        "geometry": 2,
+        "split": "train",
+        "scales": [
+          0.9905236570281397,
+          1.0153408614895578
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 335.2419117919635,
+      "maximum_residual_l2_N": 1.671117981185733e-08,
+      "minimum_recorded_endpoint_detF": 0.589705706385109,
+      "trajectory_sha256": "bd8c3513f21722ede5748fe605299e11fdd336b7581805e3c424ddc4ac0f281e",
+      "geometry_sha256": "bdd89ca1fa8975a9c1a138e429526633edf8709598ec721c45903b6ba26a7b8e",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g003_l0",
+        "geometry": 3,
+        "split": "train",
+        "scales": [
+          1.0120888632497704,
+          1.0243351172072461
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 326.80370254197624,
+      "maximum_residual_l2_N": 2.6796604696049488e-08,
+      "minimum_recorded_endpoint_detF": 0.6797436319856606,
+      "trajectory_sha256": "28a7b599c7c12411edc4d2b381aa01d5f8419e039ea189cb3eafe9d1e311e6dc",
+      "geometry_sha256": "44701481bba243cccc444b6a3309d61b93cb0152b3b0a7a98adb3c72d94c9ae6",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g003_l1",
+        "geometry": 3,
+        "split": "train",
+        "scales": [
+          1.0120888632497704,
+          1.0243351172072461
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 336.1541442909511,
+      "maximum_residual_l2_N": 1.4285613140026076e-08,
+      "minimum_recorded_endpoint_detF": 0.5962237405881341,
+      "trajectory_sha256": "1ec5cb2e932dcf63f916e423674a1907dadb6f05acdbd16cdf2efdcdf2653b09",
+      "geometry_sha256": "44701481bba243cccc444b6a3309d61b93cb0152b3b0a7a98adb3c72d94c9ae6",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g004_l0",
+        "geometry": 4,
+        "split": "validation",
+        "scales": [
+          1.044353065927033,
+          0.9543022400314799
+        ],
+        "amplitude": 0.95,
+        "timing_scale": 1.05,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 326.6258650000673,
+      "maximum_residual_l2_N": 2.188380805213999e-08,
+      "minimum_recorded_endpoint_detF": 0.7037487445754046,
+      "trajectory_sha256": "f347f92e21e76e26a87b3e93369f39a63ad5578e2e50569aae5a499b15d4596d",
+      "geometry_sha256": "d35db1a103e5931c86e49f2b5063d4f081e5f0338ee217db52bd9be2437edc29",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g004_l1",
+        "geometry": 4,
+        "split": "validation",
+        "scales": [
+          1.044353065927033,
+          0.9543022400314799
+        ],
+        "amplitude": 1.05,
+        "timing_scale": 0.95,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 330.4141335419845,
+      "maximum_residual_l2_N": 4.836833656297537e-08,
+      "minimum_recorded_endpoint_detF": 0.6622447534224147,
+      "trajectory_sha256": "9ffb2be3fc496700f92a1f9afee1a92d7efc675c14d1f8054532656bccaf0494",
+      "geometry_sha256": "d35db1a103e5931c86e49f2b5063d4f081e5f0338ee217db52bd9be2437edc29",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g005_l0",
+        "geometry": 5,
+        "split": "validation",
+        "scales": [
+          1.021498796532157,
+          0.9510379040647747
+        ],
+        "amplitude": 0.95,
+        "timing_scale": 1.05,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 20,
+      "seconds": 22.01858629193157,
+      "maximum_residual_l2_N": 5.874121567743977e-10,
+      "minimum_recorded_endpoint_detF": 0.9943376503771303,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g005_l1",
+        "geometry": 5,
+        "split": "validation",
+        "scales": [
+          1.021498796532157,
+          0.9510379040647747
+        ],
+        "amplitude": 1.05,
+        "timing_scale": 0.95,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 10,
+      "seconds": 11.225781166926026,
+      "maximum_residual_l2_N": 8.371897899971216e-10,
+      "minimum_recorded_endpoint_detF": 0.9971612524164236,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g006_l0",
+        "geometry": 6,
+        "split": "calibration",
+        "scales": [
+          0.9897276252480292,
+          0.965276430655836
+        ],
+        "amplitude": 0.9080926556647818,
+        "timing_scale": 0.9922321767800418,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 10,
+      "seconds": 11.249575707945041,
+      "maximum_residual_l2_N": 4.5098747940965707e-10,
+      "minimum_recorded_endpoint_detF": 0.9975558298784557,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g007_l0",
+        "geometry": 7,
+        "split": "calibration",
+        "scales": [
+          1.0363247183406958,
+          1.029614018289389
+        ],
+        "amplitude": 1.0862779140536223,
+        "timing_scale": 1.0116630808974978,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 10,
+      "seconds": 11.293303332990035,
+      "maximum_residual_l2_N": 8.244076547779849e-10,
+      "minimum_recorded_endpoint_detF": 0.9971363942835278,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "g008_l0",
+        "geometry": 8,
+        "split": "calibration",
+        "scales": [
+          0.9996127436489207,
+          1.0314720015728491
+        ],
+        "amplitude": 0.947004541977276,
+        "timing_scale": 1.0242299410247668,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g009_l0",
+        "geometry": 9,
+        "split": "calibration",
+        "scales": [
+          0.9719254913107319,
+          1.0313468420085612
+        ],
+        "amplitude": 0.963971287982357,
+        "timing_scale": 0.9752414968395188,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g010_l0",
+        "geometry": 10,
+        "split": "calibration",
+        "scales": [
+          0.9986976708494562,
+          0.9991283700080891
+        ],
+        "amplitude": 0.9292822550157697,
+        "timing_scale": 0.9704138587930303,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g011_l0",
+        "geometry": 11,
+        "split": "calibration",
+        "scales": [
+          1.0301342710208163,
+          1.0349668249098007
+        ],
+        "amplitude": 1.0871787443898668,
+        "timing_scale": 1.0354756440661859,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g012_l0",
+        "geometry": 12,
+        "split": "calibration",
+        "scales": [
+          1.037013811570521,
+          1.0043859591670097
+        ],
+        "amplitude": 0.9963256888440905,
+        "timing_scale": 1.0199728146949925,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g013_l0",
+        "geometry": 13,
+        "split": "calibration",
+        "scales": [
+          0.9602544791537562,
+          1.0373631783343775
+        ],
+        "amplitude": 0.9123579608401234,
+        "timing_scale": 1.0405363269612458,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g014_l0",
+        "geometry": 14,
+        "split": "calibration",
+        "scales": [
+          0.9752247527379407,
+          1.0135025432914353
+        ],
+        "amplitude": 1.0632394204268645,
+        "timing_scale": 0.9721115556531256,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g015_l0",
+        "geometry": 15,
+        "split": "calibration",
+        "scales": [
+          0.9506110452608171,
+          1.0268871307996308
+        ],
+        "amplitude": 1.0576414590703769,
+        "timing_scale": 1.0235345694863984,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g016_l0",
+        "geometry": 16,
+        "split": "calibration",
+        "scales": [
+          0.9506993882601283,
+          1.010294858781937
+        ],
+        "amplitude": 0.9896553342744886,
+        "timing_scale": 0.9952268906145129,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g017_l0",
+        "geometry": 17,
+        "split": "calibration",
+        "scales": [
+          1.0320633578131346,
+          0.988004794531828
+        ],
+        "amplitude": 0.9601926987079126,
+        "timing_scale": 1.0122264399718701,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g018_l0",
+        "geometry": 18,
+        "split": "calibration",
+        "scales": [
+          0.9757664699277149,
+          0.9952295139653703
+        ],
+        "amplitude": 1.0125622726373635,
+        "timing_scale": 0.9971605747175188,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g019_l0",
+        "geometry": 19,
+        "split": "calibration",
+        "scales": [
+          1.0199789631051956,
+          1.0130530946613217
+        ],
+        "amplitude": 1.0206877198620643,
+        "timing_scale": 1.0249486738660474,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g020_l0",
+        "geometry": 20,
+        "split": "calibration",
+        "scales": [
+          0.9842535451303981,
+          1.0035629122654321
+        ],
+        "amplitude": 0.9922688176115174,
+        "timing_scale": 1.0085300768527738,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g021_l0",
+        "geometry": 21,
+        "split": "calibration",
+        "scales": [
+          1.0471194107414235,
+          0.990869456633696
+        ],
+        "amplitude": 1.0580549925646425,
+        "timing_scale": 1.0008683924940414,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g022_l0",
+        "geometry": 22,
+        "split": "calibration",
+        "scales": [
+          0.9548241416104934,
+          0.9600112413271846
+        ],
+        "amplitude": 0.9495315611026754,
+        "timing_scale": 1.0014588575096401,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g023_l0",
+        "geometry": 23,
+        "split": "calibration",
+        "scales": [
+          1.0181475136089035,
+          1.0188596851911562
+        ],
+        "amplitude": 0.9870396258892599,
+        "timing_scale": 0.9911550026510363,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g024_l0",
+        "geometry": 24,
+        "split": "calibration",
+        "scales": [
+          0.9595876488340477,
+          0.9629493702503116
+        ],
+        "amplitude": 0.9190355654260968,
+        "timing_scale": 0.9987376465691925,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g025_l0",
+        "geometry": 25,
+        "split": "calibration",
+        "scales": [
+          0.9816546366895437,
+          1.047584359227957
+        ],
+        "amplitude": 0.9391372826174996,
+        "timing_scale": 1.0011112189993359,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g026_l0",
+        "geometry": 26,
+        "split": "test",
+        "scales": [
+          0.9755944273368296,
+          1.0380145187635497
+        ],
+        "amplitude": 1.0194844616289802,
+        "timing_scale": 1.0079231108760196,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g026_l1",
+        "geometry": 26,
+        "split": "load_shift",
+        "scales": [
+          0.9755944273368296,
+          1.0380145187635497
+        ],
+        "amplitude": 1.2,
+        "timing_scale": 1.15,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g027_l0",
+        "geometry": 27,
+        "split": "test",
+        "scales": [
+          0.9885339948045974,
+          0.9830934055163386
+        ],
+        "amplitude": 0.9066923783764341,
+        "timing_scale": 1.0205097479934553,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g027_l1",
+        "geometry": 27,
+        "split": "load_shift",
+        "scales": [
+          0.9885339948045974,
+          0.9830934055163386
+        ],
+        "amplitude": 1.2,
+        "timing_scale": 1.15,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g028_l0",
+        "geometry": 28,
+        "split": "test",
+        "scales": [
+          0.9966508046231024,
+          1.0297742073633795
+        ],
+        "amplitude": 1.019056545451775,
+        "timing_scale": 0.9832074134711877,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g028_l1",
+        "geometry": 28,
+        "split": "load_shift",
+        "scales": [
+          0.9966508046231024,
+          1.0297742073633795
+        ],
+        "amplitude": 1.2,
+        "timing_scale": 1.15,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g029_l0",
+        "geometry": 29,
+        "split": "test",
+        "scales": [
+          0.9634932608637597,
+          1.032479299650343
+        ],
+        "amplitude": 1.0073800363612821,
+        "timing_scale": 0.9732548816674389,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g029_l1",
+        "geometry": 29,
+        "split": "load_shift",
+        "scales": [
+          0.9634932608637597,
+          1.032479299650343
+        ],
+        "amplitude": 1.2,
+        "timing_scale": 1.15,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g030_l0",
+        "geometry": 30,
+        "split": "shift",
+        "scales": [
+          1.069722024825086,
+          0.9373792838202593
+        ],
+        "amplitude": 1.2,
+        "timing_scale": 1.15,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g030_l1",
+        "geometry": 30,
+        "split": "shift",
+        "scales": [
+          1.069722024825086,
+          0.9373792838202593
+        ],
+        "amplitude": 0.8,
+        "timing_scale": 0.85,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g031_l0",
+        "geometry": 31,
+        "split": "shift",
+        "scales": [
+          1.0870825594894944,
+          0.9241078892155676
+        ],
+        "amplitude": 1.2,
+        "timing_scale": 1.15,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "g031_l1",
+        "geometry": 31,
+        "split": "shift",
+        "scales": [
+          1.0870825594894944,
+          0.9241078892155676
+        ],
+        "amplitude": 0.8,
+        "timing_scale": 0.85,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 0
+    },
+    {
+      "case": {
+        "id": "convergence_dt0.005",
+        "geometry": -1,
+        "split": "convergence",
+        "scales": [
+          1,
+          1
+        ],
+        "amplitude": 1.0,
+        "timing_scale": 1.0,
+        "dt": 0.005,
+        "refinement": 0
+      },
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 272.14184629090596,
+      "maximum_residual_l2_N": 2.5910324296846858e-08,
+      "minimum_recorded_endpoint_detF": 0.6300480149520962,
+      "trajectory_sha256": "9c29bd1a575dc70ff42c1130481e17a14f47eeb652451109917acc87f870848d",
+      "geometry_sha256": "c071f727b73ba3ddc5be956666744a158a81ba06e5e5bb2ee3fc7f507d52357c",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "ca2d695dc1912797072b37fd7386249e41c205a9e0285c087650943061196791",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "convergence_dt0.0025",
+        "geometry": -1,
+        "split": "convergence",
+        "scales": [
+          1,
+          1
+        ],
+        "amplitude": 1.0,
+        "timing_scale": 1.0,
+        "dt": 0.0025,
+        "refinement": 0
+      },
+      "complete": false,
+      "completed_steps": 290,
+      "seconds": 450.51173654198647,
+      "maximum_residual_l2_N": 4.71686041586009e-08,
+      "minimum_recorded_endpoint_detF": 0.6297784791577805,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    },
+    {
+      "case": {
+        "id": "convergence_refined_dt0005",
+        "geometry": -1,
+        "split": "convergence",
+        "scales": [
+          1,
+          1
+        ],
+        "amplitude": 1.0,
+        "timing_scale": 1.0,
+        "dt": 0.005,
+        "refinement": 1
+      },
+      "complete": false,
+      "completed_steps": 30,
+      "seconds": 293.54454079200514,
+      "maximum_residual_l2_N": 8.349330185787343e-10,
+      "minimum_recorded_endpoint_detF": 0.9949544929984268,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      }
+    }
+  ],
+  "failed_10ms_attempts": [
+    {
+      "case": {
+        "id": "g000_l0",
+        "geometry": 0,
+        "split": "train",
+        "scales": [
+          1.0243222738640203,
+          1.0279061848946924
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "recorded_steps": 100,
+      "failure": "10ms attempt failed independent residual/Jacobian audit; entire timestep protocol rejected before training, shapes retained for5ms retry"
+    },
+    {
+      "case": {
+        "id": "g000_l1",
+        "geometry": 0,
+        "split": "train",
+        "scales": [
+          1.0243222738640203,
+          1.0279061848946924
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "recorded_steps": 100,
+      "failure": "10ms attempt failed independent residual/Jacobian audit; entire timestep protocol rejected before training, shapes retained for5ms retry"
+    },
+    {
+      "case": {
+        "id": "g001_l1",
+        "geometry": 1,
+        "split": "train",
+        "scales": [
+          1.0176695070226205,
+          1.0202129041622514
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "recorded_steps": 100,
+      "failure": "10ms attempt failed independent residual/Jacobian audit; entire timestep protocol rejected before training, shapes retained for5ms retry"
+    },
+    {
+      "case": {
+        "id": "g001_l0",
+        "geometry": 1,
+        "split": "train",
+        "scales": [
+          1.0176695070226205,
+          1.0202129041622514
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "recorded_steps": 100,
+      "failure": "10ms attempt failed independent residual/Jacobian audit; entire timestep protocol rejected before training, shapes retained for5ms retry"
+    },
+    {
+      "case": {
+        "id": "g004_l0",
+        "geometry": 4,
+        "split": "validation",
+        "scales": [
+          1.044353065927033,
+          0.9543022400314799
+        ],
+        "amplitude": 0.95,
+        "timing_scale": 1.05,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "recorded_steps": 90,
+      "failure": "10ms attempt failed independent residual/Jacobian audit; entire timestep protocol rejected before training, shapes retained for5ms retry"
+    },
+    {
+      "case": {
+        "id": "g003_l1",
+        "geometry": 3,
+        "split": "train",
+        "scales": [
+          1.0120888632497704,
+          1.0243351172072461
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "recorded_steps": 10,
+      "failure": "10ms attempt failed independent residual/Jacobian audit; entire timestep protocol rejected before training, shapes retained for5ms retry"
+    },
+    {
+      "case": {
+        "id": "g003_l0",
+        "geometry": 3,
+        "split": "train",
+        "scales": [
+          1.0120888632497704,
+          1.0243351172072461
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "recorded_steps": 60,
+      "failure": "10ms attempt failed independent residual/Jacobian audit; entire timestep protocol rejected before training, shapes retained for5ms retry"
+    },
+    {
+      "case": {
+        "id": "g002_l0",
+        "geometry": 2,
+        "split": "train",
+        "scales": [
+          0.9905236570281397,
+          1.0153408614895578
+        ],
+        "amplitude": 0.9,
+        "timing_scale": 0.95,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "recorded_steps": 100,
+      "failure": "10ms attempt failed independent residual/Jacobian audit; entire timestep protocol rejected before training, shapes retained for5ms retry"
+    },
+    {
+      "case": {
+        "id": "g002_l1",
+        "geometry": 2,
+        "split": "train",
+        "scales": [
+          0.9905236570281397,
+          1.0153408614895578
+        ],
+        "amplitude": 1.1,
+        "timing_scale": 1.05,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "recorded_steps": 100,
+      "failure": "10ms attempt failed independent residual/Jacobian audit; entire timestep protocol rejected before training, shapes retained for5ms retry"
+    },
+    {
+      "case": {
+        "id": "convergence_dt0.01",
+        "geometry": -1,
+        "split": "convergence",
+        "scales": [
+          1,
+          1
+        ],
+        "amplitude": 1.0,
+        "timing_scale": 1.0,
+        "dt": 0.01,
+        "refinement": 0
+      },
+      "failure": "10ms full-cycle baseline diverged; retained, not a converged reference"
+    }
+  ],
+  "scope": "passive numerical ellipsoid family; unchanged source material/BC; source pressure waveform scaled in amplitude and transition timing for controlled numerical loading sensitivity, not physiological population",
+  "split_protocol": {
+    "split_unit": "geometry; all loading trajectories from a geometry stay together",
+    "normalizers_and_POD": "train trajectories only",
+    "primary_endpoint": "full-cycle free rollout completion, no inverted endpoint elements; residual at comparable displacement RMSE",
+    "calibration": "20 independent geometries with one independently uniform amplitude[.9,1.1]/timing[.95,1.05] waveform each; joint all-node/all-time conformal90/95%",
+    "test": "four new geometries and iid uniform waveform descriptors matching calibration; additional four held-out load-shift trajectories on those test geometries analysed separately",
+    "shift": "four combined geometry/loading-shift trajectories plus four loading-only shifts; no conformal guarantee",
+    "seeds": [
+      11,
+      22,
+      33,
+      44,
+      55
+    ],
+    "solver": "generalized-alpha dt5ms variant, full200 steps0.005 through1s; 10ms attempt failed and is retained; strict positive SNES reason/residual/J gates",
+    "OOD": "input domain geometry box[.95,1.05]^2 and amplitude[.9,1.1],timing[.95,1.05]; reject outside, also reject inverted/nonfinite predictions; exact FE fallback",
+    "limited_data": "one of four training geometries versus all four, same selected architecture/update budgets",
+    "protocol_amendment": "Before any calibration/test generation or label access: make calibration and primary test exchangeable and increase calibration20 for finite corrected95% radius; train/validation cases unchanged",
+    "convergence_tolerance": "pre-evaluation1percent relative space-time volume-L2 for temporal and spatial sensitivity; report failures; two spatial levels do not establish asymptotic convergence"
+  },
+  "config_sha256": "579eef4c01cdeb7f4eaace04f496818c1b0db9ac4a2216aa916ad8fa00703f24"
+}

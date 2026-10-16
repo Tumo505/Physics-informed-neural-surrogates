@@ -1,0 +1,651 @@
+{
+  "name": "cardiac_dynamic_v1",
+  "seed": 17301,
+  "scope": "passive numerical ellipsoid family; unchanged source material/BC; source pressure waveform scaled in amplitude and transition timing for controlled numerical loading sensitivity, not physiological population",
+  "cases": [
+    {
+      "id": "g000_l0",
+      "geometry": 0,
+      "split": "train",
+      "scales": [
+        1.0243222738640203,
+        1.0279061848946924
+      ],
+      "amplitude": 0.9,
+      "timing_scale": 0.95,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g000_l1",
+      "geometry": 0,
+      "split": "train",
+      "scales": [
+        1.0243222738640203,
+        1.0279061848946924
+      ],
+      "amplitude": 1.1,
+      "timing_scale": 1.05,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g001_l0",
+      "geometry": 1,
+      "split": "train",
+      "scales": [
+        1.0176695070226205,
+        1.0202129041622514
+      ],
+      "amplitude": 0.9,
+      "timing_scale": 0.95,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g001_l1",
+      "geometry": 1,
+      "split": "train",
+      "scales": [
+        1.0176695070226205,
+        1.0202129041622514
+      ],
+      "amplitude": 1.1,
+      "timing_scale": 1.05,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g002_l0",
+      "geometry": 2,
+      "split": "train",
+      "scales": [
+        0.9905236570281397,
+        1.0153408614895578
+      ],
+      "amplitude": 0.9,
+      "timing_scale": 0.95,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g002_l1",
+      "geometry": 2,
+      "split": "train",
+      "scales": [
+        0.9905236570281397,
+        1.0153408614895578
+      ],
+      "amplitude": 1.1,
+      "timing_scale": 1.05,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g003_l0",
+      "geometry": 3,
+      "split": "train",
+      "scales": [
+        1.0120888632497704,
+        1.0243351172072461
+      ],
+      "amplitude": 0.9,
+      "timing_scale": 0.95,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g003_l1",
+      "geometry": 3,
+      "split": "train",
+      "scales": [
+        1.0120888632497704,
+        1.0243351172072461
+      ],
+      "amplitude": 1.1,
+      "timing_scale": 1.05,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g004_l0",
+      "geometry": 4,
+      "split": "validation",
+      "scales": [
+        1.044353065927033,
+        0.9543022400314799
+      ],
+      "amplitude": 0.95,
+      "timing_scale": 1.05,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g004_l1",
+      "geometry": 4,
+      "split": "validation",
+      "scales": [
+        1.044353065927033,
+        0.9543022400314799
+      ],
+      "amplitude": 1.05,
+      "timing_scale": 0.95,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g005_l0",
+      "geometry": 5,
+      "split": "validation",
+      "scales": [
+        1.021498796532157,
+        0.9510379040647747
+      ],
+      "amplitude": 0.95,
+      "timing_scale": 1.05,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g005_l1",
+      "geometry": 5,
+      "split": "validation",
+      "scales": [
+        1.021498796532157,
+        0.9510379040647747
+      ],
+      "amplitude": 1.05,
+      "timing_scale": 0.95,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g006_l0",
+      "geometry": 6,
+      "split": "calibration",
+      "scales": [
+        0.9897276252480292,
+        0.965276430655836
+      ],
+      "amplitude": 0.9080926556647818,
+      "timing_scale": 0.9922321767800418,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g007_l0",
+      "geometry": 7,
+      "split": "calibration",
+      "scales": [
+        1.0363247183406958,
+        1.029614018289389
+      ],
+      "amplitude": 1.0862779140536223,
+      "timing_scale": 1.0116630808974978,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g008_l0",
+      "geometry": 8,
+      "split": "calibration",
+      "scales": [
+        0.9996127436489207,
+        1.0314720015728491
+      ],
+      "amplitude": 0.947004541977276,
+      "timing_scale": 1.0242299410247668,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g009_l0",
+      "geometry": 9,
+      "split": "calibration",
+      "scales": [
+        0.9719254913107319,
+        1.0313468420085612
+      ],
+      "amplitude": 0.963971287982357,
+      "timing_scale": 0.9752414968395188,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g010_l0",
+      "geometry": 10,
+      "split": "calibration",
+      "scales": [
+        0.9986976708494562,
+        0.9991283700080891
+      ],
+      "amplitude": 0.9292822550157697,
+      "timing_scale": 0.9704138587930303,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g011_l0",
+      "geometry": 11,
+      "split": "calibration",
+      "scales": [
+        1.0301342710208163,
+        1.0349668249098007
+      ],
+      "amplitude": 1.0871787443898668,
+      "timing_scale": 1.0354756440661859,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g012_l0",
+      "geometry": 12,
+      "split": "calibration",
+      "scales": [
+        1.037013811570521,
+        1.0043859591670097
+      ],
+      "amplitude": 0.9963256888440905,
+      "timing_scale": 1.0199728146949925,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g013_l0",
+      "geometry": 13,
+      "split": "calibration",
+      "scales": [
+        0.9602544791537562,
+        1.0373631783343775
+      ],
+      "amplitude": 0.9123579608401234,
+      "timing_scale": 1.0405363269612458,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g014_l0",
+      "geometry": 14,
+      "split": "calibration",
+      "scales": [
+        0.9752247527379407,
+        1.0135025432914353
+      ],
+      "amplitude": 1.0632394204268645,
+      "timing_scale": 0.9721115556531256,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g015_l0",
+      "geometry": 15,
+      "split": "calibration",
+      "scales": [
+        0.9506110452608171,
+        1.0268871307996308
+      ],
+      "amplitude": 1.0576414590703769,
+      "timing_scale": 1.0235345694863984,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g016_l0",
+      "geometry": 16,
+      "split": "calibration",
+      "scales": [
+        0.9506993882601283,
+        1.010294858781937
+      ],
+      "amplitude": 0.9896553342744886,
+      "timing_scale": 0.9952268906145129,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g017_l0",
+      "geometry": 17,
+      "split": "calibration",
+      "scales": [
+        1.0320633578131346,
+        0.988004794531828
+      ],
+      "amplitude": 0.9601926987079126,
+      "timing_scale": 1.0122264399718701,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g018_l0",
+      "geometry": 18,
+      "split": "calibration",
+      "scales": [
+        0.9757664699277149,
+        0.9952295139653703
+      ],
+      "amplitude": 1.0125622726373635,
+      "timing_scale": 0.9971605747175188,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g019_l0",
+      "geometry": 19,
+      "split": "calibration",
+      "scales": [
+        1.0199789631051956,
+        1.0130530946613217
+      ],
+      "amplitude": 1.0206877198620643,
+      "timing_scale": 1.0249486738660474,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g020_l0",
+      "geometry": 20,
+      "split": "calibration",
+      "scales": [
+        0.9842535451303981,
+        1.0035629122654321
+      ],
+      "amplitude": 0.9922688176115174,
+      "timing_scale": 1.0085300768527738,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g021_l0",
+      "geometry": 21,
+      "split": "calibration",
+      "scales": [
+        1.0471194107414235,
+        0.990869456633696
+      ],
+      "amplitude": 1.0580549925646425,
+      "timing_scale": 1.0008683924940414,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g022_l0",
+      "geometry": 22,
+      "split": "calibration",
+      "scales": [
+        0.9548241416104934,
+        0.9600112413271846
+      ],
+      "amplitude": 0.9495315611026754,
+      "timing_scale": 1.0014588575096401,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g023_l0",
+      "geometry": 23,
+      "split": "calibration",
+      "scales": [
+        1.0181475136089035,
+        1.0188596851911562
+      ],
+      "amplitude": 0.9870396258892599,
+      "timing_scale": 0.9911550026510363,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g024_l0",
+      "geometry": 24,
+      "split": "calibration",
+      "scales": [
+        0.9595876488340477,
+        0.9629493702503116
+      ],
+      "amplitude": 0.9190355654260968,
+      "timing_scale": 0.9987376465691925,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g025_l0",
+      "geometry": 25,
+      "split": "calibration",
+      "scales": [
+        0.9816546366895437,
+        1.047584359227957
+      ],
+      "amplitude": 0.9391372826174996,
+      "timing_scale": 1.0011112189993359,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g026_l0",
+      "geometry": 26,
+      "split": "test",
+      "scales": [
+        0.9755944273368296,
+        1.0380145187635497
+      ],
+      "amplitude": 1.0194844616289802,
+      "timing_scale": 1.0079231108760196,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g026_l1",
+      "geometry": 26,
+      "split": "load_shift",
+      "scales": [
+        0.9755944273368296,
+        1.0380145187635497
+      ],
+      "amplitude": 1.2,
+      "timing_scale": 1.15,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g027_l0",
+      "geometry": 27,
+      "split": "test",
+      "scales": [
+        0.9885339948045974,
+        0.9830934055163386
+      ],
+      "amplitude": 0.9066923783764341,
+      "timing_scale": 1.0205097479934553,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g027_l1",
+      "geometry": 27,
+      "split": "load_shift",
+      "scales": [
+        0.9885339948045974,
+        0.9830934055163386
+      ],
+      "amplitude": 1.2,
+      "timing_scale": 1.15,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g028_l0",
+      "geometry": 28,
+      "split": "test",
+      "scales": [
+        0.9966508046231024,
+        1.0297742073633795
+      ],
+      "amplitude": 1.019056545451775,
+      "timing_scale": 0.9832074134711877,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g028_l1",
+      "geometry": 28,
+      "split": "load_shift",
+      "scales": [
+        0.9966508046231024,
+        1.0297742073633795
+      ],
+      "amplitude": 1.2,
+      "timing_scale": 1.15,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g029_l0",
+      "geometry": 29,
+      "split": "test",
+      "scales": [
+        0.9634932608637597,
+        1.032479299650343
+      ],
+      "amplitude": 1.0073800363612821,
+      "timing_scale": 0.9732548816674389,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g029_l1",
+      "geometry": 29,
+      "split": "load_shift",
+      "scales": [
+        0.9634932608637597,
+        1.032479299650343
+      ],
+      "amplitude": 1.2,
+      "timing_scale": 1.15,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g030_l0",
+      "geometry": 30,
+      "split": "shift",
+      "scales": [
+        1.069722024825086,
+        0.9373792838202593
+      ],
+      "amplitude": 1.2,
+      "timing_scale": 1.15,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g030_l1",
+      "geometry": 30,
+      "split": "shift",
+      "scales": [
+        1.069722024825086,
+        0.9373792838202593
+      ],
+      "amplitude": 0.8,
+      "timing_scale": 0.85,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g031_l0",
+      "geometry": 31,
+      "split": "shift",
+      "scales": [
+        1.0870825594894944,
+        0.9241078892155676
+      ],
+      "amplitude": 1.2,
+      "timing_scale": 1.15,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "g031_l1",
+      "geometry": 31,
+      "split": "shift",
+      "scales": [
+        1.0870825594894944,
+        0.9241078892155676
+      ],
+      "amplitude": 0.8,
+      "timing_scale": 0.85,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "convergence_dt0.01",
+      "geometry": -1,
+      "split": "failed_timestep",
+      "scales": [
+        1,
+        1
+      ],
+      "amplitude": 1.0,
+      "timing_scale": 1.0,
+      "dt": 0.01,
+      "refinement": 0
+    },
+    {
+      "id": "convergence_dt0.005",
+      "geometry": -1,
+      "split": "convergence",
+      "scales": [
+        1,
+        1
+      ],
+      "amplitude": 1.0,
+      "timing_scale": 1.0,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "convergence_dt0.0025",
+      "geometry": -1,
+      "split": "convergence",
+      "scales": [
+        1,
+        1
+      ],
+      "amplitude": 1.0,
+      "timing_scale": 1.0,
+      "dt": 0.0025,
+      "refinement": 0
+    },
+    {
+      "id": "convergence_refined_dt0005",
+      "geometry": -1,
+      "split": "convergence",
+      "scales": [
+        1,
+        1
+      ],
+      "amplitude": 1.0,
+      "timing_scale": 1.0,
+      "dt": 0.005,
+      "refinement": 1
+    }
+  ],
+  "protocol": {
+    "split_unit": "geometry; all loading trajectories from a geometry stay together",
+    "normalizers_and_POD": "train trajectories only",
+    "primary_endpoint": "full-cycle free rollout completion, no inverted endpoint elements; residual at comparable displacement RMSE",
+    "calibration": "20 independent geometries with one independently uniform amplitude[.9,1.1]/timing[.95,1.05] waveform each; joint all-node/all-time conformal90/95%",
+    "test": "four new geometries and iid uniform waveform descriptors matching calibration; additional four held-out load-shift trajectories on those test geometries analysed separately",
+    "shift": "four combined geometry/loading-shift trajectories plus four loading-only shifts; no conformal guarantee",
+    "seeds": [
+      11,
+      22,
+      33,
+      44,
+      55
+    ],
+    "solver": "generalized-alpha dt5ms variant, full200 steps0.005 through1s; 10ms attempt failed and is retained; strict positive SNES reason/residual/J gates",
+    "OOD": "input domain geometry box[.95,1.05]^2 and amplitude[.9,1.1],timing[.95,1.05]; reject outside, also reject inverted/nonfinite predictions; exact FE fallback",
+    "limited_data": "one of four training geometries versus all four, same selected architecture/update budgets",
+    "protocol_amendment": "Before any calibration/test generation or label access: make calibration and primary test exchangeable and increase calibration20 for finite corrected95% radius; train/validation cases unchanged",
+    "convergence_tolerance": "pre-evaluation1percent relative space-time volume-L2 for temporal and spatial sensitivity; report failures; two spatial levels do not establish asymptotic convergence"
+  }
+}

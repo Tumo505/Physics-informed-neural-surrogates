@@ -19,7 +19,7 @@ try:
  for i in range(start_step,len(times)):
   histories={k:getattr(problem,k).vector().get_local()[v2d].reshape(-1,3).copy() for k in ['u_old','v_old','a_old']}
   problem.parameters['p'].assign(float(pressures[i]));t=time.perf_counter();iterations,ok=problem.solver.solve()
-  if not ok:raise RuntimeError(f'Trajectory solve failed at step {i}')
+  if int(problem.solver._snes.getConvergedReason())<=0:raise RuntimeError(f'Trajectory solve failed at step {i}')
   r=residual(problem).norm('l2');u=problem.u.vector().get_local()[v2d].reshape(-1,3).copy()
   np.savez_compressed(out/f'step_{i:04d}.npz',u=u,**histories,pressure=pressures[i],time=times[i],dt=dt)
   problem._update_fields();records.append({'step':i,'time_s':float(times[i]),'pressure_Pa':float(pressures[i]),'iterations':int(iterations),'residual_l2_N':float(r),'seconds':time.perf_counter()-t,'max_nodal_displacement_m':float(np.linalg.norm(u,axis=-1).max())})
