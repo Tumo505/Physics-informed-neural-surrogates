@@ -1,0 +1,62 @@
+{
+  "complete": true,
+  "seed": 44,
+  "lambda": 1.0,
+  "best_validation": {
+    "rollout_data_objective": 0.043078258633613586,
+    "projected_component_rmse_m": 0.0011631689267233014,
+    "sampled_full_residual_loss": 0.007787453010678291,
+    "selection_score": 0.05086571164429188
+  },
+  "history": [
+    {
+      "step": 49,
+      "validation": {
+        "rollout_data_objective": 0.05887817591428757,
+        "projected_component_rmse_m": 0.0015182897914201021,
+        "sampled_full_residual_loss": 718.510009765625,
+        "selection_score": 718.5688879415393
+      }
+    },
+    {
+      "step": 99,
+      "validation": {
+        "rollout_data_objective": 0.049713440239429474,
+        "projected_component_rmse_m": 0.0012884890893474221,
+        "sampled_full_residual_loss": 0.016906553879380226,
+        "selection_score": 0.0666199941188097
+      }
+    },
+    {
+      "step": 149,
+      "validation": {
+        "rollout_data_objective": 0.04260733351111412,
+        "projected_component_rmse_m": 0.0011477642692625523,
+        "sampled_full_residual_loss": 0.008714098483324051,
+        "selection_score": 0.05132143199443817
+      }
+    },
+    {
+      "step": 199,
+      "validation": {
+        "rollout_data_objective": 0.04407764971256256,
+        "projected_component_rmse_m": 0.0011597889242693782,
+        "sampled_full_residual_loss": 0.007697916589677334,
+        "selection_score": 0.051775566302239895
+      }
+    },
+    {
+      "step": 249,
+      "validation": {
+        "rollout_data_objective": 0.043078258633613586,
+        "projected_component_rmse_m": 0.0011631689267233014,
+        "sampled_full_residual_loss": 0.007787453010678291,
+        "selection_score": 0.05086571164429188
+      }
+    }
+  ],
+  "updates": 250,
+  "seconds": 15.204664916964248,
+  "initialization": "/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/experiments/checkpoints/cardiac_dynamic_graph_v2_limited/warm_seed44.pt",
+  "checkpoint_sha256": "356bdec359d2e66b7d8995a4534411138af1b0ad0e9ea625e3386fdff5723aa9"
+}

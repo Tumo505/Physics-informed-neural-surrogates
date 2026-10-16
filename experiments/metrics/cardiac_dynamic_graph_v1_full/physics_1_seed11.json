@@ -1,0 +1,62 @@
+{
+  "complete": true,
+  "seed": 11,
+  "lambda": 1.0,
+  "best_validation": {
+    "rollout_data_objective": 2.1238925457000732,
+    "projected_component_rmse_m": 0.0012687341077253222,
+    "sampled_full_residual_loss": 0.01288155559450388,
+    "selection_score": 2.136774101294577
+  },
+  "history": [
+    {
+      "step": 49,
+      "validation": {
+        "rollout_data_objective": 2.1626219749450684,
+        "projected_component_rmse_m": 0.0013141365488991141,
+        "sampled_full_residual_loss": 0.012757857330143452,
+        "selection_score": 2.175379832275212
+      }
+    },
+    {
+      "step": 99,
+      "validation": {
+        "rollout_data_objective": 2.1399810314178467,
+        "projected_component_rmse_m": 0.0012468794593587518,
+        "sampled_full_residual_loss": 0.010506574995815754,
+        "selection_score": 2.1504876064136624
+      }
+    },
+    {
+      "step": 149,
+      "validation": {
+        "rollout_data_objective": 2.125192403793335,
+        "projected_component_rmse_m": 0.001260113320313394,
+        "sampled_full_residual_loss": 0.012971282005310059,
+        "selection_score": 2.138163685798645
+      }
+    },
+    {
+      "step": 199,
+      "validation": {
+        "rollout_data_objective": 2.1238925457000732,
+        "projected_component_rmse_m": 0.0012687341077253222,
+        "sampled_full_residual_loss": 0.01288155559450388,
+        "selection_score": 2.136774101294577
+      }
+    },
+    {
+      "step": 249,
+      "validation": {
+        "rollout_data_objective": 2.1371841430664062,
+        "projected_component_rmse_m": 0.0012513382826000452,
+        "sampled_full_residual_loss": 0.011908270418643951,
+        "selection_score": 2.14909241348505
+      }
+    }
+  ],
+  "updates": 250,
+  "seconds": 15.811866292031482,
+  "initialization": "/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/experiments/checkpoints/cardiac_dynamic_graph_v1_full/warm_seed11.pt",
+  "checkpoint_sha256": "647d9cb495b6f154865ba50d85029ef35e1b2b23dac0f363e8ea1462f6bd1605"
+}

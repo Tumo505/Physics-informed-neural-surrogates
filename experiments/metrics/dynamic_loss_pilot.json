@@ -1,0 +1,7 @@
+{
+  "pilot": "cardiac_dynamic_graph_v1_full",
+  "scope": "seed11 validation-only; never evaluated calibration/test",
+  "finding": "equal coefficient-wise normalization overweights small POD modes; validation componentRMSE about1.5mm",
+  "correction": "orthonormal POD identity: sum coefficient physical squared errors / number of displacement DOFs equals projected field MSE; normalize by training field RMS only; derivative penalties also use global physical scales",
+  "retained": "completed and interrupted checkpoints/metrics remain under v1; v2 restarts from independent seeded zero-readout initialization"
+}

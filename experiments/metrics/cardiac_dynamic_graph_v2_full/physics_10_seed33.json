@@ -1,0 +1,62 @@
+{
+  "complete": true,
+  "seed": 33,
+  "lambda": 10.0,
+  "best_validation": {
+    "rollout_data_objective": 0.028278831392526627,
+    "projected_component_rmse_m": 0.0009244905086234212,
+    "sampled_full_residual_loss": 0.006804445758461952,
+    "selection_score": 0.09632328897714615
+  },
+  "history": [
+    {
+      "step": 49,
+      "validation": {
+        "rollout_data_objective": 0.02978033572435379,
+        "projected_component_rmse_m": 0.0009309238521382213,
+        "sampled_full_residual_loss": 0.009953290224075317,
+        "selection_score": 0.12931323796510696
+      }
+    },
+    {
+      "step": 99,
+      "validation": {
+        "rollout_data_objective": 0.026120858266949654,
+        "projected_component_rmse_m": 0.0009006760665215552,
+        "sampled_full_residual_loss": 0.007249447051435709,
+        "selection_score": 0.09861532878130674
+      }
+    },
+    {
+      "step": 149,
+      "validation": {
+        "rollout_data_objective": 0.032044824212789536,
+        "projected_component_rmse_m": 0.0011101682903245091,
+        "sampled_full_residual_loss": 0.008116417564451694,
+        "selection_score": 0.11320899985730648
+      }
+    },
+    {
+      "step": 199,
+      "validation": {
+        "rollout_data_objective": 0.028278831392526627,
+        "projected_component_rmse_m": 0.0009244905086234212,
+        "sampled_full_residual_loss": 0.006804445758461952,
+        "selection_score": 0.09632328897714615
+      }
+    },
+    {
+      "step": 249,
+      "validation": {
+        "rollout_data_objective": 0.026525279507040977,
+        "projected_component_rmse_m": 0.0009064867626875639,
+        "sampled_full_residual_loss": 0.007057386916130781,
+        "selection_score": 0.09709914866834879
+      }
+    }
+  ],
+  "updates": 250,
+  "seconds": 15.142618000041693,
+  "initialization": "/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/experiments/checkpoints/cardiac_dynamic_graph_v2_full/warm_seed33.pt",
+  "checkpoint_sha256": "ef27bed2506e3b7b62e1fb858c9a7ce49ad8c27c3d96d93c11c435de4b5c86b0"
+}

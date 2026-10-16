@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "seed": 11,
+  "case": "g000_l0",
+  "frame": 99,
+  "read_split": "training only",
+  "physics_only_network_parameter_gradient_norm": 2.917602973525552,
+  "native_full_recurrence_directional_finite_difference": 2.9176027409217804,
+  "relative_error": 7.972427157152279e-08,
+  "epsilon": 1e-05,
+  "scope": "CPUfloat64 full200-step predicted recurrence, derivative includes displacement and both velocity/acceleration histories, compared with independent native FE residual"
+}

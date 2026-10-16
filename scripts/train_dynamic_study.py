@@ -6,7 +6,7 @@ P=Path(__file__).resolve().parents[1];sys.path.insert(0,str(P/'src'))
 from lv_surrogate.models.dynamic_graph import DynamicGraph,newmark_operators
 from lv_surrogate.physics.cardiac_residual import CardiacFirstStep
 from lv_surrogate.physics.fem_bridge import FEMBridge
-ap=argparse.ArgumentParser();ap.add_argument('--regime',choices=['full','limited'],default='full');args=ap.parse_args();cfg=json.loads((P/'configs/physics/dynamic_training.json').read_text());name=cfg['name']+'_'+args.regime;D=P/f'data/processed/cardiac_dynamic_ml_{args.regime}';stats=dict(np.load(D/'normalizers.npz'));data={s:dict(np.load(D/f'{s}.npz')) for s in ['train','validation']};device=torch.device(cfg['device']);force_device=torch.device(cfg.get('physics_device',cfg['device']));torch.set_num_threads(2);torch.use_deterministic_algorithms(True,warn_only=True)
+ap=argparse.ArgumentParser();ap.add_argument('--regime',choices=['full','limited'],default='full');args=ap.parse_args();cfg=json.loads((P/'configs/physics/dynamic_training.json').read_text());name=cfg['name']+'_'+args.regime;D=P/f'data/processed/{cfg.get("data_tag","cardiac_dynamic_ml")}_{args.regime}';stats=dict(np.load(D/'normalizers.npz'));data={s:dict(np.load(D/f'{s}.npz')) for s in ['train','validation']};device=torch.device(cfg['device']);force_device=torch.device(cfg.get('physics_device',cfg['device']));torch.set_num_threads(2);torch.use_deterministic_algorithms(True,warn_only=True)
 if device.type=='mps' and not torch.backends.mps.is_available():raise RuntimeError('MPS unavailable')
 if not json.loads((P/'experiments/metrics/dynamic_backend.json').read_text())['passed']:raise RuntimeError('Dynamic mechanics gate failed')
 top=torch.tensor(np.load(D/'topology.npy'),device=device);arrays={s:{k:torch.tensor(a[k],dtype=torch.float32,device=device) for k in ['coarse','globals','edges','pressure','q']} for s,a in data.items()};n=data['train']['pressure'].shape[1];dt=.005;vmap,amap=[torch.tensor(x,dtype=torch.float32,device=device) for x in newmark_operators(n,dt)];operators={};out=P/'experiments/checkpoints'/name;out.mkdir(exist_ok=True);metrics=P/'experiments/metrics'/name;metrics.mkdir(exist_ok=True);bridge=None
@@ -27,8 +27,10 @@ def force(net,q,split,items):
   R=own(u,float(data[split]['pressure'][b,t])*16070.954,create_graph=torch.is_grad_enabled(),history=h);loss.append((R/scale).square().mean())
  return torch.stack(loss).mean().to(q.device)
 def loss_data(q,split):
- target=arrays[split]['q'];loss=(q-target).square().mean()
- for order,weight,key in [(1,.1,'dq_scale'),(2,.01,'ddq_scale')]:loss=loss+weight*((torch.diff(q,n=order,dim=1)-torch.diff(target,n=order,dim=1))/q.new_tensor(stats[key])).square().mean()
+ mask=torch.tensor(data[split]['labelled_mask'].astype(bool),device=q.device);target=arrays[split]['q'][mask];q=q[mask];scale=q.new_tensor(stats['coefficient_scale']);ndof=stats['basis'].shape[1]
+ loss=(((q-target)*scale).square().sum(-1)/ndof).mean()/float(stats['field_scale'])**2
+ for order,weight,key in [(1,.1,'dq_field_scale'),(2,.01,'ddq_field_scale')]:
+  diff=(torch.diff(q,n=order,dim=1)-torch.diff(target,n=order,dim=1))*scale;loss=loss+weight*(diff.square().sum(-1)/ndof).mean()/float(stats[key])**2
  return loss
 valitems=[(b,t) for b in range(len(data['validation']['q'])) for t in cfg['validation_residual_frames']]
 def validate(net,lam=0.,mechanics=False):

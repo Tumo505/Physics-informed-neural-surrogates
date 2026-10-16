@@ -1,6 +1,6 @@
 """Frozen geometry/trajectory comparison, calibration, mechanics and OOD routing."""
 from pathlib import Path
-import json,sys,hashlib,time
+import json,sys,hashlib,time,argparse
 import numpy as np,torch
 from scipy.stats import binomtest,spearmanr
 P=Path(__file__).resolve().parents[1];sys.path.insert(0,str(P/'src'))
@@ -9,14 +9,22 @@ from lv_surrogate.physics.fem_bridge import FEMBridge
 from lv_surrogate.physics.cardiac_residual import CardiacFirstStep
 from lv_surrogate.eval.calibration import conformal_radius
 from lv_surrogate.eval.fallback import InputDomainGate
-torch.set_num_threads(2);cfg=json.loads((P/'configs/physics/dynamic_study.json').read_text());traincfg=json.loads((P/'configs/physics/dynamic_training.json').read_text());models={};hashes={};stats={};top=torch.tensor(np.load(P/'data/processed/cardiac_geometry_ml/topology.npy'));cluster=np.load(P/'data/processed/cardiac_geometry_ml/cluster_labels.npy');counts=np.bincount(cluster,minlength=64);selections={}
+ap=argparse.ArgumentParser();ap.add_argument('--freeze-only',action='store_true');ap.add_argument('--wait-for-data',action='store_true');args=ap.parse_args();torch.set_num_threads(2);cfg=json.loads((P/'configs/physics/dynamic_study.json').read_text());traincfg=json.loads((P/'configs/physics/dynamic_training.json').read_text());models={};hashes={};stats={};top=torch.tensor(np.load(P/'data/processed/cardiac_geometry_ml/topology.npy'));cluster=np.load(P/'data/processed/cardiac_geometry_ml/cluster_labels.npy');counts=np.bincount(cluster,minlength=64);selections={}
 for regime in traincfg['regimes']:
- name=traincfg['name']+'_'+regime;m=json.loads((P/f'experiments/manifests/{name}.json').read_text());assert m['complete'];selections[regime]=m['selection'];stats[regime]=dict(np.load(P/f'data/processed/cardiac_dynamic_ml_{regime}/normalizers.npz'))
+ name=traincfg['name']+'_'+regime;m=json.loads((P/f'experiments/manifests/{name}.json').read_text());assert m['complete'];selections[regime]=m['selection'];normpath=P/f'data/processed/{traincfg.get("data_tag","cardiac_dynamic_ml")}_{regime}/normalizers.npz';assert hashlib.sha256(normpath.read_bytes()).hexdigest()==m['normalizer_sha256'];stats[regime]=dict(np.load(normpath))
  for label in ['data',m['selection']['selected']]:
   key=regime+'/'+label;models[key]=[]
   for seed in traincfg['seeds']:
    path=P/f'experiments/checkpoints/{name}/{label}_seed{seed}.pt';digest=hashlib.sha256(path.read_bytes()).hexdigest();assert digest==m['checkpoints'][path.name];hashes[str(path.relative_to(P))]=digest;net=DynamicGraph(stats[regime]).double();net.load_state_dict(torch.load(path,map_location='cpu',weights_only=False)['model']);net.eval();models[key].append(net)
-freeze={'checkpoint_sha256':hashes,'config_sha256':hashlib.sha256((P/'configs/physics/dynamic_study.json').read_bytes()).hexdigest(),'training_selection':selections,'scope':'all model choices frozen before opening calibration/test/shift arrays; both predeclared methods/regimes retained regardless of outcome'};(P/'experiments/manifests/dynamic_final_freeze.json').write_text(json.dumps(freeze,indent=2))
+freeze={'evaluation_source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'training_config_sha256':hashlib.sha256((P/'configs/physics/dynamic_training.json').read_bytes()).hexdigest(),'checkpoint_sha256':hashes,'frozen_cohort_cases':[c for c in cfg['cases'] if c['split'] not in ['convergence','failed_timestep']],'config_sha256':hashlib.sha256((P/'configs/physics/dynamic_study.json').read_bytes()).hexdigest(),'training_selection':selections,'scope':'all model choices frozen before opening calibration/test/shift arrays; both predeclared methods/regimes retained regardless of outcome'}
+freeze_path=P/'experiments/manifests/dynamic_final_freeze.json'
+if freeze_path.exists():
+ old=json.loads(freeze_path.read_text())
+ if old['checkpoint_sha256']!=hashes or old.get('frozen_cohort_cases',freeze['frozen_cohort_cases'])!=freeze['frozen_cohort_cases']:raise RuntimeError('A different model/protocol already evaluated this cohort; new untouched cases required')
+ freeze['first_full_config_sha256']=old.get('first_full_config_sha256',old['config_sha256'])
+ freeze['first_evaluation_source_sha256']=old.get('first_evaluation_source_sha256',old.get('evaluation_source_sha256'))
+freeze_path.write_text(json.dumps(freeze,indent=2))
+if args.freeze_only:print('FROZEN',len(hashes),'checkpoints; no calibration/test labels read',flush=True);sys.exit(0)
 bridge=FEMBridge(P,threads=2);rng=np.random.default_rng(17302);vm,am=[torch.tensor(x) for x in newmark_operators(200,.005)];frames=traincfg['validation_residual_frames'];gate=InputDomainGate({'radial':(.95,1.05),'longitudinal':(.95,1.05),'amplitude':(.9,1.1),'timing':(.95,1.05)})
 def inputs(c,geo,a):
  x=np.c_[geo['coords']/.1,geo['fiber'],geo['sheet']];coarse=np.zeros((64,9));np.add.at(coarse,cluster,x);coarse/=counts[:,None];delta=coarse[top[:,1],:3]-coarse[top[:,0],:3]
@@ -31,7 +39,7 @@ def jacobian_stats(u,geo):
 def evaluate_prediction(q,net,c,a,geo,seed=None,full_metrics=True):
  with torch.inference_mode():
   u=net.decode(q).reshape(200,-1,3).numpy();v=vm@q;acc=am@q;z=torch.zeros_like(q[:1]);old=[torch.cat((z,x[:-1]),0) for x in [q,v,acc]]
- error=u-a['u'];minimum,inverted=jacobian_stats(u,geo) if full_metrics else (None,None);R=[];failure=None;strain=[];energy=[];own=CardiacFirstStep(geo,dt=.005,analytic_piola=True) if full_metrics else None
+ error=u-a['u'];minimum,inverted=jacobian_stats(u,geo);R=[];failure=None;strain=[];energy=[];own=CardiacFirstStep(geo,dt=.005,analytic_piola=True) if full_metrics else None
  for t in frames:
   h={k:net.decode(x[t]).reshape(-1,3).detach().numpy() for k,x in zip(['u_old','v_old','a_old'],old)}
   r=bridge.evaluate(u[t],float(a['pressure'][t]),False,history=h,geometry_path=P/f'data/processed/cardiac_dynamic_v1/{c["id"]}/geometry.npz',dt=.005);loss=float(r['loss'])
@@ -41,14 +49,20 @@ def evaluate_prediction(q,net,c,a,geo,seed=None,full_metrics=True):
    X=own.X;C=own.cells;F=own.I+torch.einsum('eai,eaj->eij',torch.tensor(u[t])[C],own.grad);Ft=own.I+torch.einsum('eai,eaj->eij',torch.tensor(a['u'][t])[C],own.grad);E=.5*(F.transpose(-1,-2)@F-own.I);Et=.5*(Ft.transpose(-1,-2)@Ft-own.I);strain.append(float(((E-Et).square().sum((-1,-2)).sqrt()*own.vol).sum()/own.vol.sum()))
    if min(float(torch.linalg.det(F).min()),float(torch.linalg.det(Ft).min()))>0:
     W=(own.energy_density(F[:,None].expand(-1,len(own.weights),-1,-1))*own.weights).sum(-1).dot(own.vol);Wt=(own.energy_density(Ft[:,None].expand(-1,len(own.weights),-1,-1))*own.weights).sum(-1).dot(own.vol);energy.append(float(abs(W-Wt)/max(abs(Wt),1e-12)))
- e=np.linalg.norm(error,axis=-1);result={'case':c['id'],'geometry':c['geometry'],'seed':seed,'component_rmse_m':float(np.sqrt(np.mean(error**2))),'mean_nodal_l2_m':float(e.mean()),'p95_nodal_time_l2_m':float(np.quantile(e,.95)),'max_all_nodes_times_l2_m':float(e.max()),'relative_component_rmse':float(np.sqrt(np.mean(error**2)/np.mean(a['u']**2))),'sampled_normalized_force_rms':float(np.mean(R)) if not failure else None,'mechanics_failure':failure,'minimum_detF_all200_endpoints':minimum,'inverted_element_time_fraction':inverted,'completed_full_cycle':bool(minimum>0 and np.isfinite(u).all()) if full_metrics else None,'sampled_volume_mean_strain_error':float(np.mean(strain)) if strain else None,'sampled_relative_elastic_energy_error':float(np.mean(energy)) if energy else None}
+ e=np.linalg.norm(error,axis=-1);result={'case':c['id'],'geometry':c['geometry'],'seed':seed,'component_rmse_m':float(np.sqrt(np.mean(error**2))),'mean_nodal_l2_m':float(e.mean()),'p95_nodal_time_l2_m':float(np.quantile(e,.95)),'max_all_nodes_times_l2_m':float(e.max()),'relative_component_rmse':float(np.sqrt(np.mean(error**2)/np.mean(a['u']**2))),'sampled_normalized_force_rms':float(np.mean(R)) if not failure else None,'mechanics_failure':failure,'minimum_detF_all200_endpoints':minimum,'inverted_element_time_fraction':inverted,'completed_full_cycle':bool(minimum>0 and np.isfinite(u).all()),'sampled_volume_mean_strain_error':float(np.mean(strain)) if strain else None,'sampled_relative_elastic_energy_error':float(np.mean(energy)) if energy else None}
  return result,u
 records={key:{s:[] for s in ['validation','calibration','test','load_shift','shift']} for key in models};members={key:[] for key in models};latent={key:{} for key in models};preferred=None
 try:
  for c in [x for x in cfg['cases'] if x['split'] in ['validation','calibration','test','load_shift','shift']]:
   if c['split']=='calibration' and preferred is None:
    fullkeys=[k for k in models if k.startswith('full/')];base_rmse=np.mean([r['component_rmse_m'] for r in records[fullkeys[0]]['validation']]);eligible=[k for k in fullkeys if np.mean([r['component_rmse_m'] for r in records[k]['validation']])<=1.1*base_rmse and all(r['sampled_normalized_force_rms'] is not None for r in records[k]['validation'])];preferred=min(eligible,key=lambda k:np.mean([r['sampled_normalized_force_rms'] for r in records[k]['validation']]));freeze['preferred_from_validation_only']=preferred;freeze['validation_ensemble_results']={k:records[k]['validation'] for k in fullkeys};(P/'experiments/manifests/dynamic_final_freeze.json').write_text(json.dumps(freeze,indent=2))
-  root=P/f'data/processed/cardiac_dynamic_v1/{c["id"]}';meta=json.loads((root/'manifest.json').read_text());assert meta['complete'];assert hashlib.sha256((root/'trajectory.npz').read_bytes()).hexdigest()==meta['trajectory_sha256'];a=dict(np.load(root/'trajectory.npz'));geo=dict(np.load(root/'geometry.npz'));b=inputs(c,geo,a)
+  root=P/f'data/processed/cardiac_dynamic_v1/{c["id"]}'
+  while args.wait_for_data:
+   try:
+    if json.loads((root/'manifest.json').read_text()).get('complete'):break
+   except (FileNotFoundError,json.JSONDecodeError):pass
+   print('WAIT FROZEN CASE',c['id'],flush=True);time.sleep(30)
+  meta=json.loads((root/'manifest.json').read_text());assert meta['complete'];assert hashlib.sha256((root/'trajectory.npz').read_bytes()).hexdigest()==meta['trajectory_sha256'];a=dict(np.load(root/'trajectory.npz'));geo=dict(np.load(root/'geometry.npz'));b=inputs(c,geo,a)
   for key,nets in models.items():
    q=prediction(nets,b);latent[key][c['id']]=q.numpy();meanq=q.mean(0);net=nets[0]
    if c['split']=='calibration':
@@ -79,7 +93,10 @@ try:
   results[key]=result
  comparisons={}
  for regime in ['full','limited']:
-  keys=[k for k in results if k.startswith(regime+'/')];base=results[keys[0]]['splits']['test']['per_case'];phys=results[keys[1]]['splits']['test']['per_case'];delta=np.array([b['sampled_normalized_force_rms']-a['sampled_normalized_force_rms'] for a,b in zip(base,phys)]);boot=[delta[rng.integers(len(delta),size=len(delta))].mean() for _ in range(2000)];comparisons[regime]={'paired_geometry_mean_force_RMS_difference_physics_minus_data':float(delta.mean()),'conditional_geometry_bootstrap95':np.quantile(boot,[.025,.975]).tolist(),'RMSE_ratio_physics_over_data':results[keys[1]]['splits']['test']['mean_component_rmse_m']/results[keys[0]]['splits']['test']['mean_component_rmse_m'],'bootstrap_scope':'four independent test geometries, fixed five-member models; excludes retraining and FE discretization uncertainty'}
+  keys=[k for k in results if k.startswith(regime+'/')];base=results[keys[0]]['splits']['test']['per_case'];phys=results[keys[1]]['splits']['test']['per_case'];valid=all(r['sampled_normalized_force_rms'] is not None for r in [*base,*phys]);difference=None;interval=None
+  if valid:
+   delta=np.array([b['sampled_normalized_force_rms']-a['sampled_normalized_force_rms'] for a,b in zip(base,phys)]);boot=[delta[rng.integers(len(delta),size=len(delta))].mean() for _ in range(2000)];difference=float(delta.mean());interval=np.quantile(boot,[.025,.975]).tolist()
+  comparisons[regime]={'paired_geometry_mean_force_RMS_difference_physics_minus_data':difference,'conditional_geometry_bootstrap95':interval,'RMSE_ratio_physics_over_data':results[keys[1]]['splits']['test']['mean_component_rmse_m']/results[keys[0]]['splits']['test']['mean_component_rmse_m'],'all_case_residuals_finite':valid,'bootstrap_scope':'four independent test geometries, fixed five-member models; excludes retraining and FE discretization uncertainty; no survivor-only residual summary on failure'}
  # The deployed choice is based only on ensemble validation, never these test outcomes.
  assert preferred is not None
  verdict={'complete':True,'models':results,'comparisons':comparisons,'preferred_from_validation_only':preferred,'coverage_target':'joint maximum nodal L2 error over all nodes and all200 time steps in one new geometry/independently drawn waveform; calibration/test descriptor distributions match','mechanics_frames':frames,'scope':'passive full-cycle dt5ms numerical ellipsoid family, all rollouts start from zero histories; no teacher forcing','limitations':['four independent primary test geometries: very wide confidence intervals','limited regime uses only one training geometry and its own train-only POD','all shapes from one affine ellipsoid family','reference discretization uncertainty reported separately','shift coverage has no exchangeability guarantee','domain gate detects declared input-support violations, not every possible surrogate failure','fallback routing counts are decisions; rejected-reference accuracy is not counted as NN prediction accuracy']}

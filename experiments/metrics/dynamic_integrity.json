@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "scope": "frozen checkpoint/preprocessing hashes, geometry role isolation and limited-label contracts; no inference claim",
+  "frozen_models_verified": 20,
+  "cohort_geometries": 32,
+  "cohort_trajectories": 44,
+  "regimes": {
+    "full": {
+      "labelled_training_trajectories": 8,
+      "input_trajectories": 8,
+      "normalizer_sha256": "ef609b10c349107fbec1c5dfa59b1647cb9447be4b4e5ab0c01da3ba09768110"
+    },
+    "limited": {
+      "labelled_training_trajectories": 2,
+      "input_trajectories": 8,
+      "normalizer_sha256": "2ae353fcfd3381dbd1f1d4c838276e6ae839433adf8ddd0ac558b8e415b81115"
+    }
+  },
+  "geometry_roles_disjoint": true,
+  "primary_cohort_unchanged_since_model_freeze": true
+}

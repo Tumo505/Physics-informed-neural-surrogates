@@ -1,0 +1,62 @@
+{
+  "complete": true,
+  "seed": 22,
+  "lambda": 1.0,
+  "best_validation": {
+    "rollout_data_objective": 0.05992484092712402,
+    "projected_component_rmse_m": 0.001669744960963726,
+    "sampled_full_residual_loss": 0.012526155449450016,
+    "selection_score": 0.07245099637657404
+  },
+  "history": [
+    {
+      "step": 49,
+      "validation": {
+        "rollout_data_objective": 0.05992484092712402,
+        "projected_component_rmse_m": 0.001669744960963726,
+        "sampled_full_residual_loss": 0.012526155449450016,
+        "selection_score": 0.07245099637657404
+      }
+    },
+    {
+      "step": 99,
+      "validation": {
+        "rollout_data_objective": 0.06117057800292969,
+        "projected_component_rmse_m": 0.0016617643414065242,
+        "sampled_full_residual_loss": 0.012836850248277187,
+        "selection_score": 0.07400742825120687
+      }
+    },
+    {
+      "step": 149,
+      "validation": {
+        "rollout_data_objective": 0.06819994747638702,
+        "projected_component_rmse_m": 0.0018029427155852318,
+        "sampled_full_residual_loss": 0.015084341168403625,
+        "selection_score": 0.08328428864479065
+      }
+    },
+    {
+      "step": 199,
+      "validation": {
+        "rollout_data_objective": 0.06369678676128387,
+        "projected_component_rmse_m": 0.0017131395870819688,
+        "sampled_full_residual_loss": 0.013330373913049698,
+        "selection_score": 0.07702716067433357
+      }
+    },
+    {
+      "step": 249,
+      "validation": {
+        "rollout_data_objective": 0.06675189733505249,
+        "projected_component_rmse_m": 0.0017712506232783198,
+        "sampled_full_residual_loss": 0.01380095724016428,
+        "selection_score": 0.08055285457521677
+      }
+    }
+  ],
+  "updates": 250,
+  "seconds": 15.176717374939471,
+  "initialization": "/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/experiments/checkpoints/cardiac_dynamic_graph_v2_limited/warm_seed22.pt",
+  "checkpoint_sha256": "985bf27940d343d765a71dcd27f14dcaa855466ce8e24d20e25670a8db2f7f62"
+}

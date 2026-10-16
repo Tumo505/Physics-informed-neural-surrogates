@@ -1,0 +1,89 @@
+{
+  "complete": true,
+  "seed": 11,
+  "lambda": 0.0,
+  "best_validation": {
+    "rollout_data_objective": 0.032785963267087936,
+    "projected_component_rmse_m": 0.0009174310835078359,
+    "sampled_full_residual_loss": null,
+    "selection_score": 0.032785963267087936
+  },
+  "history": [
+    {
+      "step": 49,
+      "validation": {
+        "rollout_data_objective": 0.10380732268095016,
+        "projected_component_rmse_m": 0.0019108298001810908,
+        "sampled_full_residual_loss": null,
+        "selection_score": 0.10380732268095016
+      }
+    },
+    {
+      "step": 99,
+      "validation": {
+        "rollout_data_objective": 0.05399131774902344,
+        "projected_component_rmse_m": 0.0011315303854644299,
+        "sampled_full_residual_loss": null,
+        "selection_score": 0.05399131774902344
+      }
+    },
+    {
+      "step": 149,
+      "validation": {
+        "rollout_data_objective": 0.032785963267087936,
+        "projected_component_rmse_m": 0.0009174310835078359,
+        "sampled_full_residual_loss": null,
+        "selection_score": 0.032785963267087936
+      }
+    },
+    {
+      "step": 199,
+      "validation": {
+        "rollout_data_objective": 0.03481101244688034,
+        "projected_component_rmse_m": 0.0008871369645930827,
+        "sampled_full_residual_loss": null,
+        "selection_score": 0.03481101244688034
+      }
+    },
+    {
+      "step": 249,
+      "validation": {
+        "rollout_data_objective": 0.03669777885079384,
+        "projected_component_rmse_m": 0.0009043557220138609,
+        "sampled_full_residual_loss": null,
+        "selection_score": 0.03669777885079384
+      }
+    },
+    {
+      "step": 299,
+      "validation": {
+        "rollout_data_objective": 0.03828655928373337,
+        "projected_component_rmse_m": 0.0009202673682011664,
+        "sampled_full_residual_loss": null,
+        "selection_score": 0.03828655928373337
+      }
+    },
+    {
+      "step": 349,
+      "validation": {
+        "rollout_data_objective": 0.03870243951678276,
+        "projected_component_rmse_m": 0.0009253374300897121,
+        "sampled_full_residual_loss": null,
+        "selection_score": 0.03870243951678276
+      }
+    },
+    {
+      "step": 399,
+      "validation": {
+        "rollout_data_objective": 0.038774166256189346,
+        "projected_component_rmse_m": 0.0009263483225367963,
+        "sampled_full_residual_loss": null,
+        "selection_score": 0.038774166256189346
+      }
+    }
+  ],
+  "updates": 400,
+  "seconds": 11.167547708027996,
+  "initialization": "seeded random; zero readout",
+  "checkpoint_sha256": "b608946620b40922e1b881366d7559d9fde8d7d7f9bf876995631fa2f59375fa"
+}

@@ -1,0 +1,62 @@
+{
+  "complete": true,
+  "seed": 11,
+  "lambda": 0.0,
+  "best_validation": {
+    "rollout_data_objective": 2.162208318710327,
+    "projected_component_rmse_m": 0.0014957862440496683,
+    "sampled_full_residual_loss": 0.01952839270234108,
+    "selection_score": 2.162208318710327
+  },
+  "history": [
+    {
+      "step": 49,
+      "validation": {
+        "rollout_data_objective": 2.162208318710327,
+        "projected_component_rmse_m": 0.0014957862440496683,
+        "sampled_full_residual_loss": 0.01952839270234108,
+        "selection_score": 2.162208318710327
+      }
+    },
+    {
+      "step": 99,
+      "validation": {
+        "rollout_data_objective": 2.172060251235962,
+        "projected_component_rmse_m": 0.0015703535173088312,
+        "sampled_full_residual_loss": 0.021553050726652145,
+        "selection_score": 2.172060251235962
+      }
+    },
+    {
+      "step": 149,
+      "validation": {
+        "rollout_data_objective": 2.181110382080078,
+        "projected_component_rmse_m": 0.0016186076682060957,
+        "sampled_full_residual_loss": 0.022648712620139122,
+        "selection_score": 2.181110382080078
+      }
+    },
+    {
+      "step": 199,
+      "validation": {
+        "rollout_data_objective": 2.1964364051818848,
+        "projected_component_rmse_m": 0.0016565547557547688,
+        "sampled_full_residual_loss": 0.023095883429050446,
+        "selection_score": 2.1964364051818848
+      }
+    },
+    {
+      "step": 249,
+      "validation": {
+        "rollout_data_objective": 2.2053134441375732,
+        "projected_component_rmse_m": 0.0016762008890509605,
+        "sampled_full_residual_loss": 0.02332254871726036,
+        "selection_score": 2.2053134441375732
+      }
+    }
+  ],
+  "updates": 250,
+  "seconds": 8.777818667003885,
+  "initialization": "/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/experiments/checkpoints/cardiac_dynamic_graph_v1_full/warm_seed11.pt",
+  "checkpoint_sha256": "e2596d183aa21386043bed9882d6efb53f776e239b65d3bd6f56f581cb9ad3e6"
+}

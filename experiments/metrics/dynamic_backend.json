@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "dt_s": 0.005,
+  "records": [
+    {
+      "frame": 39,
+      "cpu64_force_relative_error": 2.261965543467862e-13,
+      "cpu64_u_gradient_relative_error": 5.219937920311843e-13,
+      "gpu32_force_relative_error": 0.00014186805990264135,
+      "gpu32_u_gradient_relative_error": 0.0003419383569332632,
+      "history_chain_gradient_relative_error_vs_native_finite_difference": 2.2159293114027384e-11
+    },
+    {
+      "frame": 99,
+      "cpu64_force_relative_error": 1.15038916316478e-12,
+      "cpu64_u_gradient_relative_error": 2.7446144722009142e-12,
+      "gpu32_force_relative_error": 0.0008523848139467687,
+      "gpu32_u_gradient_relative_error": 0.002095554184729995,
+      "history_chain_gradient_relative_error_vs_native_finite_difference": 2.5300109588029593e-11
+    }
+  ],
+  "newmark_velocity_relative_error": 3.9499242712258466e-15,
+  "newmark_acceleration_relative_error": 3.2971466872677905e-14,
+  "source": "actual converged full-cycle training geometry; native FE forces, tangent and coupled-history finite differences"
+}

@@ -1,8 +1,8 @@
 {
   "complete": false,
   "planned_accepted_trajectories": 47,
-  "completed_accepted_trajectories": 11,
-  "recorded_valid_steps": 2570,
+  "completed_accepted_trajectories": 37,
+  "recorded_valid_steps": 7830,
   "records": [
     {
       "case": {
@@ -28,7 +28,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -54,7 +55,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -80,7 +82,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -106,7 +109,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -132,7 +136,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -158,7 +163,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -184,7 +190,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -210,7 +217,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -236,7 +244,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -262,7 +271,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -278,17 +288,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 20,
-      "seconds": 22.01858629193157,
-      "maximum_residual_l2_N": 5.874121567743977e-10,
-      "minimum_recorded_endpoint_detF": 0.9943376503771303,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 280.30860066693276,
+      "maximum_residual_l2_N": 2.8881388002868663e-08,
+      "minimum_recorded_endpoint_detF": 0.6884882634681666,
+      "trajectory_sha256": "ba52dba098f7a4621550706d3bff48fa16e273b1296299219a0502534a5582c7",
+      "geometry_sha256": "ba49c4969d06cf6fbba83dbb2c6cebc59e33a1e28dad0d616604a757ac78a300",
       "source_sha256": {
-        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "scripts/generate_dynamic_study.py": "c004ace2ecc71d5cd23956eb082b03d7573fe326bb9a1930022fb0728d4e81fd",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -304,17 +315,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 10,
-      "seconds": 11.225781166926026,
-      "maximum_residual_l2_N": 8.371897899971216e-10,
-      "minimum_recorded_endpoint_detF": 0.9971612524164236,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 281.68823345797136,
+      "maximum_residual_l2_N": 9.563042962148061e-09,
+      "minimum_recorded_endpoint_detF": 0.6493263301161882,
+      "trajectory_sha256": "efc74b76504baebbefafecb2d2ac38413ae9117b2165ee4bda3850633ff02c8e",
+      "geometry_sha256": "ba49c4969d06cf6fbba83dbb2c6cebc59e33a1e28dad0d616604a757ac78a300",
       "source_sha256": {
-        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "scripts/generate_dynamic_study.py": "c004ace2ecc71d5cd23956eb082b03d7573fe326bb9a1930022fb0728d4e81fd",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -330,17 +342,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 10,
-      "seconds": 11.249575707945041,
-      "maximum_residual_l2_N": 4.5098747940965707e-10,
-      "minimum_recorded_endpoint_detF": 0.9975558298784557,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 278.3900389999617,
+      "maximum_residual_l2_N": 2.8373333575356323e-08,
+      "minimum_recorded_endpoint_detF": 0.6836399681003816,
+      "trajectory_sha256": "6edfa52a09f4cb0d6f9c05081c123a5d29de3f99efc53e508392912163f6f8cf",
+      "geometry_sha256": "8a438ce9d09d804d6f81994befbdd230e5e3db2ea1f068b42650800e2e75feab",
       "source_sha256": {
-        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "scripts/generate_dynamic_study.py": "c004ace2ecc71d5cd23956eb082b03d7573fe326bb9a1930022fb0728d4e81fd",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -356,17 +369,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 10,
-      "seconds": 11.293303332990035,
-      "maximum_residual_l2_N": 8.244076547779849e-10,
-      "minimum_recorded_endpoint_detF": 0.9971363942835278,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 286.0051364169922,
+      "maximum_residual_l2_N": 8.82289380218876e-09,
+      "minimum_recorded_endpoint_detF": 0.6089025534203413,
+      "trajectory_sha256": "27cd3cd91d00b9cb9eb74800423e28ee0bd598d717ba5c29d86ca98c42608758",
+      "geometry_sha256": "2f88ec60d220341c5c9dcef5ea0c643bb1f10ecc70a50833ba4d14fc368e6ade",
       "source_sha256": {
-        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "scripts/generate_dynamic_study.py": "c004ace2ecc71d5cd23956eb082b03d7573fe326bb9a1930022fb0728d4e81fd",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -382,8 +396,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 282.0804462500382,
+      "maximum_residual_l2_N": 9.769784836541203e-09,
+      "minimum_recorded_endpoint_detF": 0.6398079307024251,
+      "trajectory_sha256": "a418f6df21b5a1a1fb2a0f36107a36d101e1567423d1b82b760e77ebf5075046",
+      "geometry_sha256": "e1e8963055f5e2bb2b17ee5c22362fccee747eeccae980d9ac11efa154cfa4b6",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "c004ace2ecc71d5cd23956eb082b03d7573fe326bb9a1930022fb0728d4e81fd",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -399,8 +423,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 269.49372350005433,
+      "maximum_residual_l2_N": 1.3796516867751736e-08,
+      "minimum_recorded_endpoint_detF": 0.6210491241147026,
+      "trajectory_sha256": "3c86b8a885f3ec5e0a498824b56a4a224428260c197c32f5f7cf6a52ac946c46",
+      "geometry_sha256": "eb0bc9a6a2d8492c4ba408a7b52308b1b2cb9a451bf0cd689fece2c3357c89b2",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "3934fa8835e8171a6109a76fd69530907ea39135ff471d3731bae2030450b696",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -416,8 +450,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 265.3864757500123,
+      "maximum_residual_l2_N": 1.1334988748904527e-08,
+      "minimum_recorded_endpoint_detF": 0.6640678919300522,
+      "trajectory_sha256": "45ff51977a108a0490b766e12bd0d159fcc68155a5ff72717bbba7cee4992f64",
+      "geometry_sha256": "3c77fdd420fe791d4bf4f15b81368e245f4ccbd1bb0a08fcbba2f1cb477da683",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "3934fa8835e8171a6109a76fd69530907ea39135ff471d3731bae2030450b696",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -433,8 +477,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 272.6381204579957,
+      "maximum_residual_l2_N": 9.665705859775887e-09,
+      "minimum_recorded_endpoint_detF": 0.6028519912259316,
+      "trajectory_sha256": "c4c82af5a252fe365e41835f4faf38db6f222dc819f4c7ba9c7a101fdb51ee1a",
+      "geometry_sha256": "7bf1a61eb5ca0b37b9e81676f4c658a4eadb738c2600d315963be4c06ea3583a",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "3934fa8835e8171a6109a76fd69530907ea39135ff471d3731bae2030450b696",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -450,8 +504,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 267.23826904199086,
+      "maximum_residual_l2_N": 8.704873578497137e-09,
+      "minimum_recorded_endpoint_detF": 0.6504912834904348,
+      "trajectory_sha256": "794903f02161270c3287ba45e1b01d7ee81ddf77cbff5a4f966877b0ba56b8cc",
+      "geometry_sha256": "ff5207e1e16d43d89dfb3b48b50616879d1f0db428f86c13e3ecf2ea82b112be",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "3934fa8835e8171a6109a76fd69530907ea39135ff471d3731bae2030450b696",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -467,8 +531,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 266.70385283301584,
+      "maximum_residual_l2_N": 2.972759127432984e-08,
+      "minimum_recorded_endpoint_detF": 0.6355080886624238,
+      "trajectory_sha256": "9031f3250f4cff48dc574d5eba4f660dc3e172bd9f1b136c6ed18f6220a90534",
+      "geometry_sha256": "c7fbafeb03503ac5895a4f58d75e64ab6cd12c1895b976b5344f23b0ccbc74a3",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "3934fa8835e8171a6109a76fd69530907ea39135ff471d3731bae2030450b696",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -484,8 +558,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 269.03678570792545,
+      "maximum_residual_l2_N": 3.537415090101613e-08,
+      "minimum_recorded_endpoint_detF": 0.5929707361936577,
+      "trajectory_sha256": "f9ddb664937758362d3a06b7a64dcaec3d8a9e17298c082c5608e27701ac9b9c",
+      "geometry_sha256": "4fc1ac0d337df7d6c19a1716eefc6f419bae13dc787906ced890c18be5da4c43",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "3934fa8835e8171a6109a76fd69530907ea39135ff471d3731bae2030450b696",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -501,8 +585,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 269.2719029589789,
+      "maximum_residual_l2_N": 1.1065348259268265e-08,
+      "minimum_recorded_endpoint_detF": 0.5733585656878263,
+      "trajectory_sha256": "3b120f3aad713fdf06c12951efca6c6f059df4ebab564a323e7f097fa91b3b9f",
+      "geometry_sha256": "60c834445799551703d025f67d9185c174e6e5a13584d0d2214746a926cd8b61",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "3934fa8835e8171a6109a76fd69530907ea39135ff471d3731bae2030450b696",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -518,8 +612,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 267.22036325000226,
+      "maximum_residual_l2_N": 4.991150515247254e-08,
+      "minimum_recorded_endpoint_detF": 0.6057233326853172,
+      "trajectory_sha256": "412978131fc7a64bef77cabb664e6d70bf585042761c56a7f02fb8a853f337fe",
+      "geometry_sha256": "a6ac991c9e785e07b7ac987a932eb2382e187b4810dba38c5135d49a60a9b1f0",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "3934fa8835e8171a6109a76fd69530907ea39135ff471d3731bae2030450b696",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -535,8 +639,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 264.5581327920081,
+      "maximum_residual_l2_N": 3.3192853535390164e-08,
+      "minimum_recorded_endpoint_detF": 0.6725024940961307,
+      "trajectory_sha256": "0c305b3f47bb777bfce7339f85cc89432beb8ae50aebcc6bb7a83853031abac0",
+      "geometry_sha256": "0c5403cacae73cefd061e7877303e12a74804666ebedf46a5ec8fd90abd53f04",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "3934fa8835e8171a6109a76fd69530907ea39135ff471d3731bae2030450b696",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -552,8 +666,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 266.95743120799307,
+      "maximum_residual_l2_N": 3.890480465972412e-08,
+      "minimum_recorded_endpoint_detF": 0.6146207908778684,
+      "trajectory_sha256": "b047ef5ee5dbb671fde2dcae1cac436c87bc6fa55ed1e307baba49135b9741eb",
+      "geometry_sha256": "96b119e72c873ed5c83420cfb3f44cc1ae8da306f755c46ea140b7d0120bfa6a",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "3934fa8835e8171a6109a76fd69530907ea39135ff471d3731bae2030450b696",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -569,8 +693,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 258.81378666695673,
+      "maximum_residual_l2_N": 8.385530674445655e-08,
+      "minimum_recorded_endpoint_detF": 0.6261502868296295,
+      "trajectory_sha256": "f8b0d5ac3c3e92dbd4e3767504b408474a78e05ca166c775a8753d0b6b67ee8a",
+      "geometry_sha256": "4e65eface521d4769b639e79ace4271fce9e178a2eb09e65c5fe7ec32b0267be",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -586,8 +720,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 258.62906629103236,
+      "maximum_residual_l2_N": 1.1468900973905868e-08,
+      "minimum_recorded_endpoint_detF": 0.6227987961234777,
+      "trajectory_sha256": "fb7243b5155251bf624a7592c9cf06ecb5834265534e1ec996ebf1dfdbcdb3ab",
+      "geometry_sha256": "b038f4104bbe6d9ee1e03cfc88cf7f2fea2bb7700a02a6092a9dada1657bd2fc",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -603,8 +747,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 257.82758966705296,
+      "maximum_residual_l2_N": 9.120537830833276e-09,
+      "minimum_recorded_endpoint_detF": 0.6394133786607856,
+      "trajectory_sha256": "edf781f733ad3eaa8d40711a209520cfc79cca8cc7068832656df2c354c4f8ae",
+      "geometry_sha256": "02482faa295f0cf52066f932f746c72d7d345a4d62126140da8427813bec280e",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -620,8 +774,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 255.24207020900212,
+      "maximum_residual_l2_N": 2.4728993689803664e-08,
+      "minimum_recorded_endpoint_detF": 0.6420255785412634,
+      "trajectory_sha256": "649ca673510c2b3ba247b20b84dbcb4f57ce9bd1fa25cbb36d9117f1f2d21b7d",
+      "geometry_sha256": "cf99fb787170a40df451276437c5e86460b0997be466909394738a422c2522b9",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -637,8 +801,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 257.9591616250109,
+      "maximum_residual_l2_N": 2.3177879931661775e-08,
+      "minimum_recorded_endpoint_detF": 0.6379550611179946,
+      "trajectory_sha256": "4e162615b49cae2ecb43f580afe5b92d535dd8678444a645648840f710caeb1f",
+      "geometry_sha256": "74cdf4320074b487fb533fb4fa5b9780e0e0cbf72cc7f14b843a3ec58db22c28",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -654,8 +828,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 253.09908824996091,
+      "maximum_residual_l2_N": 7.235008245153617e-08,
+      "minimum_recorded_endpoint_detF": 0.659163394022489,
+      "trajectory_sha256": "602dc6bd455b3a24ed11d59e2ba90623c543fe152c76969ea1fc1827eaaf0507",
+      "geometry_sha256": "c92e7dc556b33eb333db25b468fb8695fdd76a2aa197983b7d4b9711e91f8b9e",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -671,8 +855,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 257.22473729099147,
+      "maximum_residual_l2_N": 1.3534298601901941e-08,
+      "minimum_recorded_endpoint_detF": 0.6310363541163205,
+      "trajectory_sha256": "fde0e6a94f7766a1c9025bfa68532558fcccb6dac0c7fb772be7449996e1efae",
+      "geometry_sha256": "51d9ef19b411cd251753cdc2bbcb34db12b6a71c00d2e5daafb2fdde2c7d9380",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -688,8 +882,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 259.76012129103765,
+      "maximum_residual_l2_N": 9.71158444020201e-09,
+      "minimum_recorded_endpoint_detF": 0.5968004054673302,
+      "trajectory_sha256": "7550cf09bbae3da05b62243085f5c9a6eb19d1bb960dcaff49825fb55e340d0f",
+      "geometry_sha256": "7896e7a977f8e2b1133197b6d44f02527f835005f8fa2032bef3a9a61284b6d2",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -705,8 +909,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 265.10328916599974,
+      "maximum_residual_l2_N": 7.164597191257106e-08,
+      "minimum_recorded_endpoint_detF": 0.5282284156428346,
+      "trajectory_sha256": "e69c7fe32c4afed871165672e00d896ca4083ba17a6c6d67a259edf9c4dd8fcd",
+      "geometry_sha256": "7896e7a977f8e2b1133197b6d44f02527f835005f8fa2032bef3a9a61284b6d2",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -722,8 +936,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 253.2568755830871,
+      "maximum_residual_l2_N": 3.8054373781228454e-08,
+      "minimum_recorded_endpoint_detF": 0.6741946668883004,
+      "trajectory_sha256": "f848f38f197cd183e4e66fd6763c73c674be317ac277abfd7998f4c43fe4ef4b",
+      "geometry_sha256": "fd1e52e4a925bb835a55f8fa0d7b15cffad97c349fd9aa0de0518799aedcc840",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -740,7 +964,17 @@
         "refinement": 0
       },
       "complete": false,
-      "completed_steps": 0
+      "completed_steps": 40,
+      "seconds": 35.399694124935195,
+      "maximum_residual_l2_N": 1.1626191288221696e-09,
+      "minimum_recorded_endpoint_detF": 0.9902507174031079,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -757,7 +991,17 @@
         "refinement": 0
       },
       "complete": false,
-      "completed_steps": 0
+      "completed_steps": 40,
+      "seconds": 37.7628026669845,
+      "maximum_residual_l2_N": 6.012815901790559e-10,
+      "minimum_recorded_endpoint_detF": 0.9653729813967914,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -774,7 +1018,17 @@
         "refinement": 0
       },
       "complete": false,
-      "completed_steps": 0
+      "completed_steps": 40,
+      "seconds": 35.40516712504905,
+      "maximum_residual_l2_N": 1.0824443345047426e-09,
+      "minimum_recorded_endpoint_detF": 0.9903870966836006,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -791,7 +1045,17 @@
         "refinement": 0
       },
       "complete": false,
-      "completed_steps": 0
+      "completed_steps": 30,
+      "seconds": 26.54894187510945,
+      "maximum_residual_l2_N": 5.348372763832836e-10,
+      "minimum_recorded_endpoint_detF": 0.9925040686290957,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -808,7 +1072,17 @@
         "refinement": 0
       },
       "complete": false,
-      "completed_steps": 0
+      "completed_steps": 30,
+      "seconds": 26.49431504192762,
+      "maximum_residual_l2_N": 1.0059961001474007e-09,
+      "minimum_recorded_endpoint_detF": 0.9914253300306642,
+      "trajectory_sha256": null,
+      "geometry_sha256": null,
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -902,7 +1176,8 @@
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "ca2d695dc1912797072b37fd7386249e41c205a9e0285c087650943061196791",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
@@ -918,21 +1193,22 @@
         "dt": 0.0025,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 290,
-      "seconds": 450.51173654198647,
+      "complete": true,
+      "completed_steps": 400,
+      "seconds": 609.0690983330132,
       "maximum_residual_l2_N": 4.71686041586009e-08,
       "minimum_recorded_endpoint_detF": 0.6297784791577805,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "trajectory_sha256": "149b22f63284299dd6bce3ed806b330221bfdccfdcb2b60cad9d54443094b012",
+      "geometry_sha256": "c071f727b73ba3ddc5be956666744a158a81ba06e5e5bb2ee3fc7f507d52357c",
       "source_sha256": {
-        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "scripts/generate_dynamic_study.py": "c004ace2ecc71d5cd23956eb082b03d7573fe326bb9a1930022fb0728d4e81fd",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "checkpoint-time source snapshot; solver retry/metadata options evolved during cohort; fixed physical case and external source commit unchanged"
     },
     {
       "case": {
-        "id": "convergence_refined_dt0005",
+        "id": "convergence_refined_dt00025",
         "geometry": -1,
         "split": "convergence",
         "scales": [
@@ -941,20 +1217,21 @@
         ],
         "amplitude": 1.0,
         "timing_scale": 1.0,
-        "dt": 0.005,
+        "dt": 0.0025,
         "refinement": 1
       },
       "complete": false,
-      "completed_steps": 30,
-      "seconds": 293.54454079200514,
-      "maximum_residual_l2_N": 8.349330185787343e-10,
-      "minimum_recorded_endpoint_detF": 0.9949544929984268,
+      "completed_steps": 50,
+      "seconds": 351.15748958301265,
+      "maximum_residual_l2_N": 9.518575752716971e-09,
+      "minimum_recorded_endpoint_detF": 0.99543396140227,
       "trajectory_sha256": null,
       "geometry_sha256": null,
       "source_sha256": {
-        "scripts/generate_dynamic_study.py": "791a527488d011b5e57227d894a84d0867fafc424d29aa93c91326873efd23db",
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
-      }
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     }
   ],
   "failed_10ms_attempts": [
@@ -1145,9 +1422,10 @@
     ],
     "solver": "generalized-alpha dt5ms variant, full200 steps0.005 through1s; 10ms attempt failed and is retained; strict positive SNES reason/residual/J gates",
     "OOD": "input domain geometry box[.95,1.05]^2 and amplitude[.9,1.1],timing[.95,1.05]; reject outside, also reject inverted/nonfinite predictions; exact FE fallback",
-    "limited_data": "one of four training geometries versus all four, same selected architecture/update budgets",
+    "limited_data": "one labelled training geometry/two trajectories and own train-only POD; all four training geometries provide input geometry/load descriptors for physics collocation, unlabelled displacement/history arrays not read; baseline sees identical inputs but no residual loss; same validation labels/budgets",
     "protocol_amendment": "Before any calibration/test generation or label access: make calibration and primary test exchangeable and increase calibration20 for finite corrected95% radius; train/validation cases unchanged",
-    "convergence_tolerance": "pre-evaluation1percent relative space-time volume-L2 for temporal and spatial sensitivity; report failures; two spatial levels do not establish asymptotic convergence"
+    "convergence_tolerance": "pre-evaluation1percent relative space-time volume-L2 for temporal and spatial sensitivity; report failures; two spatial levels do not establish asymptotic convergence",
+    "spatial_convergence_retry": "refined5ms nonlinear solve failed/slow near.25s; compare coarse/fine at2.5ms, retain failed5ms trajectory; primary5ms ML cohort unchanged"
   },
-  "config_sha256": "579eef4c01cdeb7f4eaace04f496818c1b0db9ac4a2216aa916ad8fa00703f24"
+  "config_sha256": "6e05500d6b3224a59913cf87860ba5966bc0373a98d7cd0389dd0eb445507646"
 }

@@ -617,7 +617,7 @@
     {
       "id": "convergence_refined_dt0005",
       "geometry": -1,
-      "split": "convergence",
+      "split": "failed_timestep",
       "scales": [
         1,
         1
@@ -625,6 +625,19 @@
       "amplitude": 1.0,
       "timing_scale": 1.0,
       "dt": 0.005,
+      "refinement": 1
+    },
+    {
+      "id": "convergence_refined_dt00025",
+      "geometry": -1,
+      "split": "convergence",
+      "scales": [
+        1,
+        1
+      ],
+      "amplitude": 1.0,
+      "timing_scale": 1.0,
+      "dt": 0.0025,
       "refinement": 1
     }
   ],
@@ -644,8 +657,9 @@
     ],
     "solver": "generalized-alpha dt5ms variant, full200 steps0.005 through1s; 10ms attempt failed and is retained; strict positive SNES reason/residual/J gates",
     "OOD": "input domain geometry box[.95,1.05]^2 and amplitude[.9,1.1],timing[.95,1.05]; reject outside, also reject inverted/nonfinite predictions; exact FE fallback",
-    "limited_data": "one of four training geometries versus all four, same selected architecture/update budgets",
+    "limited_data": "one labelled training geometry/two trajectories and own train-only POD; all four training geometries provide input geometry/load descriptors for physics collocation, unlabelled displacement/history arrays not read; baseline sees identical inputs but no residual loss; same validation labels/budgets",
     "protocol_amendment": "Before any calibration/test generation or label access: make calibration and primary test exchangeable and increase calibration20 for finite corrected95% radius; train/validation cases unchanged",
-    "convergence_tolerance": "pre-evaluation1percent relative space-time volume-L2 for temporal and spatial sensitivity; report failures; two spatial levels do not establish asymptotic convergence"
+    "convergence_tolerance": "pre-evaluation1percent relative space-time volume-L2 for temporal and spatial sensitivity; report failures; two spatial levels do not establish asymptotic convergence",
+    "spatial_convergence_retry": "refined5ms nonlinear solve failed/slow near.25s; compare coarse/fine at2.5ms, retain failed5ms trajectory; primary5ms ML cohort unchanged"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "cardiac_dynamic_graph_v1",
+  "name": "cardiac_dynamic_graph_v2",
   "seeds": [
     11,
     22,
@@ -16,6 +16,7 @@
   "device": "cpu",
   "physics_frames_per_update": 1,
   "validation_residual_frames": [
+    0,
     9,
     29,
     49,
@@ -28,7 +29,7 @@
   "lambda_screen": "training-only gradient balance at warm seed11; grid decade below/at/above rounded median",
   "lambda_selection": "lowest validation full weak residual among candidates with full-cycle displacement RMSE no more than10percent above matched data-only; report if no eligible candidate",
   "checkpoint_selection": "validation full-cycle displacement MSE plus weighted validation full weak residual; initial warm checkpoint eligible",
-  "loss": "full free rollout normalized POD coefficient MSE +0.1 normalized first-difference MSE +0.01 normalized second-difference MSE +lambda exact weak residual",
+  "loss": "physical displacement MSE/train field RMS squared +0.1 physical first-difference MSE/train difference RMS squared +0.01 physical second-difference MSE/train second-difference RMS squared +lambda exact weak residual",
   "rollout": "zero initial displacement/hidden state; known current/past pressures and graph geometry only; no true history supplied",
   "regimes": [
     "full",
@@ -36,5 +37,8 @@
   ],
   "scope": "new passive numerical ellipsoid family, not anatomical or clinical validation",
   "physics_device": "mps",
-  "backend_reason": "measured recurrent forward/back CPU~33ms versus MPS~109ms at batch8/200steps; CPU neural recurrence with differentiable device transfers to verified MPS FE residual"
+  "backend_reason": "measured recurrent forward/back CPU~33ms versus MPS~109ms at batch8/200steps; CPU neural recurrence with differentiable device transfers to verified MPS FE residual",
+  "limited_data": "one labelled geometry plus three unlabelled training geometries for verified residual collocation; independent limited-data initialization/POD; same inputs and step budgets in paired arms",
+  "data_tag": "cardiac_dynamic_ml_v2",
+  "supersedes": "v1 seed11 validation-only pilot retained; corrected equal normalized-POD-mode weighting to physical field MSE before any calibration/test model evaluation"
 }

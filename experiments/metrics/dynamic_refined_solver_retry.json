@@ -1,0 +1,17 @@
+{
+  "initial_failure": {
+    "case": "convergence_refined_dt0005",
+    "step": 49,
+    "time_s": 0.25,
+    "SNES_reason": -9,
+    "reason": "DIVERGED_DTOL, residual growth after first Newton iteration"
+  },
+  "retry": "same converged state, solve-time bt line search and admissible Newmark constant-acceleration initial guess; no timestep/forms/material/pressure changes",
+  "failure_is_retained": true,
+  "scope": "solver globalization repair, not target filtering",
+  "PETSc_options_retry": "did not change effective solve-time basic line search: DOLFIN overrides PETSc options in solve()",
+  "observed_DOLFIN_default": "line_search=basic from installed PETScSNESSolver parameter table",
+  "backtracking_only_retry": "interrupted after several minutes without advancing the durable step39 checkpoint; retained log",
+  "predictor_retry": "advanced through step49 with positive endpoint J and small residual, but step50 initial predicted residual exceeded1e24 and progressed slowly; retained partial reference, not a completed converged cycle",
+  "active_retry": "new2.5ms refined trajectory from rest, bt line search and lowest finite residual among admissible kinematic initial guesses; matched coarse2.5ms already complete; primary5ms ML cases unchanged"
+}

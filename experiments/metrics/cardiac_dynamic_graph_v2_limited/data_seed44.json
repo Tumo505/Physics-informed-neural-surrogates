@@ -1,0 +1,62 @@
+{
+  "complete": true,
+  "seed": 44,
+  "lambda": 0.0,
+  "best_validation": {
+    "rollout_data_objective": 0.07660525292158127,
+    "projected_component_rmse_m": 0.0017070687608793378,
+    "sampled_full_residual_loss": 254069092384768.0,
+    "selection_score": 0.07660525292158127
+  },
+  "history": [
+    {
+      "step": 49,
+      "validation": {
+        "rollout_data_objective": 0.07732107490301132,
+        "projected_component_rmse_m": 0.0017286138609051704,
+        "sampled_full_residual_loss": 5123176660992.0,
+        "selection_score": 0.07732107490301132
+      }
+    },
+    {
+      "step": 99,
+      "validation": {
+        "rollout_data_objective": 0.08024574816226959,
+        "projected_component_rmse_m": 0.00174899457488209,
+        "sampled_full_residual_loss": 4937999712256.0,
+        "selection_score": 0.08024574816226959
+      }
+    },
+    {
+      "step": 149,
+      "validation": {
+        "rollout_data_objective": 0.08253907412290573,
+        "projected_component_rmse_m": 0.0017815042519941926,
+        "sampled_full_residual_loss": 1914280738816.0,
+        "selection_score": 0.08253907412290573
+      }
+    },
+    {
+      "step": 199,
+      "validation": {
+        "rollout_data_objective": 0.0840037390589714,
+        "projected_component_rmse_m": 0.0018110357923433185,
+        "sampled_full_residual_loss": 820437254144.0,
+        "selection_score": 0.0840037390589714
+      }
+    },
+    {
+      "step": 249,
+      "validation": {
+        "rollout_data_objective": 0.08481352776288986,
+        "projected_component_rmse_m": 0.0018297394271939993,
+        "sampled_full_residual_loss": 521403531264.0,
+        "selection_score": 0.08481352776288986
+      }
+    }
+  ],
+  "updates": 250,
+  "seconds": 8.56217133300379,
+  "initialization": "/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/experiments/checkpoints/cardiac_dynamic_graph_v2_limited/warm_seed44.pt",
+  "checkpoint_sha256": "2a00b21f3ce4a80391a4d54588859b3ec2867b59b0f7a4610890ff840aae288f"
+}

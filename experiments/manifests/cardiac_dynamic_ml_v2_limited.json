@@ -1,0 +1,40 @@
+{
+  "regime": "limited",
+  "train_cases": [
+    "g000_l0",
+    "g000_l1"
+  ],
+  "input_train_cases": [
+    "g000_l0",
+    "g000_l1",
+    "g001_l0",
+    "g001_l1",
+    "g002_l0",
+    "g002_l1",
+    "g003_l0",
+    "g003_l1"
+  ],
+  "unlabelled_physics_cases": [
+    "g001_l0",
+    "g001_l1",
+    "g002_l0",
+    "g002_l1",
+    "g003_l0",
+    "g003_l1"
+  ],
+  "target_access": "unlabelled trajectories: pressure/time arrays only; displacement/history arrays not opened",
+  "validation_cases": [
+    "g004_l0",
+    "g004_l1",
+    "g005_l0",
+    "g005_l1"
+  ],
+  "normalizer_sha256": "2ae353fcfd3381dbd1f1d4c838276e6ae839433adf8ddd0ac558b8e415b81115",
+  "feature_scaling": "reference length0.1m and documented source pressure maximum; geometry scales normalized by preregistered numerical box; no held-out labels",
+  "POD": "rank12 uncentered, training trajectories only; exact zero initial displacement",
+  "normalizers_fit_cases": [
+    "g000_l0",
+    "g000_l1"
+  ],
+  "source_sha256": "31e79aeaebe628c5a2f33ab52c2c08aa644906f36d57a50eadaac634c36014f5"
+}

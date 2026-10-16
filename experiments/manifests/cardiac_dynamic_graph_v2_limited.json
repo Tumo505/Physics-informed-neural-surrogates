@@ -1,0 +1,107 @@
+{
+  "complete": true,
+  "config": {
+    "name": "cardiac_dynamic_graph_v2",
+    "seeds": [
+      11,
+      22,
+      33,
+      44,
+      55
+    ],
+    "warm_updates": 400,
+    "refinement_updates": 250,
+    "validation_every": 50,
+    "warm_lr": 0.002,
+    "refinement_lr": 0.0002,
+    "minimum_lr": 2e-05,
+    "device": "cpu",
+    "physics_frames_per_update": 1,
+    "validation_residual_frames": [
+      0,
+      9,
+      29,
+      49,
+      69,
+      99,
+      129,
+      159,
+      199
+    ],
+    "lambda_screen": "training-only gradient balance at warm seed11; grid decade below/at/above rounded median",
+    "lambda_selection": "lowest validation full weak residual among candidates with full-cycle displacement RMSE no more than10percent above matched data-only; report if no eligible candidate",
+    "checkpoint_selection": "validation full-cycle displacement MSE plus weighted validation full weak residual; initial warm checkpoint eligible",
+    "loss": "physical displacement MSE/train field RMS squared +0.1 physical first-difference MSE/train difference RMS squared +0.01 physical second-difference MSE/train second-difference RMS squared +lambda exact weak residual",
+    "rollout": "zero initial displacement/hidden state; known current/past pressures and graph geometry only; no true history supplied",
+    "regimes": [
+      "full",
+      "limited"
+    ],
+    "scope": "new passive numerical ellipsoid family, not anatomical or clinical validation",
+    "physics_device": "mps",
+    "backend_reason": "measured recurrent forward/back CPU~33ms versus MPS~109ms at batch8/200steps; CPU neural recurrence with differentiable device transfers to verified MPS FE residual",
+    "limited_data": "one labelled geometry plus three unlabelled training geometries for verified residual collocation; independent limited-data initialization/POD; same inputs and step budgets in paired arms",
+    "data_tag": "cardiac_dynamic_ml_v2",
+    "supersedes": "v1 seed11 validation-only pilot retained; corrected equal normalized-POD-mode weighting to physical field MSE before any calibration/test model evaluation"
+  },
+  "regime": "limited",
+  "selection": {
+    "selected": "physics_1",
+    "lambda": 1.0,
+    "meets_10percent_constraint": true,
+    "trusted_validation": {
+      "data": {
+        "component_rmse_m": 0.0015285749054026918,
+        "sampled_full_residual_loss": 85.51391513915664
+      },
+      "physics_0.01": {
+        "component_rmse_m": 0.0016301906241140438,
+        "sampled_full_residual_loss": 0.49369532611373135
+      },
+      "physics_0.1": {
+        "component_rmse_m": 0.0015313963244012263,
+        "sampled_full_residual_loss": 0.04627126568829512
+      },
+      "physics_1": {
+        "component_rmse_m": 0.0014423464898567213,
+        "sampled_full_residual_loss": 0.00967877186029544
+      }
+    },
+    "lambda_balance": {
+      "training_only": true,
+      "ratios": [
+        0.0673791915178299,
+        0.04311131685972214,
+        0.30034148693084717,
+        0.0912243127822876
+      ],
+      "lambda_grid": [
+        0.01,
+        0.1,
+        1.0
+      ]
+    }
+  },
+  "data_access": [
+    "train",
+    "validation"
+  ],
+  "normalizer_sha256": "2ae353fcfd3381dbd1f1d4c838276e6ae839433adf8ddd0ac558b8e415b81115",
+  "source_sha256": {
+    "scripts/train_dynamic_study.py": "66bb7f5c42407c72c5b858fd296a2ac4e66c1660f24774de454500e4cfbe0822",
+    "src/lv_surrogate/models/dynamic_graph.py": "e8a8f56774ab21ec55b81932888514fb3a0ac64cac630cfa021407dda7ad6e63",
+    "src/lv_surrogate/physics/cardiac_residual.py": "3a3e88d814a775c869489d207aea9ed9531168c3340f378d645388b629a67790"
+  },
+  "checkpoints": {
+    "data_seed55.pt": "c8f0e826f4fba44e8583f8d7d8a16fea1614547684cb3c4cfcfa4e57d1e4266d",
+    "data_seed11.pt": "7075a5226d0f4637176c01a98b34222b1f41f95169cbe4a2f2993d8b409b2f5e",
+    "data_seed44.pt": "2a00b21f3ce4a80391a4d54588859b3ec2867b59b0f7a4610890ff840aae288f",
+    "data_seed22.pt": "d347b2ab4df2016e9054e5041ec6101e4f4786ee9533875d5fc89793f107b7a9",
+    "data_seed33.pt": "0c94674c3b32c3244d4af79d93265da645eb39e8e98e5c33e9f548a3bc369571",
+    "physics_1_seed33.pt": "e27f6952e36d263aded49e720fdb15b84460e126617956560c2b2d5e153af25a",
+    "physics_1_seed22.pt": "985bf27940d343d765a71dcd27f14dcaa855466ce8e24d20e25670a8db2f7f62",
+    "physics_1_seed44.pt": "356bdec359d2e66b7d8995a4534411138af1b0ad0e9ea625e3386fdff5723aa9",
+    "physics_1_seed11.pt": "1a8189ac05475ebd43a7312138364c40d9e8458587b7efdfa24c1d512feb7038",
+    "physics_1_seed55.pt": "2f5810e93411e593b4fbe81f3620abc733f2392091ce2ac982d5fafd4793cfd3"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "case": {
+    "id": "g030_l0",
+    "geometry": 30,
+    "split": "shift",
+    "scales": [
+      1.069722024825086,
+      0.9373792838202593
+    ],
+    "amplitude": 1.2,
+    "timing_scale": 1.15,
+    "dt": 0.005,
+    "refinement": 0
+  },
+  "decision": {
+    "action": "FE",
+    "reasons": [
+      "outside_support:radial",
+      "outside_support:longitudinal",
+      "outside_support:amplitude",
+      "outside_support:timing"
+    ]
+  },
+  "wall_seconds": 340.67266979196575,
+  "cache_existed_before_request": false,
+  "scope": "one actual input-gated full-cycle FE fallback; solver receives only geometry/loading descriptors and zero initial histories, no reference labels"
+}

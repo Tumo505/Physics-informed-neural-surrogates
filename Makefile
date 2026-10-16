@@ -111,3 +111,31 @@ geometry-confirmation:
 	$(PY) scripts/evaluate_geometry_models.py --run cardiac_geometry_refinement_v3 --data-root data/processed/cardiac_confirmation_ml --raw-root data/processed/cardiac_confirmation_v1
 	$(PY) scripts/plot_geometry_study.py --run cardiac_geometry_refinement_v3 --raw-root data/processed/cardiac_confirmation_v1 --prefix geometry_refinement
 	$(PY) scripts/verify_confirmation_artifacts.py
+
+.PHONY: dynamic-cohort dynamic-convergence dynamic-train dynamic-evaluate dynamic-study
+# These are passive numerical experiments. Dataset/training configs define all splits.
+dynamic-cohort:
+	$(PY) scripts/run_dynamic_cohort.py --group cohort --workers 5
+dynamic-convergence:
+	$(PY) scripts/run_dynamic_cohort.py --group convergence --workers 1
+	$(PY) scripts/analyze_dynamic_convergence.py
+	$(FEM_RUN) scripts/analyze_dynamic_mesh.py
+dynamic-train: dynamic-cohort
+	$(PY) scripts/verify_dynamic_backend.py
+	env OPENBLAS_NUM_THREADS=2 $(PY) scripts/prepare_dynamic_study.py --regime full
+	$(PY) scripts/train_dynamic_study.py --regime full
+	env OPENBLAS_NUM_THREADS=2 $(PY) scripts/prepare_dynamic_study.py --regime limited
+	$(PY) scripts/train_dynamic_study.py --regime limited
+dynamic-evaluate: dynamic-train dynamic-convergence
+	$(PY) scripts/audit_dynamic_study.py --require-complete
+	$(PY) scripts/verify_dynamic_neural_gradient.py
+	$(PY) scripts/evaluate_dynamic_study.py
+dynamic-study: dynamic-evaluate
+	$(PY) scripts/execute_dynamic_fallback.py
+	$(PY) scripts/plot_dynamic_study.py
+	$(PY) scripts/write_reports.py
+
+.PHONY: dynamic-benchmark
+dynamic-benchmark:
+	$(PY) scripts/benchmark_dynamic_study.py
+	$(PY) scripts/write_reports.py
