@@ -11,7 +11,7 @@ def digest(p,alg='sha256'):
  return h.hexdigest()
 
 def main():
- out={'access_date':'2026-10-16','python':sys.version,'platform':platform.platform(),'archives':[],'arrays':{},'sources':{},'physics_gate':'A edges only; B solver verification not yet available','units':'LV cm: author main.py evaluation comment; feature meanings unknown unless separately documented'}
+ out={'access_date':'2026-10-16','python':sys.version,'platform':platform.platform(),'archives':[],'arrays':{},'sources':{},'physics_gate':'Dalton edges cannot define FE equilibrium; separate cardiac verification is recorded when available','units':'LV cm: author main.py evaluation comment; feature meanings unknown unless separately documented'}
  for name,expected,url in [('lvData.zip','96987da42e159c205fa4aeb30cd5526e','https://zenodo.org/records/7075055'),('benchmark_article_data.zip','75602be4777c4ca2262c2bcfd2134b15','https://zenodo.org/records/14260459')]:
   p=ROOT/name
   with zipfile.ZipFile(p) as z:
@@ -68,10 +68,6 @@ def main():
  out['reference_convention']='Coordinates reference; displacement endpoint minus reference; x=X+u'
  if (P/'reports/benchmark_audit.json').exists():out['benchmark']=json.loads((P/'reports/benchmark_audit.json').read_text())
  (P/'reports/data_audit.json').write_text(json.dumps(out,indent=2))
- lines=['# Data audit — 2026-10-16','',out['units'],'','See data_audit.json for every array checksum, shape, dtype, distribution and archive member.','',f'Exact repeated varying-geometry groups: {len(duplicate["exact_repeated_geometry_groups"])}. Fixed-geometry splits all share one geometry.','', '| Array | Shape | dtype | nonfinite |','|---|---|---|---|']
- for k,s in out['arrays'].items():
-  if '/rawData/' in k or 'topology.npy' in k: lines.append(f'| {k} | {s.get("shape")} | {s.get("dtype")} | {s.get("nonfinite")} |')
- lines+=['','Unknown: '+', '.join(out['unknowns']), '', 'Track A: displacement emulation only. Track B: independent dynamic mechanics benchmark, solver unavailable in current environment; do not conflate.']
- (P/'reports/data_audit.md').write_text('\n'.join(lines))
+ # Detailed audit is machine-readable; consolidated report is the only Markdown report.
  print('audit complete',flush=True)
 if __name__=='__main__':main()

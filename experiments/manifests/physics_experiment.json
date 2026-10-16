@@ -1,0 +1,26 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "torch": "2.14.1",
+  "numpy": "2.5.4",
+  "precision": "float64",
+  "threads": 2,
+  "seed": 11,
+  "source_snapshot_note": "includes post-run verification guard; same training mathematics and fixed configuration",
+  "sha256": {
+    "src/lv_surrogate/physics/kinematics.py": "72faa325f21595daa088e22008d68e420cd0d5a04307b86d6f485dba83d4b529",
+    "src/lv_surrogate/physics/constitutive.py": "c275241a05d48becbb54f16d92435a1dfa8bce3eb8339b503d580d722b2507a4",
+    "src/lv_surrogate/physics/fem_bridge.py": "a90f0cbfea5e6a312d641ab7bcc46c57949ca33f57be4b9ef18c7a6c8162ba08",
+    "src/lv_surrogate/physics/assembly.py": "e9aa80648c94c7b78d26a2c285cbd3615c02160d21f2a39e2e3492f30a01a475",
+    "src/lv_surrogate/physics/reference_fem.py": "63fae83ca73860e196ea63a8fe21e0fb0abe0ee4884ab7fe1564472090762227",
+    "src/lv_surrogate/physics/cardiac_residual.py": "67b85c6bf64076c0933f153c89a223c0fd923045dd1253bf3cbcc9ace3502be4",
+    "src/lv_surrogate/models/reduced_graph.py": "078ab6e6b737313fa3d590092e4023f54aaff04f0f9d7153a2b667cb5e0257cd",
+    "scripts/train_physics.py": "3eb6e4918b63e63a9ff8768fd1525733d6d442313256b271f930ce03abea54f1",
+    "scripts/generate_cardiac_cohort.py": "0e20a6b03bc58db168051bf581c05724d149d6fc85072a21c7c1115cb9915c74",
+    "scripts/verify_cardiac_assembly.py": "4657e04366e891f83916b42df6b794d59010c84f37ab14002befce5ac5e07202",
+    "configs/physics/startup.yaml": "ad912aa2bbdc4a9c1cff1d7c153791ca49c42b5b531024e1d4d423ae39981f59",
+    "experiments/checkpoints/cardiac_startup_v1/physics_lambda100.pt": "6dc7d8550fe9600c179385914b200133702198be00eb55a6359c09ea03e8d0b7",
+    "experiments/checkpoints/cardiac_startup_v1/data_only.pt": "67f7e166dbcf45a9c2412da65dadf690c6567861ac01fa686405f606ff1dd68b",
+    "experiments/checkpoints/cardiac_startup_v1/physics_lambda1.pt": "b826731fb122e1dea80673dd9d8499cca6580c027ea5b8e32524527cca00f220",
+    "data/processed/cardiac/cohort.npz": "affb8c5b28989ad59f6bc61ff8430dbff35940638c71585c73d7e72198620890"
+  }
+}

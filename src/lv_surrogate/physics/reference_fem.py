@@ -1,0 +1,51 @@
+"""Pinned benchmark mechanics adapter for isolated legacy FEniCS Python.
+Only solver options/discretization differ; original constitutive/forms unchanged.
+"""
+from pathlib import Path
+import os,sys,types,time
+import numpy as np
+P=Path(__file__).resolve().parents[3]
+os.environ.setdefault('DIJITSO_CACHE_DIR',str(P/'.fenics-cache-activated'))
+import dolfin as df
+try:import ufl_legacy as ufl
+except ImportError:import ufl
+pkg=types.ModuleType('cardiac_benchmark');pkg.__path__=[str(P/'external/cardiac_benchmark/src/cardiac_benchmark')];sys.modules['cardiac_benchmark']=pkg
+from cardiac_benchmark.geometry import LVGeometry
+from cardiac_benchmark.microstructure import create_microstructure
+from cardiac_benchmark.material import HolzapfelOgden
+from cardiac_benchmark.problem import LVProblem
+from cardiac_benchmark.pressure_model import pressure_function,default_parameters_benchmark1
+
+def setup():
+ df.set_log_level(30);df.parameters['form_compiler']['quadrature_degree']=6;df.parameters['form_compiler']['cpp_optimize']=True
+ meshfile=next((P/'data/raw/benchmark').rglob('*.xdmf'));mesh,ffun,markers=LVGeometry.load_mesh(meshfile)
+ fp=LVGeometry.default_fiber_parameters();fp['function_space']='P_1';micro=create_microstructure(mesh,ffun,markers,LVGeometry.default_mesh_parameters(),fp)
+ geo=LVGeometry(mesh=mesh,ffun=ffun,markers=markers,f0=micro.f0,s0=micro.s0,n0=micro.n0)
+ mat=HolzapfelOgden(geo.f0,geo.s0,tau=df.Constant(0.));params=LVProblem.default_parameters();params['function_space']='P_1'
+ problem=LVProblem(geo,mat,parameters=params,solver_parameters={'linear_solver':'mumps','petsc':{'ksp_type':'preonly','pc_type':'none'}})
+ return geo,mat,problem
+
+def vertex_map(problem):return df.vertex_to_dof_map(problem.u_space)
+
+def assign_nodes(problem,u):
+ a=np.empty(problem.u_space.dim());a[vertex_map(problem)]=np.asarray(u).reshape(-1);problem.u.vector().set_local(a);problem.u.vector().apply('insert')
+
+def residual(problem):return df.assemble(problem._problem._F)
+
+def solve_at_pressure(problem,p):
+ for f in [problem.u,problem.u_old,problem.v_old,problem.a_old]:f.vector().zero()
+ problem.parameters['p'].assign(float(p));r0=residual(problem).norm('l2');t=time.perf_counter();iterations,ok=problem.solver.solve();elapsed=time.perf_counter()-t
+ if not ok:raise RuntimeError(f'Failed solve pressure={p}')
+ r=residual(problem);u=problem.u.compute_vertex_values(problem.geometry.mesh).reshape(3,-1).T
+ np.testing.assert_allclose(u,problem.u.vector().get_local()[vertex_map(problem)].reshape(-1,3),atol=1e-14)
+ return u,{'pressure_Pa':float(p),'converged':True,'residual_l2_N':r.norm('l2'),'initial_residual_l2_N':r0,'seconds':elapsed,'iterations':int(iterations)}
+
+def export_geometry(geo,mat,problem):
+ from FIAT.reference_element import UFCTetrahedron
+ from FIAT.quadrature_schemes import create_quadrature
+ mesh=geo.mesh;mesh.init(2,0);mesh.init(2,3);faces=[];normals=[];markers=[];owners=[]
+ for facet in df.facets(mesh):
+  if facet.exterior():
+   faces.append(facet.entities(0));normals.append(facet.normal().array());markers.append(int(geo.ffun[facet]));owners.append(int(facet.entities(3)[0]))
+ quad=create_quadrature(UFCTetrahedron(),6)
+ return {'coords':mesh.coordinates(),'cells':mesh.cells().astype('int64'),'fiber':geo.f0.compute_vertex_values(mesh).reshape(3,-1).T,'sheet':geo.s0.compute_vertex_values(mesh).reshape(3,-1).T,'facets':np.asarray(faces,dtype='int64'),'facet_normals':np.asarray(normals),'facet_markers':np.asarray(markers),'facet_cells':np.asarray(owners),'qpoints':quad.get_points(),'qweights':quad.get_weights(),'v2d':vertex_map(problem),'material_keys':np.array(list(mat.parameters)),'material_values':np.array([float(v) for v in mat.parameters.values()])}

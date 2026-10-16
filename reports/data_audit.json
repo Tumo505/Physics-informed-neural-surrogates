@@ -8797,7 +8797,7 @@
       "license": "README declares MIT; LICENSE file absent in supplied commit"
     }
   },
-  "physics_gate": "A edges only; B solver verification not yet available",
+  "physics_gate": "Dalton lacks FE connectivity; independent dynamic cardiac startup assembly and exact tangent verified separately",
   "units": "LV cm: author main.py evaluation comment; feature meanings unknown unless separately documented",
   "split_audit": {
     "exact_repeated_geometry_groups": [],
@@ -9186,7 +9186,73 @@
         "bytes": 182
       }
     ],
-    "solver_available": false,
+    "solver_available_in_current_runtime": false,
+    "isolated_fenics_installed": true,
+    "solver_probe_status": {
+      "label": "trusted cardiac benchmark first dynamic step, P1 displacement/fibers; not full published trajectory",
+      "source_commit": "c7d2d1ba6d680627dc465598dbf6b0363a75d604",
+      "dolfin": "2019.1.0",
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_dofs": 13731,
+      "quadrature_degree": 6,
+      "pressure_Pa": 4.169904680907824,
+      "pressure_evaluation_time_s": 0.0006,
+      "dt_s": 0.001,
+      "alpha_f": 0.4,
+      "alpha_m": 0.2,
+      "active_tau_Pa": 0.0,
+      "material_parameters": {
+        "a": 59.0,
+        "b": 8.023,
+        "a_f": 18472.0,
+        "b_f": 16.026,
+        "a_s": 2481.0,
+        "b_s": 11.12,
+        "a_fs": 216.0,
+        "b_fs": 11.436,
+        "kappa": 1000000.0,
+        "eta": 100.0,
+        "k": 100.0
+      },
+      "boundary_parameters": {
+        "alpha_top": 100000.0,
+        "alpha_epi": 100000000.0,
+        "beta_top": 5000.0,
+        "beta_epi": 5000.0,
+        "p": 4.169904680907824,
+        "rho": 1000.0,
+        "dt": 0.001,
+        "alpha_m": 0.2,
+        "alpha_f": 0.4
+      },
+      "fiber_function_space": "P1",
+      "displacement_function_space": "P1",
+      "reference_mesh_m": "/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/data/raw/benchmark/benchmark_article_data/meshes_and_fibers/data/monoventricle_mesh/ellipsoid_0.005.xdmf",
+      "all_dofs_free": true,
+      "BC": "Robin epi/base; follower endocardial pressure, no imposed Dirichlet",
+      "converged": true,
+      "solver_iterations_reported": 2,
+      "initial_force_l2_N": 0.0023173574879480686,
+      "converged_force_l2_N": 1.2137527994333283e-13,
+      "normalized_residual": 5.23765886681584e-11,
+      "perturbed_force_l2_N": 0.0672085615490786,
+      "displacement_dof_l2_m": 4.155435246705771e-06,
+      "max_nodal_displacement_m": 2.8791231650543554e-07,
+      "min_detF": 0.9999761883075243,
+      "inverted_element_fraction": 0.0,
+      "fiber_setup_seconds": 0.06960954202804714,
+      "problem_setup_seconds": 0.40063654095865786,
+      "initial_assembly_seconds": 5.906694249948487,
+      "solve_seconds_including_first_JIT": 4.552032332983799,
+      "limitations": [
+        "one timestep only",
+        "P1 choice documented; default P2 not reproduced",
+        "no independently implemented residual comparison yet",
+        "no physics-guided surrogate trained",
+        "timing includes first JIT and is not a matched Dalton FEM timing"
+      ]
+    },
     "formulation": "dynamic Holzapfel\u2013Ogden, inertia + viscosity + follower pressure + Robin springs/friction; not Dalton passive endpoint task",
     "required_for_residual": [
       "exact FE space and DOF-to-node map",
@@ -9232,6 +9298,27 @@
           "dtype": "uint64"
         }
       }
+    },
+    "cardiac_verification": {
+      "independent_numpy_torch_vs_trusted_residual_max_abs_N_at_reference": 5.859895901849654e-15,
+      "independent_vs_trusted_relative_l2_at_perturbed_state": 1.61935058912674e-12,
+      "reference_independent_force_l2_N": 3.837146490908905e-12,
+      "trusted_normalized_residual_loss": 2.365194700145715e-28,
+      "perturbed_normalized_residual_loss": 7.280648242601417e-08,
+      "VJP_directional_finite_difference": 0.00013687671061368207,
+      "VJP_autodiff": 0.00013687671099694252,
+      "VJP_relative_error": 2.800041371151438e-09,
+      "positive_pressure_work_at_solution_J": -0.023532201134330914,
+      "minimum_endpoint_detF_all_cases": 0.9663401182649949,
+      "inverted_element_fraction": 0.0,
+      "all_dofs_free": true,
+      "natural_BC_terms": "follower pressure and epi/base Robin independently assembled; no Dirichlet reactions",
+      "gates": "independent finite-strain dynamic assembly, trusted solution, tangent VJP, pressure sign, Jacobians passed; earlier synthetic tests cover rigid/affine/unit quadrature",
+      "scope": "one fixed cardiac geometry, startup pressure variants; not a full cardiac cycle",
+      "reference_volume_m3": 0.00017769451479940444,
+      "independent_volume_m3": 0.00017769451479940395,
+      "physics_only_neural_parameter_gradient_norm": 3.3124220986041612e-06,
+      "physics_loss_backpropagation": "verified through trained graph/POD model using physics loss only"
     }
   },
   "cases": {

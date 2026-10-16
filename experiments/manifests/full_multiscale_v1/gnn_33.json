@@ -1,0 +1,54 @@
+{
+  "config": {
+    "run_name": "full_multiscale_v1",
+    "seeds": [
+      11,
+      22,
+      33,
+      44,
+      55
+    ],
+    "baseline_seeds": [
+      11
+    ],
+    "epochs": 120,
+    "batch_size": 32,
+    "sample_nodes": 128,
+    "width": 64,
+    "steps": 3,
+    "lr": 0.001,
+    "minimum_lr": 5e-05,
+    "weight_decay": 1e-05,
+    "validation_every": 5,
+    "patience_checks": 6,
+    "validation_ids": [
+      0,
+      16
+    ],
+    "calibration_ids": [
+      16,
+      150
+    ],
+    "test_ids": [
+      64,
+      567
+    ],
+    "training_split": "all_2250_original_training_cases",
+    "device": "mps",
+    "seed_split": 2027
+  },
+  "kind": "gnn",
+  "seed": 33,
+  "torch": "2.14.1",
+  "device": "mps",
+  "determinism": "fixed RNG; MPS indexed reductions may be nondeterministic",
+  "normalizer_sha256": "3e13ce3ddcc5a9824b1c5bccf6bd2bf74e0ee2a5f7d3321d9966d3a47752a4d7",
+  "source_sha256": {
+    "scripts/train_full.py": "4f4230fa414391bd3ca38ef899269b9952aa33031eaded3438a85f89d8b32415",
+    "src/lv_surrogate/models/multiscale.py": "469366e0b56f76c42aa5eeccc5aeae8bdfd88c1fbaed2c01e1daf3cb9e6812fb"
+  },
+  "parameters": 138563,
+  "initialization": "random; no released checkpoint or latents",
+  "training_geometries": 2250,
+  "validation_geometries": 16
+}

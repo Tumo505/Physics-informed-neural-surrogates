@@ -1,0 +1,21 @@
+{
+  "independent_numpy_torch_vs_trusted_residual_max_abs_N_at_reference": 5.859895901849654e-15,
+  "independent_vs_trusted_relative_l2_at_perturbed_state": 1.61935058912674e-12,
+  "reference_independent_force_l2_N": 3.837146490908905e-12,
+  "trusted_normalized_residual_loss": 2.365194700145715e-28,
+  "perturbed_normalized_residual_loss": 7.280648242601417e-08,
+  "VJP_directional_finite_difference": 0.00013687671061368207,
+  "VJP_autodiff": 0.00013687671099694252,
+  "VJP_relative_error": 2.800041371151438e-09,
+  "positive_pressure_work_at_solution_J": -0.023532201134330914,
+  "minimum_endpoint_detF_all_cases": 0.9663401182649949,
+  "inverted_element_fraction": 0.0,
+  "all_dofs_free": true,
+  "natural_BC_terms": "follower pressure and epi/base Robin independently assembled; no Dirichlet reactions",
+  "gates": "independent finite-strain dynamic assembly, trusted solution, tangent VJP, pressure sign, Jacobians passed; earlier synthetic tests cover rigid/affine/unit quadrature",
+  "scope": "one fixed cardiac geometry, startup pressure variants; not a full cardiac cycle",
+  "reference_volume_m3": 0.00017769451479940444,
+  "independent_volume_m3": 0.00017769451479940395,
+  "physics_only_neural_parameter_gradient_norm": 3.3124220986041612e-06,
+  "physics_loss_backpropagation": "verified through trained graph/POD model using physics loss only"
+}

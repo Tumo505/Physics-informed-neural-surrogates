@@ -1,0 +1,19 @@
+run_name: full_multiscale_v1
+seeds: [11, 22, 33, 44, 55]
+baseline_seeds: [11]
+epochs: 120
+batch_size: 32
+sample_nodes: 128
+width: 64
+steps: 3
+lr: 0.001
+minimum_lr: 0.00005
+weight_decay: 0.00001
+validation_every: 5
+patience_checks: 6
+validation_ids: [0,16]
+calibration_ids: [16,150]
+test_ids: [64,567]
+training_split: all_2250_original_training_cases
+device: mps
+seed_split: 2027

@@ -25,7 +25,7 @@ geo=LVGeometry(mesh=mesh,ffun=ffun,markers=markers,f0=micro.f0,s0=micro.s0,n0=mi
 material=HolzapfelOgden(geo.f0,geo.s0,tau=df.Constant(0.))
 params=LVProblem.default_parameters();params['function_space']='P_1'
 pval=float(np.asarray(pressure_function((0,1),parameters=default_parameters_benchmark1(),t_eval=np.array([.0006]))).reshape(-1)[0]);params['p'].assign(pval)
-start=time.perf_counter();problem=LVProblem(geo,material,parameters=params,solver_parameters={'linear_solver':'mumps'});setup_seconds=time.perf_counter()-start
+start=time.perf_counter();problem=LVProblem(geo,material,parameters=params,solver_parameters={'linear_solver':'mumps','petsc':{'ksp_type':'preonly','pc_type':'none'}});setup_seconds=time.perf_counter()-start
 form=problem._problem._F
 start=time.perf_counter();r0=df.assemble(form).norm('l2');assembly0=time.perf_counter()-start
 start=time.perf_counter();iterations,converged=problem.solver.solve();solve_seconds=time.perf_counter()-start

@@ -1,0 +1,284 @@
+{
+  "config": {
+    "name": "cardiac_startup_v1",
+    "seed": 11,
+    "train_cases": 20,
+    "validation_cases": 6,
+    "test_cases": 6,
+    "independent_geometries": 1,
+    "pod_rank": 4,
+    "optimizer": "Adam",
+    "learning_rate": 0.003,
+    "steps": 500,
+    "validation_every": 25,
+    "physics_lambdas": [
+      1.0,
+      100.0
+    ],
+    "selection": "minimum_validation_residual_subject_to_component_RMSE_within_10_percent_of_data_only",
+    "seed_scope": "one_matched_pair_pilot_plus_validation_lambda_grid",
+    "scope": "passive_dynamic_startup_load_sweep_on_one_authentic_LV_geometry"
+  },
+  "task": "independent startup pressure sweeps from rest; one fixed LV geometry, P1 displacement/fiber, zero active stress",
+  "n_train": 20,
+  "n_validation": 6,
+  "n_test_load_cases": 6,
+  "n_independent_geometries": 1,
+  "parameter_count": 6183,
+  "pod_rank": 4,
+  "pod_fit": "training20 cases only",
+  "pod_singular_values": [
+    0.027810099177301578,
+    8.115541120444235e-05,
+    1.9142183696159186e-06,
+    2.435098773668848e-07,
+    8.511257136516294e-08,
+    1.613871752910408e-08,
+    2.399912721995149e-09,
+    3.762288226699253e-10,
+    8.857582799073036e-11,
+    1.3947695044028357e-11,
+    4.599781868631348e-12,
+    1.8135549089223793e-12,
+    5.949642747494064e-13,
+    1.4025292516432342e-13,
+    2.1669605069022956e-14,
+    3.4654374236609743e-15,
+    4.0448127923429294e-16,
+    9.691992771408155e-17,
+    2.845075836344057e-17,
+    5.248082334075053e-18
+  ],
+  "u_scale_m": 5.306868258159303e-05,
+  "pressure_normalizer": {
+    "mean_Pa": 7672.584685715134,
+    "std_Pa": 5193.501980327887
+  },
+  "force_scale_N": 2.129418386172953,
+  "lambda_selection": {
+    "selected": "physics_lambda1",
+    "meets_validation_RMSE_10percent_constraint": true,
+    "validation": {
+      "data_only": {
+        "component_rmse_m": 8.038236025624309e-07,
+        "normalized_residual_rms": 0.0001489593864745092,
+        "best_step": 499
+      },
+      "physics_lambda1": {
+        "component_rmse_m": 8.039412457663135e-07,
+        "normalized_residual_rms": 0.00014901496152969405,
+        "best_step": 499
+      },
+      "physics_lambda100": {
+        "component_rmse_m": 8.086632577745992e-07,
+        "normalized_residual_rms": 0.00015136810308120956,
+        "best_step": 499
+      }
+    }
+  },
+  "results": {
+    "data_only": {
+      "mean_component_rmse_m": 5.927257477464839e-07,
+      "mean_normalized_residual_rms": 0.000111395985472641,
+      "mean_strain_frobenius_error": 0.00011101875289355685,
+      "per_case": [
+        {
+          "case": 27,
+          "pressure_Pa": 13997.28287258842,
+          "component_rmse_m": 5.389678125929897e-07,
+          "mean_nodal_l2_m": 8.41665833064806e-07,
+          "normalized_residual_rms": 0.00010785288639690113,
+          "green_lagrange_mean_frobenius_error": 0.00010168106058445575,
+          "min_detF": 0.9707837284891733,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.014199373965197933,
+          "reference_endpoint_elastic_energy_J": 0.014080819890449639,
+          "absolute_endpoint_elastic_energy_error_J": 0.00011855407474829424,
+          "relative_endpoint_elastic_energy_error": 0.008419543440698642
+        },
+        {
+          "case": 17,
+          "pressure_Pa": 8813.104030889004,
+          "component_rmse_m": 3.3111720984377833e-07,
+          "mean_nodal_l2_m": 4.915214255474157e-07,
+          "normalized_residual_rms": 4.304143472437484e-05,
+          "green_lagrange_mean_frobenius_error": 5.5836386978863266e-05,
+          "min_detF": 0.9820050855415373,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.00550125452992324,
+          "reference_endpoint_elastic_energy_J": 0.005477231056547568,
+          "absolute_endpoint_elastic_energy_error_J": 2.4023473375672615e-05,
+          "relative_endpoint_elastic_energy_error": 0.004386061703012251
+        },
+        {
+          "case": 8,
+          "pressure_Pa": 4147.343073359531,
+          "component_rmse_m": 1.1926401231991222e-06,
+          "mean_nodal_l2_m": 1.8639134437342395e-06,
+          "normalized_residual_rms": 0.00022322596583415112,
+          "green_lagrange_mean_frobenius_error": 0.00022686700022075243,
+          "min_detF": 0.9919459970852784,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.0011313266090017182,
+          "reference_endpoint_elastic_energy_J": 0.0012004515677969257,
+          "absolute_endpoint_elastic_energy_error_J": 6.912495879520756e-05,
+          "relative_endpoint_elastic_energy_error": 0.057582463674120565
+        },
+        {
+          "case": 15,
+          "pressure_Pa": 7776.268262549122,
+          "component_rmse_m": 2.0683945879568643e-07,
+          "mean_nodal_l2_m": 3.0616996596175443e-07,
+          "normalized_residual_rms": 5.829131340525861e-05,
+          "green_lagrange_mean_frobenius_error": 4.155558661950882e-05,
+          "min_detF": 0.9842756556012257,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.004220568013110637,
+          "reference_endpoint_elastic_energy_J": 0.004249754261671552,
+          "absolute_endpoint_elastic_energy_error_J": 2.9186248560915395e-05,
+          "relative_endpoint_elastic_energy_error": 0.00686774970123463
+        },
+        {
+          "case": 22,
+          "pressure_Pa": 11405.19345173871,
+          "component_rmse_m": 1.1015052382820958e-06,
+          "mean_nodal_l2_m": 1.715621819130462e-06,
+          "normalized_residual_rms": 0.00018633119338039145,
+          "green_lagrange_mean_frobenius_error": 0.00020383286013589186,
+          "min_detF": 0.9763133654971122,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.009427179120310243,
+          "reference_endpoint_elastic_energy_J": 0.009258129692741417,
+          "absolute_endpoint_elastic_energy_error_J": 0.0001690494275688268,
+          "relative_endpoint_elastic_energy_error": 0.018259565719992602
+        },
+        {
+          "case": 28,
+          "pressure_Pa": 14515.70075675836,
+          "component_rmse_m": 1.8528464376523078e-07,
+          "mean_nodal_l2_m": 2.7774331409039647e-07,
+          "normalized_residual_rms": 4.963311909476883e-05,
+          "green_lagrange_mean_frobenius_error": 3.633962282186904e-05,
+          "min_detF": 0.9697203743119829,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.015223190366742051,
+          "reference_endpoint_elastic_energy_J": 0.015173084983736112,
+          "absolute_endpoint_elastic_energy_error_J": 5.0105383005939405e-05,
+          "relative_endpoint_elastic_energy_error": 0.0033022541598921313
+        }
+      ],
+      "mean_absolute_endpoint_elastic_energy_error_J": 7.667392767580934e-05
+    },
+    "physics_lambda1": {
+      "mean_component_rmse_m": 5.929689994156461e-07,
+      "mean_normalized_residual_rms": 0.00011147445218890149,
+      "mean_strain_frobenius_error": 0.00011106074492804676,
+      "per_case": [
+        {
+          "case": 27,
+          "pressure_Pa": 13997.28287258842,
+          "component_rmse_m": 5.390472071625892e-07,
+          "mean_nodal_l2_m": 8.41772566000295e-07,
+          "normalized_residual_rms": 0.00010793918509243759,
+          "green_lagrange_mean_frobenius_error": 0.0001017029600415523,
+          "min_detF": 0.9707836409214804,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.014199450230866238,
+          "reference_endpoint_elastic_energy_J": 0.014080819890449639,
+          "absolute_endpoint_elastic_energy_error_J": 0.0001186303404165992,
+          "relative_endpoint_elastic_energy_error": 0.008424959721064298
+        },
+        {
+          "case": 17,
+          "pressure_Pa": 8813.104030889004,
+          "component_rmse_m": 3.314930608781854e-07,
+          "mean_nodal_l2_m": 4.918482794695093e-07,
+          "normalized_residual_rms": 4.3061285777731516e-05,
+          "green_lagrange_mean_frobenius_error": 5.585426672983383e-05,
+          "min_detF": 0.98200522696064,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.005501184622119883,
+          "reference_endpoint_elastic_energy_J": 0.005477231056547568,
+          "absolute_endpoint_elastic_energy_error_J": 2.3953565572314844e-05,
+          "relative_endpoint_elastic_energy_error": 0.004373298355503987
+        },
+        {
+          "case": 8,
+          "pressure_Pa": 4147.343073359531,
+          "component_rmse_m": 1.192711067702838e-06,
+          "mean_nodal_l2_m": 1.8640260529054968e-06,
+          "normalized_residual_rms": 0.00022328625784313105,
+          "green_lagrange_mean_frobenius_error": 0.00022688668554539398,
+          "min_detF": 0.9919460673905441,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.0011313103418185973,
+          "reference_endpoint_elastic_energy_J": 0.0012004515677969257,
+          "absolute_endpoint_elastic_energy_error_J": 6.914122597832849e-05,
+          "relative_endpoint_elastic_energy_error": 0.05759601456076799
+        },
+        {
+          "case": 15,
+          "pressure_Pa": 7776.268262549122,
+          "component_rmse_m": 2.0732550799515807e-07,
+          "mean_nodal_l2_m": 3.068105618312668e-07,
+          "normalized_residual_rms": 5.848509342022143e-05,
+          "green_lagrange_mean_frobenius_error": 4.166259669315852e-05,
+          "min_detF": 0.984275811654196,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.0042205004274459895,
+          "reference_endpoint_elastic_energy_J": 0.004249754261671552,
+          "absolute_endpoint_elastic_energy_error_J": 2.925383422556268e-05,
+          "relative_endpoint_elastic_energy_error": 0.006883653130112115
+        },
+        {
+          "case": 22,
+          "pressure_Pa": 11405.19345173871,
+          "component_rmse_m": 1.1016356008782e-06,
+          "mean_nodal_l2_m": 1.7157944109956131e-06,
+          "normalized_residual_rms": 0.00018629751348421287,
+          "green_lagrange_mean_frobenius_error": 0.0002038458760764098,
+          "min_detF": 0.9763134140546602,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.009427148715508827,
+          "reference_endpoint_elastic_energy_J": 0.009258129692741417,
+          "absolute_endpoint_elastic_energy_error_J": 0.00016901902276741064,
+          "relative_endpoint_elastic_energy_error": 0.0182562816007995
+        },
+        {
+          "case": 28,
+          "pressure_Pa": 14515.70075675836,
+          "component_rmse_m": 1.8560155187690606e-07,
+          "mean_nodal_l2_m": 2.7815277578250274e-07,
+          "normalized_residual_rms": 4.977737751567448e-05,
+          "green_lagrange_mean_frobenius_error": 3.641208448193206e-05,
+          "min_detF": 0.9697202585036335,
+          "inverted_element_fraction": 0.0,
+          "endpoint_elastic_energy_J": 0.015223294374079165,
+          "reference_endpoint_elastic_energy_J": 0.015173084983736112,
+          "absolute_endpoint_elastic_energy_error_J": 5.020939034305373e-05,
+          "relative_endpoint_elastic_energy_error": 0.0033091088856928375
+        }
+      ],
+      "mean_absolute_endpoint_elastic_energy_error_J": 7.670122988387826e-05
+    }
+  },
+  "training_seconds": {
+    "data_only": 26.389052500016987,
+    "physics_lambda1": 186.9453937499784,
+    "physics_lambda100": 192.6315845840145
+  },
+  "BC": "natural epi/base Robin and pressure included in full residual; no imposed Dirichlet DOFs",
+  "gradient": "custom autograd using exact trusted tangent VJP; independent assembly and finite-difference verification passed",
+  "limitations": [
+    "one seed pair, fixed geometry, six held-out load cases",
+    "startup passive elastodynamics from rest, not full cycle or Dalton mechanics",
+    "POD decoder limits outputs to training-derived subspace",
+    "no claim of geometry generalization or calibrated physics ensemble uncertainty"
+  ],
+  "energy_scope": "passive elastic stored energy at endpoint; excludes kinetic energy and viscous dissipation",
+  "H1_observed": {
+    "residual_ratio_physics_over_data": 1.0007043944710177,
+    "displacement_RMSE_ratio_physics_over_data": 1.0004103949762384,
+    "conclusion": "No residual improvement observed in this matched fixed-geometry startup pilot; do not claim H1 support."
+  }
+}

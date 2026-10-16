@@ -1,0 +1,15 @@
+name: cardiac_startup_v1
+seed: 11
+train_cases: 20
+validation_cases: 6
+test_cases: 6
+independent_geometries: 1
+pod_rank: 4
+optimizer: Adam
+learning_rate: 0.003
+steps: 500
+validation_every: 25
+physics_lambdas: [1.0, 100.0]
+selection: minimum_validation_residual_subject_to_component_RMSE_within_10_percent_of_data_only
+seed_scope: one_matched_pair_pilot_plus_validation_lambda_grid
+scope: passive_dynamic_startup_load_sweep_on_one_authentic_LV_geometry

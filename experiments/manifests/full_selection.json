@@ -1,0 +1,66 @@
+{
+  "rule": "minimum full-node validation component MSE across both stages; includes original checkpoint, never forced to accept continuation",
+  "validation_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "calibration_or_test_used": false,
+  "selected": [
+    {
+      "kind": "gnn",
+      "seed": 11,
+      "selected_source": "experiments/checkpoints/full_multiscale_v1/gnn_11_best.pt",
+      "validation_component_rmse_cm": 0.07860163880943148,
+      "frozen_sha256": "ad1df2350bfe59271fc3bd022dd03d45cb266ff81be6bc7b489ea03e25f5b593"
+    },
+    {
+      "kind": "gnn",
+      "seed": 22,
+      "selected_source": "experiments/checkpoints/full_multiscale_v2/gnn_22_best.pt",
+      "validation_component_rmse_cm": 0.07496977814292131,
+      "frozen_sha256": "8f6f294942ba950152d0c48d1aefbf2088c88949134db1657ce7f3c8b130b369"
+    },
+    {
+      "kind": "gnn",
+      "seed": 33,
+      "selected_source": "experiments/checkpoints/full_multiscale_v1/gnn_33_best.pt",
+      "validation_component_rmse_cm": 0.07170296042584402,
+      "frozen_sha256": "912b7f1e754474a368010f3d08544c5338e92c71aadf36031987aaae628d7593"
+    },
+    {
+      "kind": "gnn",
+      "seed": 44,
+      "selected_source": "experiments/checkpoints/full_multiscale_v2/gnn_44_best.pt",
+      "validation_component_rmse_cm": 0.060652074207612934,
+      "frozen_sha256": "0345bdf84406506c90dcf16c38a2927f888f2828973358d04d63e1f02be0873b"
+    },
+    {
+      "kind": "gnn",
+      "seed": 55,
+      "selected_source": "experiments/checkpoints/full_multiscale_v2/gnn_55_best.pt",
+      "validation_component_rmse_cm": 0.08483989202743161,
+      "frozen_sha256": "82a555b8087224b58632d1f86a2acecf25d1aa96ebbfd1d73e0513cb2b6a14c5"
+    },
+    {
+      "kind": "point",
+      "seed": 11,
+      "selected_source": "experiments/checkpoints/full_multiscale_v2/point_11_best.pt",
+      "validation_component_rmse_cm": 0.10300926378882286,
+      "frozen_sha256": "f03ac469cf047646bf6da188fe0a670252bd7440c21f8867a874904bd48475cf"
+    }
+  ]
+}

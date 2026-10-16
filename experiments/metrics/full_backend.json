@@ -1,0 +1,6 @@
+{
+  "cpu_mps_prediction_max_abs": 3.725290298461914e-08,
+  "cpu_mps_parameter_gradient_max_abs": 3.725290298461914e-09,
+  "query_chunk_consistency": "passed",
+  "torch": "2.14.1"
+}

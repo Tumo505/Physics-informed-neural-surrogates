@@ -1,0 +1,19 @@
+{
+  "full_multiscale_v1": {
+    "training_seconds_sum": 622.1440277491929,
+    "graph_training_seconds_sum": 594.7633844581433,
+    "completed_jobs": 6,
+    "optimizer_updates_graph": 37488
+  },
+  "full_multiscale_v2": {
+    "training_seconds_sum": 506.3863368341699,
+    "graph_training_seconds_sum": 488.76262158411555,
+    "completed_jobs": 6,
+    "optimizer_updates_graph": 28400
+  },
+  "cardiac": {
+    "training_and_validation_grid_seconds_sum": 405.96603083400987,
+    "corpus_solver_seconds_sum": 39.424352042144164,
+    "excluded": "package setup, failed solver diagnosis, POD preprocessing, service initial compilation and external-source acquisition"
+  }
+}

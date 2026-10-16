@@ -1,0 +1,12 @@
+{
+  "train": 2250,
+  "validation": 150,
+  "test": 567,
+  "normalizers_fit": "original train only, 2250 cases",
+  "coarse_nodes": 106,
+  "coarse_directed_edges": 590,
+  "full_output_nodes": 6784,
+  "source_topology_sha256": "cc9ed2decb233027d2d480c5936af4182aa38a6ba5b7989884997a395f158790",
+  "normalizers_sha256": "3e13ce3ddcc5a9824b1c5bccf6bd2bf74e0ee2a5f7d3321d9966d3a47752a4d7",
+  "wall_seconds": 7.739552750019357
+}

@@ -16,3 +16,8 @@ experiments/logs/
 .fenics-cache*/
 .cache/
 experiments/metrics/*.npz
+# Local research notes and manuscript drafts are not repository deliverables.
+/docs/
+/paper/
+/reports/*.md
+!/reports/results.md
