@@ -1,0 +1,397 @@
+{
+  "mesh_members": [
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/monoventricle_mesh/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/bi_ventricular.h5",
+      "bytes": 2974548
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers_biv.vtk",
+      "bytes": 2186190
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fiber_directions.xdmf",
+      "bytes": 1353
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/bi_ventricular.xdmf",
+      "bytes": 1133
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fiber_directions.h5",
+      "bytes": 1834128
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/bi_ventricular.h5",
+      "bytes": 7758344
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers_biv.vtk",
+      "bytes": 29536437
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/vtk/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fiber_directions.xdmf",
+      "bytes": 1355
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/bi_ventricular.xdmf",
+      "bytes": 1138
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fiber_directions.h5",
+      "bytes": 4618240
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/monoventricle_mesh/ellipsoid_0.005.h5",
+      "bytes": 1170076
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/monoventricle_mesh/ellipsoid_0.005.xdmf",
+      "bytes": 1136
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/bi_ventricular.h5",
+      "bytes": 2974548
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers_biv.vtk",
+      "bytes": 11928991
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/vtk/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fiber_directions.xdmf",
+      "bytes": 1353
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/bi_ventricular.xdmf",
+      "bytes": 1133
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fiber_directions.h5",
+      "bytes": 1834128
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/bi_ventricular.h5",
+      "bytes": 7758344
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers_biv.vtk",
+      "bytes": 8000224
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fiber_directions.xdmf",
+      "bytes": 1355
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/bi_ventricular.xdmf",
+      "bytes": 1138
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fiber_directions.h5",
+      "bytes": 4618240
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/h5_format/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/pvd_format/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/h5_format/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/pvd_format/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/vtk/bi_ventricular000002.vtu",
+      "bytes": 6046319
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/vtk/bi_ventricular000001.vtu",
+      "bytes": 9207128
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/vtk/bi_ventricular000000.vtu",
+      "bytes": 5803951
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/vtk/bi_ventricular.pvd",
+      "bytes": 316
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/h5_format/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/pvd_format/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/vtk/bi_ventricular000002.vtu",
+      "bytes": 2189033
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/vtk/bi_ventricular000001.vtu",
+      "bytes": 3359110
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/vtk/bi_ventricular000000.vtu",
+      "bytes": 2098323
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/vtk/bi_ventricular.pvd",
+      "bytes": 316
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/h5_format/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/pvd_format/",
+      "bytes": 0
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/h5_format/bi_ventricular_sheet_normal.h5",
+      "bytes": 3178600
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/h5_format/bi_ventricular_sheet.h5",
+      "bytes": 3178600
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/h5_format/bi_ventricular_fiber.h5",
+      "bytes": 3178600
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/pvd_format/bi_ventricular_sheet.pvd",
+      "bytes": 182
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/pvd_format/bi_ventricular_sheet000000.vtu",
+      "bytes": 2921760
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/pvd_format/bi_ventricular_sheet_normal000000.vtu",
+      "bytes": 2912863
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/pvd_format/bi_ventricular_sheet_normal.pvd",
+      "bytes": 189
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/pvd_format/bi_ventricular_fiber000000.vtu",
+      "bytes": 2917806
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p1/fibers/pvd_format/bi_ventricular_fiber.pvd",
+      "bytes": 182
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/h5_format/bi_ventricular_sheet_normal.h5",
+      "bytes": 21076400
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/h5_format/bi_ventricular_sheet.h5",
+      "bytes": 21076400
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/h5_format/bi_ventricular_fiber.h5",
+      "bytes": 21076400
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/pvd_format/bi_ventricular_sheet.pvd",
+      "bytes": 182
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/pvd_format/bi_ventricular_sheet000000.vtu",
+      "bytes": 7804768
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/pvd_format/bi_ventricular_sheet_normal000000.vtu",
+      "bytes": 7782753
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/pvd_format/bi_ventricular_sheet_normal.pvd",
+      "bytes": 189
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/pvd_format/bi_ventricular_fiber000000.vtu",
+      "bytes": 7795692
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p2/fibers/pvd_format/bi_ventricular_fiber.pvd",
+      "bytes": 182
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/h5_format/bi_ventricular_sheet_normal.h5",
+      "bytes": 7984744
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/h5_format/bi_ventricular_sheet.h5",
+      "bytes": 7984744
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/h5_format/bi_ventricular_fiber.h5",
+      "bytes": 7984744
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/pvd_format/bi_ventricular_sheet.pvd",
+      "bytes": 182
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/pvd_format/bi_ventricular_sheet000000.vtu",
+      "bytes": 2921760
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/pvd_format/bi_ventricular_sheet_normal000000.vtu",
+      "bytes": 2912863
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/pvd_format/bi_ventricular_sheet_normal.pvd",
+      "bytes": 189
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/pvd_format/bi_ventricular_fiber000000.vtu",
+      "bytes": 2917806
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_coarse_p2/fibers/pvd_format/bi_ventricular_fiber.pvd",
+      "bytes": 182
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/h5_format/bi_ventricular_sheet_normal.h5",
+      "bytes": 8424368
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/h5_format/bi_ventricular_sheet.h5",
+      "bytes": 8424368
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/h5_format/bi_ventricular_fiber.h5",
+      "bytes": 8424368
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/pvd_format/bi_ventricular_sheet.pvd",
+      "bytes": 182
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/pvd_format/bi_ventricular_sheet000000.vtu",
+      "bytes": 7804721
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/pvd_format/bi_ventricular_sheet_normal000000.vtu",
+      "bytes": 7782642
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/pvd_format/bi_ventricular_sheet_normal.pvd",
+      "bytes": 189
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/pvd_format/bi_ventricular_fiber000000.vtu",
+      "bytes": 7795710
+    },
+    {
+      "path": "benchmark_article_data/meshes_and_fibers/data/biv_mesh_and_fibers_fine_p1/fibers/pvd_format/bi_ventricular_fiber.pvd",
+      "bytes": 182
+    }
+  ],
+  "solver_available_in_current_runtime": false,
+  "isolated_fenics_installed": true,
+  "solver_probe_status": "see reports/solver_probe.md; native cardiac execution exits139 in this environment",
+  "formulation": "dynamic Holzapfel\u2013Ogden, inertia + viscosity + follower pressure + Robin springs/friction; not Dalton passive endpoint task",
+  "required_for_residual": [
+    "exact FE space and DOF-to-node map",
+    "fiber/sheet fields and parameter configuration",
+    "boundary markers",
+    "displacement velocity acceleration histories",
+    "time integration and quadrature",
+    "trusted solver residual assembly"
+  ],
+  "selected_mesh_bytes": 1171212,
+  "selected_mesh_files": [
+    "benchmark_article_data/meshes_and_fibers/data/monoventricle_mesh/ellipsoid_0.005.h5",
+    "benchmark_article_data/meshes_and_fibers/data/monoventricle_mesh/ellipsoid_0.005.xdmf"
+  ],
+  "hdf5_schema": {
+    "data/raw/benchmark/benchmark_article_data/meshes_and_fibers/data/monoventricle_mesh/ellipsoid_0.005.h5": {
+      "Mesh/mesh/geometry": {
+        "shape": [
+          4577,
+          3
+        ],
+        "dtype": "float64"
+      },
+      "Mesh/mesh/topology": {
+        "shape": [
+          17625,
+          4
+        ],
+        "dtype": "int32"
+      },
+      "MeshFunction/0/mesh/topology": {
+        "shape": [
+          38365,
+          3
+        ],
+        "dtype": "int32"
+      },
+      "MeshFunction/0/values": {
+        "shape": [
+          38365,
+          1
+        ],
+        "dtype": "uint64"
+      }
+    }
+  }
+}

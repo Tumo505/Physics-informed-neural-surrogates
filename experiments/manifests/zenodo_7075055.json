@@ -1,0 +1,155 @@
+{
+  "created": "2022-09-16T15:30:06.583851+00:00",
+  "modified": "2022-09-18T02:26:40.816163+00:00",
+  "id": 7075055,
+  "conceptrecid": "7075054",
+  "doi": "10.5281/zenodo.7075055",
+  "conceptdoi": "10.5281/zenodo.7075054",
+  "doi_url": "https://doi.org/10.5281/zenodo.7075055",
+  "metadata": {
+    "title": "Data From: Emulation of Cardiac Mechanics using Graph Neural Networks",
+    "doi": "10.5281/zenodo.7075055",
+    "publication_date": "2022-09-13",
+    "description": "<p>Contains simulation results of the forward displacement from beginning to end-diastole for approximately 3000 synthetically generated left ventricle geometries.</p>\n\n<p>The simulation results are split into training, validation and test data.</p>\n\n<p>The data is described in detail in a forthcoming publication in <em>Computer Methods in Applied Mechanics and Engineering</em> - further information will be provided upon publication. A GitHub repository will also be made available, with code for processing the simulation data and training a Graph Neural Network emulator.</p>",
+    "access_right": "open",
+    "creators": [
+      {
+        "name": "Dalton, David",
+        "affiliation": "University of Glasgow"
+      },
+      {
+        "name": "Gao, Hao",
+        "affiliation": "University of Glasgow"
+      },
+      {
+        "name": "Husmeier, Dirk",
+        "affiliation": "University of Glasgow"
+      }
+    ],
+    "keywords": [
+      "cardiac mechanics",
+      "hyperelasticity",
+      "emulation"
+    ],
+    "resource_type": {
+      "title": "Dataset",
+      "type": "dataset"
+    },
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "grants": [
+      {
+        "code": "EP/S030875/1",
+        "internal_id": "10.13039/100014013::EP/S030875/1",
+        "funder": {
+          "name": "UK Research and Innovation",
+          "doi": "10.13039/100014013",
+          "acronym": "UKRI"
+        },
+        "title": "SofTMech with MIT and POLIMI (SofTMechMP)",
+        "program": "EPSRC"
+      },
+      {
+        "code": "EP/S020950/1",
+        "internal_id": "10.13039/100014013::EP/S020950/1",
+        "funder": {
+          "name": "UK Research and Innovation",
+          "doi": "10.13039/100014013",
+          "acronym": "UKRI"
+        },
+        "title": "A whole-heart model of multiscale soft tissue mechanics and fluid structure interaction for clinical applications (Whole-Heart-FSI)",
+        "program": "EPSRC"
+      },
+      {
+        "code": "EP/T017899/1",
+        "internal_id": "10.13039/100014013::EP/T017899/1",
+        "funder": {
+          "name": "UK Research and Innovation",
+          "doi": "10.13039/100014013",
+          "acronym": "UKRI"
+        },
+        "title": "The SofTMech Statistical Emulation and Translation Hub",
+        "program": "EPSRC"
+      }
+    ],
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "7075054"
+          }
+        }
+      ]
+    }
+  },
+  "title": "Data From: Emulation of Cardiac Mechanics using Graph Neural Networks",
+  "links": {
+    "self": "https://zenodo.org/api/records/7075055",
+    "self_html": "https://zenodo.org/records/7075055",
+    "preview_html": "https://zenodo.org/records/7075055?preview=1",
+    "doi": "https://doi.org/10.5281/zenodo.7075055",
+    "self_doi": "https://doi.org/10.5281/zenodo.7075055",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.7075055",
+    "reserve_doi": "https://zenodo.org/api/records/7075055/draft/pids/doi",
+    "parent": "https://zenodo.org/api/records/7075054",
+    "parent_html": "https://zenodo.org/records/7075054",
+    "parent_doi": "https://doi.org/10.5281/zenodo.7075054",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.7075054",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:7075055/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:7075055/sequence/default",
+    "files": "https://zenodo.org/api/records/7075055/files",
+    "media_files": "https://zenodo.org/api/records/7075055/media-files",
+    "latest": "https://zenodo.org/api/records/7075055/versions/latest",
+    "latest_html": "https://zenodo.org/records/7075055/latest",
+    "versions": "https://zenodo.org/api/records/7075055/versions",
+    "draft": "https://zenodo.org/api/records/7075055/draft",
+    "access_links": "https://zenodo.org/api/records/7075055/access/links",
+    "access_grants": "https://zenodo.org/api/records/7075055/access/grants",
+    "access_users": "https://zenodo.org/api/records/7075055/access/users",
+    "access_request": "https://zenodo.org/api/records/7075055/access/request",
+    "access": "https://zenodo.org/api/records/7075055/access",
+    "communities": "https://zenodo.org/api/records/7075055/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/7075055/communities-suggestions",
+    "request_deletion": "https://zenodo.org/api/records/7075055/request-deletion",
+    "file_modification": "https://zenodo.org/api/records/7075055/file-modification",
+    "quota_increase": "https://zenodo.org/api/records/7075055/quota-increase",
+    "requests": "https://zenodo.org/api/records/7075055/requests"
+  },
+  "updated": "2022-09-18T02:26:40.816163+00:00",
+  "recid": "7075055",
+  "revision": 2,
+  "files": [
+    {
+      "id": "94dc2611-b6ed-4ebf-8275-6811852abd6b",
+      "key": "lvData.zip",
+      "size": 1765469988,
+      "checksum": "md5:96987da42e159c205fa4aeb30cd5526e",
+      "links": {
+        "self": "https://zenodo.org/api/records/7075055/files/lvData.zip/content"
+      }
+    }
+  ],
+  "swh": {},
+  "owners": [
+    {
+      "id": "405004"
+    }
+  ],
+  "status": "published",
+  "stats": {
+    "downloads": 203,
+    "unique_downloads": 143,
+    "views": 939,
+    "unique_views": 882,
+    "version_downloads": 203,
+    "version_unique_downloads": 143,
+    "version_unique_views": 875,
+    "version_views": 930
+  },
+  "state": "done",
+  "submitted": true
+}

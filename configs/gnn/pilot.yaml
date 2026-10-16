@@ -1,0 +1,14 @@
+seed_split: 2027
+seeds: [11,22,33,44,55]
+train_cases: 64
+validation_ids: [0,16]
+calibration_ids: [16,150]
+test_ids: [0,64]
+width: 32
+message_steps: 2
+epochs: 10
+learning_rate: 0.001
+precision: float32
+device: cpu
+threads: 2
+physics_loss: false
