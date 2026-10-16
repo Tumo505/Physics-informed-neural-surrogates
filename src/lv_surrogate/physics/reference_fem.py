@@ -16,11 +16,19 @@ from cardiac_benchmark.material import HolzapfelOgden
 from cardiac_benchmark.problem import LVProblem
 from cardiac_benchmark.pressure_model import pressure_function,default_parameters_benchmark1
 
-def setup():
+def setup(refinement_level=0):
  df.set_log_level(30);df.parameters['form_compiler']['quadrature_degree']=6;df.parameters['form_compiler']['cpp_optimize']=True
  meshfile=next((P/'data/raw/benchmark').rglob('*.xdmf'));mesh,ffun,markers=LVGeometry.load_mesh(meshfile)
  fp=LVGeometry.default_fiber_parameters();fp['function_space']='P_1';micro=create_microstructure(mesh,ffun,markers,LVGeometry.default_mesh_parameters(),fp)
- geo=LVGeometry(mesh=mesh,ffun=ffun,markers=markers,f0=micro.f0,s0=micro.s0,n0=micro.n0)
+ fibers=[micro.f0,micro.s0,micro.n0]
+ for _ in range(refinement_level):
+  # Keep the same polyhedral domain and continuous P1 fiber fields; isolate
+  # displacement discretization without changing geometry or constitutive data.
+  df.parameters['refinement_algorithm']='plaza_with_parent_facets'
+  refined=df.refine(mesh);ffun=df.adapt(ffun,refined)
+  space=df.VectorFunctionSpace(refined,'CG',1)
+  fibers=[df.interpolate(f,space) for f in fibers];mesh=refined
+ geo=LVGeometry(mesh=mesh,ffun=ffun,markers=markers,f0=fibers[0],s0=fibers[1],n0=fibers[2])
  mat=HolzapfelOgden(geo.f0,geo.s0,tau=df.Constant(0.));params=LVProblem.default_parameters();params['function_space']='P_1'
  problem=LVProblem(geo,mat,parameters=params,solver_parameters={'linear_solver':'mumps','petsc':{'ksp_type':'preonly','pc_type':'none'}})
  return geo,mat,problem

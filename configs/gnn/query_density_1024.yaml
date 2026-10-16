@@ -1,0 +1,35 @@
+run_name: query_density_1024_v3
+initialize_best_from: full_multiscale_v2
+seeds:
+- 11
+baseline_seeds: []
+epochs: 60
+batch_size: 32
+sample_nodes: 1024
+width: 64
+steps: 3
+lr: 5.0e-05
+minimum_lr: 5.0e-06
+weight_decay: 1.0e-05
+validation_every: 5
+patience_checks: 20
+validation_ids:
+- 0
+- 16
+calibration_ids:
+- 16
+- 150
+test_ids:
+- 64
+- 567
+training_split: all_2250_original_training_cases
+device: mps
+seed_split: 2027
+continuation_reason: matched_validation_only_node_query_density_ablation
+registered_before_new_model_test_or_calibration_evaluation: false
+selection_policy: lowest validation0:16 component MSE, including initialization; no
+  test/calibration access
+benchmark_status: existing test503 already evaluated; subsequent test comparisons
+  exploratory
+ablation_control: same architecture, seed, starting weights, optimizer updates and
+  LR; query count changes

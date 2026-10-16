@@ -57,7 +57,13 @@ def main():
    for j in range(20):opt.zero_grad();loss=(predict(model,b)-b['targets']).square().mean()/scale;loss.backward();opt.step()
    sync(device);result={'device':str(device),'seconds_per_batch':(time.perf_counter()-t)/20,'loss':float(loss.detach().cpu()),'parameters':sum(p.numel() for p in model.parameters()),'batch_size':cfg['batch_size'],'nodes_per_geometry':cfg['sample_nodes']};print(json.dumps(result),flush=True);(metrics/'throughput.json').write_text(json.dumps(result,indent=2));return
   manifest={'config':cfg,'kind':kind,'seed':seed,'torch':torch.__version__,'device':str(device),'determinism':'fixed RNG; MPS indexed reductions may be nondeterministic','normalizer_sha256':hashlib.sha256((D/'normalizers.npz').read_bytes()).hexdigest(),'source_sha256':{str(p.relative_to(P)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [Path(__file__),P/'src/lv_surrogate/models/multiscale.py']},'parameters':sum(p.numel() for p in model.parameters()),'initialization':cfg.get('initialize_best_from','random; no released checkpoint or latents'),'training_geometries':len(train['points']),'validation_geometries':len(range(*cfg['validation_ids']))}
-  (manifests/f'{kind}_{seed}.json').write_text(json.dumps(manifest,indent=2));sync(device);start=time.perf_counter()
+  (manifests/f'{kind}_{seed}.json').write_text(json.dumps(manifest,indent=2))
+  # Continuation must retain its starting checkpoint if every update degrades it.
+  if not latest.exists():
+   best=validation(model)
+   atomic_save({'model':model.state_dict(),'epoch':-1,'validation_mse_cm2':best,'manifest':manifest},bestpath)
+   history.append({'epoch':-1,'validation_component_mse_cm2':best,'role':'initialization_candidate'})
+  sync(device);start=time.perf_counter()
   for epoch in range(start_epoch,cfg['epochs']):
    model.train();order=rng.permutation(len(train['points']));loss_sum=0.;nseen=0
    for i in range(0,len(order),cfg['batch_size']):

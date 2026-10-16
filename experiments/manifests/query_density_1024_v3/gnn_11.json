@@ -1,0 +1,54 @@
+{
+  "config": {
+    "run_name": "query_density_1024_v3",
+    "initialize_best_from": "full_multiscale_v2",
+    "seeds": [
+      11
+    ],
+    "baseline_seeds": [],
+    "epochs": 60,
+    "batch_size": 32,
+    "sample_nodes": 1024,
+    "width": 64,
+    "steps": 3,
+    "lr": 5e-05,
+    "minimum_lr": 5e-06,
+    "weight_decay": 1e-05,
+    "validation_every": 5,
+    "patience_checks": 20,
+    "validation_ids": [
+      0,
+      16
+    ],
+    "calibration_ids": [
+      16,
+      150
+    ],
+    "test_ids": [
+      64,
+      567
+    ],
+    "training_split": "all_2250_original_training_cases",
+    "device": "mps",
+    "seed_split": 2027,
+    "continuation_reason": "matched_validation_only_node_query_density_ablation",
+    "registered_before_new_model_test_or_calibration_evaluation": false,
+    "selection_policy": "lowest validation0:16 component MSE, including initialization; no test/calibration access",
+    "benchmark_status": "existing test503 already evaluated; subsequent test comparisons exploratory",
+    "ablation_control": "same architecture, seed, starting weights, optimizer updates and LR; query count changes"
+  },
+  "kind": "gnn",
+  "seed": 11,
+  "torch": "2.14.1",
+  "device": "mps",
+  "determinism": "fixed RNG; MPS indexed reductions may be nondeterministic",
+  "normalizer_sha256": "3e13ce3ddcc5a9824b1c5bccf6bd2bf74e0ee2a5f7d3321d9966d3a47752a4d7",
+  "source_sha256": {
+    "scripts/train_full.py": "ef2c2b7df7ae421e6c32d3d2c75e06193c99e9edf0dd6d858ee34f1a5e131f8c",
+    "src/lv_surrogate/models/multiscale.py": "469366e0b56f76c42aa5eeccc5aeae8bdfd88c1fbaed2c01e1daf3cb9e6812fb"
+  },
+  "parameters": 138563,
+  "initialization": "full_multiscale_v2",
+  "training_geometries": 2250,
+  "validation_geometries": 16
+}

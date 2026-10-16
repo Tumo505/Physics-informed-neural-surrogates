@@ -1,0 +1,582 @@
+{
+  "task": "validation-only query density ablation",
+  "seed": 11,
+  "training_geometries": 2250,
+  "training_diagnostic_ids": [
+    1116,
+    1463,
+    332,
+    1584,
+    1533,
+    637,
+    1070,
+    1006,
+    863,
+    184,
+    1412,
+    279,
+    669,
+    17,
+    1397,
+    2059
+  ],
+  "selection_validation_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "calibration_and_test_read": false,
+  "selection_rule": "minimum validation component MSE including initialization",
+  "inference_scope": "one matched seed and reused selection set; descriptive, no population significance claim",
+  "results": {
+    "initialization": {
+      "epoch": 50,
+      "checkpoint_sha256": "ad1df2350bfe59271fc3bd022dd03d45cb266ff81be6bc7b489ea03e25f5b593",
+      "train": {
+        "component_rmse_cm": 0.07893208150924966,
+        "mean_nodal_l2_cm": 0.10625970445107669,
+        "cases": [
+          {
+            "case": 1116,
+            "component_mse_cm2": 0.006884679198265076,
+            "mean_nodal_l2_cm": 0.13278698921203613
+          },
+          {
+            "case": 1463,
+            "component_mse_cm2": 0.00041251216316595674,
+            "mean_nodal_l2_cm": 0.030637947842478752
+          },
+          {
+            "case": 332,
+            "component_mse_cm2": 0.02632482349872589,
+            "mean_nodal_l2_cm": 0.25620564818382263
+          },
+          {
+            "case": 1584,
+            "component_mse_cm2": 0.006558140739798546,
+            "mean_nodal_l2_cm": 0.1302233636379242
+          },
+          {
+            "case": 1533,
+            "component_mse_cm2": 0.001011818996630609,
+            "mean_nodal_l2_cm": 0.05011354386806488
+          },
+          {
+            "case": 637,
+            "component_mse_cm2": 0.0006233007879927754,
+            "mean_nodal_l2_cm": 0.03986672684550285
+          },
+          {
+            "case": 1070,
+            "component_mse_cm2": 0.0012585539370775223,
+            "mean_nodal_l2_cm": 0.056783054023981094
+          },
+          {
+            "case": 1006,
+            "component_mse_cm2": 0.008680548518896103,
+            "mean_nodal_l2_cm": 0.1512155383825302
+          },
+          {
+            "case": 863,
+            "component_mse_cm2": 0.01967194303870201,
+            "mean_nodal_l2_cm": 0.22729194164276123
+          },
+          {
+            "case": 184,
+            "component_mse_cm2": 0.002016605343669653,
+            "mean_nodal_l2_cm": 0.07306234538555145
+          },
+          {
+            "case": 1412,
+            "component_mse_cm2": 0.0005665046628564596,
+            "mean_nodal_l2_cm": 0.03823848068714142
+          },
+          {
+            "case": 279,
+            "component_mse_cm2": 0.001434457954019308,
+            "mean_nodal_l2_cm": 0.058466143906116486
+          },
+          {
+            "case": 669,
+            "component_mse_cm2": 0.014270927757024765,
+            "mean_nodal_l2_cm": 0.19171610474586487
+          },
+          {
+            "case": 17,
+            "component_mse_cm2": 0.004047197289764881,
+            "mean_nodal_l2_cm": 0.10049764066934586
+          },
+          {
+            "case": 1397,
+            "component_mse_cm2": 0.005029893014580011,
+            "mean_nodal_l2_cm": 0.11531748622655869
+          },
+          {
+            "case": 2059,
+            "component_mse_cm2": 0.000892468960955739,
+            "mean_nodal_l2_cm": 0.047732315957546234
+          }
+        ]
+      },
+      "validation": {
+        "component_rmse_cm": 0.0786016326999759,
+        "mean_nodal_l2_cm": 0.10251487861387432,
+        "cases": [
+          {
+            "case": 0,
+            "component_mse_cm2": 0.005493022967129946,
+            "mean_nodal_l2_cm": 0.1191815584897995
+          },
+          {
+            "case": 1,
+            "component_mse_cm2": 0.0013340989826247096,
+            "mean_nodal_l2_cm": 0.05546548217535019
+          },
+          {
+            "case": 2,
+            "component_mse_cm2": 0.0020915840286761522,
+            "mean_nodal_l2_cm": 0.0742182806134224
+          },
+          {
+            "case": 3,
+            "component_mse_cm2": 0.03465108573436737,
+            "mean_nodal_l2_cm": 0.2945365309715271
+          },
+          {
+            "case": 4,
+            "component_mse_cm2": 0.0019138919888064265,
+            "mean_nodal_l2_cm": 0.07011476904153824
+          },
+          {
+            "case": 5,
+            "component_mse_cm2": 0.007664969190955162,
+            "mean_nodal_l2_cm": 0.13875707983970642
+          },
+          {
+            "case": 6,
+            "component_mse_cm2": 0.022626232355833054,
+            "mean_nodal_l2_cm": 0.22894969582557678
+          },
+          {
+            "case": 7,
+            "component_mse_cm2": 0.0005299095646478236,
+            "mean_nodal_l2_cm": 0.03668070584535599
+          },
+          {
+            "case": 8,
+            "component_mse_cm2": 0.00448350515216589,
+            "mean_nodal_l2_cm": 0.103951595723629
+          },
+          {
+            "case": 9,
+            "component_mse_cm2": 0.0023121912963688374,
+            "mean_nodal_l2_cm": 0.07717905193567276
+          },
+          {
+            "case": 10,
+            "component_mse_cm2": 0.0027952338568866253,
+            "mean_nodal_l2_cm": 0.08622214198112488
+          },
+          {
+            "case": 11,
+            "component_mse_cm2": 0.0011271308176219463,
+            "mean_nodal_l2_cm": 0.05067623034119606
+          },
+          {
+            "case": 12,
+            "component_mse_cm2": 0.00858215056359768,
+            "mean_nodal_l2_cm": 0.1498752385377884
+          },
+          {
+            "case": 13,
+            "component_mse_cm2": 0.000992593471892178,
+            "mean_nodal_l2_cm": 0.05071563646197319
+          },
+          {
+            "case": 14,
+            "component_mse_cm2": 0.0016672834753990173,
+            "mean_nodal_l2_cm": 0.06630460917949677
+          },
+          {
+            "case": 15,
+            "component_mse_cm2": 0.0005865831626579165,
+            "mean_nodal_l2_cm": 0.037409450858831406
+          }
+        ]
+      }
+    },
+    "128": {
+      "epoch": -1,
+      "checkpoint_sha256": "78d597a79bb7e6261a37d3575780fd20917a4adb3d6d31494142f942f2003514",
+      "train": {
+        "component_rmse_cm": 0.07893208150924966,
+        "mean_nodal_l2_cm": 0.10625970445107669,
+        "cases": [
+          {
+            "case": 1116,
+            "component_mse_cm2": 0.006884679198265076,
+            "mean_nodal_l2_cm": 0.13278698921203613
+          },
+          {
+            "case": 1463,
+            "component_mse_cm2": 0.00041251216316595674,
+            "mean_nodal_l2_cm": 0.030637947842478752
+          },
+          {
+            "case": 332,
+            "component_mse_cm2": 0.02632482349872589,
+            "mean_nodal_l2_cm": 0.25620564818382263
+          },
+          {
+            "case": 1584,
+            "component_mse_cm2": 0.006558140739798546,
+            "mean_nodal_l2_cm": 0.1302233636379242
+          },
+          {
+            "case": 1533,
+            "component_mse_cm2": 0.001011818996630609,
+            "mean_nodal_l2_cm": 0.05011354386806488
+          },
+          {
+            "case": 637,
+            "component_mse_cm2": 0.0006233007879927754,
+            "mean_nodal_l2_cm": 0.03986672684550285
+          },
+          {
+            "case": 1070,
+            "component_mse_cm2": 0.0012585539370775223,
+            "mean_nodal_l2_cm": 0.056783054023981094
+          },
+          {
+            "case": 1006,
+            "component_mse_cm2": 0.008680548518896103,
+            "mean_nodal_l2_cm": 0.1512155383825302
+          },
+          {
+            "case": 863,
+            "component_mse_cm2": 0.01967194303870201,
+            "mean_nodal_l2_cm": 0.22729194164276123
+          },
+          {
+            "case": 184,
+            "component_mse_cm2": 0.002016605343669653,
+            "mean_nodal_l2_cm": 0.07306234538555145
+          },
+          {
+            "case": 1412,
+            "component_mse_cm2": 0.0005665046628564596,
+            "mean_nodal_l2_cm": 0.03823848068714142
+          },
+          {
+            "case": 279,
+            "component_mse_cm2": 0.001434457954019308,
+            "mean_nodal_l2_cm": 0.058466143906116486
+          },
+          {
+            "case": 669,
+            "component_mse_cm2": 0.014270927757024765,
+            "mean_nodal_l2_cm": 0.19171610474586487
+          },
+          {
+            "case": 17,
+            "component_mse_cm2": 0.004047197289764881,
+            "mean_nodal_l2_cm": 0.10049764066934586
+          },
+          {
+            "case": 1397,
+            "component_mse_cm2": 0.005029893014580011,
+            "mean_nodal_l2_cm": 0.11531748622655869
+          },
+          {
+            "case": 2059,
+            "component_mse_cm2": 0.000892468960955739,
+            "mean_nodal_l2_cm": 0.047732315957546234
+          }
+        ]
+      },
+      "validation": {
+        "component_rmse_cm": 0.0786016326999759,
+        "mean_nodal_l2_cm": 0.10251487861387432,
+        "cases": [
+          {
+            "case": 0,
+            "component_mse_cm2": 0.005493022967129946,
+            "mean_nodal_l2_cm": 0.1191815584897995
+          },
+          {
+            "case": 1,
+            "component_mse_cm2": 0.0013340989826247096,
+            "mean_nodal_l2_cm": 0.05546548217535019
+          },
+          {
+            "case": 2,
+            "component_mse_cm2": 0.0020915840286761522,
+            "mean_nodal_l2_cm": 0.0742182806134224
+          },
+          {
+            "case": 3,
+            "component_mse_cm2": 0.03465108573436737,
+            "mean_nodal_l2_cm": 0.2945365309715271
+          },
+          {
+            "case": 4,
+            "component_mse_cm2": 0.0019138919888064265,
+            "mean_nodal_l2_cm": 0.07011476904153824
+          },
+          {
+            "case": 5,
+            "component_mse_cm2": 0.007664969190955162,
+            "mean_nodal_l2_cm": 0.13875707983970642
+          },
+          {
+            "case": 6,
+            "component_mse_cm2": 0.022626232355833054,
+            "mean_nodal_l2_cm": 0.22894969582557678
+          },
+          {
+            "case": 7,
+            "component_mse_cm2": 0.0005299095646478236,
+            "mean_nodal_l2_cm": 0.03668070584535599
+          },
+          {
+            "case": 8,
+            "component_mse_cm2": 0.00448350515216589,
+            "mean_nodal_l2_cm": 0.103951595723629
+          },
+          {
+            "case": 9,
+            "component_mse_cm2": 0.0023121912963688374,
+            "mean_nodal_l2_cm": 0.07717905193567276
+          },
+          {
+            "case": 10,
+            "component_mse_cm2": 0.0027952338568866253,
+            "mean_nodal_l2_cm": 0.08622214198112488
+          },
+          {
+            "case": 11,
+            "component_mse_cm2": 0.0011271308176219463,
+            "mean_nodal_l2_cm": 0.05067623034119606
+          },
+          {
+            "case": 12,
+            "component_mse_cm2": 0.00858215056359768,
+            "mean_nodal_l2_cm": 0.1498752385377884
+          },
+          {
+            "case": 13,
+            "component_mse_cm2": 0.000992593471892178,
+            "mean_nodal_l2_cm": 0.05071563646197319
+          },
+          {
+            "case": 14,
+            "component_mse_cm2": 0.0016672834753990173,
+            "mean_nodal_l2_cm": 0.06630460917949677
+          },
+          {
+            "case": 15,
+            "component_mse_cm2": 0.0005865831626579165,
+            "mean_nodal_l2_cm": 0.037409450858831406
+          }
+        ]
+      },
+      "train_seconds": 67.1270827499684
+    },
+    "1024": {
+      "epoch": -1,
+      "checkpoint_sha256": "08a2da1a90319e67c16ddb7894b1d9cc8d50e0b168658650dbd861df673fd0c1",
+      "train": {
+        "component_rmse_cm": 0.07893208150924966,
+        "mean_nodal_l2_cm": 0.10625970445107669,
+        "cases": [
+          {
+            "case": 1116,
+            "component_mse_cm2": 0.006884679198265076,
+            "mean_nodal_l2_cm": 0.13278698921203613
+          },
+          {
+            "case": 1463,
+            "component_mse_cm2": 0.00041251216316595674,
+            "mean_nodal_l2_cm": 0.030637947842478752
+          },
+          {
+            "case": 332,
+            "component_mse_cm2": 0.02632482349872589,
+            "mean_nodal_l2_cm": 0.25620564818382263
+          },
+          {
+            "case": 1584,
+            "component_mse_cm2": 0.006558140739798546,
+            "mean_nodal_l2_cm": 0.1302233636379242
+          },
+          {
+            "case": 1533,
+            "component_mse_cm2": 0.001011818996630609,
+            "mean_nodal_l2_cm": 0.05011354386806488
+          },
+          {
+            "case": 637,
+            "component_mse_cm2": 0.0006233007879927754,
+            "mean_nodal_l2_cm": 0.03986672684550285
+          },
+          {
+            "case": 1070,
+            "component_mse_cm2": 0.0012585539370775223,
+            "mean_nodal_l2_cm": 0.056783054023981094
+          },
+          {
+            "case": 1006,
+            "component_mse_cm2": 0.008680548518896103,
+            "mean_nodal_l2_cm": 0.1512155383825302
+          },
+          {
+            "case": 863,
+            "component_mse_cm2": 0.01967194303870201,
+            "mean_nodal_l2_cm": 0.22729194164276123
+          },
+          {
+            "case": 184,
+            "component_mse_cm2": 0.002016605343669653,
+            "mean_nodal_l2_cm": 0.07306234538555145
+          },
+          {
+            "case": 1412,
+            "component_mse_cm2": 0.0005665046628564596,
+            "mean_nodal_l2_cm": 0.03823848068714142
+          },
+          {
+            "case": 279,
+            "component_mse_cm2": 0.001434457954019308,
+            "mean_nodal_l2_cm": 0.058466143906116486
+          },
+          {
+            "case": 669,
+            "component_mse_cm2": 0.014270927757024765,
+            "mean_nodal_l2_cm": 0.19171610474586487
+          },
+          {
+            "case": 17,
+            "component_mse_cm2": 0.004047197289764881,
+            "mean_nodal_l2_cm": 0.10049764066934586
+          },
+          {
+            "case": 1397,
+            "component_mse_cm2": 0.005029893014580011,
+            "mean_nodal_l2_cm": 0.11531748622655869
+          },
+          {
+            "case": 2059,
+            "component_mse_cm2": 0.000892468960955739,
+            "mean_nodal_l2_cm": 0.047732315957546234
+          }
+        ]
+      },
+      "validation": {
+        "component_rmse_cm": 0.0786016326999759,
+        "mean_nodal_l2_cm": 0.10251487861387432,
+        "cases": [
+          {
+            "case": 0,
+            "component_mse_cm2": 0.005493022967129946,
+            "mean_nodal_l2_cm": 0.1191815584897995
+          },
+          {
+            "case": 1,
+            "component_mse_cm2": 0.0013340989826247096,
+            "mean_nodal_l2_cm": 0.05546548217535019
+          },
+          {
+            "case": 2,
+            "component_mse_cm2": 0.0020915840286761522,
+            "mean_nodal_l2_cm": 0.0742182806134224
+          },
+          {
+            "case": 3,
+            "component_mse_cm2": 0.03465108573436737,
+            "mean_nodal_l2_cm": 0.2945365309715271
+          },
+          {
+            "case": 4,
+            "component_mse_cm2": 0.0019138919888064265,
+            "mean_nodal_l2_cm": 0.07011476904153824
+          },
+          {
+            "case": 5,
+            "component_mse_cm2": 0.007664969190955162,
+            "mean_nodal_l2_cm": 0.13875707983970642
+          },
+          {
+            "case": 6,
+            "component_mse_cm2": 0.022626232355833054,
+            "mean_nodal_l2_cm": 0.22894969582557678
+          },
+          {
+            "case": 7,
+            "component_mse_cm2": 0.0005299095646478236,
+            "mean_nodal_l2_cm": 0.03668070584535599
+          },
+          {
+            "case": 8,
+            "component_mse_cm2": 0.00448350515216589,
+            "mean_nodal_l2_cm": 0.103951595723629
+          },
+          {
+            "case": 9,
+            "component_mse_cm2": 0.0023121912963688374,
+            "mean_nodal_l2_cm": 0.07717905193567276
+          },
+          {
+            "case": 10,
+            "component_mse_cm2": 0.0027952338568866253,
+            "mean_nodal_l2_cm": 0.08622214198112488
+          },
+          {
+            "case": 11,
+            "component_mse_cm2": 0.0011271308176219463,
+            "mean_nodal_l2_cm": 0.05067623034119606
+          },
+          {
+            "case": 12,
+            "component_mse_cm2": 0.00858215056359768,
+            "mean_nodal_l2_cm": 0.1498752385377884
+          },
+          {
+            "case": 13,
+            "component_mse_cm2": 0.000992593471892178,
+            "mean_nodal_l2_cm": 0.05071563646197319
+          },
+          {
+            "case": 14,
+            "component_mse_cm2": 0.0016672834753990173,
+            "mean_nodal_l2_cm": 0.06630460917949677
+          },
+          {
+            "case": 15,
+            "component_mse_cm2": 0.0005865831626579165,
+            "mean_nodal_l2_cm": 0.037409450858831406
+          }
+        ]
+      },
+      "train_seconds": 92.51296970807016
+    }
+  },
+  "dense_relative_rmse_reduction_vs_sparse": 0.0,
+  "dense_relative_rmse_reduction_vs_initial": 0.0,
+  "preferred_query_count": 128,
+  "selection_tie_tolerance_relative": 1e-06,
+  "improves_initialization": false,
+  "decision": "Expand only an improvement beyond numerical tolerance; otherwise retain existing ensemble and change the next hypothesis."
+}

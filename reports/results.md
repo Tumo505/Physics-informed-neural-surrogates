@@ -26,6 +26,30 @@ Main evaluation uses test64:567, excluding the previously inspected pilot cohort
 
 Ensemble raw-variance/error Spearman correlation: 0.8855. Geometry bootstrap intervals condition on the fixed trained ensemble and exclude retraining uncertainty. Paired comparisons, input-defined shape-tail analysis and per-case values are in full_evaluation.json. Exploratory shape-tail cases had90.5% coverage for nominal95% bounds (n=84), versus96.7% in central shapes (n=419). No shifted-distribution coverage guarantee.
 
+Validation-only query-density experiment: one matched seed, same starting weights and 60 continuation epochs on all2250 training geometries; compare128 versus1024 nodes per geometry. Starting checkpoint remains eligible for selection. Calibration and test arrays were not opened.
+
+| Candidate | Selected validation component RMSE(cm) | Selected continuation epoch |
+|---|---:|---:|
+| initialization | 0.0786016 | 50 |
+| 128 | 0.0786016 | -1 |
+| 1024 | 0.0786016 | -1 |
+
+Improvement beyond relative numerical tolerance1e-6: False. More point queries did not establish an accuracy benefit in this continuation; this does not rule out a benefit when training from scratch or with a different architecture. Existing ensemble retained. These16 geometries are the reused selection set, so results are descriptive. Future comparisons on the already evaluated503-case test set must be labelled repeated benchmark evaluation.
+
+![Validation-only query-density comparison](figures/query_density.png)
+
+Two-level cardiac mesh sensitivity: uniform tetrahedral refinement of the same polyhedral domain, retaining boundary labels and interpolating the same continuous P1 fiber fields; original mechanics and timestep retained. This checks displacement discretization, without curved-geometry refinement or independent anatomy.
+
+| Pressure(Pa) | Relative volume-L2 displacement difference | Volume-weighted component RMSE(µm) | Minimum refined endpoint detF |
+|---|---:|---:|---:|
+| 4017.74 | 2.815% | 1.090 | 0.994296 |
+| 8035.48 | 2.820% | 2.190 | 0.988481 |
+| 16070.95 | 2.827% | 4.412 | 0.976539 |
+
+Mesh sizes: 17625 to 141000 tetrahedra. Boundary areas and reference volume match to numerical tolerance. Two levels do not establish an asymptotic convergence rate or a mesh-independent truth. Surrogate error against the original mesh does not include this reference discretization uncertainty.
+
+![Two-level FE mesh sensitivity](figures/mesh_sensitivity.png)
+
 Trusted cardiac first-step probe now converged: normalized residual 5.24e-11, minimum detF 0.9999762, inverted elements 0%. This is oneP1 dynamic timestep, not a full cardiac trajectory or matched Dalton FEM timing. The former native crash was isolated to PETSc LU option initialization; the workaround preserves governing forms.
 
 Separate cardiac startup experiment:20 training,6 validation and6 test LOAD cases on ONE geometry; P1/fibers, passive anisotropic viscoelastic dynamics, zero initial histories. This is not a full-cycle benchmark or a shape-generalization result.

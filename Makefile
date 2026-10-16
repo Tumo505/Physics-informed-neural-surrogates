@@ -1,4 +1,5 @@
 PY := .venv/bin/python
+MPI_IFACE ?= en0
 .PHONY: setup audit smoke reproduce inspect-benchmark mechanics-verify train evaluate figures benchmark report
 setup:
 	$(PY) -m pip install -r requirements-lock.txt
@@ -49,3 +50,11 @@ cardiac-benchmark:
 	$(PY) scripts/benchmark_cardiac.py
 benchmark-full:
 	$(PY) scripts/benchmark_full.py
+
+query-density:
+	$(PY) scripts/train_full.py --config configs/gnn/query_density_128.yaml --kind gnn --seed 11
+	$(PY) scripts/train_full.py --config configs/gnn/query_density_1024.yaml --kind gnn --seed 11
+	$(PY) scripts/analyze_query_density.py
+mesh-sensitivity:
+	env FI_PROVIDER=tcp FI_TCP_IFACE=$(MPI_IFACE) XDG_CACHE_HOME=$(CURDIR)/.cache DIJITSO_CACHE_DIR=$(CURDIR)/.fenics-cache-activated MAMBA_ROOT_PREFIX=$(CURDIR)/.mamba OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .tools/bin/micromamba run -p $(CURDIR)/.fenics python scripts/check_mesh_sensitivity.py
+	$(PY) scripts/plot_mesh_sensitivity.py

@@ -1,0 +1,124 @@
+{
+  "task": "two-level displacement mesh sensitivity, identical polyhedral domain and interpolated original P1 fiber fields",
+  "complete": true,
+  "runtime": {
+    "dolfin": "2019.1.0",
+    "environment": {
+      "FI_PROVIDER": "tcp",
+      "FI_TCP_IFACE": "en0",
+      "OMP_NUM_THREADS": "2",
+      "OPENBLAS_NUM_THREADS": "2"
+    },
+    "note": "pin TCP to physical interface en0 on this macOS host; VPN utun6 caused MPI shutdown failure"
+  },
+  "source_commit": "c7d2d1ba6d680627dc465598dbf6b0363a75d604",
+  "scope": "passive one-step dynamics from rest; same dt/material/Robin/follower loads; no mesh-independent solution or asymptotic rate claimed",
+  "pressure_source": "25%, 50%, 100% of documented benchmark waveform maximum; numerical sensitivity cases, no surrogate selection",
+  "mesh_volume_m3": [
+    0.00017769451479940444,
+    0.00017769451479940164
+  ],
+  "boundary_area_m2": {
+    "coarse": {
+      "1": 0.015526387258143778,
+      "2": 0.02285060355480936,
+      "3": 0.0018577331746508022
+    },
+    "refined": {
+      "1": 0.015526387258143953,
+      "2": 0.022850603554809227,
+      "3": 0.0018577331746507998
+    }
+  },
+  "meshes": {
+    "coarse": {
+      "vertices": 4577,
+      "tetrahedra": 17625,
+      "displacement_dofs": 13731
+    },
+    "refined": {
+      "vertices": 29893,
+      "tetrahedra": 141000,
+      "displacement_dofs": 89679
+    }
+  },
+  "cases": [
+    {
+      "pressure_Pa": 4017.738602317046,
+      "coarse": {
+        "pressure_Pa": 4017.738602317046,
+        "converged": true,
+        "residual_l2_N": 1.4423240033049705e-13,
+        "initial_residual_l2_N": 1.828833866386851,
+        "seconds": 1.300829124986194,
+        "iterations": 3
+      },
+      "refined": {
+        "pressure_Pa": 4017.738602317046,
+        "converged": true,
+        "residual_l2_N": 1.5256099608237592e-13,
+        "initial_residual_l2_N": 0.9575251277630851,
+        "seconds": 11.185457792016678,
+        "iterations": 3
+      },
+      "displacement_L2_difference_m_power_2_5": 2.516761843848094e-08,
+      "relative_displacement_volume_L2_difference": 0.02815299851832341,
+      "refined_displacement_L2_m_power_2_5": 8.939587171185537e-07,
+      "minimum_refined_endpoint_detF": 0.9942961697466677,
+      "refined_inverted_element_fraction": 0.0
+    },
+    {
+      "pressure_Pa": 8035.477204634092,
+      "coarse": {
+        "pressure_Pa": 8035.477204634092,
+        "converged": true,
+        "residual_l2_N": 4.982585608465969e-12,
+        "initial_residual_l2_N": 3.6577100946226,
+        "seconds": 1.0133215830428526,
+        "iterations": 3
+      },
+      "refined": {
+        "pressure_Pa": 8035.477204634092,
+        "converged": true,
+        "residual_l2_N": 1.982410940230571e-11,
+        "initial_residual_l2_N": 1.915066121380295,
+        "seconds": 9.106961083016358,
+        "iterations": 3
+      },
+      "displacement_L2_difference_m_power_2_5": 5.055824234199546e-08,
+      "relative_displacement_volume_L2_difference": 0.02820333370391843,
+      "refined_displacement_L2_m_power_2_5": 1.7926335543436537e-06,
+      "minimum_refined_endpoint_detF": 0.9884808594190576,
+      "refined_inverted_element_fraction": 0.0
+    },
+    {
+      "pressure_Pa": 16070.954409268184,
+      "coarse": {
+        "pressure_Pa": 16070.954409268184,
+        "converged": true,
+        "residual_l2_N": 1.3044832264728631e-09,
+        "initial_residual_l2_N": 7.315462946672716,
+        "seconds": 1.0271488750586286,
+        "iterations": 3
+      },
+      "refined": {
+        "pressure_Pa": 16070.954409268184,
+        "converged": true,
+        "residual_l2_N": 5.001569431442579e-09,
+        "initial_residual_l2_N": 3.8301486730448038,
+        "seconds": 8.96855987503659,
+        "iterations": 3
+      },
+      "displacement_L2_difference_m_power_2_5": 1.0187292233261455e-07,
+      "relative_displacement_volume_L2_difference": 0.028273539186862366,
+      "refined_displacement_L2_m_power_2_5": 3.603118861750106e-06,
+      "minimum_refined_endpoint_detF": 0.976538994430469,
+      "refined_inverted_element_fraction": 0.0
+    }
+  ],
+  "seconds": 43.526708416990004,
+  "source_sha256": {
+    "scripts/check_mesh_sensitivity.py": "42de1020dcc589458dc27d281225c89d3ea6ce80aa68b4703138d400229d2aba",
+    "src/lv_surrogate/physics/reference_fem.py": "7ae7cfe2520539eb05cbb5707d71bb51c83171ac088a7df45a2c3e22e1de288e"
+  }
+}
