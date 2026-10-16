@@ -5,7 +5,7 @@ import numpy as np
 ENTRY_SOURCE_SHA256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 P=Path(__file__).resolve().parents[1];sys.path.insert(0,str(P/'src'))
 from lv_surrogate.physics.reference_fem import setup,export_geometry,vertex_map,residual,assign_nodes,assign_history,pressure_function,default_parameters_benchmark1,df
-ap=argparse.ArgumentParser();ap.add_argument('--case',required=True);ap.add_argument('--output-suffix',default='');ap.add_argument('--backtracking',action='store_true');ap.add_argument('--predictor',action='store_true');ap.add_argument('--monitor',action='store_true');args=ap.parse_args();cfg=json.loads((P/'configs/physics/dynamic_study.json').read_text());case=next(c for c in cfg['cases'] if c['id']==args.case)
+ap=argparse.ArgumentParser();ap.add_argument('--case',required=True);ap.add_argument('--config',default='configs/physics/dynamic_study.json');ap.add_argument('--output-suffix',default='');ap.add_argument('--backtracking',action='store_true');ap.add_argument('--predictor',action='store_true');ap.add_argument('--monitor',action='store_true');args=ap.parse_args();cfg=json.loads((P/args.config).read_text());case=next(c for c in cfg['cases'] if c['id']==args.case)
 out=P/'data/processed/cardiac_dynamic_v1'/(case['id']+args.output_suffix);out.mkdir(parents=True,exist_ok=True);lock=(out/'.run.lock').open('w');fcntl.flock(lock,fcntl.LOCK_EX);meta=out/'manifest.json';digest=hashlib.sha256(json.dumps(case,sort_keys=True).encode()).hexdigest()
 if meta.exists():
  old=json.loads(meta.read_text())

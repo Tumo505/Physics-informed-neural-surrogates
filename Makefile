@@ -130,12 +130,20 @@ dynamic-evaluate: dynamic-train dynamic-convergence
 	$(PY) scripts/audit_dynamic_study.py --require-complete
 	$(PY) scripts/verify_dynamic_neural_gradient.py
 	$(PY) scripts/evaluate_dynamic_study.py
-dynamic-study: dynamic-evaluate
+dynamic-study: dynamic-confirmation
 	$(PY) scripts/execute_dynamic_fallback.py
 	$(PY) scripts/plot_dynamic_study.py
+	$(PY) scripts/plot_dynamic_confirmation.py
+	$(PY) scripts/verify_dynamic_artifacts.py
 	$(PY) scripts/write_reports.py
 
 .PHONY: dynamic-benchmark
 dynamic-benchmark:
 	$(PY) scripts/benchmark_dynamic_study.py
 	$(PY) scripts/write_reports.py
+
+.PHONY: dynamic-confirmation
+dynamic-confirmation: dynamic-evaluate
+	$(PY) scripts/run_dynamic_cohort.py --group confirmation --workers 5 --config configs/physics/dynamic_confirmation.json
+	$(PY) scripts/evaluate_dynamic_confirmation.py
+	$(PY) scripts/plot_dynamic_confirmation.py

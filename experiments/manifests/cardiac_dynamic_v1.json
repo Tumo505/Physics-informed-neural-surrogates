@@ -1,8 +1,8 @@
 {
   "complete": false,
   "planned_accepted_trajectories": 47,
-  "completed_accepted_trajectories": 37,
-  "recorded_valid_steps": 7830,
+  "completed_accepted_trajectories": 46,
+  "recorded_valid_steps": 9500,
   "records": [
     {
       "case": {
@@ -963,13 +963,13 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 40,
-      "seconds": 35.399694124935195,
-      "maximum_residual_l2_N": 1.1626191288221696e-09,
-      "minimum_recorded_endpoint_detF": 0.9902507174031079,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 266.22393720794935,
+      "maximum_residual_l2_N": 3.0941630110321986e-08,
+      "minimum_recorded_endpoint_detF": 0.5793750877003541,
+      "trajectory_sha256": "080ab293ef455a0fab134cae1a6e36e1ca487cbbabb6ae6772b4fd4c16641eb5",
+      "geometry_sha256": "fd1e52e4a925bb835a55f8fa0d7b15cffad97c349fd9aa0de0518799aedcc840",
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
@@ -990,13 +990,13 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 40,
-      "seconds": 37.7628026669845,
-      "maximum_residual_l2_N": 6.012815901790559e-10,
-      "minimum_recorded_endpoint_detF": 0.9653729813967914,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 260.6587692090543,
+      "maximum_residual_l2_N": 1.3654578160660298e-08,
+      "minimum_recorded_endpoint_detF": 0.6102070589413657,
+      "trajectory_sha256": "b7cdc887603d9ed69b9ec45dcf3ffaf6534154987edcdd7363ec2a2567582699",
+      "geometry_sha256": "3225db1039d4f7ca5ed6f02f8a70ed461ff0ae986e6609a8f7e082fc0a1e9b3b",
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
@@ -1017,13 +1017,13 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 40,
-      "seconds": 35.40516712504905,
-      "maximum_residual_l2_N": 1.0824443345047426e-09,
-      "minimum_recorded_endpoint_detF": 0.9903870966836006,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 266.6039910420077,
+      "maximum_residual_l2_N": 3.582687546997287e-08,
+      "minimum_recorded_endpoint_detF": 0.5533581836702975,
+      "trajectory_sha256": "68492ceb5a7a5f32b15b59835c6d8b56c1761cb28ed9bf109981410b7d456a48",
+      "geometry_sha256": "3225db1039d4f7ca5ed6f02f8a70ed461ff0ae986e6609a8f7e082fc0a1e9b3b",
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
@@ -1044,13 +1044,13 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 30,
-      "seconds": 26.54894187510945,
-      "maximum_residual_l2_N": 5.348372763832836e-10,
-      "minimum_recorded_endpoint_detF": 0.9925040686290957,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 261.1217379170703,
+      "maximum_residual_l2_N": 6.774984674307727e-08,
+      "minimum_recorded_endpoint_detF": 0.59905075143413,
+      "trajectory_sha256": "352d477a4c6ddda4ee1609f16b2e54f02a1dd86e2cd874df0e462305d4e01e02",
+      "geometry_sha256": "cd2bf7d54b8ba4a29c0f71e9b1b480df7c58e36d05e2c724a7e91c9d95487501",
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
@@ -1071,13 +1071,13 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 30,
-      "seconds": 26.49431504192762,
-      "maximum_residual_l2_N": 1.0059961001474007e-09,
-      "minimum_recorded_endpoint_detF": 0.9914253300306642,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 266.530932417023,
+      "maximum_residual_l2_N": 9.474318888633682e-08,
+      "minimum_recorded_endpoint_detF": 0.5215656333385381,
+      "trajectory_sha256": "cbaec72ee410b7fe0f29f010e6e33f6453c97860b670c78bf5e9216b9a49d967",
+      "geometry_sha256": "cd2bf7d54b8ba4a29c0f71e9b1b480df7c58e36d05e2c724a7e91c9d95487501",
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
@@ -1098,8 +1098,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 253.71396362502128,
+      "maximum_residual_l2_N": 1.7413338112603406e-08,
+      "minimum_recorded_endpoint_detF": 0.6374053856095723,
+      "trajectory_sha256": "3eea0d5b31466039452ed48f25b459c8743ccb727a80b739624849f68014e0ab",
+      "geometry_sha256": "1de135bce2fc935daf55fa66e14c2c98633b0c3e861b0706a57b19e7c75cadb7",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -1115,8 +1125,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 242.8961030000355,
+      "maximum_residual_l2_N": 3.715200797425225e-08,
+      "minimum_recorded_endpoint_detF": 0.797009001833573,
+      "trajectory_sha256": "1801630f8ef232ef31e7885853bd508b4e31ab511738553533aacb65f6bed23f",
+      "geometry_sha256": "1de135bce2fc935daf55fa66e14c2c98633b0c3e861b0706a57b19e7c75cadb7",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -1132,8 +1152,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 250.51253512501717,
+      "maximum_residual_l2_N": 4.0622731729140595e-08,
+      "minimum_recorded_endpoint_detF": 0.6537437325013894,
+      "trajectory_sha256": "f5f961696ecd6d65d60ccd2158630e35c4cc828bdd88275e593c7a9f6b0d52da",
+      "geometry_sha256": "6e6fe35fff859905926da7ab44e1be3ebf2dfe509f045e17aa0b4342f03daaa8",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -1149,8 +1179,18 @@
         "dt": 0.005,
         "refinement": 0
       },
-      "complete": false,
-      "completed_steps": 0
+      "complete": true,
+      "completed_steps": 200,
+      "seconds": 242.25632791698445,
+      "maximum_residual_l2_N": 9.131560218292822e-09,
+      "minimum_recorded_endpoint_detF": 0.806546254558184,
+      "trajectory_sha256": "00175bb076fbf78a3eb2e0a50b644510cdee792e5689a61c98cbcdade8fc78dd",
+      "geometry_sha256": "6e6fe35fff859905926da7ab44e1be3ebf2dfe509f045e17aa0b4342f03daaa8",
+      "source_sha256": {
+        "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
+        "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"
+      },
+      "source_hash_scope": "entry script captured at process startup; adapter snapshot at checkpoint"
     },
     {
       "case": {
@@ -1221,10 +1261,10 @@
         "refinement": 1
       },
       "complete": false,
-      "completed_steps": 50,
-      "seconds": 351.15748958301265,
+      "completed_steps": 100,
+      "seconds": 852.6664278330281,
       "maximum_residual_l2_N": 9.518575752716971e-09,
-      "minimum_recorded_endpoint_detF": 0.99543396140227,
+      "minimum_recorded_endpoint_detF": 0.894595788919551,
       "trajectory_sha256": null,
       "geometry_sha256": null,
       "source_sha256": {

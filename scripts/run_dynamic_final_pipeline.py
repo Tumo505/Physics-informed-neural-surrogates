@@ -8,9 +8,10 @@ def complete(path):
 while True:
  n=sum(complete(P/f'data/processed/cardiac_dynamic_v1/{c["id"]}/manifest.json') for c in cases);models=sum(complete(P/f'experiments/manifests/{tcfg["name"]}_{r}.json') for r in ['full','limited'])
  evaluated=complete(P/'experiments/metrics/dynamic_final_evaluation.json')
- if n==len(cases) and models==2 and evaluated:break
- print('WAIT FINAL GATES',n,'/',len(cases),'reference trajectories;',models,'/2 ensemble studies; frozen evaluation complete',evaluated,flush=True);time.sleep(30)
-commands=[[py,'scripts/audit_dynamic_study.py','--require-complete'],[py,'scripts/analyze_dynamic_convergence.py'],[*fem,'scripts/analyze_dynamic_mesh.py'],[py,'scripts/benchmark_dynamic_study.py'],[py,'scripts/plot_dynamic_study.py'],[py,'scripts/verify_dynamic_artifacts.py'],[py,'scripts/write_reports.py']]
+ confirmed=complete(P/'experiments/metrics/dynamic_confirmation_evaluation.json')
+ if n==len(cases) and models==2 and evaluated and confirmed:break
+ print('WAIT FINAL GATES',n,'/',len(cases),'reference trajectories;',models,'/2 ensemble studies; frozen evaluation complete',evaluated,'confirmation complete',confirmed,flush=True);time.sleep(30)
+commands=[[py,'scripts/audit_dynamic_study.py','--require-complete'],[py,'scripts/analyze_dynamic_convergence.py'],[*fem,'scripts/analyze_dynamic_mesh.py'],[py,'scripts/benchmark_dynamic_study.py'],[py,'scripts/plot_dynamic_study.py'],[py,'scripts/plot_dynamic_confirmation.py'],[py,'scripts/verify_dynamic_artifacts.py'],[py,'scripts/write_reports.py']]
 for cmd in commands:
  print('EXECUTE',cmd[-1],flush=True);subprocess.run(cmd,cwd=P,env=env,check=True)
 print('DYNAMIC FINAL EXPERIMENTS COMPLETE',flush=True)

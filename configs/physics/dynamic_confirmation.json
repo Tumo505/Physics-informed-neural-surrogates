@@ -1,0 +1,216 @@
+{
+  "name": "cardiac_dynamic_confirmation_v1",
+  "scope": "independent confirmation draws from exactly the primary calibration/test numerical geometry/waveform distribution; no anatomical population claim",
+  "seed": 17302,
+  "cases": [
+    {
+      "id": "h000_l0",
+      "geometry": 32,
+      "split": "confirmation",
+      "scales": [
+        0.9661347550603809,
+        1.0235835439983507
+      ],
+      "amplitude": 0.966292577612284,
+      "timing_scale": 0.9770979219042927,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h001_l0",
+      "geometry": 33,
+      "split": "confirmation",
+      "scales": [
+        1.0217193578383699,
+        0.9573221740623358
+      ],
+      "amplitude": 1.0238306334587004,
+      "timing_scale": 1.0443488484891157,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h002_l0",
+      "geometry": 34,
+      "split": "confirmation",
+      "scales": [
+        1.0434301496982634,
+        1.0155228697926193
+      ],
+      "amplitude": 1.0515502519785558,
+      "timing_scale": 0.9908187312584251,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h003_l0",
+      "geometry": 35,
+      "split": "confirmation",
+      "scales": [
+        0.9870559761711909,
+        0.958415732256201
+      ],
+      "amplitude": 0.9110558617229776,
+      "timing_scale": 0.9938488461598269,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h004_l0",
+      "geometry": 36,
+      "split": "confirmation",
+      "scales": [
+        1.0323688805401774,
+        1.014087594838263
+      ],
+      "amplitude": 1.0385677199139178,
+      "timing_scale": 0.9575867919640375,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h005_l0",
+      "geometry": 37,
+      "split": "confirmation",
+      "scales": [
+        1.0296411335550635,
+        0.9642961599215165
+      ],
+      "amplitude": 0.9563546756823684,
+      "timing_scale": 1.00369696297275,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h006_l0",
+      "geometry": 38,
+      "split": "confirmation",
+      "scales": [
+        1.0082215644963566,
+        1.0118381284039346
+      ],
+      "amplitude": 0.949976303344124,
+      "timing_scale": 0.9531072530326868,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h007_l0",
+      "geometry": 39,
+      "split": "confirmation",
+      "scales": [
+        1.0163523415010807,
+        0.9712561585212965
+      ],
+      "amplitude": 0.9311255539272554,
+      "timing_scale": 1.0456551263076728,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h008_l0",
+      "geometry": 40,
+      "split": "confirmation",
+      "scales": [
+        0.9726525617082639,
+        1.0384449273819787
+      ],
+      "amplitude": 0.9816565343640326,
+      "timing_scale": 1.000137655872921,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h009_l0",
+      "geometry": 41,
+      "split": "confirmation",
+      "scales": [
+        1.0088918770205837,
+        1.0246678164694032
+      ],
+      "amplitude": 0.924408295982151,
+      "timing_scale": 0.9985804371040534,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h010_l0",
+      "geometry": 42,
+      "split": "confirmation",
+      "scales": [
+        1.0337359602626675,
+        0.9727629206314657
+      ],
+      "amplitude": 0.999097469246155,
+      "timing_scale": 0.9980605570737542,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h011_l0",
+      "geometry": 43,
+      "split": "confirmation",
+      "scales": [
+        1.0330670046606738,
+        0.9550825247537509
+      ],
+      "amplitude": 0.9873226941517419,
+      "timing_scale": 0.9693986891921318,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h012_l0",
+      "geometry": 44,
+      "split": "confirmation",
+      "scales": [
+        1.038027584608955,
+        1.0189074319885456
+      ],
+      "amplitude": 1.092950676701019,
+      "timing_scale": 1.001640200539586,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h013_l0",
+      "geometry": 45,
+      "split": "confirmation",
+      "scales": [
+        0.9575900385022162,
+        1.0257323859602572
+      ],
+      "amplitude": 1.0640362964828523,
+      "timing_scale": 0.9869930427248511,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h014_l0",
+      "geometry": 46,
+      "split": "confirmation",
+      "scales": [
+        0.9536464772406997,
+        1.0092940951533806
+      ],
+      "amplitude": 0.9154096563761124,
+      "timing_scale": 1.0306715261049169,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    {
+      "id": "h015_l0",
+      "geometry": 47,
+      "split": "confirmation",
+      "scales": [
+        1.0229783027952553,
+        0.9659039638409642
+      ],
+      "amplitude": 1.0397704504587146,
+      "timing_scale": 0.9728474439362382,
+      "dt": 0.005,
+      "refinement": 0
+    }
+  ],
+  "protocol": "all20 model checkpoints already frozen; no fitting, selection or recalibration using confirmation outcomes; reuse20 primary calibration geometries; report16 confirmation and pooled20 test geometries separately"
+}

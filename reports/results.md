@@ -2,9 +2,91 @@
 
 All results are computational. Released-model inference uses unedited author equations under modern Flax, not an identical legacy runtime. Graph connectivity alone does not establish FE mechanics.
 
-**Executed extension studies (2026-10-16).** The experiments below are separate from the earlier pilots. Negative and failed outcomes are retained. The full research claim of robust autonomous prediction across shapes and trajectories is not established.
+**Full-cycle follow-up (2026-10-17).** This is a new passive numerical benchmark task. The earlier1ms acceleration-increment model remains a failed recursive pilot; the new model uses5ms steps and a different recurrent formulation. Stability improvements cannot be attributed to one change alone. No active electromechanical or clinical claim follows.
 
-**Full-cycle extension in progress (2026-10-17).** Reference trajectories completed: 11/47, including the full-cycle convergence variants. The preregistered cohort has32 numerical geometries and44 passive trajectories:8 training,4 selection,20 calibration,4 primary test,4 loading-only shift and4 combined shape/loading shift. All steps use strict positive SNES reason, finite residual and positive endpoint-Jacobian gates. The failed10ms attempt is retained and excluded; the main study uses5ms. A bounded causal graph/POD recurrence is trained through its complete predicted200-step history, with matched data/physics refinement and a separate one-geometry limited-data regime. No final full-cycle neural performance or convergence claim is made until evaluation artifacts exist.
+**Protocol and split.** Thirty-two independent numerical geometry draws from one affine benchmark ellipsoid family. Eight training trajectories on four geometries, four validation trajectories on two geometries, twenty calibration trajectories on twenty geometries, and four primary test trajectories on four geometries. Four additional loading-shift trajectories share the four test geometries; four combined shape/loading-shift trajectories use two further geometries. All are200-step trajectories from zero histories over0.005–1s. No geometry spans training/validation/calibration/test roles. Calibration and primary test independently draw the same numerical shape and waveform-descriptor distribution. Load amplitude/timing perturbations are numerical sensitivity inputs, not empirical physiology.
+
+Reference collection: 46/47 planned accepted trajectories complete, including convergence variants. The44-trajectory cohort is separate from these convergence repeats. Every newly accepted step requires a positive SNES convergence reason, finite residual below1e-6N and positive endpoint element determinants. Failed10ms attempts and refined5ms retries are retained. The source legacy convergence flag could be negative/truthy; explicit positive-reason checks correct that issue. Earlier archived1ms states were independently checked to have finite small residuals.
+
+**Neural method and controls.** A64-node graph encoder (width32, two message rounds) conditions a64-state GRU. Each update receives the previous predicted displacement coefficients and current/previous prescribed pressure. A bounded tanh readout returns rank12 uncentered POD coefficients. The hidden state and displacement start at zero; all200 predictions are generated without true displacement/velocity/acceleration histories. Bounded coefficients do not mathematically guarantee positive Jacobians or mechanical equilibrium. Endpoint Jacobians are checked separately.
+
+POD and coefficient/derivative scales use labelled training fields only. The displacement loss is physical field MSE divided by training field RMS squared, with0.1/0.01 physically scaled first/second time-difference losses. Exact orthonormal-POD identities evaluate these losses in coefficient space. The initial equal-normalized-mode pilot is preserved as a validation-only unsuccessful design. Matched arms share400 warm supervised updates, then250 further data-only or physics updates from exactly the same warm checkpoint. The warm checkpoint remains eligible. Five seeds11/22/33/44/55 are used. Physics weight grids come from training-only parameter-gradient balance and are selected on native float64 validation force residual subject to at most10% displacement-RMSE degradation.
+
+The full regime labels all four training geometries. The limited regime labels only one geometry/two trajectories, fits its own POD/scales, and uses the remaining three training geometries as unlabelled residual collocation inputs. Their displacement/history arrays are not read by limited-data preprocessing. Both arms have the same input descriptors and labelled targets; validation labels and optimizer budgets are matched. This limits training labels, not the total simulation cost of constructing this research cohort.
+
+The full nonlinear weak residual includes source anisotropic passive elasticity, viscosity, generalized-alpha inertia, Robin terms and follower pressure. Histories are derived causally from the complete predicted displacement sequence through the exact source Newmark maps. CPU float32 neural training is linked differentiably to MPS float32 residual evaluation; final inference/mechanics use CPU/native float64. MPS scatter accumulation is not bitwise deterministic, despite seeded runs.
+
+Independent5ms verification passed: largest CPU64 force/tangent relative error 2.74e-12; largest GPU32 force/tangent error 0.0021; coupled-history derivative relative error 2.53e-11.
+
+Actual frozen recurrent neural physics gradient verified against native directional finite differences through the complete predicted-history chain: norm2.9176, relative discrepancy7.97e-08, training case only.
+
+**Frozen primary evaluation.** All20 selected checkpoints were hashed before held-out ML evaluation. The deployment candidate is chosen from ensemble validation only, before calibration/test labels are opened. Geometry-cluster bootstrap intervals condition on the fixed models and only four independent test geometries; they exclude retraining and FE uncertainty. Mechanics are evaluated at nine preregistered frames, including startup and the final endpoint. Inversions are checked over every tetrahedron and every one of200 endpoints, for ensembles and each individual test member.
+
+| Ensemble | Test component RMSE(mm) | Relative RMSE | Mean sampled force RMS | Complete non-inverted cycles | Min endpoint detF |
+|---|---:|---:|---:|---:|---:|
+| full/data | 0.440900 | 5.270% | 0.0562738 | 4/4 | 0.54664 |
+| full/physics_10 | 0.602333 | 7.183% | 0.0370801 | 4/4 | 0.57851 |
+| limited/data | 0.754152 | 9.031% | 0.175939 | 4/4 | 0.51299 |
+| limited/physics_1 | 0.720657 | 8.596% | 0.0514487 | 4/4 | 0.54589 |
+
+| Regime | Physics/data RMSE ratio | Paired mean force-RMS difference | Conditional geometry bootstrap95% interval |
+|---|---:|---:|---|
+| full | 1.366146 | -0.0191937 | [-0.021567838025403907, -0.016819640747231333] |
+| limited | 0.955586 | -0.12449 | [-0.22044450778506103, -0.05001128320170625] |
+
+Validation-selected deployment candidate: **full/physics_10**. Per-seed displacement/mechanical errors, per-case strain/energy errors, invalid fields and conditional comparisons are in dynamic_final_evaluation.json. Lower residual must be considered together with displacement error and failure counts; no population-level significance claim is supported by four test geometries.
+
+**Joint trajectory calibration.** Each score is the maximum nodal L2 displacement error across all4577 nodes and all200 time steps for one independent geometry/waveform pair. Twenty separate calibration geometries permit finite corrected90% and95% radii. These balls target the coarse5ms numerical reference, not continuum or patient truth.
+
+| Ensemble | Nominal | Joint test geometry coverage | Radius(mm) | Exact binomial95% interval |
+|---|---:|---:|---:|---|
+| full/data | 90% | 4/4 | 4.7693 | [0.3976353643835254, 1.0] |
+| full/data | 95% | 4/4 | 4.8167 | [0.3976353643835254, 1.0] |
+| full/physics_10 | 90% | 4/4 | 7.2154 | [0.3976353643835254, 1.0] |
+| full/physics_10 | 95% | 4/4 | 7.2167 | [0.3976353643835254, 1.0] |
+| limited/data | 90% | 3/4 | 7.4839 | [0.19412044968324343, 0.9936905367902901] |
+| limited/data | 95% | 4/4 | 7.8429 | [0.3976353643835254, 1.0] |
+| limited/physics_1 | 90% | 3/4 | 8.5823 | [0.19412044968324343, 0.9936905367902901] |
+| limited/physics_1 | 95% | 4/4 | 9.0836 | [0.3976353643835254, 1.0] |
+
+A four-geometry test gives very wide coverage intervals. Raw ensemble variance is reported separately and is not a calibrated interval. Uncertainty/error associations on only four cases are descriptive.
+
+**Changed loading and rejection.** Input support is fixed at radius scales[.95,1.05], amplitude[.9,1.1] and timing scale[.95,1.05]. Known requests outside these ranges, missing/nonfinite descriptors, or invalid predicted Jacobians route to FE. This is explicit support checking, not a learned detector of every possible distribution shift or a correctness guarantee inside the box. Shift errors below are NN errors before routing; FE reference replacements are never counted as NN accuracy.
+
+| Model | Shift type | NN RMSE(mm) | Non-inverted cycles | FE routes | Nominal90% joint geometry coverage |
+|---|---|---:|---:|---:|---:|
+| full/data | load_shift | 0.49026 | 4/4 | 4/4 | 4/4 |
+| full/data | shift | 1.23233 | 4/4 | 4/4 | 0/2 |
+| full/physics_10 | load_shift | 0.68590 | 4/4 | 4/4 | 1/4 |
+| full/physics_10 | shift | 1.20600 | 4/4 | 4/4 | 0/2 |
+| limited/data | load_shift | 0.81617 | 4/4 | 4/4 | 2/4 |
+| limited/data | shift | 1.80579 | 4/4 | 4/4 | 0/2 |
+| limited/physics_1 | load_shift | 0.78334 | 4/4 | 4/4 | 2/4 |
+| limited/physics_1 | shift | 2.01705 | 4/4 | 4/4 | 0/2 |
+
+Shift coverage has no exchangeability guarantee; trajectories on the same geometry are grouped. Rejected requests incur FE latency. No globally rapid or universally reliable hybrid system is claimed.
+
+![Complete frozen rollouts and mechanics](figures/dynamic_full_cycle.png)
+
+![Input-support rejection and shifted NN errors](figures/dynamic_shift_fallback.png)
+
+![Actual full-cycle FE boundary prediction](figures/dynamic_mesh_prediction.png)
+
+Actual routing test: g030_l0 rejected before NN execution and sent to an independent full FE trajectory; fresh-cache flagTrue, observed wall340.7s. This run overlapped cohort generation and is not an isolated latency benchmark. Inputs were geometry/loading descriptors and zero initial histories only.
+
+**Full-cycle reference numerical uncertainty.** Exact consistent-mass volume-L2 comparisons use199 common endpoints0.005–0.995s on the baseline geometry; the archived1ms trajectory excludes1s.
+
+| Timestep | Space-time volume-L2 discrepancy vs1ms | Volume/time component RMSE(µm) |
+|---|---:|---:|
+| dt005 | 1.6261% | 139.940 |
+| dt0025 | 0.3497% | 30.095 |
+
+The5ms model task misses the preregistered1% temporal tolerance;2.5ms is below that tolerance relative to1ms. Refinement reduces the discrepancy, but1ms is not continuum truth and unequal timestep ratios do not establish an asymptotic rate. The reported NN error remains relative to the5ms discrete target.
+
+**Reproduction.** After original solver/data setup, run `make dynamic-study`; use `make dynamic-benchmark` separately for the isolated full-cycle timings. Configs define every geometry, waveform, seed and split; large arrays/checkpoints/logs remain ignored. The existing report is the only results Markdown. No paper directory or manuscript is created.
+
+
+**Executed extension studies (2026-10-16).** The experiments below are separate from the earlier pilots. Negative and failed outcomes are retained. The full research claim of robust autonomous prediction across shapes and trajectories is not established.
 
 **Dalton architecture study and updated five-seed ensemble.** All2250 original training geometries; selection remains validation0:16. Three seed11 candidates share the160-epoch maximum schedule; early stopping can shorten actual runs. This screens candidate designs, not a population-level architecture ranking.
 
