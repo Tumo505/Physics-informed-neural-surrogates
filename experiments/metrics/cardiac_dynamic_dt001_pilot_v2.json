@@ -1,0 +1,491 @@
+{
+  "complete": true,
+  "config": {
+    "name": "cardiac_dynamic_dt001_pilot_v2",
+    "seed": 11,
+    "train_steps": 600,
+    "validation_steps": 200,
+    "test_steps": 199,
+    "warm_updates": 800,
+    "refinement_updates": 250,
+    "learning_rate": 0.002,
+    "refinement_lr": 0.0002,
+    "physics_frame_schedule": "frame0 every10 updates, otherwise seeded uniform training frame",
+    "scope": "one existing geometry and one existing cycle; repeated temporal benchmark, no independent trajectory or population claim; all rollouts start from zero and use predicted histories only",
+    "maximum_training_relative_RMSE": 0.15,
+    "selection_gate": "training-only relative field RMSE at most15percent, then validation-only score; zero predictor is ineligible",
+    "supersedes": "v1 selected zero predictor on low-motion validation; retained as failed nontrivial-prediction acceptance gate, not a stability success"
+  },
+  "training_gradient_balance_ratios": [
+    9.39837790104427,
+    4.41434487002652,
+    1.2330919078429894,
+    0.8715969889623286
+  ],
+  "lambda_grid": [
+    0.1,
+    1.0,
+    10.0
+  ],
+  "selection": "physics_10",
+  "meets_validation_10percent_constraint": true,
+  "training_records": {
+    "warm": {
+      "lambda": 0.0,
+      "best_validation": {
+        "component_rmse_m": 0.001011794330637527,
+        "training_relative_RMSE": 0.041144633467973785,
+        "training_fit_gate_passed": true,
+        "force_loss": 0.0,
+        "score": 0.026609855257984195
+      },
+      "seconds": 39.16309349995572,
+      "history": [
+        {
+          "step": 49,
+          "validation": {
+            "component_rmse_m": 0.002490639189550246,
+            "training_relative_RMSE": 0.21156596607179615,
+            "training_fit_gate_passed": false,
+            "force_loss": 0.0,
+            "score": null
+          }
+        },
+        {
+          "step": 99,
+          "validation": {
+            "component_rmse_m": 0.001305688660390631,
+            "training_relative_RMSE": 0.2041873206524935,
+            "training_fit_gate_passed": false,
+            "force_loss": 0.0,
+            "score": null
+          }
+        },
+        {
+          "step": 149,
+          "validation": {
+            "component_rmse_m": 0.0012484862215875875,
+            "training_relative_RMSE": 0.06104557204645699,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.033395686888032516
+          }
+        },
+        {
+          "step": 199,
+          "validation": {
+            "component_rmse_m": 0.0012429602051529337,
+            "training_relative_RMSE": 0.056266204507993856,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.032477319101533904
+          }
+        },
+        {
+          "step": 249,
+          "validation": {
+            "component_rmse_m": 0.0011486557926726,
+            "training_relative_RMSE": 0.05415396747357995,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.02982003455430859
+          }
+        },
+        {
+          "step": 299,
+          "validation": {
+            "component_rmse_m": 0.0011063787144171347,
+            "training_relative_RMSE": 0.04369474302477505,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.028406227586742498
+          }
+        },
+        {
+          "step": 349,
+          "validation": {
+            "component_rmse_m": 0.001011794330637527,
+            "training_relative_RMSE": 0.041144633467973785,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.026609855257984195
+          }
+        },
+        {
+          "step": 399,
+          "validation": {
+            "component_rmse_m": 0.0010678373732875778,
+            "training_relative_RMSE": 0.03538778167613083,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.027380911989194776
+          }
+        },
+        {
+          "step": 449,
+          "validation": {
+            "component_rmse_m": 0.001101742535709748,
+            "training_relative_RMSE": 0.03233979998608305,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.027921566478126103
+          }
+        },
+        {
+          "step": 499,
+          "validation": {
+            "component_rmse_m": 0.0011478704735476523,
+            "training_relative_RMSE": 0.029410950554962692,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.028581692106349445
+          }
+        },
+        {
+          "step": 549,
+          "validation": {
+            "component_rmse_m": 0.001145686498684731,
+            "training_relative_RMSE": 0.02820220640226029,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.028486453609226244
+          }
+        },
+        {
+          "step": 599,
+          "validation": {
+            "component_rmse_m": 0.0011407282254021361,
+            "training_relative_RMSE": 0.0274066398061812,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.028351057582044016
+          }
+        },
+        {
+          "step": 649,
+          "validation": {
+            "component_rmse_m": 0.0011368893636060193,
+            "training_relative_RMSE": 0.02691007513916871,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.02824896079208596
+          }
+        },
+        {
+          "step": 699,
+          "validation": {
+            "component_rmse_m": 0.0011345356288475384,
+            "training_relative_RMSE": 0.026630295537459294,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.02818682968633479
+          }
+        },
+        {
+          "step": 749,
+          "validation": {
+            "component_rmse_m": 0.0011333751758103828,
+            "training_relative_RMSE": 0.026497547834723176,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.028156339356556915
+          }
+        },
+        {
+          "step": 799,
+          "validation": {
+            "component_rmse_m": 0.0011328718256983518,
+            "training_relative_RMSE": 0.02644122129947585,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0,
+            "score": 0.028143163189935132
+          }
+        }
+      ]
+    },
+    "data": {
+      "lambda": 0.0,
+      "best_validation": {
+        "component_rmse_m": 0.001011794330637527,
+        "training_relative_RMSE": 0.041144633467973785,
+        "training_fit_gate_passed": true,
+        "force_loss": 0.009079131328561849,
+        "score": 0.026609855257984195
+      },
+      "seconds": 13.56870045803953,
+      "history": [
+        {
+          "step": 49,
+          "validation": {
+            "component_rmse_m": 0.0010747524118058425,
+            "training_relative_RMSE": 0.037053696422152595,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.009961009673144785,
+            "score": 0.02741722727176539
+          }
+        },
+        {
+          "step": 99,
+          "validation": {
+            "component_rmse_m": 0.0010706301216284867,
+            "training_relative_RMSE": 0.03575621930605498,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.010058383726906187,
+            "score": 0.027334031124653588
+          }
+        },
+        {
+          "step": 149,
+          "validation": {
+            "component_rmse_m": 0.0010756420594285098,
+            "training_relative_RMSE": 0.034808970816716016,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.010570131336167318,
+            "score": 0.027359618862964907
+          }
+        },
+        {
+          "step": 199,
+          "validation": {
+            "component_rmse_m": 0.0010797258768263291,
+            "training_relative_RMSE": 0.034238625977805304,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.01090826313891644,
+            "score": 0.02739826360494181
+          }
+        },
+        {
+          "step": 249,
+          "validation": {
+            "component_rmse_m": 0.0010820048640716256,
+            "training_relative_RMSE": 0.03395987070497484,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.011075576162302873,
+            "score": 0.02742345054249728
+          }
+        }
+      ]
+    },
+    "physics_0.1": {
+      "lambda": 0.1,
+      "best_validation": {
+        "component_rmse_m": 0.000880941586982337,
+        "training_relative_RMSE": 0.044086475148754,
+        "training_fit_gate_passed": true,
+        "force_loss": 0.004937291648552866,
+        "score": 0.02534189673372027
+      },
+      "seconds": 31.879062249907292,
+      "history": [
+        {
+          "step": 49,
+          "validation": {
+            "component_rmse_m": 0.000880941586982337,
+            "training_relative_RMSE": 0.044086475148754,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.004937291648552866,
+            "score": 0.02534189673372027
+          }
+        },
+        {
+          "step": 99,
+          "validation": {
+            "component_rmse_m": 0.0010436492738079201,
+            "training_relative_RMSE": 0.037422180433830575,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.008013454989227974,
+            "score": 0.02782926785344648
+          }
+        },
+        {
+          "step": 149,
+          "validation": {
+            "component_rmse_m": 0.0009727704214624404,
+            "training_relative_RMSE": 0.03688432734710564,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0071433625411408165,
+            "score": 0.0266468221591769
+          }
+        },
+        {
+          "step": 199,
+          "validation": {
+            "component_rmse_m": 0.0010511801773433129,
+            "training_relative_RMSE": 0.03627124817476487,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.008366435962479114,
+            "score": 0.02781681833237463
+          }
+        },
+        {
+          "step": 249,
+          "validation": {
+            "component_rmse_m": 0.0010054493912858959,
+            "training_relative_RMSE": 0.03625406763807112,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.007888933425424438,
+            "score": 0.02696587629579754
+          }
+        }
+      ]
+    },
+    "physics_1": {
+      "lambda": 1.0,
+      "best_validation": {
+        "component_rmse_m": 0.0007876664321325465,
+        "training_relative_RMSE": 0.06360333373637427,
+        "training_fit_gate_passed": true,
+        "force_loss": 0.002966913268451259,
+        "score": 0.02761007696905106
+      },
+      "seconds": 31.67963274999056,
+      "history": [
+        {
+          "step": 49,
+          "validation": {
+            "component_rmse_m": 0.0007876664321325465,
+            "training_relative_RMSE": 0.06360333373637427,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.002966913268451259,
+            "score": 0.02761007696905106
+          }
+        },
+        {
+          "step": 99,
+          "validation": {
+            "component_rmse_m": 0.0008812755393834967,
+            "training_relative_RMSE": 0.04705151119215259,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.003799138112347274,
+            "score": 0.028608047051236807
+          }
+        },
+        {
+          "step": 149,
+          "validation": {
+            "component_rmse_m": 0.0008741150171913469,
+            "training_relative_RMSE": 0.04547794256406,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0037127337099124086,
+            "score": 0.028745721113936945
+          }
+        },
+        {
+          "step": 199,
+          "validation": {
+            "component_rmse_m": 0.0008493120797048021,
+            "training_relative_RMSE": 0.045638429083104975,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0031446698995218894,
+            "score": 0.027731984300840007
+          }
+        },
+        {
+          "step": 249,
+          "validation": {
+            "component_rmse_m": 0.0008831200887778127,
+            "training_relative_RMSE": 0.0454227806540892,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.003543066845494539,
+            "score": 0.0282767602110428
+          }
+        }
+      ]
+    },
+    "physics_10": {
+      "lambda": 10.0,
+      "best_validation": {
+        "component_rmse_m": 0.0008132903746440506,
+        "training_relative_RMSE": 0.05951787796698295,
+        "training_fit_gate_passed": true,
+        "force_loss": 0.0025048270724551806,
+        "score": 0.04899515077190274
+      },
+      "seconds": 32.3675966670271,
+      "history": [
+        {
+          "step": 49,
+          "validation": {
+            "component_rmse_m": 0.0008560157643970887,
+            "training_relative_RMSE": 0.08174486959502006,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.00275737255847601,
+            "score": 0.05345589359241859
+          }
+        },
+        {
+          "step": 99,
+          "validation": {
+            "component_rmse_m": 0.0008132903746440506,
+            "training_relative_RMSE": 0.05951787796698295,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0025048270724551806,
+            "score": 0.04899515077190274
+          }
+        },
+        {
+          "step": 149,
+          "validation": {
+            "component_rmse_m": 0.0008933509850050203,
+            "training_relative_RMSE": 0.05668695786561253,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.004263892562684953,
+            "score": 0.06770245187910659
+          }
+        },
+        {
+          "step": 199,
+          "validation": {
+            "component_rmse_m": 0.0009144051012909458,
+            "training_relative_RMSE": 0.05625132259024761,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.004187385323877038,
+            "score": 0.067356819346372
+          }
+        },
+        {
+          "step": 249,
+          "validation": {
+            "component_rmse_m": 0.000855300748638237,
+            "training_relative_RMSE": 0.0537120317028108,
+            "training_fit_gate_passed": true,
+            "force_loss": 0.0033638335188906593,
+            "score": 0.057858809287444024
+          }
+        }
+      ]
+    }
+  },
+  "models": {
+    "data": {
+      "completed_steps": 999,
+      "full_cycle_component_rmse_m": 0.0006900528287927314,
+      "test_block_component_rmse_m": 0.0008674792920750061,
+      "minimum_endpoint_detF": 0.4826175707395315,
+      "minimum_stress_state_detF": 0.4825063936824024,
+      "test_block_sampled_normalized_force_rms": 0.08641196720788029,
+      "training_relative_RMSE": 0.041144633467973785,
+      "nontrivial_training_fit": true,
+      "full_cycle_noninverted": true,
+      "test_block_reference_component_rms_m": 7.936484639444221e-05,
+      "test_block_relative_component_RMSE": 10.930271165191272
+    },
+    "physics_10": {
+      "completed_steps": 999,
+      "full_cycle_component_rmse_m": 0.0006998363469275602,
+      "test_block_component_rmse_m": 0.0007207648643412166,
+      "minimum_endpoint_detF": 0.5748892564210009,
+      "minimum_stress_state_detF": 0.5750058992310934,
+      "test_block_sampled_normalized_force_rms": 0.04833314370379194,
+      "training_relative_RMSE": 0.05951787796698295,
+      "nontrivial_training_fit": true,
+      "full_cycle_noninverted": true,
+      "test_block_reference_component_rms_m": 7.936484639444221e-05,
+      "test_block_relative_component_RMSE": 9.08166394928839
+    }
+  },
+  "scope": "one existing geometry and one existing cycle; repeated temporal benchmark, no independent trajectory or population claim; all rollouts start from zero and use predicted histories only",
+  "evaluation": "repeated temporal evaluation; first600 frames train, next200 select, last199 test; inference over all999 starts from zero and uses no true histories",
+  "caveat": "one geometry/cycle/seed, not an independent population; no conformal claim",
+  "serialization_note": "Ineligible selection scores use null; acceptance flag retained"
+}

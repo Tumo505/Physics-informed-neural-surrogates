@@ -130,10 +130,11 @@ dynamic-evaluate: dynamic-train dynamic-convergence
 	$(PY) scripts/audit_dynamic_study.py --require-complete
 	$(PY) scripts/verify_dynamic_neural_gradient.py
 	$(PY) scripts/evaluate_dynamic_study.py
-dynamic-study: dynamic-confirmation
+dynamic-study: dynamic-confirmation dynamic-dt001
 	$(PY) scripts/execute_dynamic_fallback.py
 	$(PY) scripts/plot_dynamic_study.py
 	$(PY) scripts/plot_dynamic_confirmation.py
+	$(PY) scripts/audit_dynamic_jacobians.py
 	$(PY) scripts/verify_dynamic_artifacts.py
 	$(PY) scripts/write_reports.py
 
@@ -144,6 +145,25 @@ dynamic-benchmark:
 
 .PHONY: dynamic-confirmation
 dynamic-confirmation: dynamic-evaluate
-	$(PY) scripts/run_dynamic_cohort.py --group confirmation --workers 5 --config configs/physics/dynamic_confirmation.json
+	$(PY) scripts/run_dynamic_confirmation.py
 	$(PY) scripts/evaluate_dynamic_confirmation.py
 	$(PY) scripts/plot_dynamic_confirmation.py
+
+.PHONY: dynamic-reproduce
+# Clean checkouts include recorded metrics but omit weights. Retrain missing weights;
+# label the repeated benchmark explicitly and preserve published results in Git.
+dynamic-reproduce: dynamic-train dynamic-convergence
+	$(PY) scripts/evaluate_dynamic_study.py --repeat-benchmark
+	$(PY) scripts/run_dynamic_confirmation.py
+	$(PY) scripts/evaluate_dynamic_confirmation.py
+	$(PY) scripts/execute_dynamic_fallback.py
+	$(PY) scripts/audit_dynamic_jacobians.py
+	$(PY) scripts/verify_dynamic_artifacts.py
+	$(PY) scripts/benchmark_dynamic_study.py --repeat-benchmark
+	$(PY) scripts/plot_dynamic_study.py
+	$(PY) scripts/plot_dynamic_confirmation.py
+	$(PY) scripts/write_reports.py
+
+.PHONY: dynamic-dt001
+dynamic-dt001: cardiac-trajectory
+	env OPENBLAS_NUM_THREADS=2 $(PY) scripts/train_dynamic_dt001_pilot.py

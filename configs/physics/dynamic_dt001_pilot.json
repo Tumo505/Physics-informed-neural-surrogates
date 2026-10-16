@@ -1,0 +1,16 @@
+{
+  "name": "cardiac_dynamic_dt001_pilot_v2",
+  "seed": 11,
+  "train_steps": 600,
+  "validation_steps": 200,
+  "test_steps": 199,
+  "warm_updates": 800,
+  "refinement_updates": 250,
+  "learning_rate": 0.002,
+  "refinement_lr": 0.0002,
+  "physics_frame_schedule": "frame0 every10 updates, otherwise seeded uniform training frame",
+  "scope": "one existing geometry and one existing cycle; repeated temporal benchmark, no independent trajectory or population claim; all rollouts start from zero and use predicted histories only",
+  "maximum_training_relative_RMSE": 0.15,
+  "selection_gate": "training-only relative field RMSE at most15percent, then validation-only score; zero predictor is ineligible",
+  "supersedes": "v1 selected zero predictor on low-motion validation; retained as failed nontrivial-prediction acceptance gate, not a stability success"
+}

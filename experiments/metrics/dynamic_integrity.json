@@ -17,5 +17,10 @@
     }
   },
   "geometry_roles_disjoint": true,
-  "primary_cohort_unchanged_since_model_freeze": true
+  "primary_cohort_unchanged_since_model_freeze": true,
+  "independent_FE_fallback_max_displacement_difference_m": 4.163336342344337e-17,
+  "cohort_data_checksums_verified": 44,
+  "confirmation_data_checksums_verified": 16,
+  "total_independent_geometries": 48,
+  "total_primary_and_confirmation_test_geometries": 20
 }

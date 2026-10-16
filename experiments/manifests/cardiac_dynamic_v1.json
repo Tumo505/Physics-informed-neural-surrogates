@@ -2,7 +2,7 @@
   "complete": false,
   "planned_accepted_trajectories": 47,
   "completed_accepted_trajectories": 46,
-  "recorded_valid_steps": 9500,
+  "recorded_valid_steps": 9590,
   "records": [
     {
       "case": {
@@ -1261,10 +1261,10 @@
         "refinement": 1
       },
       "complete": false,
-      "completed_steps": 100,
-      "seconds": 852.6664278330281,
-      "maximum_residual_l2_N": 9.518575752716971e-09,
-      "minimum_recorded_endpoint_detF": 0.894595788919551,
+      "completed_steps": 190,
+      "seconds": 1943.3218390829861,
+      "maximum_residual_l2_N": 9.846348683798092e-09,
+      "minimum_recorded_endpoint_detF": 0.4494530072394861,
       "trajectory_sha256": null,
       "geometry_sha256": null,
       "source_sha256": {

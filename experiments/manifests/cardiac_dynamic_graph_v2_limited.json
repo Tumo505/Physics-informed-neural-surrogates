@@ -103,5 +103,7 @@
     "physics_1_seed44.pt": "356bdec359d2e66b7d8995a4534411138af1b0ad0e9ea625e3386fdff5723aa9",
     "physics_1_seed11.pt": "1a8189ac05475ebd43a7312138364c40d9e8458587b7efdfa24c1d512feb7038",
     "physics_1_seed55.pt": "2f5810e93411e593b4fbe81f3620abc733f2392091ce2ac982d5fafd4793cfd3"
-  }
+  },
+  "executed_source_revision": "47d0d18",
+  "reproduction_note": "Original executed source hashes preserved; later completion/cache/replay guards do not change training equations"
 }

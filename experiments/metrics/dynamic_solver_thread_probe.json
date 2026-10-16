@@ -1,0 +1,24 @@
+{
+  "engineering_only_not_surrogate_speedup": true,
+  "same_saved_state_and_query": true,
+  "runs": [
+    {
+      "engineering_probe_not_surrogate_speedup": true,
+      "threads": 2,
+      "query_step": 170,
+      "seconds": 10.38416216603946,
+      "residual_l2_N": 9.846348711431184e-09,
+      "iterations": 2
+    },
+    {
+      "engineering_probe_not_surrogate_speedup": true,
+      "threads": 4,
+      "query_step": 170,
+      "seconds": 9.897188332979567,
+      "residual_l2_N": 9.846349203895096e-09,
+      "iterations": 2
+    }
+  ],
+  "maximum_displacement_difference_m": 3.469446951953614e-18,
+  "decision": "retain2 threads; one-query speed difference about5percent does not justify interrupting the production trajectory"
+}

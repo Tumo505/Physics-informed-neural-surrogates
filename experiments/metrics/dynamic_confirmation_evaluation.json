@@ -1,0 +1,5308 @@
+{
+  "complete": true,
+  "models": {
+    "full/data": {
+      "confirmation": {
+        "n_geometries": 16,
+        "mean_component_rmse_m": 0.0005266393880043919,
+        "mean_nodal_l2_m": 0.0007509920652678323,
+        "mean_sampled_normalized_force_rms": 0.058595096536322125,
+        "full_cycles_without_inversions": 16,
+        "minimum_detF": 0.5141876368540944,
+        "coverage": [
+          {
+            "nominal": 0.9,
+            "covered": 15,
+            "n": 16,
+            "coverage": 0.9375,
+            "radius_m": 0.004769276448923072,
+            "binomial95": [
+              0.6976792615654681,
+              0.998418888277234
+            ]
+          },
+          {
+            "nominal": 0.95,
+            "covered": 15,
+            "n": 16,
+            "coverage": 0.9375,
+            "radius_m": 0.00481673174554952,
+            "binomial95": [
+              0.6976792615654681,
+              0.998418888277234
+            ]
+          }
+        ],
+        "spearman_uncertainty_error": 0.9676470588235294,
+        "selective_risk": [
+          {
+            "retained": 0.25,
+            "n": 4,
+            "mean_nodal_l2_m": 0.0005652597132683184
+          },
+          {
+            "retained": 0.5,
+            "n": 8,
+            "mean_nodal_l2_m": 0.0005991766373065106
+          },
+          {
+            "retained": 0.75,
+            "n": 12,
+            "mean_nodal_l2_m": 0.0006753613514925908
+          },
+          {
+            "retained": 1.0,
+            "n": 16,
+            "mean_nodal_l2_m": 0.0007509920652678322
+          }
+        ],
+        "FE_routes": 0,
+        "per_case": [
+          {
+            "case": "h000_l0",
+            "geometry": 32,
+            "component_rmse_m": 0.00042456020040952517,
+            "relative_component_rmse": 0.052155405542731875,
+            "mean_nodal_l2_m": 0.000608964946881599,
+            "max_all_nodes_times_l2_m": 0.004107045570867896,
+            "sampled_normalized_force_rms": 0.051590533176538805,
+            "minimum_detF_all200_endpoints": 0.5652007358207802,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.0478569222808833e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h001_l0",
+            "geometry": 33,
+            "component_rmse_m": 0.0006859780499318675,
+            "relative_component_rmse": 0.07833583008493368,
+            "mean_nodal_l2_m": 0.0010055495983127096,
+            "max_all_nodes_times_l2_m": 0.0037737656766846724,
+            "sampled_normalized_force_rms": 0.06432910911266548,
+            "minimum_detF_all200_endpoints": 0.5218688846097457,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.726214103630275e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h002_l0",
+            "geometry": 34,
+            "component_rmse_m": 0.00046389814180109145,
+            "relative_component_rmse": 0.052592070063295714,
+            "mean_nodal_l2_m": 0.0006349498856729152,
+            "max_all_nodes_times_l2_m": 0.004649033824867917,
+            "sampled_normalized_force_rms": 0.055339590849152874,
+            "minimum_detF_all200_endpoints": 0.5333726826724837,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 9.494915574979304e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h003_l0",
+            "geometry": 35,
+            "component_rmse_m": 0.0005731541446196685,
+            "relative_component_rmse": 0.07267887245992627,
+            "mean_nodal_l2_m": 0.0008448606855729772,
+            "max_all_nodes_times_l2_m": 0.0038829025215794135,
+            "sampled_normalized_force_rms": 0.06169980851519273,
+            "minimum_detF_all200_endpoints": 0.5317353881100677,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.7809447240517195e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h004_l0",
+            "geometry": 36,
+            "component_rmse_m": 0.0004469903712963559,
+            "relative_component_rmse": 0.052349121268085705,
+            "mean_nodal_l2_m": 0.0006013148623484987,
+            "max_all_nodes_times_l2_m": 0.004719890238486278,
+            "sampled_normalized_force_rms": 0.050982962216348654,
+            "minimum_detF_all200_endpoints": 0.539655214334497,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.865314447141124e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h005_l0",
+            "geometry": 37,
+            "component_rmse_m": 0.0006702219340886136,
+            "relative_component_rmse": 0.08120116183681356,
+            "mean_nodal_l2_m": 0.0009765408531078105,
+            "max_all_nodes_times_l2_m": 0.0036812472442164356,
+            "sampled_normalized_force_rms": 0.06371923598923805,
+            "minimum_detF_all200_endpoints": 0.5219147871216735,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.258433072646099e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h006_l0",
+            "geometry": 38,
+            "component_rmse_m": 0.0004023075090296376,
+            "relative_component_rmse": 0.05005548732973088,
+            "mean_nodal_l2_m": 0.000539093840092631,
+            "max_all_nodes_times_l2_m": 0.0041714056446360975,
+            "sampled_normalized_force_rms": 0.05261638335268245,
+            "minimum_detF_all200_endpoints": 0.5502160123507251,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.059974130523422e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h007_l0",
+            "geometry": 39,
+            "component_rmse_m": 0.0005842958181632202,
+            "relative_component_rmse": 0.07000202469996415,
+            "mean_nodal_l2_m": 0.0008590589925585811,
+            "max_all_nodes_times_l2_m": 0.00409559268593113,
+            "sampled_normalized_force_rms": 0.05731978253919709,
+            "minimum_detF_all200_endpoints": 0.5320209491683645,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.025066335413143e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h008_l0",
+            "geometry": 40,
+            "component_rmse_m": 0.00044451201476406794,
+            "relative_component_rmse": 0.05304639225121389,
+            "mean_nodal_l2_m": 0.0006405544209751509,
+            "max_all_nodes_times_l2_m": 0.004263563633197944,
+            "sampled_normalized_force_rms": 0.06036857512829378,
+            "minimum_detF_all200_endpoints": 0.5642328956081599,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.4366060495413086e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h009_l0",
+            "geometry": 41,
+            "component_rmse_m": 0.0003976767442080995,
+            "relative_component_rmse": 0.04855783280176757,
+            "mean_nodal_l2_m": 0.0005206694022186044,
+            "max_all_nodes_times_l2_m": 0.004127253817048858,
+            "sampled_normalized_force_rms": 0.06011729066556823,
+            "minimum_detF_all200_endpoints": 0.5502702449383314,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.020187644616942e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h010_l0",
+            "geometry": 42,
+            "component_rmse_m": 0.0006197848617196446,
+            "relative_component_rmse": 0.07322870439095508,
+            "mean_nodal_l2_m": 0.0009039788959088735,
+            "max_all_nodes_times_l2_m": 0.003847502010744054,
+            "sampled_normalized_force_rms": 0.06128453823891891,
+            "minimum_detF_all200_endpoints": 0.5251813131768738,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.30739056116508e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h011_l0",
+            "geometry": 43,
+            "component_rmse_m": 0.0007513665648359695,
+            "relative_component_rmse": 0.09173989841642236,
+            "mean_nodal_l2_m": 0.0010845856893807286,
+            "max_all_nodes_times_l2_m": 0.003683558480127658,
+            "sampled_normalized_force_rms": 0.0583541824099527,
+            "minimum_detF_all200_endpoints": 0.5141876368540944,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.995105866178172e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h012_l0",
+            "geometry": 44,
+            "component_rmse_m": 0.00045133167308764385,
+            "relative_component_rmse": 0.049757393449688166,
+            "mean_nodal_l2_m": 0.0005999607484135397,
+            "max_all_nodes_times_l2_m": 0.004876169055142409,
+            "sampled_normalized_force_rms": 0.05614382631510024,
+            "minimum_detF_all200_endpoints": 0.5383680428990664,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.476432397277811e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h013_l0",
+            "geometry": 45,
+            "component_rmse_m": 0.0004657658899704332,
+            "relative_component_rmse": 0.0542235444922879,
+            "mean_nodal_l2_m": 0.0006769848208619882,
+            "max_all_nodes_times_l2_m": 0.004457737503754474,
+            "sampled_normalized_force_rms": 0.0627068791046841,
+            "minimum_detF_all200_endpoints": 0.5691830841101272,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.2292911790332303e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h014_l0",
+            "geometry": 46,
+            "component_rmse_m": 0.00042097264476562417,
+            "relative_component_rmse": 0.05186946631679302,
+            "mean_nodal_l2_m": 0.0006114745919623091,
+            "max_all_nodes_times_l2_m": 0.0037820038423237233,
+            "sampled_normalized_force_rms": 0.06761964810106741,
+            "minimum_detF_all200_endpoints": 0.5625337798413294,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 9.744959154938944e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h015_l0",
+            "geometry": 47,
+            "component_rmse_m": 0.0006234136453788084,
+            "relative_component_rmse": 0.07359466632485939,
+            "mean_nodal_l2_m": 0.0009073308100163988,
+            "max_all_nodes_times_l2_m": 0.004129231162137189,
+            "sampled_normalized_force_rms": 0.05332919886655251,
+            "minimum_detF_all200_endpoints": 0.5279007922821848,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.704006788486883e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          }
+        ]
+      },
+      "pooled_primary_and_confirmation": {
+        "n_geometries": 20,
+        "mean_component_rmse_m": 0.0005094914264707045,
+        "mean_nodal_l2_m": 0.0007257976397489031,
+        "mean_sampled_normalized_force_rms": 0.05813084491018489,
+        "full_cycles_without_inversions": 20,
+        "minimum_detF": 0.5141876368540944,
+        "coverage": [
+          {
+            "nominal": 0.9,
+            "covered": 19,
+            "n": 20,
+            "coverage": 0.95,
+            "radius_m": 0.004769276448923072,
+            "binomial95": [
+              0.7512672372279723,
+              0.9987349105020502
+            ]
+          },
+          {
+            "nominal": 0.95,
+            "covered": 19,
+            "n": 20,
+            "coverage": 0.95,
+            "radius_m": 0.00481673174554952,
+            "binomial95": [
+              0.7512672372279723,
+              0.9987349105020502
+            ]
+          }
+        ],
+        "spearman_uncertainty_error": 0.9609022556390976,
+        "selective_risk": [
+          {
+            "retained": 0.25,
+            "n": 5,
+            "mean_nodal_l2_m": 0.0005633801706940668
+          },
+          {
+            "retained": 0.5,
+            "n": 10,
+            "mean_nodal_l2_m": 0.0005988100368472782
+          },
+          {
+            "retained": 0.75,
+            "n": 15,
+            "mean_nodal_l2_m": 0.0006464723439058292
+          },
+          {
+            "retained": 1.0,
+            "n": 20,
+            "mean_nodal_l2_m": 0.0007257976397489031
+          }
+        ],
+        "FE_routes": 0,
+        "per_case": [
+          {
+            "case": "g026_l0",
+            "geometry": 26,
+            "seed": null,
+            "component_rmse_m": 0.00044585741988006927,
+            "mean_nodal_l2_m": 0.0006388252696236368,
+            "p95_nodal_time_l2_m": 0.0014095763888757557,
+            "max_all_nodes_times_l2_m": 0.0044448179395198345,
+            "relative_component_rmse": 0.05183197173832187,
+            "sampled_normalized_force_rms": 0.06446391825170407,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5645309421471386,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.03826248997878842,
+            "sampled_relative_elastic_energy_error": 282.8773993358415,
+            "mean_coordinate_variance_m2": 1.368208465397001e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g027_l0",
+            "geometry": 27,
+            "seed": null,
+            "component_rmse_m": 0.000453139928381624,
+            "mean_nodal_l2_m": 0.000651684091624293,
+            "p95_nodal_time_l2_m": 0.0014324604855469017,
+            "max_all_nodes_times_l2_m": 0.003935725480956201,
+            "relative_component_rmse": 0.056158251207674946,
+            "sampled_normalized_force_rms": 0.0566458493438509,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5466350281588874,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.038577116188679,
+            "sampled_relative_elastic_energy_error": 246.6191555887449,
+            "mean_coordinate_variance_m2": 1.569264950143498e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g028_l0",
+            "geometry": 28,
+            "seed": null,
+            "component_rmse_m": 0.00041311522093960193,
+            "mean_nodal_l2_m": 0.0005558620003970603,
+            "p95_nodal_time_l2_m": 0.0014104565315781869,
+            "max_all_nodes_times_l2_m": 0.004479979013563802,
+            "relative_component_rmse": 0.04845223658201421,
+            "sampled_normalized_force_rms": 0.051504300600305385,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5575093423219922,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.036990169489380456,
+            "sampled_relative_elastic_energy_error": 281.8787618424615,
+            "mean_coordinate_variance_m2": 9.181532900065261e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g029_l0",
+            "geometry": 29,
+            "seed": null,
+            "component_rmse_m": 0.00045148575214252063,
+            "mean_nodal_l2_m": 0.0006537083890477558,
+            "p95_nodal_time_l2_m": 0.00139666038235335,
+            "max_all_nodes_times_l2_m": 0.004351143501979079,
+            "relative_component_rmse": 0.05436145617015167,
+            "sampled_normalized_force_rms": 0.05248128542668326,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5676357850454425,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.03659452252759338,
+            "sampled_relative_elastic_energy_error": 282.71821753775805,
+            "mean_coordinate_variance_m2": 1.376545888000012e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h000_l0",
+            "geometry": 32,
+            "component_rmse_m": 0.00042456020040952517,
+            "relative_component_rmse": 0.052155405542731875,
+            "mean_nodal_l2_m": 0.000608964946881599,
+            "max_all_nodes_times_l2_m": 0.004107045570867896,
+            "sampled_normalized_force_rms": 0.051590533176538805,
+            "minimum_detF_all200_endpoints": 0.5652007358207802,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.0478569222808833e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h001_l0",
+            "geometry": 33,
+            "component_rmse_m": 0.0006859780499318675,
+            "relative_component_rmse": 0.07833583008493368,
+            "mean_nodal_l2_m": 0.0010055495983127096,
+            "max_all_nodes_times_l2_m": 0.0037737656766846724,
+            "sampled_normalized_force_rms": 0.06432910911266548,
+            "minimum_detF_all200_endpoints": 0.5218688846097457,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.726214103630275e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h002_l0",
+            "geometry": 34,
+            "component_rmse_m": 0.00046389814180109145,
+            "relative_component_rmse": 0.052592070063295714,
+            "mean_nodal_l2_m": 0.0006349498856729152,
+            "max_all_nodes_times_l2_m": 0.004649033824867917,
+            "sampled_normalized_force_rms": 0.055339590849152874,
+            "minimum_detF_all200_endpoints": 0.5333726826724837,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 9.494915574979304e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h003_l0",
+            "geometry": 35,
+            "component_rmse_m": 0.0005731541446196685,
+            "relative_component_rmse": 0.07267887245992627,
+            "mean_nodal_l2_m": 0.0008448606855729772,
+            "max_all_nodes_times_l2_m": 0.0038829025215794135,
+            "sampled_normalized_force_rms": 0.06169980851519273,
+            "minimum_detF_all200_endpoints": 0.5317353881100677,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.7809447240517195e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h004_l0",
+            "geometry": 36,
+            "component_rmse_m": 0.0004469903712963559,
+            "relative_component_rmse": 0.052349121268085705,
+            "mean_nodal_l2_m": 0.0006013148623484987,
+            "max_all_nodes_times_l2_m": 0.004719890238486278,
+            "sampled_normalized_force_rms": 0.050982962216348654,
+            "minimum_detF_all200_endpoints": 0.539655214334497,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.865314447141124e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h005_l0",
+            "geometry": 37,
+            "component_rmse_m": 0.0006702219340886136,
+            "relative_component_rmse": 0.08120116183681356,
+            "mean_nodal_l2_m": 0.0009765408531078105,
+            "max_all_nodes_times_l2_m": 0.0036812472442164356,
+            "sampled_normalized_force_rms": 0.06371923598923805,
+            "minimum_detF_all200_endpoints": 0.5219147871216735,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.258433072646099e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h006_l0",
+            "geometry": 38,
+            "component_rmse_m": 0.0004023075090296376,
+            "relative_component_rmse": 0.05005548732973088,
+            "mean_nodal_l2_m": 0.000539093840092631,
+            "max_all_nodes_times_l2_m": 0.0041714056446360975,
+            "sampled_normalized_force_rms": 0.05261638335268245,
+            "minimum_detF_all200_endpoints": 0.5502160123507251,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.059974130523422e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h007_l0",
+            "geometry": 39,
+            "component_rmse_m": 0.0005842958181632202,
+            "relative_component_rmse": 0.07000202469996415,
+            "mean_nodal_l2_m": 0.0008590589925585811,
+            "max_all_nodes_times_l2_m": 0.00409559268593113,
+            "sampled_normalized_force_rms": 0.05731978253919709,
+            "minimum_detF_all200_endpoints": 0.5320209491683645,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.025066335413143e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h008_l0",
+            "geometry": 40,
+            "component_rmse_m": 0.00044451201476406794,
+            "relative_component_rmse": 0.05304639225121389,
+            "mean_nodal_l2_m": 0.0006405544209751509,
+            "max_all_nodes_times_l2_m": 0.004263563633197944,
+            "sampled_normalized_force_rms": 0.06036857512829378,
+            "minimum_detF_all200_endpoints": 0.5642328956081599,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.4366060495413086e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h009_l0",
+            "geometry": 41,
+            "component_rmse_m": 0.0003976767442080995,
+            "relative_component_rmse": 0.04855783280176757,
+            "mean_nodal_l2_m": 0.0005206694022186044,
+            "max_all_nodes_times_l2_m": 0.004127253817048858,
+            "sampled_normalized_force_rms": 0.06011729066556823,
+            "minimum_detF_all200_endpoints": 0.5502702449383314,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.020187644616942e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h010_l0",
+            "geometry": 42,
+            "component_rmse_m": 0.0006197848617196446,
+            "relative_component_rmse": 0.07322870439095508,
+            "mean_nodal_l2_m": 0.0009039788959088735,
+            "max_all_nodes_times_l2_m": 0.003847502010744054,
+            "sampled_normalized_force_rms": 0.06128453823891891,
+            "minimum_detF_all200_endpoints": 0.5251813131768738,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.30739056116508e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h011_l0",
+            "geometry": 43,
+            "component_rmse_m": 0.0007513665648359695,
+            "relative_component_rmse": 0.09173989841642236,
+            "mean_nodal_l2_m": 0.0010845856893807286,
+            "max_all_nodes_times_l2_m": 0.003683558480127658,
+            "sampled_normalized_force_rms": 0.0583541824099527,
+            "minimum_detF_all200_endpoints": 0.5141876368540944,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.995105866178172e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h012_l0",
+            "geometry": 44,
+            "component_rmse_m": 0.00045133167308764385,
+            "relative_component_rmse": 0.049757393449688166,
+            "mean_nodal_l2_m": 0.0005999607484135397,
+            "max_all_nodes_times_l2_m": 0.004876169055142409,
+            "sampled_normalized_force_rms": 0.05614382631510024,
+            "minimum_detF_all200_endpoints": 0.5383680428990664,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.476432397277811e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h013_l0",
+            "geometry": 45,
+            "component_rmse_m": 0.0004657658899704332,
+            "relative_component_rmse": 0.0542235444922879,
+            "mean_nodal_l2_m": 0.0006769848208619882,
+            "max_all_nodes_times_l2_m": 0.004457737503754474,
+            "sampled_normalized_force_rms": 0.0627068791046841,
+            "minimum_detF_all200_endpoints": 0.5691830841101272,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.2292911790332303e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h014_l0",
+            "geometry": 46,
+            "component_rmse_m": 0.00042097264476562417,
+            "relative_component_rmse": 0.05186946631679302,
+            "mean_nodal_l2_m": 0.0006114745919623091,
+            "max_all_nodes_times_l2_m": 0.0037820038423237233,
+            "sampled_normalized_force_rms": 0.06761964810106741,
+            "minimum_detF_all200_endpoints": 0.5625337798413294,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 9.744959154938944e-08,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h015_l0",
+            "geometry": 47,
+            "component_rmse_m": 0.0006234136453788084,
+            "relative_component_rmse": 0.07359466632485939,
+            "mean_nodal_l2_m": 0.0009073308100163988,
+            "max_all_nodes_times_l2_m": 0.004129231162137189,
+            "sampled_normalized_force_rms": 0.05332919886655251,
+            "minimum_detF_all200_endpoints": 0.5279007922821848,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.704006788486883e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          }
+        ]
+      },
+      "per_seed_confirmation": [
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 11,
+          "component_rmse_m": 0.0006283842177102597,
+          "sampled_normalized_force_rms": 0.09082609345619068
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 22,
+          "component_rmse_m": 0.0004947449078711371,
+          "sampled_normalized_force_rms": 0.07609577481743762
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 33,
+          "component_rmse_m": 0.000468329346398634,
+          "sampled_normalized_force_rms": 0.08403975653169363
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 44,
+          "component_rmse_m": 0.0004950982180417638,
+          "sampled_normalized_force_rms": 0.10617540704506673
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 55,
+          "component_rmse_m": 0.0004650867839799676,
+          "sampled_normalized_force_rms": 0.13587677331877004
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 11,
+          "component_rmse_m": 0.000846235627080632,
+          "sampled_normalized_force_rms": 0.21596434254137242
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 22,
+          "component_rmse_m": 0.0008034570819171812,
+          "sampled_normalized_force_rms": 0.09942149627439373
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 33,
+          "component_rmse_m": 0.0005201302136770604,
+          "sampled_normalized_force_rms": 0.08918668366166639
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 44,
+          "component_rmse_m": 0.0008633446203948154,
+          "sampled_normalized_force_rms": 2.086495459824621
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 55,
+          "component_rmse_m": 0.0013659274045957704,
+          "sampled_normalized_force_rms": 1.924768869251527
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 11,
+          "component_rmse_m": 0.0006439528074509847,
+          "sampled_normalized_force_rms": 0.08688214248812232
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 22,
+          "component_rmse_m": 0.0005038803600639379,
+          "sampled_normalized_force_rms": 0.07779865885339408
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 33,
+          "component_rmse_m": 0.0004777418252735331,
+          "sampled_normalized_force_rms": 0.07183799163372546
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 44,
+          "component_rmse_m": 0.0005104756612522294,
+          "sampled_normalized_force_rms": 0.16000539570696087
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 55,
+          "component_rmse_m": 0.0005462698646294049,
+          "sampled_normalized_force_rms": 0.37743370036273594
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 11,
+          "component_rmse_m": 0.0007684032368129267,
+          "sampled_normalized_force_rms": 0.09499758713725948
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 22,
+          "component_rmse_m": 0.0007056849266464311,
+          "sampled_normalized_force_rms": 0.09661042809224726
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 33,
+          "component_rmse_m": 0.000502123388983494,
+          "sampled_normalized_force_rms": 0.07800435962174809
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 44,
+          "component_rmse_m": 0.0006158385799435726,
+          "sampled_normalized_force_rms": 0.11153703839674588
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 55,
+          "component_rmse_m": 0.0011979509392050082,
+          "sampled_normalized_force_rms": 0.9439914613405251
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 11,
+          "component_rmse_m": 0.0006340888223817326,
+          "sampled_normalized_force_rms": 0.0903480822059419
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 22,
+          "component_rmse_m": 0.00048617443394736,
+          "sampled_normalized_force_rms": 0.06931032820717274
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 33,
+          "component_rmse_m": 0.00046005579509661237,
+          "sampled_normalized_force_rms": 0.0731741126349244
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 44,
+          "component_rmse_m": 0.0004970213519417866,
+          "sampled_normalized_force_rms": 0.16098779740161678
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 55,
+          "component_rmse_m": 0.0005064570705027254,
+          "sampled_normalized_force_rms": 0.184194288890155
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 11,
+          "component_rmse_m": 0.0008181718225756241,
+          "sampled_normalized_force_rms": 0.0989403742003819
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 22,
+          "component_rmse_m": 0.0007984593761293934,
+          "sampled_normalized_force_rms": 0.10329051790498174
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 33,
+          "component_rmse_m": 0.0005199312771204965,
+          "sampled_normalized_force_rms": 0.07540149017109253
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 44,
+          "component_rmse_m": 0.0008262053691296656,
+          "sampled_normalized_force_rms": 0.22459792610555304
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 55,
+          "component_rmse_m": 0.0012997977081963838,
+          "sampled_normalized_force_rms": 1.5238666738927766
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 11,
+          "component_rmse_m": 0.00060145508304009,
+          "sampled_normalized_force_rms": 0.08523627307993915
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 22,
+          "component_rmse_m": 0.00044593312856684616,
+          "sampled_normalized_force_rms": 0.07315369093482095
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 33,
+          "component_rmse_m": 0.0004260446430866634,
+          "sampled_normalized_force_rms": 0.07570687540297137
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 44,
+          "component_rmse_m": 0.00046044830385415534,
+          "sampled_normalized_force_rms": 0.10181745728762816
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 55,
+          "component_rmse_m": 0.00042133641408704907,
+          "sampled_normalized_force_rms": 0.13219740645315037
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 11,
+          "component_rmse_m": 0.0007430313841549908,
+          "sampled_normalized_force_rms": 0.11244731361772203
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 22,
+          "component_rmse_m": 0.0007003704254225111,
+          "sampled_normalized_force_rms": 0.07642428031769476
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 33,
+          "component_rmse_m": 0.00048468027000564054,
+          "sampled_normalized_force_rms": 0.07745200413006584
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 44,
+          "component_rmse_m": 0.0006829604495525688,
+          "sampled_normalized_force_rms": 0.29422517656450675
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 55,
+          "component_rmse_m": 0.0010830836714439207,
+          "sampled_normalized_force_rms": 0.5920552238648427
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 11,
+          "component_rmse_m": 0.0006537726509324787,
+          "sampled_normalized_force_rms": 0.10088225409087313
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 22,
+          "component_rmse_m": 0.0005346537343105308,
+          "sampled_normalized_force_rms": 0.0869864103458935
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 33,
+          "component_rmse_m": 0.0004949459000374926,
+          "sampled_normalized_force_rms": 0.1131088032653052
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 44,
+          "component_rmse_m": 0.0005291448303940872,
+          "sampled_normalized_force_rms": 0.12508323581499384
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 55,
+          "component_rmse_m": 0.0005695244384117707,
+          "sampled_normalized_force_rms": 0.1627351315993781
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 11,
+          "component_rmse_m": 0.0005922446206830181,
+          "sampled_normalized_force_rms": 0.08367722646868508
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 22,
+          "component_rmse_m": 0.00044417025881328685,
+          "sampled_normalized_force_rms": 0.08505658797193291
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 33,
+          "component_rmse_m": 0.00043057862860262756,
+          "sampled_normalized_force_rms": 0.07529857003433617
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 44,
+          "component_rmse_m": 0.00045933367557405083,
+          "sampled_normalized_force_rms": 0.10891200463329925
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 55,
+          "component_rmse_m": 0.00040879723548021163,
+          "sampled_normalized_force_rms": 0.15703589918139527
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 11,
+          "component_rmse_m": 0.0007685928973660529,
+          "sampled_normalized_force_rms": 0.09444923661336262
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 22,
+          "component_rmse_m": 0.0007346907956956984,
+          "sampled_normalized_force_rms": 0.09621941759145018
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 33,
+          "component_rmse_m": 0.0005065149952256177,
+          "sampled_normalized_force_rms": 0.07447631542325905
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 44,
+          "component_rmse_m": 0.0007544724987673548,
+          "sampled_normalized_force_rms": 0.2469146756576127
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 55,
+          "component_rmse_m": 0.0011346060107383228,
+          "sampled_normalized_force_rms": 1.3146925869629429
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 11,
+          "component_rmse_m": 0.0008891986018160652,
+          "sampled_normalized_force_rms": 0.10122067296017423
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 22,
+          "component_rmse_m": 0.0008962084102723684,
+          "sampled_normalized_force_rms": 0.09249747210701137
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 33,
+          "component_rmse_m": 0.0005541394613220872,
+          "sampled_normalized_force_rms": 0.07169522609403284
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 44,
+          "component_rmse_m": 0.0009761288179426011,
+          "sampled_normalized_force_rms": 0.2808462354368071
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 55,
+          "component_rmse_m": 0.001538518521276531,
+          "sampled_normalized_force_rms": 2.1723727744964263
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 11,
+          "component_rmse_m": 0.0006370379599580943,
+          "sampled_normalized_force_rms": 0.09249905182942521
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 22,
+          "component_rmse_m": 0.00048422657758130335,
+          "sampled_normalized_force_rms": 0.08116572834924268
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 33,
+          "component_rmse_m": 0.0004745505294084427,
+          "sampled_normalized_force_rms": 0.08370743770077602
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 44,
+          "component_rmse_m": 0.0004997598975284227,
+          "sampled_normalized_force_rms": 0.2935338281696361
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 55,
+          "component_rmse_m": 0.0004922476922729803,
+          "sampled_normalized_force_rms": 0.4097615863730804
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 11,
+          "component_rmse_m": 0.0006791587795812749,
+          "sampled_normalized_force_rms": 0.27750198858596276
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 22,
+          "component_rmse_m": 0.0005479644737018043,
+          "sampled_normalized_force_rms": 0.08667606458098685
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 33,
+          "component_rmse_m": 0.0005330112101464731,
+          "sampled_normalized_force_rms": 0.16363885046232132
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 44,
+          "component_rmse_m": 0.0005271202831700003,
+          "sampled_normalized_force_rms": 0.4839586773850714
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 55,
+          "component_rmse_m": 0.0005029188180210238,
+          "sampled_normalized_force_rms": 0.1789308520894419
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 11,
+          "component_rmse_m": 0.0006019088220077174,
+          "sampled_normalized_force_rms": 0.2094211352873846
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 22,
+          "component_rmse_m": 0.0005012224468058837,
+          "sampled_normalized_force_rms": 0.08955402469609645
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 33,
+          "component_rmse_m": 0.00046403834530910705,
+          "sampled_normalized_force_rms": 0.12993906385048098
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 44,
+          "component_rmse_m": 0.0005008418126480353,
+          "sampled_normalized_force_rms": 0.23357656728373474
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 55,
+          "component_rmse_m": 0.0004429400930087897,
+          "sampled_normalized_force_rms": 0.18019520225826727
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 11,
+          "component_rmse_m": 0.0007745244297731595,
+          "sampled_normalized_force_rms": 0.10259761943447487
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 22,
+          "component_rmse_m": 0.0007322081020744639,
+          "sampled_normalized_force_rms": 0.08338300795544622
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 33,
+          "component_rmse_m": 0.0005082953908646531,
+          "sampled_normalized_force_rms": 0.07303725393051992
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 44,
+          "component_rmse_m": 0.0007780486016971996,
+          "sampled_normalized_force_rms": 0.4135270510230986
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 55,
+          "component_rmse_m": 0.0011937692212403855,
+          "sampled_normalized_force_rms": 1.1562485018445026
+        }
+      ]
+    },
+    "full/physics_10": {
+      "confirmation": {
+        "n_geometries": 16,
+        "mean_component_rmse_m": 0.0006368673896373505,
+        "mean_nodal_l2_m": 0.0008556231613236607,
+        "mean_sampled_normalized_force_rms": 0.039075787735158074,
+        "full_cycles_without_inversions": 16,
+        "minimum_detF": 0.5493516485072608,
+        "coverage": [
+          {
+            "nominal": 0.9,
+            "covered": 16,
+            "n": 16,
+            "coverage": 1.0,
+            "radius_m": 0.007215350935210326,
+            "binomial95": [
+              0.7940927857921773,
+              1.0
+            ]
+          },
+          {
+            "nominal": 0.95,
+            "covered": 16,
+            "n": 16,
+            "coverage": 1.0,
+            "radius_m": 0.0072166530145845505,
+            "binomial95": [
+              0.7940927857921773,
+              1.0
+            ]
+          }
+        ],
+        "spearman_uncertainty_error": -0.06764705882352941,
+        "selective_risk": [
+          {
+            "retained": 0.25,
+            "n": 4,
+            "mean_nodal_l2_m": 0.0008468355771716419
+          },
+          {
+            "retained": 0.5,
+            "n": 8,
+            "mean_nodal_l2_m": 0.0008529869104675352
+          },
+          {
+            "retained": 0.75,
+            "n": 12,
+            "mean_nodal_l2_m": 0.0008592392185641558
+          },
+          {
+            "retained": 1.0,
+            "n": 16,
+            "mean_nodal_l2_m": 0.0008556231613236608
+          }
+        ],
+        "FE_routes": 0,
+        "per_case": [
+          {
+            "case": "h000_l0",
+            "geometry": 32,
+            "component_rmse_m": 0.0005975274358543236,
+            "relative_component_rmse": 0.0734036909484928,
+            "mean_nodal_l2_m": 0.0008251468589751143,
+            "max_all_nodes_times_l2_m": 0.006700741238354337,
+            "sampled_normalized_force_rms": 0.03585250533613657,
+            "minimum_detF_all200_endpoints": 0.589203481768474,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.029203190407961e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h001_l0",
+            "geometry": 33,
+            "component_rmse_m": 0.0006794963989261445,
+            "relative_component_rmse": 0.07759565259397085,
+            "mean_nodal_l2_m": 0.0009213798012695277,
+            "max_all_nodes_times_l2_m": 0.006293846197824831,
+            "sampled_normalized_force_rms": 0.0428483303175268,
+            "minimum_detF_all200_endpoints": 0.5568694544639852,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.656666555008603e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h002_l0",
+            "geometry": 34,
+            "component_rmse_m": 0.0006716183924561943,
+            "relative_component_rmse": 0.0761412869961427,
+            "mean_nodal_l2_m": 0.0008735182191518937,
+            "max_all_nodes_times_l2_m": 0.006940129395963363,
+            "sampled_normalized_force_rms": 0.03672152712372994,
+            "minimum_detF_all200_endpoints": 0.5566035869053197,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.7986037719321447e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h003_l0",
+            "geometry": 35,
+            "component_rmse_m": 0.0005578907226905875,
+            "relative_component_rmse": 0.07074339261371168,
+            "mean_nodal_l2_m": 0.0007442865630749475,
+            "max_all_nodes_times_l2_m": 0.005886820181488736,
+            "sampled_normalized_force_rms": 0.037961128180748975,
+            "minimum_detF_all200_endpoints": 0.56731026438386,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.647533002618621e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h004_l0",
+            "geometry": 36,
+            "component_rmse_m": 0.0006460752128328855,
+            "relative_component_rmse": 0.0756648729743426,
+            "mean_nodal_l2_m": 0.0008275594954543878,
+            "max_all_nodes_times_l2_m": 0.006899665918235588,
+            "sampled_normalized_force_rms": 0.03372199002351082,
+            "minimum_detF_all200_endpoints": 0.5625387548307249,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.9889784882747976e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h005_l0",
+            "geometry": 37,
+            "component_rmse_m": 0.000674042434558781,
+            "relative_component_rmse": 0.08166403698487558,
+            "mean_nodal_l2_m": 0.0009253922106737958,
+            "max_all_nodes_times_l2_m": 0.006049134601480113,
+            "sampled_normalized_force_rms": 0.04438740781752423,
+            "minimum_detF_all200_endpoints": 0.5553729644413472,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.358086804161964e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h006_l0",
+            "geometry": 38,
+            "component_rmse_m": 0.000577583493247889,
+            "relative_component_rmse": 0.07186349391753848,
+            "mean_nodal_l2_m": 0.0007532895384883494,
+            "max_all_nodes_times_l2_m": 0.006502887800201378,
+            "sampled_normalized_force_rms": 0.034706933071221385,
+            "minimum_detF_all200_endpoints": 0.5739931234665849,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.526050924375001e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h007_l0",
+            "geometry": 39,
+            "component_rmse_m": 0.000585864240624505,
+            "relative_component_rmse": 0.0701899307990014,
+            "mean_nodal_l2_m": 0.0007905301367863843,
+            "max_all_nodes_times_l2_m": 0.005975567539797228,
+            "sampled_normalized_force_rms": 0.036866350204361686,
+            "minimum_detF_all200_endpoints": 0.5643557791866008,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.931808227139028e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h008_l0",
+            "geometry": 40,
+            "component_rmse_m": 0.0006351303506201798,
+            "relative_component_rmse": 0.07579406763061583,
+            "mean_nodal_l2_m": 0.0008833906414457213,
+            "max_all_nodes_times_l2_m": 0.0068959115737107606,
+            "sampled_normalized_force_rms": 0.04058681602402174,
+            "minimum_detF_all200_endpoints": 0.584288361590674,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 6.257757618154114e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h009_l0",
+            "geometry": 41,
+            "component_rmse_m": 0.0005952396762656624,
+            "relative_component_rmse": 0.07268101315464756,
+            "mean_nodal_l2_m": 0.000800294541504373,
+            "max_all_nodes_times_l2_m": 0.00660915463245849,
+            "sampled_normalized_force_rms": 0.036023036396077,
+            "minimum_detF_all200_endpoints": 0.5695798111429713,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.349655708016056e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h010_l0",
+            "geometry": 42,
+            "component_rmse_m": 0.000670679025445225,
+            "relative_component_rmse": 0.0792419420494948,
+            "mean_nodal_l2_m": 0.0008957344572939013,
+            "max_all_nodes_times_l2_m": 0.006341226479693617,
+            "sampled_normalized_force_rms": 0.043512722564396936,
+            "minimum_detF_all200_endpoints": 0.5565475522170346,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.8416200649718e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h011_l0",
+            "geometry": 43,
+            "component_rmse_m": 0.0007519832702267218,
+            "relative_component_rmse": 0.09181519653660529,
+            "mean_nodal_l2_m": 0.0010333716310667797,
+            "max_all_nodes_times_l2_m": 0.006327478129774983,
+            "sampled_normalized_force_rms": 0.04432103640902488,
+            "minimum_detF_all200_endpoints": 0.5493516485072608,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.2205618618677256e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h012_l0",
+            "geometry": 44,
+            "component_rmse_m": 0.0006813780265534279,
+            "relative_component_rmse": 0.07511902349606928,
+            "mean_nodal_l2_m": 0.0008808402308471674,
+            "max_all_nodes_times_l2_m": 0.007102962333059435,
+            "sampled_normalized_force_rms": 0.03653677850171713,
+            "minimum_detF_all200_endpoints": 0.5600761005111669,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.994676881007631e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h013_l0",
+            "geometry": 45,
+            "component_rmse_m": 0.0006301666274093928,
+            "relative_component_rmse": 0.07336275346624745,
+            "mean_nodal_l2_m": 0.0008702679164834939,
+            "max_all_nodes_times_l2_m": 0.007008584436919877,
+            "sampled_normalized_force_rms": 0.039564376428107964,
+            "minimum_detF_all200_endpoints": 0.5930119428739676,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.23436253191937e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h014_l0",
+            "geometry": 46,
+            "component_rmse_m": 0.0005629158715900613,
+            "relative_component_rmse": 0.0693587723660403,
+            "mean_nodal_l2_m": 0.0007879373436183333,
+            "max_all_nodes_times_l2_m": 0.006395215625127656,
+            "sampled_normalized_force_rms": 0.04180034571981536,
+            "minimum_detF_all200_endpoints": 0.5913910901043387,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.2421321520741097e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h015_l0",
+            "geometry": 47,
+            "component_rmse_m": 0.0006722870548956273,
+            "relative_component_rmse": 0.07936422605812916,
+            "mean_nodal_l2_m": 0.0008770309950444021,
+            "max_all_nodes_times_l2_m": 0.006543997448372259,
+            "sampled_normalized_force_rms": 0.03980131964460769,
+            "minimum_detF_all200_endpoints": 0.5599518638032884,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.0574163875681255e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          }
+        ]
+      },
+      "pooled_primary_and_confirmation": {
+        "n_geometries": 20,
+        "mean_component_rmse_m": 0.0006299605157849008,
+        "mean_nodal_l2_m": 0.0008471446611272183,
+        "mean_sampled_normalized_force_rms": 0.03867664999199011,
+        "full_cycles_without_inversions": 20,
+        "minimum_detF": 0.5493516485072608,
+        "coverage": [
+          {
+            "nominal": 0.9,
+            "covered": 20,
+            "n": 20,
+            "coverage": 1.0,
+            "radius_m": 0.007215350935210326,
+            "binomial95": [
+              0.8315665290169147,
+              1.0
+            ]
+          },
+          {
+            "nominal": 0.95,
+            "covered": 20,
+            "n": 20,
+            "coverage": 1.0,
+            "radius_m": 0.0072166530145845505,
+            "binomial95": [
+              0.8315665290169147,
+              1.0
+            ]
+          }
+        ],
+        "spearman_uncertainty_error": 0.10827067669172932,
+        "selective_risk": [
+          {
+            "retained": 0.25,
+            "n": 5,
+            "mean_nodal_l2_m": 0.0008109332581720769
+          },
+          {
+            "retained": 0.5,
+            "n": 10,
+            "mean_nodal_l2_m": 0.0008235505828989046
+          },
+          {
+            "retained": 0.75,
+            "n": 15,
+            "mean_nodal_l2_m": 0.0008405367686447829
+          },
+          {
+            "retained": 1.0,
+            "n": 20,
+            "mean_nodal_l2_m": 0.0008471446611272183
+          }
+        ],
+        "FE_routes": 0,
+        "per_case": [
+          {
+            "case": "g026_l0",
+            "geometry": 26,
+            "seed": null,
+            "component_rmse_m": 0.0006400391441716869,
+            "mean_nodal_l2_m": 0.0008831257630474596,
+            "p95_nodal_time_l2_m": 0.002049368171304056,
+            "max_all_nodes_times_l2_m": 0.006999322161029756,
+            "relative_component_rmse": 0.07440605304056656,
+            "sampled_normalized_force_rms": 0.0416549738539789,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5863907482603428,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.037041697955787725,
+            "sampled_relative_elastic_energy_error": 87.31275972448725,
+            "mean_coordinate_variance_m2": 6.093987141465349e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g027_l0",
+            "geometry": 27,
+            "seed": null,
+            "component_rmse_m": 0.0005175317075977006,
+            "mean_nodal_l2_m": 0.0006673239821738169,
+            "p95_nodal_time_l2_m": 0.001842271912853886,
+            "max_all_nodes_times_l2_m": 0.006069768606187825,
+            "relative_component_rmse": 0.06413841249216046,
+            "sampled_normalized_force_rms": 0.03631911769076825,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5785098229042226,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.03594826632353877,
+            "sampled_relative_elastic_energy_error": 103.68739300298027,
+            "mean_coordinate_variance_m2": 2.9283644464072583e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g028_l0",
+            "geometry": 28,
+            "seed": null,
+            "component_rmse_m": 0.000622738184377493,
+            "mean_nodal_l2_m": 0.0008295623832236831,
+            "p95_nodal_time_l2_m": 0.0021473197592652496,
+            "max_all_nodes_times_l2_m": 0.006911394571213694,
+            "relative_component_rmse": 0.07303787492865974,
+            "sampled_normalized_force_rms": 0.033688932699368485,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5792301175770426,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.035807231225989916,
+            "sampled_relative_elastic_energy_error": 74.24389792657684,
+            "mean_coordinate_variance_m2": 4.8348145085126e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g029_l0",
+            "geometry": 29,
+            "seed": null,
+            "component_rmse_m": 0.0006290230453535274,
+            "mean_nodal_l2_m": 0.0008729105129208361,
+            "p95_nodal_time_l2_m": 0.002029173601171346,
+            "max_all_nodes_times_l2_m": 0.006912415441577069,
+            "relative_component_rmse": 0.07573795750526117,
+            "sampled_normalized_force_rms": 0.036657371833157495,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5900501105884446,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.036304922480267614,
+            "sampled_relative_elastic_energy_error": 100.45949559850247,
+            "mean_coordinate_variance_m2": 5.790108496486769e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h000_l0",
+            "geometry": 32,
+            "component_rmse_m": 0.0005975274358543236,
+            "relative_component_rmse": 0.0734036909484928,
+            "mean_nodal_l2_m": 0.0008251468589751143,
+            "max_all_nodes_times_l2_m": 0.006700741238354337,
+            "sampled_normalized_force_rms": 0.03585250533613657,
+            "minimum_detF_all200_endpoints": 0.589203481768474,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.029203190407961e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h001_l0",
+            "geometry": 33,
+            "component_rmse_m": 0.0006794963989261445,
+            "relative_component_rmse": 0.07759565259397085,
+            "mean_nodal_l2_m": 0.0009213798012695277,
+            "max_all_nodes_times_l2_m": 0.006293846197824831,
+            "sampled_normalized_force_rms": 0.0428483303175268,
+            "minimum_detF_all200_endpoints": 0.5568694544639852,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.656666555008603e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h002_l0",
+            "geometry": 34,
+            "component_rmse_m": 0.0006716183924561943,
+            "relative_component_rmse": 0.0761412869961427,
+            "mean_nodal_l2_m": 0.0008735182191518937,
+            "max_all_nodes_times_l2_m": 0.006940129395963363,
+            "sampled_normalized_force_rms": 0.03672152712372994,
+            "minimum_detF_all200_endpoints": 0.5566035869053197,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.7986037719321447e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h003_l0",
+            "geometry": 35,
+            "component_rmse_m": 0.0005578907226905875,
+            "relative_component_rmse": 0.07074339261371168,
+            "mean_nodal_l2_m": 0.0007442865630749475,
+            "max_all_nodes_times_l2_m": 0.005886820181488736,
+            "sampled_normalized_force_rms": 0.037961128180748975,
+            "minimum_detF_all200_endpoints": 0.56731026438386,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.647533002618621e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h004_l0",
+            "geometry": 36,
+            "component_rmse_m": 0.0006460752128328855,
+            "relative_component_rmse": 0.0756648729743426,
+            "mean_nodal_l2_m": 0.0008275594954543878,
+            "max_all_nodes_times_l2_m": 0.006899665918235588,
+            "sampled_normalized_force_rms": 0.03372199002351082,
+            "minimum_detF_all200_endpoints": 0.5625387548307249,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.9889784882747976e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h005_l0",
+            "geometry": 37,
+            "component_rmse_m": 0.000674042434558781,
+            "relative_component_rmse": 0.08166403698487558,
+            "mean_nodal_l2_m": 0.0009253922106737958,
+            "max_all_nodes_times_l2_m": 0.006049134601480113,
+            "sampled_normalized_force_rms": 0.04438740781752423,
+            "minimum_detF_all200_endpoints": 0.5553729644413472,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.358086804161964e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h006_l0",
+            "geometry": 38,
+            "component_rmse_m": 0.000577583493247889,
+            "relative_component_rmse": 0.07186349391753848,
+            "mean_nodal_l2_m": 0.0007532895384883494,
+            "max_all_nodes_times_l2_m": 0.006502887800201378,
+            "sampled_normalized_force_rms": 0.034706933071221385,
+            "minimum_detF_all200_endpoints": 0.5739931234665849,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.526050924375001e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h007_l0",
+            "geometry": 39,
+            "component_rmse_m": 0.000585864240624505,
+            "relative_component_rmse": 0.0701899307990014,
+            "mean_nodal_l2_m": 0.0007905301367863843,
+            "max_all_nodes_times_l2_m": 0.005975567539797228,
+            "sampled_normalized_force_rms": 0.036866350204361686,
+            "minimum_detF_all200_endpoints": 0.5643557791866008,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.931808227139028e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h008_l0",
+            "geometry": 40,
+            "component_rmse_m": 0.0006351303506201798,
+            "relative_component_rmse": 0.07579406763061583,
+            "mean_nodal_l2_m": 0.0008833906414457213,
+            "max_all_nodes_times_l2_m": 0.0068959115737107606,
+            "sampled_normalized_force_rms": 0.04058681602402174,
+            "minimum_detF_all200_endpoints": 0.584288361590674,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 6.257757618154114e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h009_l0",
+            "geometry": 41,
+            "component_rmse_m": 0.0005952396762656624,
+            "relative_component_rmse": 0.07268101315464756,
+            "mean_nodal_l2_m": 0.000800294541504373,
+            "max_all_nodes_times_l2_m": 0.00660915463245849,
+            "sampled_normalized_force_rms": 0.036023036396077,
+            "minimum_detF_all200_endpoints": 0.5695798111429713,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.349655708016056e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h010_l0",
+            "geometry": 42,
+            "component_rmse_m": 0.000670679025445225,
+            "relative_component_rmse": 0.0792419420494948,
+            "mean_nodal_l2_m": 0.0008957344572939013,
+            "max_all_nodes_times_l2_m": 0.006341226479693617,
+            "sampled_normalized_force_rms": 0.043512722564396936,
+            "minimum_detF_all200_endpoints": 0.5565475522170346,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.8416200649718e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h011_l0",
+            "geometry": 43,
+            "component_rmse_m": 0.0007519832702267218,
+            "relative_component_rmse": 0.09181519653660529,
+            "mean_nodal_l2_m": 0.0010333716310667797,
+            "max_all_nodes_times_l2_m": 0.006327478129774983,
+            "sampled_normalized_force_rms": 0.04432103640902488,
+            "minimum_detF_all200_endpoints": 0.5493516485072608,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.2205618618677256e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h012_l0",
+            "geometry": 44,
+            "component_rmse_m": 0.0006813780265534279,
+            "relative_component_rmse": 0.07511902349606928,
+            "mean_nodal_l2_m": 0.0008808402308471674,
+            "max_all_nodes_times_l2_m": 0.007102962333059435,
+            "sampled_normalized_force_rms": 0.03653677850171713,
+            "minimum_detF_all200_endpoints": 0.5600761005111669,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.994676881007631e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h013_l0",
+            "geometry": 45,
+            "component_rmse_m": 0.0006301666274093928,
+            "relative_component_rmse": 0.07336275346624745,
+            "mean_nodal_l2_m": 0.0008702679164834939,
+            "max_all_nodes_times_l2_m": 0.007008584436919877,
+            "sampled_normalized_force_rms": 0.039564376428107964,
+            "minimum_detF_all200_endpoints": 0.5930119428739676,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.23436253191937e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h014_l0",
+            "geometry": 46,
+            "component_rmse_m": 0.0005629158715900613,
+            "relative_component_rmse": 0.0693587723660403,
+            "mean_nodal_l2_m": 0.0007879373436183333,
+            "max_all_nodes_times_l2_m": 0.006395215625127656,
+            "sampled_normalized_force_rms": 0.04180034571981536,
+            "minimum_detF_all200_endpoints": 0.5913910901043387,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.2421321520741097e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h015_l0",
+            "geometry": 47,
+            "component_rmse_m": 0.0006722870548956273,
+            "relative_component_rmse": 0.07936422605812916,
+            "mean_nodal_l2_m": 0.0008770309950444021,
+            "max_all_nodes_times_l2_m": 0.006543997448372259,
+            "sampled_normalized_force_rms": 0.03980131964460769,
+            "minimum_detF_all200_endpoints": 0.5599518638032884,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.0574163875681255e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          }
+        ]
+      },
+      "per_seed_confirmation": [
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 11,
+          "component_rmse_m": 0.0007956430798810526,
+          "sampled_normalized_force_rms": 0.0518754220474685
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 22,
+          "component_rmse_m": 0.0007872233977408237,
+          "sampled_normalized_force_rms": 0.05717884671720105
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 33,
+          "component_rmse_m": 0.0006560874150357904,
+          "sampled_normalized_force_rms": 0.06450504992595368
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 44,
+          "component_rmse_m": 0.000689515771942178,
+          "sampled_normalized_force_rms": 0.04353806558189836
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 55,
+          "component_rmse_m": 0.0012799317070521844,
+          "sampled_normalized_force_rms": 0.08996858151943006
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 11,
+          "component_rmse_m": 0.0007730957078149436,
+          "sampled_normalized_force_rms": 0.056657603029854293
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 22,
+          "component_rmse_m": 0.0007760201346240495,
+          "sampled_normalized_force_rms": 0.06165575576242978
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 33,
+          "component_rmse_m": 0.0008457853546852455,
+          "sampled_normalized_force_rms": 0.0661123827921067
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 44,
+          "component_rmse_m": 0.0008473037159553705,
+          "sampled_normalized_force_rms": 0.058401295219546706
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 55,
+          "component_rmse_m": 0.0010668096019044756,
+          "sampled_normalized_force_rms": 0.09544416673638537
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 11,
+          "component_rmse_m": 0.0008650517994958333,
+          "sampled_normalized_force_rms": 0.047557377822649974
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 22,
+          "component_rmse_m": 0.0007055724880712809,
+          "sampled_normalized_force_rms": 0.05780879190364506
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 33,
+          "component_rmse_m": 0.0007516110818864324,
+          "sampled_normalized_force_rms": 0.060977044866853625
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 44,
+          "component_rmse_m": 0.0006655529591074931,
+          "sampled_normalized_force_rms": 0.043739265657998835
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 55,
+          "component_rmse_m": 0.0010586645940400922,
+          "sampled_normalized_force_rms": 0.07623871368547759
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 11,
+          "component_rmse_m": 0.0006981546761084948,
+          "sampled_normalized_force_rms": 0.0456572567171046
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 22,
+          "component_rmse_m": 0.0007834061323578264,
+          "sampled_normalized_force_rms": 0.06020889322057063
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 33,
+          "component_rmse_m": 0.0007488155299444462,
+          "sampled_normalized_force_rms": 0.0729123103142737
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 44,
+          "component_rmse_m": 0.0007227979903283912,
+          "sampled_normalized_force_rms": 0.04906853604316013
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 55,
+          "component_rmse_m": 0.0009115463458714978,
+          "sampled_normalized_force_rms": 0.0758575020489861
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 11,
+          "component_rmse_m": 0.0008577806186873842,
+          "sampled_normalized_force_rms": 0.052001617858060546
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 22,
+          "component_rmse_m": 0.0006919143724742579,
+          "sampled_normalized_force_rms": 0.04799021092469131
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 33,
+          "component_rmse_m": 0.0007203382187459871,
+          "sampled_normalized_force_rms": 0.057076891269756604
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 44,
+          "component_rmse_m": 0.0006500576550611386,
+          "sampled_normalized_force_rms": 0.045627459471584496
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 55,
+          "component_rmse_m": 0.001061443406674556,
+          "sampled_normalized_force_rms": 0.06416870590195022
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 11,
+          "component_rmse_m": 0.0007799085072780122,
+          "sampled_normalized_force_rms": 0.04944439258656416
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 22,
+          "component_rmse_m": 0.0007973554981025766,
+          "sampled_normalized_force_rms": 0.07032654788658854
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 33,
+          "component_rmse_m": 0.0008390507102116949,
+          "sampled_normalized_force_rms": 0.07174915425312935
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 44,
+          "component_rmse_m": 0.0008128316221256094,
+          "sampled_normalized_force_rms": 0.055209086723714274
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 55,
+          "component_rmse_m": 0.0010030784262861428,
+          "sampled_normalized_force_rms": 0.07875161020723488
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 11,
+          "component_rmse_m": 0.000794496316028914,
+          "sampled_normalized_force_rms": 0.049662066461803746
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 22,
+          "component_rmse_m": 0.0006987553548339728,
+          "sampled_normalized_force_rms": 0.04990642860586252
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 33,
+          "component_rmse_m": 0.000639236177801371,
+          "sampled_normalized_force_rms": 0.05792198502432918
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 44,
+          "component_rmse_m": 0.0006100344723672452,
+          "sampled_normalized_force_rms": 0.044645420635936496
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 55,
+          "component_rmse_m": 0.0010854425077049818,
+          "sampled_normalized_force_rms": 0.06328679567811595
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 11,
+          "component_rmse_m": 0.0007309318106006226,
+          "sampled_normalized_force_rms": 0.04901562591469515
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 22,
+          "component_rmse_m": 0.0007588472399050731,
+          "sampled_normalized_force_rms": 0.04851516843183966
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 33,
+          "component_rmse_m": 0.0007458724545304125,
+          "sampled_normalized_force_rms": 0.05161927552389218
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 44,
+          "component_rmse_m": 0.0007124159723297318,
+          "sampled_normalized_force_rms": 0.053453822775316163
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 55,
+          "component_rmse_m": 0.0008455383798210068,
+          "sampled_normalized_force_rms": 0.07725407584637262
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 11,
+          "component_rmse_m": 0.0008330347033133919,
+          "sampled_normalized_force_rms": 0.053666664459595684
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 22,
+          "component_rmse_m": 0.000817012145132052,
+          "sampled_normalized_force_rms": 0.0646190232192504
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 33,
+          "component_rmse_m": 0.0007251283974151072,
+          "sampled_normalized_force_rms": 0.0729752543351966
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 44,
+          "component_rmse_m": 0.0007252434106029643,
+          "sampled_normalized_force_rms": 0.043961285284762015
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 55,
+          "component_rmse_m": 0.00145148579017425,
+          "sampled_normalized_force_rms": 0.11895120984230395
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 11,
+          "component_rmse_m": 0.0007918985249333156,
+          "sampled_normalized_force_rms": 0.04296461480920531
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 22,
+          "component_rmse_m": 0.0007349345209697444,
+          "sampled_normalized_force_rms": 0.05578702708727713
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 33,
+          "component_rmse_m": 0.0006400058559298911,
+          "sampled_normalized_force_rms": 0.05584401830120764
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 44,
+          "component_rmse_m": 0.0006208540394602277,
+          "sampled_normalized_force_rms": 0.04187042088049231
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 55,
+          "component_rmse_m": 0.0012446342379859954,
+          "sampled_normalized_force_rms": 0.09248766950983951
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 11,
+          "component_rmse_m": 0.00079595295099694,
+          "sampled_normalized_force_rms": 0.04839208867483772
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 22,
+          "component_rmse_m": 0.0007600528566282323,
+          "sampled_normalized_force_rms": 0.06900202730491253
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 33,
+          "component_rmse_m": 0.0008195934681569101,
+          "sampled_normalized_force_rms": 0.07026739191465953
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 44,
+          "component_rmse_m": 0.0007707292341424581,
+          "sampled_normalized_force_rms": 0.0540694970543151
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 55,
+          "component_rmse_m": 0.0009532687718436996,
+          "sampled_normalized_force_rms": 0.07605553275789216
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 11,
+          "component_rmse_m": 0.0008126676815342247,
+          "sampled_normalized_force_rms": 0.05707092131179961
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 22,
+          "component_rmse_m": 0.0008484461331874582,
+          "sampled_normalized_force_rms": 0.07076824250142258
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 33,
+          "component_rmse_m": 0.0009170255704365046,
+          "sampled_normalized_force_rms": 0.07497707663636
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 44,
+          "component_rmse_m": 0.0009137983716762954,
+          "sampled_normalized_force_rms": 0.05924814388335559
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 55,
+          "component_rmse_m": 0.001208042207792154,
+          "sampled_normalized_force_rms": 0.06918111831693219
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 11,
+          "component_rmse_m": 0.0008720693727973413,
+          "sampled_normalized_force_rms": 0.047612474507981416
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 22,
+          "component_rmse_m": 0.0007076026774453764,
+          "sampled_normalized_force_rms": 0.058470632379880455
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 33,
+          "component_rmse_m": 0.000742803248308024,
+          "sampled_normalized_force_rms": 0.061815321160060915
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 44,
+          "component_rmse_m": 0.0006777565650848592,
+          "sampled_normalized_force_rms": 0.04386815848708171
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 55,
+          "component_rmse_m": 0.0011166618379975807,
+          "sampled_normalized_force_rms": 0.08351966865155332
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 11,
+          "component_rmse_m": 0.0008378769618996358,
+          "sampled_normalized_force_rms": 0.06916416186741604
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 22,
+          "component_rmse_m": 0.0008136043197333172,
+          "sampled_normalized_force_rms": 0.05966313326400311
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 33,
+          "component_rmse_m": 0.0007129265579968785,
+          "sampled_normalized_force_rms": 0.07470980778201092
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 44,
+          "component_rmse_m": 0.0007337250052603609,
+          "sampled_normalized_force_rms": 0.04921427192541331
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 55,
+          "component_rmse_m": 0.0012917772452932985,
+          "sampled_normalized_force_rms": 0.11587479387051519
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 11,
+          "component_rmse_m": 0.0007222580278678743,
+          "sampled_normalized_force_rms": 0.06733409786819473
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 22,
+          "component_rmse_m": 0.0007997113526886225,
+          "sampled_normalized_force_rms": 0.052169529325537284
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 33,
+          "component_rmse_m": 0.0005947345912170355,
+          "sampled_normalized_force_rms": 0.05500218049656271
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 44,
+          "component_rmse_m": 0.000681558171784161,
+          "sampled_normalized_force_rms": 0.0474147083260312
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 55,
+          "component_rmse_m": 0.0011409638781811713,
+          "sampled_normalized_force_rms": 0.12671116231491897
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 11,
+          "component_rmse_m": 0.000778492918001723,
+          "sampled_normalized_force_rms": 0.052371690084358276
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 22,
+          "component_rmse_m": 0.0007436041169035127,
+          "sampled_normalized_force_rms": 0.06102306831744217
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 33,
+          "component_rmse_m": 0.000827239115590529,
+          "sampled_normalized_force_rms": 0.06978805300829116
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 44,
+          "component_rmse_m": 0.000806849853985448,
+          "sampled_normalized_force_rms": 0.05569347303674885
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 55,
+          "component_rmse_m": 0.0009942265479426873,
+          "sampled_normalized_force_rms": 0.06623696811947
+        }
+      ]
+    },
+    "limited/data": {
+      "confirmation": {
+        "n_geometries": 16,
+        "mean_component_rmse_m": 0.0008701228043913624,
+        "mean_nodal_l2_m": 0.0012158811136157338,
+        "mean_sampled_normalized_force_rms": 0.22801826358907032,
+        "full_cycles_without_inversions": 16,
+        "minimum_detF": 0.4941158535782526,
+        "coverage": [
+          {
+            "nominal": 0.9,
+            "covered": 14,
+            "n": 16,
+            "coverage": 0.875,
+            "radius_m": 0.007483878096763396,
+            "binomial95": [
+              0.6165237631507365,
+              0.9844863961845861
+            ]
+          },
+          {
+            "nominal": 0.95,
+            "covered": 15,
+            "n": 16,
+            "coverage": 0.9375,
+            "radius_m": 0.007842948311316576,
+            "binomial95": [
+              0.6976792615654681,
+              0.998418888277234
+            ]
+          }
+        ],
+        "spearman_uncertainty_error": 0.9441176470588234,
+        "selective_risk": [
+          {
+            "retained": 0.25,
+            "n": 4,
+            "mean_nodal_l2_m": 0.0007954546357336993
+          },
+          {
+            "retained": 0.5,
+            "n": 8,
+            "mean_nodal_l2_m": 0.0009355894086651308
+          },
+          {
+            "retained": 0.75,
+            "n": 12,
+            "mean_nodal_l2_m": 0.001083536505785519
+          },
+          {
+            "retained": 1.0,
+            "n": 16,
+            "mean_nodal_l2_m": 0.001215881113615734
+          }
+        ],
+        "FE_routes": 0,
+        "per_case": [
+          {
+            "case": "h000_l0",
+            "geometry": 32,
+            "component_rmse_m": 0.0007743995397950201,
+            "relative_component_rmse": 0.09513167275490117,
+            "mean_nodal_l2_m": 0.0011397220466168,
+            "max_all_nodes_times_l2_m": 0.007080403209711044,
+            "sampled_normalized_force_rms": 0.11147001357021187,
+            "minimum_detF_all200_endpoints": 0.5202730398266182,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.466304952771489e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h001_l0",
+            "geometry": 33,
+            "component_rmse_m": 0.0011464420284630098,
+            "relative_component_rmse": 0.13091889449352626,
+            "mean_nodal_l2_m": 0.001611344817487017,
+            "max_all_nodes_times_l2_m": 0.007333820541501495,
+            "sampled_normalized_force_rms": 0.24990573178169656,
+            "minimum_detF_all200_endpoints": 0.5072406551704848,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.4610612407725316e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h002_l0",
+            "geometry": 34,
+            "component_rmse_m": 0.0006401635455426692,
+            "relative_component_rmse": 0.07257525522398771,
+            "mean_nodal_l2_m": 0.0008321534298412777,
+            "max_all_nodes_times_l2_m": 0.005659578691095773,
+            "sampled_normalized_force_rms": 0.05961755976172191,
+            "minimum_detF_all200_endpoints": 0.4941158535782526,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.773090376833961e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h003_l0",
+            "geometry": 35,
+            "component_rmse_m": 0.001137522308882912,
+            "relative_component_rmse": 0.14424363774335508,
+            "mean_nodal_l2_m": 0.0015345699855015512,
+            "max_all_nodes_times_l2_m": 0.007175005055438652,
+            "sampled_normalized_force_rms": 0.07377634726705387,
+            "minimum_detF_all200_endpoints": 0.5147987732952684,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.0073835141561456e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h004_l0",
+            "geometry": 36,
+            "component_rmse_m": 0.0006204555586668428,
+            "relative_component_rmse": 0.07266443612176578,
+            "mean_nodal_l2_m": 0.0007896229051016637,
+            "max_all_nodes_times_l2_m": 0.005738865686705801,
+            "sampled_normalized_force_rms": 0.06907303936366206,
+            "minimum_detF_all200_endpoints": 0.5007101405690274,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.777661729446179e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h005_l0",
+            "geometry": 37,
+            "component_rmse_m": 0.0010879018024423678,
+            "relative_component_rmse": 0.13180543015622065,
+            "mean_nodal_l2_m": 0.0015521303442550104,
+            "max_all_nodes_times_l2_m": 0.006989376405786811,
+            "sampled_normalized_force_rms": 0.06045406011960593,
+            "minimum_detF_all200_endpoints": 0.5046319869215448,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.1579735141902284e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h006_l0",
+            "geometry": 38,
+            "component_rmse_m": 0.000612160804489261,
+            "relative_component_rmse": 0.07616563624869528,
+            "mean_nodal_l2_m": 0.0008171987730815709,
+            "max_all_nodes_times_l2_m": 0.005589341709262967,
+            "sampled_normalized_force_rms": 0.07544674918702239,
+            "minimum_detF_all200_endpoints": 0.511001305756593,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.506837069718915e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h007_l0",
+            "geometry": 39,
+            "component_rmse_m": 0.0009649307199885445,
+            "relative_component_rmse": 0.11560429151578033,
+            "mean_nodal_l2_m": 0.0013662710967188188,
+            "max_all_nodes_times_l2_m": 0.006123149558503126,
+            "sampled_normalized_force_rms": 0.08027371926859722,
+            "minimum_detF_all200_endpoints": 0.5126195256887887,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 9.992140739260971e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h008_l0",
+            "geometry": 40,
+            "component_rmse_m": 0.0007415897671668608,
+            "relative_component_rmse": 0.08849853405987083,
+            "mean_nodal_l2_m": 0.001070288698598194,
+            "max_all_nodes_times_l2_m": 0.0073607434716543435,
+            "sampled_normalized_force_rms": 0.10339435171754044,
+            "minimum_detF_all200_endpoints": 0.5154032196352535,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.3891579044243193e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h009_l0",
+            "geometry": 41,
+            "component_rmse_m": 0.0005760975106950576,
+            "relative_component_rmse": 0.07034368242364866,
+            "mean_nodal_l2_m": 0.0007464139598673084,
+            "max_all_nodes_times_l2_m": 0.005890303533303171,
+            "sampled_normalized_force_rms": 0.062403350014963804,
+            "minimum_detF_all200_endpoints": 0.5078689194162063,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.960876266575601e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h010_l0",
+            "geometry": 42,
+            "component_rmse_m": 0.0009843353463631725,
+            "relative_component_rmse": 0.11630100467507508,
+            "mean_nodal_l2_m": 0.0013993397501321843,
+            "max_all_nodes_times_l2_m": 0.0062845124768491,
+            "sampled_normalized_force_rms": 0.061600495143009554,
+            "minimum_detF_all200_endpoints": 0.5028340328440619,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.274951941842273e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h011_l0",
+            "geometry": 43,
+            "component_rmse_m": 0.0012338274845646016,
+            "relative_component_rmse": 0.15064711872301262,
+            "mean_nodal_l2_m": 0.001753614601181939,
+            "max_all_nodes_times_l2_m": 0.007871053924707164,
+            "sampled_normalized_force_rms": 0.06974010305316268,
+            "minimum_detF_all200_endpoints": 0.5001945361462833,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.5681689584922582e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h012_l0",
+            "geometry": 44,
+            "component_rmse_m": 0.0006282176312886586,
+            "relative_component_rmse": 0.06925831647979833,
+            "mean_nodal_l2_m": 0.0008136282481245475,
+            "max_all_nodes_times_l2_m": 0.00584233949720532,
+            "sampled_normalized_force_rms": 0.061572652934100476,
+            "minimum_detF_all200_endpoints": 0.4958709915155863,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.67001495977633e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h013_l0",
+            "geometry": 45,
+            "component_rmse_m": 0.0008522154682973175,
+            "relative_component_rmse": 0.09921324072307867,
+            "mean_nodal_l2_m": 0.0012756872080896845,
+            "max_all_nodes_times_l2_m": 0.007622776787561664,
+            "sampled_normalized_force_rms": 0.8588067860904318,
+            "minimum_detF_all200_endpoints": 0.5204364045364563,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.003693585704176e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h014_l0",
+            "geometry": 46,
+            "component_rmse_m": 0.0008759678426790563,
+            "relative_component_rmse": 0.10793096671573889,
+            "mean_nodal_l2_m": 0.0013096529318101225,
+            "max_all_nodes_times_l2_m": 0.0069365022097434646,
+            "sampled_normalized_force_rms": 1.5742167330881667,
+            "minimum_detF_all200_endpoints": 0.5221412161700355,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 7.884496886588857e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h015_l0",
+            "geometry": 47,
+            "component_rmse_m": 0.0010457375109364465,
+            "relative_component_rmse": 0.12345046302923432,
+            "mean_nodal_l2_m": 0.0014424590214440539,
+            "max_all_nodes_times_l2_m": 0.006722077750226745,
+            "sampled_normalized_force_rms": 0.07654052506417758,
+            "minimum_detF_all200_endpoints": 0.5074967120486673,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.0894042586963639e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          }
+        ]
+      },
+      "pooled_primary_and_confirmation": {
+        "n_geometries": 20,
+        "mean_component_rmse_m": 0.0008469286268438642,
+        "mean_nodal_l2_m": 0.0011869825224596513,
+        "mean_sampled_normalized_force_rms": 0.2176024352128502,
+        "full_cycles_without_inversions": 20,
+        "minimum_detF": 0.4941158535782526,
+        "coverage": [
+          {
+            "nominal": 0.9,
+            "covered": 17,
+            "n": 20,
+            "coverage": 0.85,
+            "radius_m": 0.007483878096763396,
+            "binomial95": [
+              0.6210731734546862,
+              0.9679290628145363
+            ]
+          },
+          {
+            "nominal": 0.95,
+            "covered": 19,
+            "n": 20,
+            "coverage": 0.95,
+            "radius_m": 0.007842948311316576,
+            "binomial95": [
+              0.7512672372279723,
+              0.9987349105020502
+            ]
+          }
+        ],
+        "spearman_uncertainty_error": 0.956390977443609,
+        "selective_risk": [
+          {
+            "retained": 0.25,
+            "n": 5,
+            "mean_nodal_l2_m": 0.0008067405494787928
+          },
+          {
+            "retained": 0.5,
+            "n": 10,
+            "mean_nodal_l2_m": 0.0009291705282533003
+          },
+          {
+            "retained": 0.75,
+            "n": 15,
+            "mean_nodal_l2_m": 0.0010563687786215635
+          },
+          {
+            "retained": 1.0,
+            "n": 20,
+            "mean_nodal_l2_m": 0.0011869825224596511
+          }
+        ],
+        "FE_routes": 0,
+        "per_case": [
+          {
+            "case": "g026_l0",
+            "geometry": 26,
+            "seed": null,
+            "component_rmse_m": 0.0007333442377167957,
+            "mean_nodal_l2_m": 0.0010553485300270947,
+            "p95_nodal_time_l2_m": 0.00227571545140631,
+            "max_all_nodes_times_l2_m": 0.007360198980524393,
+            "relative_component_rmse": 0.08525298920453674,
+            "sampled_normalized_force_rms": 0.31587184539782254,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.515475708173789,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.0496402741942971,
+            "sampled_relative_elastic_energy_error": 1034.5828527509705,
+            "mean_coordinate_variance_m2": 3.227485808687726e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g027_l0",
+            "geometry": 27,
+            "seed": null,
+            "component_rmse_m": 0.0008576220640993013,
+            "mean_nodal_l2_m": 0.0012028754100396393,
+            "p95_nodal_time_l2_m": 0.002753455029143435,
+            "max_all_nodes_times_l2_m": 0.00528476417077878,
+            "relative_component_rmse": 0.10628627560794396,
+            "sampled_normalized_force_rms": 0.1408439437142001,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5212547247213956,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.05020424299330198,
+            "sampled_relative_elastic_energy_error": 833.1453760357285,
+            "mean_coordinate_variance_m2": 9.344577136704967e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g028_l0",
+            "geometry": 28,
+            "seed": null,
+            "component_rmse_m": 0.000629560151649692,
+            "mean_nodal_l2_m": 0.0008518842044591661,
+            "p95_nodal_time_l2_m": 0.002173917701124574,
+            "max_all_nodes_times_l2_m": 0.006596127372926327,
+            "relative_component_rmse": 0.07383798965567355,
+            "sampled_normalized_force_rms": 0.07935487464622731,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5129907752143043,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.04796883066202661,
+            "sampled_relative_elastic_energy_error": 713.0793438139402,
+            "mean_coordinate_variance_m2": 2.308438395795385e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g029_l0",
+            "geometry": 29,
+            "seed": null,
+            "component_rmse_m": 0.0007960812131496971,
+            "mean_nodal_l2_m": 0.0011754444868153802,
+            "p95_nodal_time_l2_m": 0.002359377419878669,
+            "max_all_nodes_times_l2_m": 0.007516600401412892,
+            "relative_component_rmse": 0.09585271245250158,
+            "sampled_normalized_force_rms": 0.16768582307362928,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5176937542507695,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.04764517532826021,
+            "sampled_relative_elastic_energy_error": 1343.9122457367102,
+            "mean_coordinate_variance_m2": 4.1157207146989404e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h000_l0",
+            "geometry": 32,
+            "component_rmse_m": 0.0007743995397950201,
+            "relative_component_rmse": 0.09513167275490117,
+            "mean_nodal_l2_m": 0.0011397220466168,
+            "max_all_nodes_times_l2_m": 0.007080403209711044,
+            "sampled_normalized_force_rms": 0.11147001357021187,
+            "minimum_detF_all200_endpoints": 0.5202730398266182,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 4.466304952771489e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h001_l0",
+            "geometry": 33,
+            "component_rmse_m": 0.0011464420284630098,
+            "relative_component_rmse": 0.13091889449352626,
+            "mean_nodal_l2_m": 0.001611344817487017,
+            "max_all_nodes_times_l2_m": 0.007333820541501495,
+            "sampled_normalized_force_rms": 0.24990573178169656,
+            "minimum_detF_all200_endpoints": 0.5072406551704848,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.4610612407725316e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h002_l0",
+            "geometry": 34,
+            "component_rmse_m": 0.0006401635455426692,
+            "relative_component_rmse": 0.07257525522398771,
+            "mean_nodal_l2_m": 0.0008321534298412777,
+            "max_all_nodes_times_l2_m": 0.005659578691095773,
+            "sampled_normalized_force_rms": 0.05961755976172191,
+            "minimum_detF_all200_endpoints": 0.4941158535782526,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.773090376833961e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h003_l0",
+            "geometry": 35,
+            "component_rmse_m": 0.001137522308882912,
+            "relative_component_rmse": 0.14424363774335508,
+            "mean_nodal_l2_m": 0.0015345699855015512,
+            "max_all_nodes_times_l2_m": 0.007175005055438652,
+            "sampled_normalized_force_rms": 0.07377634726705387,
+            "minimum_detF_all200_endpoints": 0.5147987732952684,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.0073835141561456e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h004_l0",
+            "geometry": 36,
+            "component_rmse_m": 0.0006204555586668428,
+            "relative_component_rmse": 0.07266443612176578,
+            "mean_nodal_l2_m": 0.0007896229051016637,
+            "max_all_nodes_times_l2_m": 0.005738865686705801,
+            "sampled_normalized_force_rms": 0.06907303936366206,
+            "minimum_detF_all200_endpoints": 0.5007101405690274,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.777661729446179e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h005_l0",
+            "geometry": 37,
+            "component_rmse_m": 0.0010879018024423678,
+            "relative_component_rmse": 0.13180543015622065,
+            "mean_nodal_l2_m": 0.0015521303442550104,
+            "max_all_nodes_times_l2_m": 0.006989376405786811,
+            "sampled_normalized_force_rms": 0.06045406011960593,
+            "minimum_detF_all200_endpoints": 0.5046319869215448,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.1579735141902284e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h006_l0",
+            "geometry": 38,
+            "component_rmse_m": 0.000612160804489261,
+            "relative_component_rmse": 0.07616563624869528,
+            "mean_nodal_l2_m": 0.0008171987730815709,
+            "max_all_nodes_times_l2_m": 0.005589341709262967,
+            "sampled_normalized_force_rms": 0.07544674918702239,
+            "minimum_detF_all200_endpoints": 0.511001305756593,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.506837069718915e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h007_l0",
+            "geometry": 39,
+            "component_rmse_m": 0.0009649307199885445,
+            "relative_component_rmse": 0.11560429151578033,
+            "mean_nodal_l2_m": 0.0013662710967188188,
+            "max_all_nodes_times_l2_m": 0.006123149558503126,
+            "sampled_normalized_force_rms": 0.08027371926859722,
+            "minimum_detF_all200_endpoints": 0.5126195256887887,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 9.992140739260971e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h008_l0",
+            "geometry": 40,
+            "component_rmse_m": 0.0007415897671668608,
+            "relative_component_rmse": 0.08849853405987083,
+            "mean_nodal_l2_m": 0.001070288698598194,
+            "max_all_nodes_times_l2_m": 0.0073607434716543435,
+            "sampled_normalized_force_rms": 0.10339435171754044,
+            "minimum_detF_all200_endpoints": 0.5154032196352535,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 3.3891579044243193e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h009_l0",
+            "geometry": 41,
+            "component_rmse_m": 0.0005760975106950576,
+            "relative_component_rmse": 0.07034368242364866,
+            "mean_nodal_l2_m": 0.0007464139598673084,
+            "max_all_nodes_times_l2_m": 0.005890303533303171,
+            "sampled_normalized_force_rms": 0.062403350014963804,
+            "minimum_detF_all200_endpoints": 0.5078689194162063,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.960876266575601e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h010_l0",
+            "geometry": 42,
+            "component_rmse_m": 0.0009843353463631725,
+            "relative_component_rmse": 0.11630100467507508,
+            "mean_nodal_l2_m": 0.0013993397501321843,
+            "max_all_nodes_times_l2_m": 0.0062845124768491,
+            "sampled_normalized_force_rms": 0.061600495143009554,
+            "minimum_detF_all200_endpoints": 0.5028340328440619,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.274951941842273e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h011_l0",
+            "geometry": 43,
+            "component_rmse_m": 0.0012338274845646016,
+            "relative_component_rmse": 0.15064711872301262,
+            "mean_nodal_l2_m": 0.001753614601181939,
+            "max_all_nodes_times_l2_m": 0.007871053924707164,
+            "sampled_normalized_force_rms": 0.06974010305316268,
+            "minimum_detF_all200_endpoints": 0.5001945361462833,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.5681689584922582e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h012_l0",
+            "geometry": 44,
+            "component_rmse_m": 0.0006282176312886586,
+            "relative_component_rmse": 0.06925831647979833,
+            "mean_nodal_l2_m": 0.0008136282481245475,
+            "max_all_nodes_times_l2_m": 0.00584233949720532,
+            "sampled_normalized_force_rms": 0.061572652934100476,
+            "minimum_detF_all200_endpoints": 0.4958709915155863,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.67001495977633e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h013_l0",
+            "geometry": 45,
+            "component_rmse_m": 0.0008522154682973175,
+            "relative_component_rmse": 0.09921324072307867,
+            "mean_nodal_l2_m": 0.0012756872080896845,
+            "max_all_nodes_times_l2_m": 0.007622776787561664,
+            "sampled_normalized_force_rms": 0.8588067860904318,
+            "minimum_detF_all200_endpoints": 0.5204364045364563,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.003693585704176e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h014_l0",
+            "geometry": 46,
+            "component_rmse_m": 0.0008759678426790563,
+            "relative_component_rmse": 0.10793096671573889,
+            "mean_nodal_l2_m": 0.0013096529318101225,
+            "max_all_nodes_times_l2_m": 0.0069365022097434646,
+            "sampled_normalized_force_rms": 1.5742167330881667,
+            "minimum_detF_all200_endpoints": 0.5221412161700355,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 7.884496886588857e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h015_l0",
+            "geometry": 47,
+            "component_rmse_m": 0.0010457375109364465,
+            "relative_component_rmse": 0.12345046302923432,
+            "mean_nodal_l2_m": 0.0014424590214440539,
+            "max_all_nodes_times_l2_m": 0.006722077750226745,
+            "sampled_normalized_force_rms": 0.07654052506417758,
+            "minimum_detF_all200_endpoints": 0.5074967120486673,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.0894042586963639e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          }
+        ]
+      },
+      "per_seed_confirmation": [
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 11,
+          "component_rmse_m": 0.0009617195404547763,
+          "sampled_normalized_force_rms": 0.2809460458954336
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 22,
+          "component_rmse_m": 0.001022988423333056,
+          "sampled_normalized_force_rms": 0.22053128861223678
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 33,
+          "component_rmse_m": 0.0008053663376533432,
+          "sampled_normalized_force_rms": 0.19517584626553708
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 44,
+          "component_rmse_m": 0.0011048359105785902,
+          "sampled_normalized_force_rms": 64.60227159067016
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 55,
+          "component_rmse_m": 0.0009717551653514905,
+          "sampled_normalized_force_rms": 0.3743085007043746
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 11,
+          "component_rmse_m": 0.0014625974071275348,
+          "sampled_normalized_force_rms": 15.010143469946387
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 22,
+          "component_rmse_m": 0.0011520822197643853,
+          "sampled_normalized_force_rms": 2.184459911304789
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 33,
+          "component_rmse_m": 0.0009818211011259589,
+          "sampled_normalized_force_rms": 0.1458451160853569
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 44,
+          "component_rmse_m": 0.0016399271960569719,
+          "sampled_normalized_force_rms": 42858798.95097342
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 55,
+          "component_rmse_m": 0.002301319857560998,
+          "sampled_normalized_force_rms": 0.6110438597723236
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 11,
+          "component_rmse_m": 0.0009239733533664898,
+          "sampled_normalized_force_rms": 0.1275734153694649
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 22,
+          "component_rmse_m": 0.0006999866650896628,
+          "sampled_normalized_force_rms": 0.07819730844668812
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 33,
+          "component_rmse_m": 0.0006324596916584756,
+          "sampled_normalized_force_rms": 0.09696048464884027
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 44,
+          "component_rmse_m": 0.0008218831149451314,
+          "sampled_normalized_force_rms": 477.6936168392897
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 55,
+          "component_rmse_m": 0.000582303847405412,
+          "sampled_normalized_force_rms": 0.12949828308593958
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 11,
+          "component_rmse_m": 0.0015522381768269527,
+          "sampled_normalized_force_rms": 0.5168170707464986
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 22,
+          "component_rmse_m": 0.0009478378824738306,
+          "sampled_normalized_force_rms": 0.12833711664480807
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 33,
+          "component_rmse_m": 0.0008400482948388545,
+          "sampled_normalized_force_rms": 0.1360434613538786
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 44,
+          "component_rmse_m": 0.0017565602430926676,
+          "sampled_normalized_force_rms": 12400.978060653399
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 55,
+          "component_rmse_m": 0.00272034814652992,
+          "sampled_normalized_force_rms": 0.2941132117098998
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 11,
+          "component_rmse_m": 0.0009229445267730242,
+          "sampled_normalized_force_rms": 0.14408692846009352
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 22,
+          "component_rmse_m": 0.0006289474495536776,
+          "sampled_normalized_force_rms": 0.07782630416661318
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 33,
+          "component_rmse_m": 0.000583671983297996,
+          "sampled_normalized_force_rms": 0.09395616442891232
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 44,
+          "component_rmse_m": 0.0008265029419245919,
+          "sampled_normalized_force_rms": 550.6651272592536
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 55,
+          "component_rmse_m": 0.0006039110880615014,
+          "sampled_normalized_force_rms": 0.12981921841493263
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 11,
+          "component_rmse_m": 0.0013635936049661342,
+          "sampled_normalized_force_rms": 0.47700209412342076
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 22,
+          "component_rmse_m": 0.001185213947461782,
+          "sampled_normalized_force_rms": 0.11748947324198669
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 33,
+          "component_rmse_m": 0.0009641652250568812,
+          "sampled_normalized_force_rms": 0.10515378635971603
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 44,
+          "component_rmse_m": 0.0014933555945325259,
+          "sampled_normalized_force_rms": 103357.12880212846
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 55,
+          "component_rmse_m": 0.002031182065166632,
+          "sampled_normalized_force_rms": 0.19869944020260377
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 11,
+          "component_rmse_m": 0.0009310498143205888,
+          "sampled_normalized_force_rms": 0.12360537947857503
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 22,
+          "component_rmse_m": 0.0006234857363828517,
+          "sampled_normalized_force_rms": 0.10521415290945925
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 33,
+          "component_rmse_m": 0.0005301609587482561,
+          "sampled_normalized_force_rms": 0.10406903690010826
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 44,
+          "component_rmse_m": 0.0008898526599557965,
+          "sampled_normalized_force_rms": 100.63667991600921
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 55,
+          "component_rmse_m": 0.0007402313569566058,
+          "sampled_normalized_force_rms": 0.1451309695246764
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 11,
+          "component_rmse_m": 0.001293016196223159,
+          "sampled_normalized_force_rms": 1.3379798199584032
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 22,
+          "component_rmse_m": 0.0009231320689238575,
+          "sampled_normalized_force_rms": 0.19851369135300337
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 33,
+          "component_rmse_m": 0.0008032959049441628,
+          "sampled_normalized_force_rms": 0.1032708458502346
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 44,
+          "component_rmse_m": 0.0013944489285929746,
+          "sampled_normalized_force_rms": 195586.4686370836
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 55,
+          "component_rmse_m": 0.0018810839805461677,
+          "sampled_normalized_force_rms": 0.21223512730514005
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 11,
+          "component_rmse_m": 0.000917130785216709,
+          "sampled_normalized_force_rms": 0.21343026878532653
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 22,
+          "component_rmse_m": 0.0010426922326292724,
+          "sampled_normalized_force_rms": 0.14035325236773194
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 33,
+          "component_rmse_m": 0.0008388811395376706,
+          "sampled_normalized_force_rms": 0.21122413278426627
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 44,
+          "component_rmse_m": 0.000986951438408415,
+          "sampled_normalized_force_rms": 83.88866958105854
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 55,
+          "component_rmse_m": 0.0007066182833584632,
+          "sampled_normalized_force_rms": 0.3276267360850289
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 11,
+          "component_rmse_m": 0.0008797199875282765,
+          "sampled_normalized_force_rms": 0.10455107620214871
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 22,
+          "component_rmse_m": 0.000664635029303195,
+          "sampled_normalized_force_rms": 0.0805206223992832
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 33,
+          "component_rmse_m": 0.0005377000992984306,
+          "sampled_normalized_force_rms": 0.08678907213172048
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 44,
+          "component_rmse_m": 0.000795386513027694,
+          "sampled_normalized_force_rms": 28.83375548845612
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 55,
+          "component_rmse_m": 0.0005535197695208522,
+          "sampled_normalized_force_rms": 0.14037200483002693
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 11,
+          "component_rmse_m": 0.0012377452598514092,
+          "sampled_normalized_force_rms": 0.36841364359273543
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 22,
+          "component_rmse_m": 0.0011027812920471967,
+          "sampled_normalized_force_rms": 0.12369030961022721
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 33,
+          "component_rmse_m": 0.0009035985982287442,
+          "sampled_normalized_force_rms": 0.11081779616125566
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 44,
+          "component_rmse_m": 0.0013375474815548677,
+          "sampled_normalized_force_rms": 44911.28963701133
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 55,
+          "component_rmse_m": 0.001673588225558528,
+          "sampled_normalized_force_rms": 0.18232451843128528
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 11,
+          "component_rmse_m": 0.0014923674312860226,
+          "sampled_normalized_force_rms": 0.6245897182585174
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 22,
+          "component_rmse_m": 0.001464962029459058,
+          "sampled_normalized_force_rms": 0.13411225553661268
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 33,
+          "component_rmse_m": 0.0011056541168196188,
+          "sampled_normalized_force_rms": 0.11283273841202009
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 44,
+          "component_rmse_m": 0.001668573762790294,
+          "sampled_normalized_force_rms": 226499.9320160719
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 55,
+          "component_rmse_m": 0.002346155028268906,
+          "sampled_normalized_force_rms": 0.3097186899106264
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 11,
+          "component_rmse_m": 0.0009263556608016996,
+          "sampled_normalized_force_rms": 0.1812055651478939
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 22,
+          "component_rmse_m": 0.0006462888159590522,
+          "sampled_normalized_force_rms": 0.10333933291503056
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 33,
+          "component_rmse_m": 0.0005951694963115768,
+          "sampled_normalized_force_rms": 0.13652117011871087
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 44,
+          "component_rmse_m": 0.0008263286067981753,
+          "sampled_normalized_force_rms": 2662.653830855985
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 55,
+          "component_rmse_m": 0.0005730821978865966,
+          "sampled_normalized_force_rms": 0.13731675367077556
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 11,
+          "component_rmse_m": 0.000987389768231032,
+          "sampled_normalized_force_rms": 7.400340493878094
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 22,
+          "component_rmse_m": 0.0011109717958732465,
+          "sampled_normalized_force_rms": 1.4232259710558035
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 33,
+          "component_rmse_m": 0.0009161541268824194,
+          "sampled_normalized_force_rms": 0.539760225070851
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 44,
+          "component_rmse_m": 0.0012097787521342183,
+          "sampled_normalized_force_rms": 776.8519668974905
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 55,
+          "component_rmse_m": 0.0010586470409702895,
+          "sampled_normalized_force_rms": 4.682942087585002
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 11,
+          "component_rmse_m": 0.0010893112133765449,
+          "sampled_normalized_force_rms": 10.675779506434901
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 22,
+          "component_rmse_m": 0.001127702129327097,
+          "sampled_normalized_force_rms": 2.881868286835223
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 33,
+          "component_rmse_m": 0.0008458198766648812,
+          "sampled_normalized_force_rms": 0.32084255301402304
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 44,
+          "component_rmse_m": 0.0012705544055731633,
+          "sampled_normalized_force_rms": 1703.8818786966617
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 55,
+          "component_rmse_m": 0.0014840371586706872,
+          "sampled_normalized_force_rms": 10.118817344257842
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 11,
+          "component_rmse_m": 0.0013446484625730885,
+          "sampled_normalized_force_rms": 1.0392493420402389
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 22,
+          "component_rmse_m": 0.0010224593865101354,
+          "sampled_normalized_force_rms": 0.16571793340759683
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 33,
+          "component_rmse_m": 0.0009099021012205775,
+          "sampled_normalized_force_rms": 0.13313251519636438
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 44,
+          "component_rmse_m": 0.0015076687958881548,
+          "sampled_normalized_force_rms": 245552.04166057458
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 55,
+          "component_rmse_m": 0.0019674760549547323,
+          "sampled_normalized_force_rms": 0.2298152396405725
+        }
+      ]
+    },
+    "limited/physics_1": {
+      "confirmation": {
+        "n_geometries": 16,
+        "mean_component_rmse_m": 0.0007978025439454325,
+        "mean_nodal_l2_m": 0.0010752606834821615,
+        "mean_sampled_normalized_force_rms": 0.05029477848778676,
+        "full_cycles_without_inversions": 16,
+        "minimum_detF": 0.522531419268283,
+        "coverage": [
+          {
+            "nominal": 0.9,
+            "covered": 15,
+            "n": 16,
+            "coverage": 0.9375,
+            "radius_m": 0.008582260943589355,
+            "binomial95": [
+              0.6976792615654681,
+              0.998418888277234
+            ]
+          },
+          {
+            "nominal": 0.95,
+            "covered": 16,
+            "n": 16,
+            "coverage": 1.0,
+            "radius_m": 0.00908361865730458,
+            "binomial95": [
+              0.7940927857921773,
+              1.0
+            ]
+          }
+        ],
+        "spearman_uncertainty_error": 0.7411764705882353,
+        "selective_risk": [
+          {
+            "retained": 0.25,
+            "n": 4,
+            "mean_nodal_l2_m": 0.0007887213407496401
+          },
+          {
+            "retained": 0.5,
+            "n": 8,
+            "mean_nodal_l2_m": 0.0009150120547251479
+          },
+          {
+            "retained": 0.75,
+            "n": 12,
+            "mean_nodal_l2_m": 0.0010242797770589362
+          },
+          {
+            "retained": 1.0,
+            "n": 16,
+            "mean_nodal_l2_m": 0.0010752606834821615
+          }
+        ],
+        "FE_routes": 0,
+        "per_case": [
+          {
+            "case": "h000_l0",
+            "geometry": 32,
+            "component_rmse_m": 0.0007977753783486602,
+            "relative_component_rmse": 0.09800329458495145,
+            "mean_nodal_l2_m": 0.001052430284926753,
+            "max_all_nodes_times_l2_m": 0.008271839068474065,
+            "sampled_normalized_force_rms": 0.051891774554748034,
+            "minimum_detF_all200_endpoints": 0.5544951652741598,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.987232790761115e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h001_l0",
+            "geometry": 33,
+            "component_rmse_m": 0.0009316982161453538,
+            "relative_component_rmse": 0.10639604745027524,
+            "mean_nodal_l2_m": 0.001321415399304591,
+            "max_all_nodes_times_l2_m": 0.005998999657662662,
+            "sampled_normalized_force_rms": 0.05205262114223805,
+            "minimum_detF_all200_endpoints": 0.5450197262228598,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.0252712642051214e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h002_l0",
+            "geometry": 34,
+            "component_rmse_m": 0.0007321048814225707,
+            "relative_component_rmse": 0.08299863213068392,
+            "mean_nodal_l2_m": 0.0009381748882821647,
+            "max_all_nodes_times_l2_m": 0.0065877272011581065,
+            "sampled_normalized_force_rms": 0.04521141307847668,
+            "minimum_detF_all200_endpoints": 0.522531419268283,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.0221690419406498e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h003_l0",
+            "geometry": 35,
+            "component_rmse_m": 0.0006896152281288913,
+            "relative_component_rmse": 0.08744673257987409,
+            "mean_nodal_l2_m": 0.0009350705129885658,
+            "max_all_nodes_times_l2_m": 0.006012049861256993,
+            "sampled_normalized_force_rms": 0.041792858321747325,
+            "minimum_detF_all200_endpoints": 0.5545578658246975,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.2198778467839693e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h004_l0",
+            "geometry": 36,
+            "component_rmse_m": 0.0006601323497787716,
+            "relative_component_rmse": 0.0773111696597233,
+            "mean_nodal_l2_m": 0.0008266426076806153,
+            "max_all_nodes_times_l2_m": 0.0061970472771647545,
+            "sampled_normalized_force_rms": 0.04971443772285224,
+            "minimum_detF_all200_endpoints": 0.5304993168928982,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.5409155825993738e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h005_l0",
+            "geometry": 37,
+            "component_rmse_m": 0.0009523266542533603,
+            "relative_component_rmse": 0.11537973742786235,
+            "mean_nodal_l2_m": 0.0013601278034341515,
+            "max_all_nodes_times_l2_m": 0.006193265053780757,
+            "sampled_normalized_force_rms": 0.048836175996609166,
+            "minimum_detF_all200_endpoints": 0.5396951685680055,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.846890659290785e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h006_l0",
+            "geometry": 38,
+            "component_rmse_m": 0.000558869250886009,
+            "relative_component_rmse": 0.06953504987807713,
+            "mean_nodal_l2_m": 0.000685879878482863,
+            "max_all_nodes_times_l2_m": 0.006237252298614046,
+            "sampled_normalized_force_rms": 0.051288541488381606,
+            "minimum_detF_all200_endpoints": 0.5451333980774711,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.8410484799969623e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h007_l0",
+            "geometry": 39,
+            "component_rmse_m": 0.0007423523080997801,
+            "relative_component_rmse": 0.08893810804779662,
+            "mean_nodal_l2_m": 0.0010501385320214253,
+            "max_all_nodes_times_l2_m": 0.004986067391781603,
+            "sampled_normalized_force_rms": 0.048217208944352594,
+            "minimum_detF_all200_endpoints": 0.548644600354249,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 6.612470219135541e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h008_l0",
+            "geometry": 40,
+            "component_rmse_m": 0.0008293774091132857,
+            "relative_component_rmse": 0.09897478112367823,
+            "mean_nodal_l2_m": 0.0011244673695722793,
+            "max_all_nodes_times_l2_m": 0.008334993136653934,
+            "sampled_normalized_force_rms": 0.051844347016972214,
+            "minimum_detF_all200_endpoints": 0.5493900697760342,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.03568746746995e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h009_l0",
+            "geometry": 41,
+            "component_rmse_m": 0.0005902236176283916,
+            "relative_component_rmse": 0.0720685334454871,
+            "mean_nodal_l2_m": 0.0007577072177557193,
+            "max_all_nodes_times_l2_m": 0.006440901611498475,
+            "sampled_normalized_force_rms": 0.04408770111582437,
+            "minimum_detF_all200_endpoints": 0.541406585060761,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.6777904857004198e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h010_l0",
+            "geometry": 42,
+            "component_rmse_m": 0.0009117362702570458,
+            "relative_component_rmse": 0.10772329229197268,
+            "mean_nodal_l2_m": 0.0012782260065036615,
+            "max_all_nodes_times_l2_m": 0.005918612291377076,
+            "sampled_normalized_force_rms": 0.049150767930372805,
+            "minimum_detF_all200_endpoints": 0.5374349151746903,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 6.729450120927865e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h011_l0",
+            "geometry": 43,
+            "component_rmse_m": 0.0011079675317427471,
+            "relative_component_rmse": 0.13527994665688092,
+            "mean_nodal_l2_m": 0.001575432550033402,
+            "max_all_nodes_times_l2_m": 0.007100117024134853,
+            "sampled_normalized_force_rms": 0.05621463174234683,
+            "minimum_detF_all200_endpoints": 0.53597608810045,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.2381762271180109e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h012_l0",
+            "geometry": 44,
+            "component_rmse_m": 0.0006978928706962549,
+            "relative_component_rmse": 0.07693971467901524,
+            "mean_nodal_l2_m": 0.000884655659079363,
+            "max_all_nodes_times_l2_m": 0.006627408678692852,
+            "sampled_normalized_force_rms": 0.04564272171956527,
+            "minimum_detF_all200_endpoints": 0.5274849208828304,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.6475589656265295e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h013_l0",
+            "geometry": 45,
+            "component_rmse_m": 0.0008392613184670738,
+            "relative_component_rmse": 0.09770514419904044,
+            "mean_nodal_l2_m": 0.0011325689684333988,
+            "max_all_nodes_times_l2_m": 0.008846755043637132,
+            "sampled_normalized_force_rms": 0.05808632312254799,
+            "minimum_detF_all200_endpoints": 0.5555404533863644,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 6.648322999019732e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h014_l0",
+            "geometry": 46,
+            "component_rmse_m": 0.0008536563034832864,
+            "relative_component_rmse": 0.1051818863534386,
+            "mean_nodal_l2_m": 0.0010808951486807907,
+            "max_all_nodes_times_l2_m": 0.008285796657696997,
+            "sampled_normalized_force_rms": 0.058580068252777506,
+            "minimum_detF_all200_endpoints": 0.5587316972850337,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 9.213919332344554e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h015_l0",
+            "geometry": 47,
+            "component_rmse_m": 0.0008698511146754384,
+            "relative_component_rmse": 0.10268688055094981,
+            "mean_nodal_l2_m": 0.0012003381085348402,
+            "max_all_nodes_times_l2_m": 0.0058698107596863,
+            "sampled_normalized_force_rms": 0.052104863654775485,
+            "minimum_detF_all200_endpoints": 0.5443958209898125,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 7.630843177516908e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          }
+        ]
+      },
+      "pooled_primary_and_confirmation": {
+        "n_geometries": 20,
+        "mean_component_rmse_m": 0.0007823734694736193,
+        "mean_nodal_l2_m": 0.0010507351472734635,
+        "mean_sampled_normalized_force_rms": 0.05052555792456388,
+        "full_cycles_without_inversions": 20,
+        "minimum_detF": 0.522531419268283,
+        "coverage": [
+          {
+            "nominal": 0.9,
+            "covered": 18,
+            "n": 20,
+            "coverage": 0.9,
+            "radius_m": 0.008582260943589355,
+            "binomial95": [
+              0.6830172859809177,
+              0.9876514728297052
+            ]
+          },
+          {
+            "nominal": 0.95,
+            "covered": 20,
+            "n": 20,
+            "coverage": 1.0,
+            "radius_m": 0.00908361865730458,
+            "binomial95": [
+              0.8315665290169147,
+              1.0
+            ]
+          }
+        ],
+        "spearman_uncertainty_error": 0.6917293233082705,
+        "selective_risk": [
+          {
+            "retained": 0.25,
+            "n": 5,
+            "mean_nodal_l2_m": 0.0008186120502561451
+          },
+          {
+            "retained": 0.5,
+            "n": 10,
+            "mean_nodal_l2_m": 0.0009341733507501086
+          },
+          {
+            "retained": 0.75,
+            "n": 15,
+            "mean_nodal_l2_m": 0.000982784102068518
+          },
+          {
+            "retained": 1.0,
+            "n": 20,
+            "mean_nodal_l2_m": 0.0010507351472734635
+          }
+        ],
+        "FE_routes": 0,
+        "per_case": [
+          {
+            "case": "g026_l0",
+            "geometry": 26,
+            "seed": null,
+            "component_rmse_m": 0.0008012574908528306,
+            "mean_nodal_l2_m": 0.0010897284811782208,
+            "p95_nodal_time_l2_m": 0.002800220152424626,
+            "max_all_nodes_times_l2_m": 0.008324920832267596,
+            "relative_component_rmse": 0.09314806431207072,
+            "sampled_normalized_force_rms": 0.053401198932536934,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5496964535829719,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.042106336355816176,
+            "sampled_relative_elastic_energy_error": 534.1839535085905,
+            "mean_coordinate_variance_m2": 4.492556178083992e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g027_l0",
+            "geometry": 27,
+            "seed": null,
+            "component_rmse_m": 0.0005939141574019315,
+            "mean_nodal_l2_m": 0.0007387564080333592,
+            "p95_nodal_time_l2_m": 0.0021571839796748963,
+            "max_all_nodes_times_l2_m": 0.006353724093273106,
+            "relative_component_rmse": 0.07360459398555359,
+            "sampled_normalized_force_rms": 0.046477851969812876,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5578178085467368,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.04306241953246456,
+            "sampled_relative_elastic_energy_error": 424.96075478315265,
+            "mean_coordinate_variance_m2": 6.175444927803584e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g028_l0",
+            "geometry": 28,
+            "seed": null,
+            "component_rmse_m": 0.0006462761589780683,
+            "mean_nodal_l2_m": 0.0008471181054329885,
+            "p95_nodal_time_l2_m": 0.0022211208018598763,
+            "max_all_nodes_times_l2_m": 0.007297944689454349,
+            "relative_component_rmse": 0.07579852729923713,
+            "sampled_normalized_force_rms": 0.049894831210573296,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5458922204542285,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.04045399321078605,
+            "sampled_relative_elastic_energy_error": 436.0142176130846,
+            "mean_coordinate_variance_m2": 2.3136634954843489e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "g029_l0",
+            "geometry": 29,
+            "seed": null,
+            "component_rmse_m": 0.0008411808791126345,
+            "mean_nodal_l2_m": 0.0011349290151101191,
+            "p95_nodal_time_l2_m": 0.003107002284244078,
+            "max_all_nodes_times_l2_m": 0.008589955542623744,
+            "relative_component_rmse": 0.10128296911707686,
+            "sampled_normalized_force_rms": 0.05602082057376631,
+            "mechanics_failure": null,
+            "minimum_detF_all200_endpoints": 0.5519607362412676,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "sampled_volume_mean_strain_error": 0.04013579360993907,
+            "sampled_relative_elastic_energy_error": 596.017823096779,
+            "mean_coordinate_variance_m2": 6.09775505450154e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h000_l0",
+            "geometry": 32,
+            "component_rmse_m": 0.0007977753783486602,
+            "relative_component_rmse": 0.09800329458495145,
+            "mean_nodal_l2_m": 0.001052430284926753,
+            "max_all_nodes_times_l2_m": 0.008271839068474065,
+            "sampled_normalized_force_rms": 0.051891774554748034,
+            "minimum_detF_all200_endpoints": 0.5544951652741598,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.987232790761115e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h001_l0",
+            "geometry": 33,
+            "component_rmse_m": 0.0009316982161453538,
+            "relative_component_rmse": 0.10639604745027524,
+            "mean_nodal_l2_m": 0.001321415399304591,
+            "max_all_nodes_times_l2_m": 0.005998999657662662,
+            "sampled_normalized_force_rms": 0.05205262114223805,
+            "minimum_detF_all200_endpoints": 0.5450197262228598,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.0252712642051214e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h002_l0",
+            "geometry": 34,
+            "component_rmse_m": 0.0007321048814225707,
+            "relative_component_rmse": 0.08299863213068392,
+            "mean_nodal_l2_m": 0.0009381748882821647,
+            "max_all_nodes_times_l2_m": 0.0065877272011581065,
+            "sampled_normalized_force_rms": 0.04521141307847668,
+            "minimum_detF_all200_endpoints": 0.522531419268283,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 2.0221690419406498e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h003_l0",
+            "geometry": 35,
+            "component_rmse_m": 0.0006896152281288913,
+            "relative_component_rmse": 0.08744673257987409,
+            "mean_nodal_l2_m": 0.0009350705129885658,
+            "max_all_nodes_times_l2_m": 0.006012049861256993,
+            "sampled_normalized_force_rms": 0.041792858321747325,
+            "minimum_detF_all200_endpoints": 0.5545578658246975,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.2198778467839693e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h004_l0",
+            "geometry": 36,
+            "component_rmse_m": 0.0006601323497787716,
+            "relative_component_rmse": 0.0773111696597233,
+            "mean_nodal_l2_m": 0.0008266426076806153,
+            "max_all_nodes_times_l2_m": 0.0061970472771647545,
+            "sampled_normalized_force_rms": 0.04971443772285224,
+            "minimum_detF_all200_endpoints": 0.5304993168928982,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.5409155825993738e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h005_l0",
+            "geometry": 37,
+            "component_rmse_m": 0.0009523266542533603,
+            "relative_component_rmse": 0.11537973742786235,
+            "mean_nodal_l2_m": 0.0013601278034341515,
+            "max_all_nodes_times_l2_m": 0.006193265053780757,
+            "sampled_normalized_force_rms": 0.048836175996609166,
+            "minimum_detF_all200_endpoints": 0.5396951685680055,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 8.846890659290785e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h006_l0",
+            "geometry": 38,
+            "component_rmse_m": 0.000558869250886009,
+            "relative_component_rmse": 0.06953504987807713,
+            "mean_nodal_l2_m": 0.000685879878482863,
+            "max_all_nodes_times_l2_m": 0.006237252298614046,
+            "sampled_normalized_force_rms": 0.051288541488381606,
+            "minimum_detF_all200_endpoints": 0.5451333980774711,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.8410484799969623e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h007_l0",
+            "geometry": 39,
+            "component_rmse_m": 0.0007423523080997801,
+            "relative_component_rmse": 0.08893810804779662,
+            "mean_nodal_l2_m": 0.0010501385320214253,
+            "max_all_nodes_times_l2_m": 0.004986067391781603,
+            "sampled_normalized_force_rms": 0.048217208944352594,
+            "minimum_detF_all200_endpoints": 0.548644600354249,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 6.612470219135541e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h008_l0",
+            "geometry": 40,
+            "component_rmse_m": 0.0008293774091132857,
+            "relative_component_rmse": 0.09897478112367823,
+            "mean_nodal_l2_m": 0.0011244673695722793,
+            "max_all_nodes_times_l2_m": 0.008334993136653934,
+            "sampled_normalized_force_rms": 0.051844347016972214,
+            "minimum_detF_all200_endpoints": 0.5493900697760342,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 5.03568746746995e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h009_l0",
+            "geometry": 41,
+            "component_rmse_m": 0.0005902236176283916,
+            "relative_component_rmse": 0.0720685334454871,
+            "mean_nodal_l2_m": 0.0007577072177557193,
+            "max_all_nodes_times_l2_m": 0.006440901611498475,
+            "sampled_normalized_force_rms": 0.04408770111582437,
+            "minimum_detF_all200_endpoints": 0.541406585060761,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.6777904857004198e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h010_l0",
+            "geometry": 42,
+            "component_rmse_m": 0.0009117362702570458,
+            "relative_component_rmse": 0.10772329229197268,
+            "mean_nodal_l2_m": 0.0012782260065036615,
+            "max_all_nodes_times_l2_m": 0.005918612291377076,
+            "sampled_normalized_force_rms": 0.049150767930372805,
+            "minimum_detF_all200_endpoints": 0.5374349151746903,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 6.729450120927865e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h011_l0",
+            "geometry": 43,
+            "component_rmse_m": 0.0011079675317427471,
+            "relative_component_rmse": 0.13527994665688092,
+            "mean_nodal_l2_m": 0.001575432550033402,
+            "max_all_nodes_times_l2_m": 0.007100117024134853,
+            "sampled_normalized_force_rms": 0.05621463174234683,
+            "minimum_detF_all200_endpoints": 0.53597608810045,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.2381762271180109e-06,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h012_l0",
+            "geometry": 44,
+            "component_rmse_m": 0.0006978928706962549,
+            "relative_component_rmse": 0.07693971467901524,
+            "mean_nodal_l2_m": 0.000884655659079363,
+            "max_all_nodes_times_l2_m": 0.006627408678692852,
+            "sampled_normalized_force_rms": 0.04564272171956527,
+            "minimum_detF_all200_endpoints": 0.5274849208828304,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 1.6475589656265295e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h013_l0",
+            "geometry": 45,
+            "component_rmse_m": 0.0008392613184670738,
+            "relative_component_rmse": 0.09770514419904044,
+            "mean_nodal_l2_m": 0.0011325689684333988,
+            "max_all_nodes_times_l2_m": 0.008846755043637132,
+            "sampled_normalized_force_rms": 0.05808632312254799,
+            "minimum_detF_all200_endpoints": 0.5555404533863644,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 6.648322999019732e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h014_l0",
+            "geometry": 46,
+            "component_rmse_m": 0.0008536563034832864,
+            "relative_component_rmse": 0.1051818863534386,
+            "mean_nodal_l2_m": 0.0010808951486807907,
+            "max_all_nodes_times_l2_m": 0.008285796657696997,
+            "sampled_normalized_force_rms": 0.058580068252777506,
+            "minimum_detF_all200_endpoints": 0.5587316972850337,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 9.213919332344554e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          },
+          {
+            "case": "h015_l0",
+            "geometry": 47,
+            "component_rmse_m": 0.0008698511146754384,
+            "relative_component_rmse": 0.10268688055094981,
+            "mean_nodal_l2_m": 0.0012003381085348402,
+            "max_all_nodes_times_l2_m": 0.0058698107596863,
+            "sampled_normalized_force_rms": 0.052104863654775485,
+            "minimum_detF_all200_endpoints": 0.5443958209898125,
+            "inverted_element_time_fraction": 0.0,
+            "completed_full_cycle": true,
+            "mean_coordinate_variance_m2": 7.630843177516908e-07,
+            "routing": {
+              "action": "surrogate",
+              "reasons": []
+            }
+          }
+        ]
+      },
+      "per_seed_confirmation": [
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 11,
+          "component_rmse_m": 0.0008136401467447763,
+          "sampled_normalized_force_rms": 0.0709945842351162
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 22,
+          "component_rmse_m": 0.0008739315574151812,
+          "sampled_normalized_force_rms": 0.12730523779157826
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 33,
+          "component_rmse_m": 0.0007203139014133735,
+          "sampled_normalized_force_rms": 0.12085354873209386
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 44,
+          "component_rmse_m": 0.0017548749484767967,
+          "sampled_normalized_force_rms": 0.06087517964810258
+        },
+        {
+          "case": "h000_l0",
+          "geometry": 32,
+          "seed": 55,
+          "component_rmse_m": 0.0007435832374384407,
+          "sampled_normalized_force_rms": 0.10120121193712377
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 11,
+          "component_rmse_m": 0.001319418799822109,
+          "sampled_normalized_force_rms": 0.0878461528996472
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 22,
+          "component_rmse_m": 0.001207348707547243,
+          "sampled_normalized_force_rms": 0.11319129139444654
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 33,
+          "component_rmse_m": 0.0009556359932659442,
+          "sampled_normalized_force_rms": 0.09554806285166867
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 44,
+          "component_rmse_m": 0.0008742204010262008,
+          "sampled_normalized_force_rms": 0.07158657946507539
+        },
+        {
+          "case": "h001_l0",
+          "geometry": 33,
+          "seed": 55,
+          "component_rmse_m": 0.0018882093513501901,
+          "sampled_normalized_force_rms": 0.1417694038198092
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 11,
+          "component_rmse_m": 0.0008388740777677065,
+          "sampled_normalized_force_rms": 0.06326888527409012
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 22,
+          "component_rmse_m": 0.0009139522473345895,
+          "sampled_normalized_force_rms": 0.06921669063656893
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 33,
+          "component_rmse_m": 0.000683793823164044,
+          "sampled_normalized_force_rms": 0.07473730516955773
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 44,
+          "component_rmse_m": 0.0009551034253514741,
+          "sampled_normalized_force_rms": 0.06914904711989502
+        },
+        {
+          "case": "h002_l0",
+          "geometry": 34,
+          "seed": 55,
+          "component_rmse_m": 0.0007549439908472822,
+          "sampled_normalized_force_rms": 0.09040500233712152
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 11,
+          "component_rmse_m": 0.0012356318267413402,
+          "sampled_normalized_force_rms": 0.07686210473393361
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 22,
+          "component_rmse_m": 0.0008534503016774553,
+          "sampled_normalized_force_rms": 0.07944597926019302
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 33,
+          "component_rmse_m": 0.0008027502612219311,
+          "sampled_normalized_force_rms": 0.1264259433428699
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 44,
+          "component_rmse_m": 0.0011205247762080246,
+          "sampled_normalized_force_rms": 0.05841689737704825
+        },
+        {
+          "case": "h003_l0",
+          "geometry": 35,
+          "seed": 55,
+          "component_rmse_m": 0.0017613091769460927,
+          "sampled_normalized_force_rms": 0.12411144945768043
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 11,
+          "component_rmse_m": 0.0008169382443295892,
+          "sampled_normalized_force_rms": 0.06764318319291764
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 22,
+          "component_rmse_m": 0.0007868563157601727,
+          "sampled_normalized_force_rms": 0.06354412716499766
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 33,
+          "component_rmse_m": 0.0006486290243142366,
+          "sampled_normalized_force_rms": 0.07269482451454605
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 44,
+          "component_rmse_m": 0.0007717284346519638,
+          "sampled_normalized_force_rms": 0.06857403648233736
+        },
+        {
+          "case": "h004_l0",
+          "geometry": 36,
+          "seed": 55,
+          "component_rmse_m": 0.0007017296377014692,
+          "sampled_normalized_force_rms": 0.08645812974522821
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 11,
+          "component_rmse_m": 0.001248939885354243,
+          "sampled_normalized_force_rms": 0.07142900819318616
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 22,
+          "component_rmse_m": 0.0012890426717672206,
+          "sampled_normalized_force_rms": 0.09631824248424421
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 33,
+          "component_rmse_m": 0.0009308006726394695,
+          "sampled_normalized_force_rms": 0.09549316395261978
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 44,
+          "component_rmse_m": 0.0009458305975995199,
+          "sampled_normalized_force_rms": 0.059425668794838155
+        },
+        {
+          "case": "h005_l0",
+          "geometry": 37,
+          "seed": 55,
+          "component_rmse_m": 0.0017581010458207938,
+          "sampled_normalized_force_rms": 0.12434888762854222
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 11,
+          "component_rmse_m": 0.0007806509507162135,
+          "sampled_normalized_force_rms": 0.06458063549063077
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 22,
+          "component_rmse_m": 0.0006189322333091136,
+          "sampled_normalized_force_rms": 0.07287651104111768
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 33,
+          "component_rmse_m": 0.0005708679105653847,
+          "sampled_normalized_force_rms": 0.08281866377233983
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 44,
+          "component_rmse_m": 0.0007687638181653172,
+          "sampled_normalized_force_rms": 0.05502496940898215
+        },
+        {
+          "case": "h006_l0",
+          "geometry": 38,
+          "seed": 55,
+          "component_rmse_m": 0.0006234681982361396,
+          "sampled_normalized_force_rms": 0.08747218835902987
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 11,
+          "component_rmse_m": 0.0011185466104745077,
+          "sampled_normalized_force_rms": 0.07677864295375544
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 22,
+          "component_rmse_m": 0.0009609089362240258,
+          "sampled_normalized_force_rms": 0.069468905214839
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 33,
+          "component_rmse_m": 0.0007625865714561454,
+          "sampled_normalized_force_rms": 0.07728522190868492
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 44,
+          "component_rmse_m": 0.0007407398197559011,
+          "sampled_normalized_force_rms": 0.06310828426656342
+        },
+        {
+          "case": "h007_l0",
+          "geometry": 39,
+          "seed": 55,
+          "component_rmse_m": 0.0014476520891785714,
+          "sampled_normalized_force_rms": 0.1098490408173986
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 11,
+          "component_rmse_m": 0.0008336757366911013,
+          "sampled_normalized_force_rms": 0.07114683684031024
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 22,
+          "component_rmse_m": 0.0009111860301422358,
+          "sampled_normalized_force_rms": 0.08854712712949238
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 33,
+          "component_rmse_m": 0.0008144870314628311,
+          "sampled_normalized_force_rms": 0.11516106668048748
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 44,
+          "component_rmse_m": 0.001605898548227287,
+          "sampled_normalized_force_rms": 0.06333024040463756
+        },
+        {
+          "case": "h008_l0",
+          "geometry": 40,
+          "seed": 55,
+          "component_rmse_m": 0.000828272258156452,
+          "sampled_normalized_force_rms": 0.10596348443540127
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 11,
+          "component_rmse_m": 0.0007677996734389237,
+          "sampled_normalized_force_rms": 0.06021043156266955
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 22,
+          "component_rmse_m": 0.0006383062760370876,
+          "sampled_normalized_force_rms": 0.0661182059389025
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 33,
+          "component_rmse_m": 0.0006121431438816292,
+          "sampled_normalized_force_rms": 0.07613833259590358
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 44,
+          "component_rmse_m": 0.0008009602162593176,
+          "sampled_normalized_force_rms": 0.05595658442008741
+        },
+        {
+          "case": "h009_l0",
+          "geometry": 41,
+          "seed": 55,
+          "component_rmse_m": 0.0006322405010115599,
+          "sampled_normalized_force_rms": 0.08965137933517858
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 11,
+          "component_rmse_m": 0.0011349844159086848,
+          "sampled_normalized_force_rms": 0.06720454377779306
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 22,
+          "component_rmse_m": 0.001241772348662966,
+          "sampled_normalized_force_rms": 0.09833520775640009
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 33,
+          "component_rmse_m": 0.0008693612069630815,
+          "sampled_normalized_force_rms": 0.09301891821225541
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 44,
+          "component_rmse_m": 0.0009714828949327026,
+          "sampled_normalized_force_rms": 0.06276295467980886
+        },
+        {
+          "case": "h010_l0",
+          "geometry": 42,
+          "seed": 55,
+          "component_rmse_m": 0.0015226092956842241,
+          "sampled_normalized_force_rms": 0.11756755687752124
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 11,
+          "component_rmse_m": 0.0014027277996977176,
+          "sampled_normalized_force_rms": 0.08155226231391616
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 22,
+          "component_rmse_m": 0.0015461071701521733,
+          "sampled_normalized_force_rms": 0.10470212209733963
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 33,
+          "component_rmse_m": 0.0010813756722124108,
+          "sampled_normalized_force_rms": 0.09608746183621585
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 44,
+          "component_rmse_m": 0.0011075511718668814,
+          "sampled_normalized_force_rms": 0.06956015593240224
+        },
+        {
+          "case": "h011_l0",
+          "geometry": 43,
+          "seed": 55,
+          "component_rmse_m": 0.0020824335670208507,
+          "sampled_normalized_force_rms": 0.17643610212495567
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 11,
+          "component_rmse_m": 0.0008358991360022868,
+          "sampled_normalized_force_rms": 0.06243819642773391
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 22,
+          "component_rmse_m": 0.0008291847130520401,
+          "sampled_normalized_force_rms": 0.07159795602787472
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 33,
+          "component_rmse_m": 0.0006742582650150196,
+          "sampled_normalized_force_rms": 0.08394370089083011
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 44,
+          "component_rmse_m": 0.0008574978567258171,
+          "sampled_normalized_force_rms": 0.07002934827874288
+        },
+        {
+          "case": "h012_l0",
+          "geometry": 44,
+          "seed": 55,
+          "component_rmse_m": 0.0007197877777060342,
+          "sampled_normalized_force_rms": 0.09292876932314452
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 11,
+          "component_rmse_m": 0.0008302354061548202,
+          "sampled_normalized_force_rms": 0.0883185123518471
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 22,
+          "component_rmse_m": 0.0009480579393926828,
+          "sampled_normalized_force_rms": 0.23485300424288136
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 33,
+          "component_rmse_m": 0.000804987140243238,
+          "sampled_normalized_force_rms": 0.16590573824186572
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 44,
+          "component_rmse_m": 0.0018303901752351522,
+          "sampled_normalized_force_rms": 0.0665488521260263
+        },
+        {
+          "case": "h013_l0",
+          "geometry": 45,
+          "seed": 55,
+          "component_rmse_m": 0.0007711613497512979,
+          "sampled_normalized_force_rms": 0.12964989502427937
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 11,
+          "component_rmse_m": 0.0008744324353410701,
+          "sampled_normalized_force_rms": 0.09232532346244914
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 22,
+          "component_rmse_m": 0.0009671283775011663,
+          "sampled_normalized_force_rms": 0.08997292676136215
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 33,
+          "component_rmse_m": 0.0006665730677543424,
+          "sampled_normalized_force_rms": 0.11456335294672321
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 44,
+          "component_rmse_m": 0.0021194283884377932,
+          "sampled_normalized_force_rms": 0.06071114765933938
+        },
+        {
+          "case": "h014_l0",
+          "geometry": 46,
+          "seed": 55,
+          "component_rmse_m": 0.0008324346367168002,
+          "sampled_normalized_force_rms": 0.1314647453067158
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 11,
+          "component_rmse_m": 0.001194740914282826,
+          "sampled_normalized_force_rms": 0.07652106455970292
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 22,
+          "component_rmse_m": 0.0011033123714848257,
+          "sampled_normalized_force_rms": 0.09371632946920626
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 33,
+          "component_rmse_m": 0.0008939875248808315,
+          "sampled_normalized_force_rms": 0.09557570996223047
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 44,
+          "component_rmse_m": 0.0008504159713269803,
+          "sampled_normalized_force_rms": 0.0685468384777246
+        },
+        {
+          "case": "h015_l0",
+          "geometry": 47,
+          "seed": 55,
+          "component_rmse_m": 0.0016335290077786775,
+          "sampled_normalized_force_rms": 0.13230399783056412
+        }
+      ]
+    }
+  },
+  "comparisons": {
+    "full": {
+      "confirmation": {
+        "RMSE_ratio_physics_over_data": 1.209304514898987,
+        "paired_mean_force_RMS_difference_physics_minus_data": -0.019519308801164058,
+        "conditional_geometry_bootstrap95": [
+          -0.021155310316924365,
+          -0.017859552436405995
+        ],
+        "all_residuals_finite": true,
+        "H1_descriptive_supported": false
+      },
+      "pooled_primary_and_confirmation": {
+        "RMSE_ratio_physics_over_data": 1.2364496889549195,
+        "paired_mean_force_RMS_difference_physics_minus_data": -0.01945419491819477,
+        "conditional_geometry_bootstrap95": [
+          -0.0208502467696871,
+          -0.018025987419151922
+        ],
+        "all_residuals_finite": true,
+        "H1_descriptive_supported": false
+      }
+    },
+    "limited": {
+      "confirmation": {
+        "RMSE_ratio_physics_over_data": 0.9168849959098396,
+        "paired_mean_force_RMS_difference_physics_minus_data": -0.17772348510128352,
+        "conditional_geometry_bootstrap95": [
+          -0.40075915572890786,
+          -0.027345304719838023
+        ],
+        "all_residuals_finite": true,
+        "H1_descriptive_supported": true
+      },
+      "pooled_primary_and_confirmation": {
+        "RMSE_ratio_physics_over_data": 0.9237773345661795,
+        "paired_mean_force_RMS_difference_physics_minus_data": -0.1670768772882863,
+        "conditional_geometry_bootstrap95": [
+          -0.3443710894173494,
+          -0.045427160745142095
+        ],
+        "all_residuals_finite": true,
+        "H1_descriptive_supported": true
+      }
+    }
+  },
+  "preferred_from_primary_validation_only": "full/physics_10",
+  "calibration": "unchanged20 primary calibration geometries and fixed radii; no confirmation recalibration",
+  "bootstrap_scope": "fixed5-member models; independent geometry resampling; excludes retraining and FE discretization uncertainty",
+  "limitations": [
+    "one affine benchmark family",
+    "pooled20 geometry confirmation improves precision but is not anatomical validation",
+    "mechanics nine predefined frames, endpoint inversion checks all200 for ensembles",
+    "confirmation per-member residuals/accuracy are reported, per-member endpoint-J checks only in primary study"
+  ]
+}

@@ -11,7 +11,7 @@ for f,h in freeze['checkpoint_sha256'].items():assert sha(P/f)==h
 regimes={}
 for r in ['full','limited']:
  m=json.loads((P/f'experiments/manifests/{tcfg["name"]}_{r}.json').read_text());assert m['complete'] and m['data_access']==['train','validation'];D=P/f'data/processed/{tcfg["data_tag"]}_{r}';assert sha(D/'normalizers.npz')==m['normalizer_sha256'];a=np.load(D/'train.npz');mask=a['labelled_mask'].astype(bool);assert mask.sum()==(8 if r=='full' else 2);assert not any(k in a.files for k in ['u','u_old','v_old','a_old']);assert (a['q'][~mask]==0).all();regimes[r]={'labelled_training_trajectories':int(mask.sum()),'input_trajectories':len(mask),'normalizer_sha256':m['normalizer_sha256']}
-assert json.loads((P/'experiments/metrics/dynamic_backend.json').read_text())['passed'];assert json.loads((P/'experiments/metrics/dynamic_neural_gradient.json').read_text())['passed']
+assert json.loads((P/'experiments/metrics/dynamic_alpha_jacobians.json').read_text())['passed'];assert json.loads((P/'experiments/metrics/dynamic_backend.json').read_text())['passed'];assert json.loads((P/'experiments/metrics/dynamic_neural_gradient.json').read_text())['passed']
 result={'passed':True,'scope':'frozen checkpoint/preprocessing hashes, geometry role isolation and limited-label contracts; no inference claim','frozen_models_verified':20,'cohort_geometries':len(roles),'cohort_trajectories':len(cases),'regimes':regimes,'geometry_roles_disjoint':True,'primary_cohort_unchanged_since_model_freeze':True}
 if not args.models_only:
  evaluation=json.loads((P/'experiments/metrics/dynamic_final_evaluation.json').read_text());assert evaluation['complete']

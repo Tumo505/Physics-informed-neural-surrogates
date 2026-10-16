@@ -1,0 +1,490 @@
+{
+  "passed": true,
+  "alpha_f": 0.4,
+  "n_ensemble_trajectories": 80,
+  "n_independent_test_geometries": 20,
+  "minimum_stress_state_detF": 0.4917461990757907,
+  "scope": "all200 generalized-alpha stress evaluation states and every P1 tetrahedron, four ensembles; endpoint checks reported separately; no new model choice",
+  "records": [
+    {
+      "model": "full/data",
+      "case": "g026_l0",
+      "minimum_stress_state_detF_all200": 0.5628729162993787,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "g026_l0",
+      "minimum_stress_state_detF_all200": 0.5846243020109401,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "g026_l0",
+      "minimum_stress_state_detF_all200": 0.5146479588501509,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "g026_l0",
+      "minimum_stress_state_detF_all200": 0.5478478880232384,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "g027_l0",
+      "minimum_stress_state_detF_all200": 0.5460025990802835,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "g027_l0",
+      "minimum_stress_state_detF_all200": 0.5764449545260006,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "g027_l0",
+      "minimum_stress_state_detF_all200": 0.519828158789428,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "g027_l0",
+      "minimum_stress_state_detF_all200": 0.5577197397008345,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "g028_l0",
+      "minimum_stress_state_detF_all200": 0.5567325349405525,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "g028_l0",
+      "minimum_stress_state_detF_all200": 0.5783109031687674,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "g028_l0",
+      "minimum_stress_state_detF_all200": 0.5108281360962992,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "g028_l0",
+      "minimum_stress_state_detF_all200": 0.5441100520696065,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "g029_l0",
+      "minimum_stress_state_detF_all200": 0.5650278303230464,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "g029_l0",
+      "minimum_stress_state_detF_all200": 0.5887843892047693,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "g029_l0",
+      "minimum_stress_state_detF_all200": 0.5171997798912966,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "g029_l0",
+      "minimum_stress_state_detF_all200": 0.5517606768003627,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h000_l0",
+      "minimum_stress_state_detF_all200": 0.5628494222422636,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h000_l0",
+      "minimum_stress_state_detF_all200": 0.5881721326454167,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h000_l0",
+      "minimum_stress_state_detF_all200": 0.5185212729930629,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h000_l0",
+      "minimum_stress_state_detF_all200": 0.5534701819277802,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h001_l0",
+      "minimum_stress_state_detF_all200": 0.5214961364807094,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h001_l0",
+      "minimum_stress_state_detF_all200": 0.5559348550256723,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h001_l0",
+      "minimum_stress_state_detF_all200": 0.506226759346558,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h001_l0",
+      "minimum_stress_state_detF_all200": 0.5441515052865554,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h002_l0",
+      "minimum_stress_state_detF_all200": 0.5323528913070743,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h002_l0",
+      "minimum_stress_state_detF_all200": 0.5551901310509368,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h002_l0",
+      "minimum_stress_state_detF_all200": 0.4917461990757907,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h002_l0",
+      "minimum_stress_state_detF_all200": 0.522571063149764,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h003_l0",
+      "minimum_stress_state_detF_all200": 0.5302955919269888,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h003_l0",
+      "minimum_stress_state_detF_all200": 0.5670286601175742,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h003_l0",
+      "minimum_stress_state_detF_all200": 0.5129162613396687,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h003_l0",
+      "minimum_stress_state_detF_all200": 0.5540994303620754,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h004_l0",
+      "minimum_stress_state_detF_all200": 0.5391810041470222,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h004_l0",
+      "minimum_stress_state_detF_all200": 0.5616479464123939,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h004_l0",
+      "minimum_stress_state_detF_all200": 0.49821594542585507,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h004_l0",
+      "minimum_stress_state_detF_all200": 0.5302223230683841,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h005_l0",
+      "minimum_stress_state_detF_all200": 0.5201209033148247,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h005_l0",
+      "minimum_stress_state_detF_all200": 0.5536131532613122,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h005_l0",
+      "minimum_stress_state_detF_all200": 0.5023506124687316,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h005_l0",
+      "minimum_stress_state_detF_all200": 0.5380017306684269,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h006_l0",
+      "minimum_stress_state_detF_all200": 0.5480738977296534,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h006_l0",
+      "minimum_stress_state_detF_all200": 0.5722544533195169,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h006_l0",
+      "minimum_stress_state_detF_all200": 0.5111029959878238,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h006_l0",
+      "minimum_stress_state_detF_all200": 0.5443317177810254,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h007_l0",
+      "minimum_stress_state_detF_all200": 0.5298707003987808,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h007_l0",
+      "minimum_stress_state_detF_all200": 0.5628725034219768,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h007_l0",
+      "minimum_stress_state_detF_all200": 0.5103123179747169,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h007_l0",
+      "minimum_stress_state_detF_all200": 0.5466978912025016,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h008_l0",
+      "minimum_stress_state_detF_all200": 0.562630842799335,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h008_l0",
+      "minimum_stress_state_detF_all200": 0.5829173721169201,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h008_l0",
+      "minimum_stress_state_detF_all200": 0.5142810823667016,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h008_l0",
+      "minimum_stress_state_detF_all200": 0.5474542502256025,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h009_l0",
+      "minimum_stress_state_detF_all200": 0.5481205610374664,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h009_l0",
+      "minimum_stress_state_detF_all200": 0.5694360239141983,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h009_l0",
+      "minimum_stress_state_detF_all200": 0.5080684433703677,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h009_l0",
+      "minimum_stress_state_detF_all200": 0.5398088274236122,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h010_l0",
+      "minimum_stress_state_detF_all200": 0.5247228051781836,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h010_l0",
+      "minimum_stress_state_detF_all200": 0.5558012924748711,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h010_l0",
+      "minimum_stress_state_detF_all200": 0.5027578139272155,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h010_l0",
+      "minimum_stress_state_detF_all200": 0.5372133654309205,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h011_l0",
+      "minimum_stress_state_detF_all200": 0.5129098930331664,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h011_l0",
+      "minimum_stress_state_detF_all200": 0.5474651307244376,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h011_l0",
+      "minimum_stress_state_detF_all200": 0.49788038993239286,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h011_l0",
+      "minimum_stress_state_detF_all200": 0.5342688980804658,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h012_l0",
+      "minimum_stress_state_detF_all200": 0.5362853578943548,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h012_l0",
+      "minimum_stress_state_detF_all200": 0.5586720241078285,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h012_l0",
+      "minimum_stress_state_detF_all200": 0.4958046984071754,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h012_l0",
+      "minimum_stress_state_detF_all200": 0.5251657418242285,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h013_l0",
+      "minimum_stress_state_detF_all200": 0.5670771505871536,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h013_l0",
+      "minimum_stress_state_detF_all200": 0.5913657431974929,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h013_l0",
+      "minimum_stress_state_detF_all200": 0.519643302871556,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h013_l0",
+      "minimum_stress_state_detF_all200": 0.5552755553020282,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h014_l0",
+      "minimum_stress_state_detF_all200": 0.5606346397822746,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h014_l0",
+      "minimum_stress_state_detF_all200": 0.5909916704722815,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h014_l0",
+      "minimum_stress_state_detF_all200": 0.5210405955127049,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h014_l0",
+      "minimum_stress_state_detF_all200": 0.5561733285447158,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/data",
+      "case": "h015_l0",
+      "minimum_stress_state_detF_all200": 0.5275364163281219,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "full/physics_10",
+      "case": "h015_l0",
+      "minimum_stress_state_detF_all200": 0.5589337462021741,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/data",
+      "case": "h015_l0",
+      "minimum_stress_state_detF_all200": 0.5073622682054331,
+      "inverted_element_stress_states": 0
+    },
+    {
+      "model": "limited/physics_1",
+      "case": "h015_l0",
+      "minimum_stress_state_detF_all200": 0.5437824061550861,
+      "inverted_element_stress_states": 0
+    }
+  ]
+}

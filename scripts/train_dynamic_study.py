@@ -43,7 +43,10 @@ def train(seed,lam,label,initial=None,warm=False):
  path=out/f'{label}_seed{seed}.pt';recpath=metrics/f'{label}_seed{seed}.json'
  if recpath.exists():
   rec=json.loads(recpath.read_text())
-  if rec.get('complete'):return rec
+  if rec.get('complete') and path.exists():
+   if hashlib.sha256(path.read_bytes()).hexdigest()!=rec['checkpoint_sha256']:raise RuntimeError('Completed checkpoint checksum changed')
+   return rec
+  if rec.get('complete'):print('RETRAINING: published metrics exist, checkpoint absent',path,flush=True)
  net=model(seed)
  if initial:net.load_state_dict(torch.load(initial,map_location=device,weights_only=False)['model'])
  steps=cfg['warm_updates'] if warm else cfg['refinement_updates'];lr=cfg['warm_lr'] if warm else cfg['refinement_lr'];opt=torch.optim.Adam(net.parameters(),lr=lr);sched=torch.optim.lr_scheduler.CosineAnnealingLR(opt,steps,eta_min=cfg['minimum_lr']);start=time.perf_counter();history=[];best=float('inf');bestval=None;latest=out/f'{label}_seed{seed}_latest.pt';start_step=0;prior=0.

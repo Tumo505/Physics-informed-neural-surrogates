@@ -16,6 +16,11 @@ class InputDomainGate:
         if minimum_detF is not None and (not math.isfinite(minimum_detF) or minimum_detF<=0):reasons.append('invalid_predicted_geometry')
         return {'action':'FE' if reasons else 'surrogate','reasons':reasons}
 
-    def dispatch(self, inputs, surrogate, finite_element):
+    def dispatch(self, inputs, surrogate, finite_element, validate_prediction=None):
         decision=self.decide(inputs)
-        return decision, finite_element() if decision['action']=='FE' else surrogate()
+        if decision['action']=='FE':return decision,finite_element()
+        prediction=surrogate()
+        if validate_prediction is not None:
+            decision=self.decide(inputs,minimum_detF=validate_prediction(prediction))
+            if decision['action']=='FE':return decision,finite_element()
+        return decision,prediction

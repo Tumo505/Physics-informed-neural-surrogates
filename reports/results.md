@@ -72,6 +72,39 @@ Shift coverage has no exchangeability guarantee; trajectories on the same geomet
 
 ![Actual full-cycle FE boundary prediction](figures/dynamic_mesh_prediction.png)
 
+**Independent fixed-model confirmation.** Sixteen additional geometry/waveform draws were specified in a fixed config after checkpoint freezing and before inspecting the primary test results. The checkpoint hashes, method choices, feature transformations and20 original calibration scores/radii remain unchanged. These sixteen draws match the primary/calibration numerical distribution. Results are reported separately for confirmation16 and descriptively pooled with primary4 as20 independent test geometries; they are not replacement test cases.
+
+| Model | Confirmation16 RMSE(mm) | Pooled20 RMSE(mm) | Pooled force RMS | Non-inverted pooled cycles | Min detF |
+|---|---:|---:|---:|---:|---:|
+| full/data | 0.526639 | 0.509491 | 0.0581308 | 20/20 | 0.51419 |
+| full/physics_10 | 0.636867 | 0.629961 | 0.0386766 | 20/20 | 0.54935 |
+| limited/data | 0.870123 | 0.846929 | 0.217602 | 20/20 | 0.49412 |
+| limited/physics_1 | 0.797803 | 0.782373 | 0.0505256 | 20/20 | 0.52253 |
+
+| Regime / test set | Physics/data RMSE ratio | Force-RMS difference | Conditional geometry bootstrap95% interval | Descriptive H1 criterion |
+|---|---:|---:|---|---|
+| full/confirmation | 1.209305 | -0.0195193 | [-0.021155310316924365, -0.017859552436405995] | False |
+| full/pooled_primary_and_confirmation | 1.236450 | -0.0194542 | [-0.0208502467696871, -0.018025987419151922] | False |
+| limited/confirmation | 0.916885 | -0.177723 | [-0.40075915572890786, -0.027345304719838023] | True |
+| limited/pooled_primary_and_confirmation | 0.923777 | -0.167077 | [-0.3443710894173494, -0.045427160745142095] | True |
+
+H1 criterion: lower mean force residual with at most10% displacement-RMSE degradation. Bootstrap intervals condition on the fixed5-member models and exclude retraining and FE discretization uncertainty. Confirmation member accuracy/force residuals are retained; all-endpoint inversion checks are for ensembles in confirmation and for ensembles/members in the primary study.
+
+| Model | Nominal | Pooled joint coverage | Radius(mm) | Exact binomial95% interval |
+|---|---:|---:|---:|---|
+| full/data | 90% | 19/20 | 4.7693 | [0.7512672372279723, 0.9987349105020502] |
+| full/data | 95% | 19/20 | 4.8167 | [0.7512672372279723, 0.9987349105020502] |
+| full/physics_10 | 90% | 20/20 | 7.2154 | [0.8315665290169147, 1.0] |
+| full/physics_10 | 95% | 20/20 | 7.2167 | [0.8315665290169147, 1.0] |
+| limited/data | 90% | 17/20 | 7.4839 | [0.6210731734546862, 0.9679290628145363] |
+| limited/data | 95% | 19/20 | 7.8429 | [0.7512672372279723, 0.9987349105020502] |
+| limited/physics_1 | 90% | 18/20 | 8.5823 | [0.6830172859809177, 0.9876514728297052] |
+| limited/physics_1 | 95% | 20/20 | 9.0836 | [0.8315665290169147, 1.0] |
+
+Raw uncertainty/error rank associations and selective-risk values are in dynamic_confirmation_evaluation.json. Added confirmation increases the study to60 cohort trajectories across48 distinct numerical geometries, including20 calibration and20 independent primary/confirmation test geometries. All remain within ONE ellipsoid source family.
+
+![Independent geometry confirmation and uncertainty](figures/dynamic_confirmation.png)
+
 Actual routing test: g030_l0 rejected before NN execution and sent to an independent full FE trajectory; fresh-cache flagTrue, observed wall340.7s. This run overlapped cohort generation and is not an isolated latency benchmark. Inputs were geometry/loading descriptors and zero initial histories only.
 
 **Full-cycle reference numerical uncertainty.** Exact consistent-mass volume-L2 comparisons use199 common endpoints0.005–0.995s on the baseline geometry; the archived1ms trajectory excludes1s.

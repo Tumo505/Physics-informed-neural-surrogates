@@ -1,0 +1,335 @@
+{
+  "complete": true,
+  "config": {
+    "name": "cardiac_dynamic_dt001_pilot_v1",
+    "seed": 11,
+    "train_steps": 600,
+    "validation_steps": 200,
+    "test_steps": 199,
+    "warm_updates": 400,
+    "refinement_updates": 250,
+    "learning_rate": 0.002,
+    "refinement_lr": 0.0002,
+    "physics_frame_schedule": "frame0 every10 updates, otherwise seeded uniform training frame",
+    "scope": "one existing geometry and one existing cycle; repeated temporal benchmark, no independent trajectory or population claim; all rollouts start from zero and use predicted histories only"
+  },
+  "training_gradient_balance_ratios": [
+    3084.203044010473,
+    195.4533747802544,
+    66.19697922422344,
+    76.17886324981929
+  ],
+  "lambda_grid": [
+    10.0,
+    100.0,
+    1000.0
+  ],
+  "selection": "physics_10",
+  "meets_validation_10percent_constraint": true,
+  "training_records": {
+    "warm": {
+      "lambda": 0.0,
+      "best_validation": {
+        "component_rmse_m": 0.0007658292798236035,
+        "force_loss": 0.0,
+        "score": 0.025530346027578935
+      },
+      "seconds": 19.48213495896198,
+      "history": [
+        {
+          "step": 49,
+          "validation": {
+            "component_rmse_m": 0.0024766947923320144,
+            "force_loss": 0.0,
+            "score": 0.07337847442296593
+          }
+        },
+        {
+          "step": 99,
+          "validation": {
+            "component_rmse_m": 0.0012388162728376128,
+            "force_loss": 0.0,
+            "score": 0.03392489467284616
+          }
+        },
+        {
+          "step": 149,
+          "validation": {
+            "component_rmse_m": 0.0012434350664731315,
+            "force_loss": 0.0,
+            "score": 0.03308589892420219
+          }
+        },
+        {
+          "step": 199,
+          "validation": {
+            "component_rmse_m": 0.0011499660976487705,
+            "force_loss": 0.0,
+            "score": 0.0307188751636544
+          }
+        },
+        {
+          "step": 249,
+          "validation": {
+            "component_rmse_m": 0.0011080444520772017,
+            "force_loss": 0.0,
+            "score": 0.029453945469551532
+          }
+        },
+        {
+          "step": 299,
+          "validation": {
+            "component_rmse_m": 0.0010879727482046846,
+            "force_loss": 0.0,
+            "score": 0.028784039200854105
+          }
+        },
+        {
+          "step": 349,
+          "validation": {
+            "component_rmse_m": 0.0010819315490251202,
+            "force_loss": 0.0,
+            "score": 0.02854073609726346
+          }
+        },
+        {
+          "step": 399,
+          "validation": {
+            "component_rmse_m": 0.0010807515067296546,
+            "force_loss": 0.0,
+            "score": 0.02848570557573566
+          }
+        }
+      ]
+    },
+    "data": {
+      "lambda": 0.0,
+      "best_validation": {
+        "component_rmse_m": 0.0007658292798236035,
+        "force_loss": 1.627035068937321e-07,
+        "score": 0.025530346027578935
+      },
+      "seconds": 13.62513229099568,
+      "history": [
+        {
+          "step": 49,
+          "validation": {
+            "component_rmse_m": 0.0061111024272703495,
+            "force_loss": 0.17204833999050118,
+            "score": 0.3336362917351062
+          }
+        },
+        {
+          "step": 99,
+          "validation": {
+            "component_rmse_m": 0.001285955147073474,
+            "force_loss": 0.017032800778928103,
+            "score": 0.03905034548131422
+          }
+        },
+        {
+          "step": 149,
+          "validation": {
+            "component_rmse_m": 0.0014852829641330916,
+            "force_loss": 0.016813622225915044,
+            "score": 0.03962374363619061
+          }
+        },
+        {
+          "step": 199,
+          "validation": {
+            "component_rmse_m": 0.0016062663868827553,
+            "force_loss": 0.016537019333738426,
+            "score": 0.04276130464879124
+          }
+        },
+        {
+          "step": 249,
+          "validation": {
+            "component_rmse_m": 0.0016486828509950776,
+            "force_loss": 0.01673151881769573,
+            "score": 0.04392445537506844
+          }
+        }
+      ]
+    },
+    "physics_10": {
+      "lambda": 10.0,
+      "best_validation": {
+        "component_rmse_m": 0.0007658292798236035,
+        "force_loss": 1.627035068937321e-07,
+        "score": 0.025531973062647872
+      },
+      "seconds": 32.38466608396266,
+      "history": [
+        {
+          "step": 49,
+          "validation": {
+            "component_rmse_m": 0.006629072617467929,
+            "force_loss": 0.0037939748547173103,
+            "score": 0.42685727287429415
+          }
+        },
+        {
+          "step": 99,
+          "validation": {
+            "component_rmse_m": 0.006052263161024629,
+            "force_loss": 0.0032556230620317166,
+            "score": 0.3602776914898199
+          }
+        },
+        {
+          "step": 149,
+          "validation": {
+            "component_rmse_m": 0.0025278668879849886,
+            "force_loss": 0.0030750388222571456,
+            "score": 0.10841595126153941
+          }
+        },
+        {
+          "step": 199,
+          "validation": {
+            "component_rmse_m": 0.001285294795777277,
+            "force_loss": 0.007073850286585674,
+            "score": 0.10677619020660023
+          }
+        },
+        {
+          "step": 249,
+          "validation": {
+            "component_rmse_m": 0.0013453704274141534,
+            "force_loss": 0.0034966131220559274,
+            "score": 0.0723011013031244
+          }
+        }
+      ]
+    },
+    "physics_100": {
+      "lambda": 100.0,
+      "best_validation": {
+        "component_rmse_m": 0.0007658292798236035,
+        "force_loss": 1.627035068937321e-07,
+        "score": 0.025546616378268307
+      },
+      "seconds": 32.81977979198564,
+      "history": [
+        {
+          "step": 49,
+          "validation": {
+            "component_rmse_m": 0.001509742543393151,
+            "force_loss": 0.0007041047369703055,
+            "score": 0.11014916733298344
+          }
+        },
+        {
+          "step": 99,
+          "validation": {
+            "component_rmse_m": 0.0013488635018905702,
+            "force_loss": 0.0011613655782979704,
+            "score": 0.15203291258195667
+          }
+        },
+        {
+          "step": 149,
+          "validation": {
+            "component_rmse_m": 0.0016767682731945466,
+            "force_loss": 0.00040390744915388705,
+            "score": 0.08461168106536354
+          }
+        },
+        {
+          "step": 199,
+          "validation": {
+            "component_rmse_m": 0.0016676809594730975,
+            "force_loss": 0.0005310396499096582,
+            "score": 0.09707660937338033
+          }
+        },
+        {
+          "step": 249,
+          "validation": {
+            "component_rmse_m": 0.0017170109180424172,
+            "force_loss": 0.0005469531939577692,
+            "score": 0.10006861374261664
+          }
+        }
+      ]
+    },
+    "physics_1000": {
+      "lambda": 1000.0,
+      "best_validation": {
+        "component_rmse_m": 0.0007658292798236035,
+        "force_loss": 1.627035068937321e-07,
+        "score": 0.025693049534472667
+      },
+      "seconds": 31.12136900005862,
+      "history": [
+        {
+          "step": 49,
+          "validation": {
+            "component_rmse_m": 0.0008240141894861838,
+            "force_loss": 1.7066319866868634e-05,
+            "score": 0.043381957861205425
+          }
+        },
+        {
+          "step": 99,
+          "validation": {
+            "component_rmse_m": 0.0008037975915760404,
+            "force_loss": 1.114090550554761e-05,
+            "score": 0.03718611469466546
+          }
+        },
+        {
+          "step": 149,
+          "validation": {
+            "component_rmse_m": 0.0008194576179052518,
+            "force_loss": 4.8133887886586434e-06,
+            "score": 0.031076844513153856
+          }
+        },
+        {
+          "step": 199,
+          "validation": {
+            "component_rmse_m": 0.0008322542509657709,
+            "force_loss": 1.7877858417385106e-05,
+            "score": 0.04431855059671809
+          }
+        },
+        {
+          "step": 249,
+          "validation": {
+            "component_rmse_m": 0.0008409570256862864,
+            "force_loss": 9.006961316380335e-06,
+            "score": 0.035570239743890106
+          }
+        }
+      ]
+    }
+  },
+  "models": {
+    "data": {
+      "completed_steps": 999,
+      "full_cycle_component_rmse_m": 0.008472547133267559,
+      "test_block_component_rmse_m": 7.936484639444221e-05,
+      "minimum_endpoint_detF": 1.0,
+      "minimum_stress_state_detF": 1.0,
+      "test_block_sampled_normalized_force_rms": 5.662380716880972e-06,
+      "full_cycle_noninverted": true
+    },
+    "physics_10": {
+      "completed_steps": 999,
+      "full_cycle_component_rmse_m": 0.008472547133267559,
+      "test_block_component_rmse_m": 7.936484639444221e-05,
+      "minimum_endpoint_detF": 1.0,
+      "minimum_stress_state_detF": 1.0,
+      "test_block_sampled_normalized_force_rms": 5.662380716880972e-06,
+      "full_cycle_noninverted": true
+    }
+  },
+  "scope": "one existing geometry and one existing cycle; repeated temporal benchmark, no independent trajectory or population claim; all rollouts start from zero and use predicted histories only",
+  "evaluation": "repeated temporal evaluation; first600 frames train, next200 select, last199 test; inference over all999 starts from zero and uses no true histories",
+  "caveat": "one geometry/cycle/seed, not an independent population; no conformal claim",
+  "scientific_acceptance": "FAILED: selected predictions are identically zero; positive Jacobians do not establish useful deformation prediction",
+  "accepted_nontrivial_prediction": false
+}
