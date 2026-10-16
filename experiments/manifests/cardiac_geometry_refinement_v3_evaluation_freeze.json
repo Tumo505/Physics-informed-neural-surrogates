@@ -1,0 +1,52 @@
+{
+  "checkpoint_sha256": {
+    "data_seed11_best.pt": "bcecc6a31101fcf1f1b48a1fcf76cc4e58afd610ca5d4bccb994216f22b9db1a",
+    "data_seed22_best.pt": "60340cb9560cc2b27a73a2ea253b4c95bb823586bd01708dc18ab9e6101c2097",
+    "data_seed33_best.pt": "7b4c968c0adf865a1e18dc61c714c9d8a8df27f3145bdf9be5f3f92da85663db",
+    "data_seed44_best.pt": "01f5936fdb71f74ce2144dc804a629f6f2a52f90b9367a5cf841e72cb6e8f838",
+    "data_seed55_best.pt": "1b8eeb232709f61fee7df1a8fb60bea85ae6f3f10319660422ec2cb2fac4e180",
+    "physics_lambda100_seed11_best.pt": "1b24f713247b845a81d960fc7d7ae538ea3e796b3499d5f81446ef99a5691017",
+    "physics_lambda100_seed22_best.pt": "cbd3ce82c8aa65e6b0c953d6257d57357f1fb07c9b91e484d8f80fcf91e884a9",
+    "physics_lambda100_seed33_best.pt": "4ae8907b466f986cd1518f22639cbbd5e42de6af17e1bf358e53d1b72ca85cf0",
+    "physics_lambda100_seed44_best.pt": "50ff685ee3db42b5707a87c7ce542f85d4cb3caa40f44750199aca3fba7c07a2",
+    "physics_lambda100_seed55_best.pt": "9f08fa0fd22e3758a1570fd8ac4d99432e056fe89ce43e91459bfc6b1049c3f4"
+  },
+  "selection": {
+    "selected_label": "physics_lambda100",
+    "lambda": 100.0,
+    "meets_10percent_constraint": true,
+    "screening_seed": 11,
+    "validation_only": true,
+    "screen": {
+      "data": {
+        "component_mse_m2": 6.175196990901439e-14,
+        "component_rmse_m": 2.4849943643600963e-07,
+        "full_residual_loss": 3.37798510060746e-08,
+        "region_residual_loss": 3.37798510060746e-08
+      },
+      "physics_lambda100": {
+        "component_mse_m2": 7.391699997746717e-14,
+        "component_rmse_m": 2.718768102973609e-07,
+        "full_residual_loss": 4.136620591603465e-08,
+        "region_residual_loss": 4.136620591603465e-08
+      },
+      "physics_lambda1000": {
+        "component_mse_m2": 7.835636954748629e-14,
+        "component_rmse_m": 2.799220776349845e-07,
+        "full_residual_loss": 3.5371473493252155e-08,
+        "region_residual_loss": 3.5371473493252155e-08
+      },
+      "physics_lambda10000": {
+        "component_mse_m2": 1.294643730275376e-13,
+        "component_rmse_m": 3.598115798963919e-07,
+        "full_residual_loss": 2.2830004248091716e-08,
+        "region_residual_loss": 2.2830004248091716e-08
+      }
+    },
+    "test_and_calibration_opened": false
+  },
+  "data_root": "/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/data/processed/cardiac_confirmation_ml",
+  "raw_root": "/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/data/processed/cardiac_confirmation_v1",
+  "normalizer_sha256": "8fa3ca1c8574843249d12002982dd762675545b28b9e89d08e3af8197f15f3ce",
+  "declaration": "All model choices frozen before opening calibration/test/shift target arrays; this is a new cohort with no historical test reuse."
+}

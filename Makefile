@@ -75,13 +75,13 @@ graph-study:
 geometry-cohort:
 	$(FEM_RUN) scripts/generate_geometry_cohort.py
 	$(PY) scripts/audit_geometry_cohort.py
-	$(PY) scripts/prepare_geometry_data.py
+	env OPENBLAS_NUM_THREADS=2 $(PY) scripts/prepare_geometry_data.py
 cardiac-trajectory:
 	$(FEM_RUN) scripts/generate_cardiac_trajectory.py
 	$(FEM_RUN) scripts/generate_cardiac_trajectory.py --dt 0.002 --end 0.0401 --name cardiac_dt002
 	$(FEM_RUN) scripts/generate_cardiac_trajectory.py --dt 0.0005 --end 0.0401 --name cardiac_dt0005
 	$(PY) scripts/analyze_trajectory.py
-extended-mechanics:
+extended-mechanics: geometry-cohort cardiac-trajectory
 	$(PY) scripts/verify_extended_mechanics.py
 	$(PY) scripts/check_physics_backend.py
 	$(PY) scripts/check_temporal_backend.py
@@ -99,3 +99,15 @@ temporal-study: cardiac-trajectory extended-mechanics
 	$(PY) scripts/train_temporal_model.py --config configs/physics/temporal_balanced.json
 	$(PY) scripts/evaluate_temporal_model.py --run cardiac_temporal_balanced_v2
 	$(PY) scripts/plot_temporal_study.py
+
+.PHONY: geometry-confirmation
+# Prerequisites: completed geometry-study, its checkpoints and immutable train cache.
+geometry-confirmation:
+	$(FEM_RUN) scripts/generate_geometry_cohort.py --config configs/physics/geometry_confirmation.json
+	$(PY) scripts/audit_geometry_cohort.py --cohort cardiac_confirmation_v1 --output confirmation_cohort_audit
+	$(PY) scripts/diagnose_geometry_loss_scale.py
+	$(PY) scripts/train_geometry_models_gpu.py --config configs/physics/geometry_refinement.json
+	$(PY) scripts/prepare_confirmation_data.py
+	$(PY) scripts/evaluate_geometry_models.py --run cardiac_geometry_refinement_v3 --data-root data/processed/cardiac_confirmation_ml --raw-root data/processed/cardiac_confirmation_v1
+	$(PY) scripts/plot_geometry_study.py --run cardiac_geometry_refinement_v3 --raw-root data/processed/cardiac_confirmation_v1 --prefix geometry_refinement
+	$(PY) scripts/verify_confirmation_artifacts.py

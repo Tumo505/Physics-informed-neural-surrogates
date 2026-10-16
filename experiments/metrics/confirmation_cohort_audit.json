@@ -1,0 +1,543 @@
+{
+  "complete": true,
+  "n_geometries": 52,
+  "n_iid_parameter_geometries": 36,
+  "n_shift_geometries": 16,
+  "n_simulations": 208,
+  "minimum_endpoint_detF": 0.9645674882088767,
+  "maximum_reference_normalized_residual_rms": 9.8247338004223e-12,
+  "exact_duplicate_parameter_rows": 0,
+  "minimum_parameter_scale_distance": 0.0015770640689230955,
+  "near_duplicate_caveat": "All cases intentionally derive from one ellipsoid family with small parameter perturbations; geometry grouping prevents load leakage but does not establish anatomical-source independence",
+  "units": {
+    "coords": "m",
+    "displacement": "m",
+    "pressure": "Pa",
+    "residual": "N"
+  },
+  "per_geometry": [
+    {
+      "geometry": 0,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9663714110017914,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.328467054753501e-12
+    },
+    {
+      "geometry": 1,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9658873486087433,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.08769062355945e-12
+    },
+    {
+      "geometry": 2,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9661906862357825,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.8829593282649865e-12
+    },
+    {
+      "geometry": 3,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9666602815276174,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 3.952439896021739e-12
+    },
+    {
+      "geometry": 4,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9667761620204427,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.04232607467022e-12
+    },
+    {
+      "geometry": 5,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9671614342246548,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.205211562375454e-12
+    },
+    {
+      "geometry": 6,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9655513574417945,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.710231526453976e-12
+    },
+    {
+      "geometry": 7,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.966123299861275,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 5.121932381635655e-12
+    },
+    {
+      "geometry": 8,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9659205045278375,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.480463550916353e-12
+    },
+    {
+      "geometry": 9,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9657219336277976,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 5.750607868566623e-12
+    },
+    {
+      "geometry": 10,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9667293705348421,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.369022526959192e-12
+    },
+    {
+      "geometry": 11,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.965965149870818,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 5.290030903579099e-12
+    },
+    {
+      "geometry": 12,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9660197512390172,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 5.993078532094816e-12
+    },
+    {
+      "geometry": 13,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9673459807002797,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.321153642446607e-12
+    },
+    {
+      "geometry": 14,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9654284491425053,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.478360600119797e-12
+    },
+    {
+      "geometry": 15,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9662008326350247,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 5.001298662981743e-12
+    },
+    {
+      "geometry": 16,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9670766149188045,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.642029147480141e-12
+    },
+    {
+      "geometry": 17,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.965759065304215,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.509150456699849e-12
+    },
+    {
+      "geometry": 18,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9658443861236,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 5.582506611983928e-12
+    },
+    {
+      "geometry": 19,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9666496673799151,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 5.677054762246041e-12
+    },
+    {
+      "geometry": 20,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9656795305887924,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.229979358581904e-12
+    },
+    {
+      "geometry": 21,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9665583457805816,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.926575770235077e-12
+    },
+    {
+      "geometry": 22,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9667210233469695,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 5.294741565498176e-12
+    },
+    {
+      "geometry": 23,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9662989422024607,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.382041435768065e-12
+    },
+    {
+      "geometry": 24,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9671774775891188,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.437168218630923e-12
+    },
+    {
+      "geometry": 25,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.966440178607662,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.165072373374755e-12
+    },
+    {
+      "geometry": 26,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9657013872516192,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.878717868538577e-12
+    },
+    {
+      "geometry": 27,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9666963597585567,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.404998106340093e-12
+    },
+    {
+      "geometry": 28,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.967059301597848,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.097347762014603e-12
+    },
+    {
+      "geometry": 29,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9663798309172501,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 4.988158279227325e-12
+    },
+    {
+      "geometry": 30,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9664627148091183,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 5.260037139815128e-12
+    },
+    {
+      "geometry": 31,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9659683433461755,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 5.080513799803401e-12
+    },
+    {
+      "geometry": 32,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9666878738455097,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 3.984466545618986e-12
+    },
+    {
+      "geometry": 33,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9660838555710676,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.149001732687146e-12
+    },
+    {
+      "geometry": 34,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9655500002214736,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.340881376099715e-12
+    },
+    {
+      "geometry": 35,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9663043100321752,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.410497143617896e-12
+    },
+    {
+      "geometry": 36,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9650018899749552,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.46686672963153e-12
+    },
+    {
+      "geometry": 37,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9647614566372581,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.405832589558229e-12
+    },
+    {
+      "geometry": 38,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9681169024981292,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 3.590716048605161e-12
+    },
+    {
+      "geometry": 39,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9662351075648108,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 7.498284786187926e-12
+    },
+    {
+      "geometry": 40,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9682795875657264,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 3.6218052580324763e-12
+    },
+    {
+      "geometry": 41,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9657871880734317,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 8.929787259989828e-12
+    },
+    {
+      "geometry": 42,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9662889741293655,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 7.654177030523255e-12
+    },
+    {
+      "geometry": 43,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9680668048101044,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 3.310532163120959e-12
+    },
+    {
+      "geometry": 44,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9645674882088767,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 7.602346940673434e-12
+    },
+    {
+      "geometry": 45,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9679474286545241,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 3.962812443063028e-12
+    },
+    {
+      "geometry": 46,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9659955139224984,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 8.831763715597838e-12
+    },
+    {
+      "geometry": 47,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9656273076118667,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 9.8247338004223e-12
+    },
+    {
+      "geometry": 48,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9669428503484666,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 2.8845015454997555e-12
+    },
+    {
+      "geometry": 49,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9650406541317399,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 6.7851329685998846e-12
+    },
+    {
+      "geometry": 50,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9684846214706554,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 3.1807714841344214e-12
+    },
+    {
+      "geometry": 51,
+      "n_nodes": 4577,
+      "n_tetrahedra": 17625,
+      "n_loads": 4,
+      "finite": true,
+      "minimum_endpoint_detF_all_loads": 0.9665323528047081,
+      "inverted_element_fraction": 0.0,
+      "maximum_reference_normalized_residual_rms": 3.7741006010577505e-12
+    }
+  ],
+  "minimum_parameter_distance_to_original_cohort": 0.0009632770087891042,
+  "exact_duplicates_with_original_cohort": 0,
+  "file_checksums_verified": true
+}

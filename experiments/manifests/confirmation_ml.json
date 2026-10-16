@@ -1,0 +1,32 @@
+{
+  "normalizers_fit": "NONE: frozen original 20 training geometries; no confirmation labels used for transformations",
+  "parent_normalizer_sha256": "8fa3ca1c8574843249d12002982dd762675545b28b9e89d08e3af8197f15f3ce",
+  "source_cohort_manifest_sha256": "850aa8535b7ac512a3bcc1ed6e168d470fe385381369413e047e14f3a897ee0c",
+  "source_sha256": "b9c4e3c19898dd1de22e929b4db16b0a4431c0ecb8185b7d4c4e29476f1aa7da",
+  "splits": {
+    "calibration": {
+      "geometry_ids": [
+        0,
+        20
+      ],
+      "case_count": 80,
+      "sha256": "98fa53e593e089ce49539aa9cb3e902918ddfc9309ea69225fb2f3b1a24ebc28"
+    },
+    "test": {
+      "geometry_ids": [
+        20,
+        36
+      ],
+      "case_count": 64,
+      "sha256": "3ff5c459adda91a2274717a5b1c34c22f8e4feb3966114bebbb8e6fa24b7c263"
+    },
+    "shift": {
+      "geometry_ids": [
+        36,
+        52
+      ],
+      "case_count": 64,
+      "sha256": "a44db28bb635d56cf5055669b7f3b2e6af13fff4d31faee43d2a241adcfd2b76"
+    }
+  }
+}

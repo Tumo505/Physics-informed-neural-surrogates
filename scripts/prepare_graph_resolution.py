@@ -1,9 +1,16 @@
 """Build finer author-clustering graph inputs; reuse immutable original node arrays."""
 from pathlib import Path
-import json,os,hashlib
+import json,os,hashlib,sys
 import numpy as np
 from scipy.sparse import csr_matrix
 P=Path(__file__).resolve().parents[1];base=P/'data/processed/full';out=P/'data/processed/full_level1';out.mkdir(exist_ok=True)
+meta=P/'experiments/manifests/fine_graph_data.json'
+if meta.exists() and (out/'normalizers.npz').exists() and all((out/f'{s}_{k}.npy').exists() for s in ['train','validation','test'] for k in ['points','globals','targets','coarse','edges']):
+ old=json.loads(meta.read_text())
+ if hashlib.sha256((out/'normalizers.npz').read_bytes()).hexdigest()!=old['normalizers_sha256']:raise RuntimeError('Fine-graph normalizer checksum changed')
+ original=np.load(base/'normalizers.npz');fine=np.load(out/'normalizers.npz')
+ for k in ['points_mean','points_std','globals_mean','globals_std','targets_mean','targets_std']:np.testing.assert_array_equal(original[k],fine[k])
+ print('REUSED IMMUTABLE FINE-GRAPH CACHE',flush=True);sys.exit(0)
 topo=P/'external/passive-lv-gnn-emul/data/lvDataFixedGeom/topologyData'
 labels=np.load(topo/'kmeans-labels-list.npy',allow_pickle=True);parents=np.asarray(labels[0],int)
 layers=np.load(topo/'node-layer-labels.npy');e=np.load(topo/'sparse-topology.npy');n=int((layers==1).sum());offset=int((layers<1).sum())

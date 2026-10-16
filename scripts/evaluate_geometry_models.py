@@ -1,6 +1,6 @@
 """Frozen-model geometry-level accuracy, mechanics, uncertainty and shift evaluation."""
 from pathlib import Path
-import sys,json,hashlib
+import sys,json,hashlib,argparse
 import numpy as np,torch
 from scipy.stats import binomtest,spearmanr
 P=Path(__file__).resolve().parents[1];sys.path.insert(0,str(P/'src'))
@@ -9,9 +9,10 @@ from lv_surrogate.physics.fem_bridge import FEMBridge
 from lv_surrogate.physics.cardiac_residual import CardiacFirstStep
 from lv_surrogate.physics.kinematics import deformation_gradient,green_lagrange
 from lv_surrogate.eval.calibration import conformal_radius
-torch.set_num_threads(2);name='cardiac_geometry_models_v2';manifest=json.loads((P/f'experiments/manifests/{name}.json').read_text())
+ap=argparse.ArgumentParser();ap.add_argument('--run',default='cardiac_geometry_models_v2');ap.add_argument('--data-root',default='data/processed/cardiac_geometry_ml');ap.add_argument('--raw-root',default='data/processed/cardiac_geometry_v1');args=ap.parse_args()
+torch.set_num_threads(2);name=args.run;manifest=json.loads((P/f'experiments/manifests/{name}.json').read_text())
 if not manifest['complete']:raise RuntimeError('Study incomplete; evaluation forbidden')
-cfg=manifest['config'];lam=manifest['lambda_selection']['lambda'];labels=['data',f'physics_lambda{lam:g}'];D=P/'data/processed/cardiac_geometry_ml';raw=P/'data/processed/cardiac_geometry_v1';out=P/'experiments/checkpoints'/name;norm=np.load(D/'normalizers.npz');topology=torch.from_numpy(np.load(D/'topology.npy'))
+cfg=manifest['config'];lam=manifest['lambda_selection']['lambda'];labels=['data',f'physics_lambda{lam:g}'];D=P/args.data_root;raw=P/args.raw_root;out=P/'experiments/checkpoints'/name;norm=np.load(D/'normalizers.npz');topology=torch.from_numpy(np.load(D/'topology.npy'))
 models={};hashes={}
 for label in labels:
  models[label]=[]
@@ -19,7 +20,7 @@ for label in labels:
   rec=json.loads((P/f'experiments/metrics/{name}/{label}_seed{seed}.json').read_text())
   if not rec['complete']:raise RuntimeError('Incomplete model')
   path=out/f'{label}_seed{seed}_best.pt';ck=torch.load(path,weights_only=False,map_location='cpu');net=GeometryPOD(*[norm[k] for k in ['field_mean','basis','coefficient_scale']]).double();net.load_state_dict(ck['model']);net.eval();models[label].append(net);hashes[path.name]=hashlib.sha256(path.read_bytes()).hexdigest()
-freeze={'checkpoint_sha256':hashes,'selection':manifest['lambda_selection'],'declaration':'All model choices frozen before opening calibration/test/shift target arrays; this is a new cohort with no historical test reuse.'}
+freeze={'checkpoint_sha256':hashes,'selection':manifest['lambda_selection'],'data_root':str(D),'raw_root':str(raw),'normalizer_sha256':hashlib.sha256((D/'normalizers.npz').read_bytes()).hexdigest(),'declaration':'All model choices frozen before opening calibration/test/shift target arrays; this is a new cohort with no historical test reuse.'}
 (P/f'experiments/manifests/{name}_evaluation_freeze.json').write_text(json.dumps(freeze,indent=2))
 sets={s:dict(np.load(D/f'{s}.npz')) for s in ['calibration','test','shift']};results={};predictions={};bridge=FEMBridge(P,threads=2);rng=np.random.default_rng(2027)
 def predict(net,a):
@@ -65,6 +66,6 @@ try:
  base=results['data']['splits']['test'];phys=results[labels[1]]['splits']['test'];paired=np.array([p['normalized_residual_rms']-b['normalized_residual_rms'] for b,p in zip(base['per_geometry'],phys['per_geometry'])]);seed_paired=[]
  for seed in cfg['seeds']:
   b=[r for r in base['per_seed_geometry'] if r['seed']==seed];p=[r for r in phys['per_seed_geometry'] if r['seed']==seed];seed_paired.append({'seed':seed,'data_residual_rms':float(np.mean([r['normalized_residual_rms'] for r in b])),'physics_residual_rms':float(np.mean([r['normalized_residual_rms'] for r in p])),'displacement_RMSE_ratio':float(np.mean([r['component_rmse_m'] for r in p])/np.mean([r['component_rmse_m'] for r in b]))})
- verdict={'models':results,'natural_boundary_interior_ablations_single_seed':ablations,'inference_precision':'CPU float64 arithmetic with frozen float32-trained weights/buffers cast to float64; native mechanics always float64','matched_seed_comparisons':seed_paired,'paired_ensemble_residual_difference':float(paired.mean()),'paired_geometry_bootstrap95_residual_difference':bootstrap(paired),'ensemble_displacement_RMSE_ratio':phys['mean_component_rmse_m']/base['mean_component_rmse_m'],'H1_descriptive_supported':bool(paired.mean()<0 and phys['mean_component_rmse_m']<=1.1*base['mean_component_rmse_m']),'split_unit':'independent parameter-drawn numerical geometry; all loads clustered','bootstrap_scope':'conditional on the five trained members, excluding retraining uncertainty; seed comparisons reported separately','limitations':['same benchmark ellipsoid family, not independent anatomical sources','four startup loads from rest per geometry, not trajectories','20 calibration geometries and16 test geometries: wide coverage intervals','shift consists of four deterministic extrapolation corners; no exchangeability guarantee','P1 FE discretization uncertainty is additional to surrogate error','physics conclusions specific to this numerical parameter distribution']}
+ verdict={'models':results,'natural_boundary_interior_ablations_single_seed':ablations,'inference_precision':'CPU float64 arithmetic with frozen float32-trained weights/buffers cast to float64; native mechanics always float64','matched_seed_comparisons':seed_paired,'paired_ensemble_residual_difference':float(paired.mean()),'paired_geometry_bootstrap95_residual_difference':bootstrap(paired),'ensemble_displacement_RMSE_ratio':phys['mean_component_rmse_m']/base['mean_component_rmse_m'],'H1_descriptive_supported':bool(paired.mean()<0 and phys['mean_component_rmse_m']<=1.1*base['mean_component_rmse_m']),'split_unit':'independent parameter-drawn numerical geometry; all loads clustered','bootstrap_scope':'conditional on the five trained members, excluding retraining uncertainty; seed comparisons reported separately','limitations':['same benchmark ellipsoid family, not independent anatomical sources','four startup loads from rest per geometry, not trajectories','20 calibration geometries and16 test geometries: wide coverage intervals','shift is outside the training parameter support; no exchangeability guarantee','P1 FE discretization uncertainty is additional to surrogate error','physics conclusions specific to this numerical parameter distribution']}
  (P/f'experiments/metrics/{name}_evaluation.json').write_text(json.dumps(verdict,indent=2));print('GEOMETRY EVALUATION COMPLETE',verdict['H1_descriptive_supported'],flush=True)
 finally:bridge.close()

@@ -1,0 +1,124 @@
+{
+  "name": "physics_lambda100",
+  "seed": 22,
+  "lambda": 100.0,
+  "region": "all",
+  "complete": true,
+  "steps_completed": 400,
+  "best_validation": {
+    "component_mse_m2": 1.1509154219057325e-13,
+    "component_rmse_m": 3.392514439034464e-07,
+    "full_residual_loss": 7.684716339601827e-08,
+    "region_residual_loss": 7.684716339601827e-08
+  },
+  "seconds": 34.022946584038436,
+  "history": [
+    {
+      "step": 0,
+      "train_scaled_data_mse": 4.418706157593988e-05,
+      "validation": {
+        "component_mse_m2": 8.568573764338741e-13,
+        "component_rmse_m": 9.256659097287067e-07,
+        "full_residual_loss": 1.247918915148194e-07,
+        "region_residual_loss": 1.247918915148194e-07
+      },
+      "selection_score": 0.0004162832256707241
+    },
+    {
+      "step": 50,
+      "train_scaled_data_mse": 4.38760980614461e-05,
+      "validation": {
+        "component_mse_m2": 1.3716582460661347e-13,
+        "component_rmse_m": 3.7035904823105574e-07,
+        "full_residual_loss": 9.312928916579977e-08,
+        "region_residual_loss": 9.312928916579977e-08
+      },
+      "selection_score": 7.395392422335884e-05
+    },
+    {
+      "step": 100,
+      "train_scaled_data_mse": 3.987157833762467e-05,
+      "validation": {
+        "component_mse_m2": 1.3054753850235378e-13,
+        "component_rmse_m": 3.6131362900166636e-07,
+        "full_residual_loss": 8.874428820970781e-08,
+        "region_residual_loss": 8.874428820970781e-08
+      },
+      "selection_score": 7.039647957846908e-05
+    },
+    {
+      "step": 150,
+      "train_scaled_data_mse": 3.778275640797801e-05,
+      "validation": {
+        "component_mse_m2": 1.2575830503668388e-13,
+        "component_rmse_m": 3.54624174354603e-07,
+        "full_residual_loss": 8.532123041068984e-08,
+        "region_residual_loss": 8.532123041068984e-08
+      },
+      "selection_score": 6.779719164674264e-05
+    },
+    {
+      "step": 200,
+      "train_scaled_data_mse": 3.602561992011033e-05,
+      "validation": {
+        "component_mse_m2": 1.2208229248604137e-13,
+        "component_rmse_m": 3.4940276542414684e-07,
+        "full_residual_loss": 8.201121671873313e-08,
+        "region_residual_loss": 8.201121671873313e-08
+      },
+      "selection_score": 6.573382647107235e-05
+    },
+    {
+      "step": 250,
+      "train_scaled_data_mse": 3.467072747298516e-05,
+      "validation": {
+        "component_mse_m2": 1.1911813311627654e-13,
+        "component_rmse_m": 3.4513494913769095e-07,
+        "full_residual_loss": 8.01225518466675e-08,
+        "region_residual_loss": 8.01225518466675e-08
+      },
+      "selection_score": 6.414806529483495e-05
+    },
+    {
+      "step": 300,
+      "train_scaled_data_mse": 3.373768413439393e-05,
+      "validation": {
+        "component_mse_m2": 1.1725887203091676e-13,
+        "component_rmse_m": 3.4243082809659057e-07,
+        "full_residual_loss": 7.865750632947421e-08,
+        "region_residual_loss": 7.865750632947421e-08
+      },
+      "selection_score": 6.312536226264499e-05
+    },
+    {
+      "step": 350,
+      "train_scaled_data_mse": 3.3152220566989854e-05,
+      "validation": {
+        "component_mse_m2": 1.1588678922176318e-13,
+        "component_rmse_m": 3.4042148760288795e-07,
+        "full_residual_loss": 7.767811823281012e-08,
+        "region_residual_loss": 7.767811823281012e-08
+      },
+      "selection_score": 6.2380813419602e-05
+    },
+    {
+      "step": 399,
+      "train_scaled_data_mse": 3.280978125985712e-05,
+      "validation": {
+        "component_mse_m2": 1.1509152669105067e-13,
+        "component_rmse_m": 3.3925142105973657e-07,
+        "full_residual_loss": 7.684746270580911e-08,
+        "region_residual_loss": 7.684746270580911e-08
+      },
+      "selection_score": 6.192297112012203e-05
+    }
+  ],
+  "parameters": 22076,
+  "selection_validation_float32": {
+    "component_mse_m2": 1.1509152669105067e-13,
+    "component_rmse_m": 3.3925142105973657e-07,
+    "full_residual_loss": 7.684746270580911e-08,
+    "region_residual_loss": 7.684746270580911e-08
+  },
+  "final_validation_backend": "trusted float64 FE"
+}

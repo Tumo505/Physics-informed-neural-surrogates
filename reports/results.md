@@ -57,6 +57,32 @@ The16 test geometries give wide coverage intervals. Raw variance/error Spearman 
 
 ![Actual FE boundary prediction and error](figures/geometry_prediction.png)
 
+**Controlled refinement and fresh confirmation cohort.** The earlier v2 test remains reported above. Each of five original data-trained checkpoints now initializes BOTH matched refinement arms. Each arm receives400 updates at learning rate1e-4 to1e-5. Physics uses four mixed geometry/load cases per update; a training-only gradient diagnostic registered lambda100/1000/10000. Original training20/selection8 geometries are reused; no new target affects training or selection.
+
+Validation selected lambda100 under the predeclared10% displacement constraint. This selects a physics candidate even if data-only has a lower validation residual; it does not itself demonstrate an advantage. All five models were frozen before evaluation. Fresh seed271828 supplies20 calibration and16 test geometries within the same numerical±5% distribution. Another16 random draws lie outside that support in the±5–10% corner regions. Original training-only POD, pooling and normalizers are reused without refitting. These are new numerical geometries, not independent anatomical sources.
+
+All208 additional FE solves converged; minimum endpoint detF0.964567, no inversions, maximum reference force RMS9.82e-12.
+
+| Refined five-member ensemble | Fresh test RMSE(µm) | Normalized force RMS | Mean nodal L2(µm) |
+|---|---:|---:|---:|
+| data | 0.210079 | 0.00013249044 | 0.292581 |
+| physics_lambda100 | 0.216911 | 0.00013563106 | 0.301911 |
+
+Physics/data RMSE ratio1.032523; paired force-RMS difference3.14062e-06, conditional geometry-bootstrap95% interval[2.1356860408155457e-06, 4.148290824321959e-06]. Descriptive H1 criterion satisfied:False. This criterion requires a lower mean residual and no more than10% RMSE degradation; it is not a population-level significance test. Geometry bootstrap conditions on five fitted members; matched individual-seed results are retained in the JSON.
+
+| Refined ensemble | Nominal | Fresh joint test coverage | Radius(µm) | Shift coverage |
+|---|---:|---:|---:|---:|
+| data | 90% | 16/16 | 2.2773 | 0/16 |
+| data | 95% | 16/16 | 2.6691 | 0/16 |
+| physics_lambda100 | 90% | 16/16 | 2.2999 | 0/16 |
+| physics_lambda100 | 95% | 16/16 | 2.8037 | 0/16 |
+
+Coverage refers jointly to all4577 nodes and all four startup loads in a geometry; exact binomial intervals and selective-risk curves are in the evaluation JSON. Only16 test geometries keep inference imprecise. No conformal guarantee extends to the shifted draws.
+
+![Fresh refined geometry comparison](figures/geometry_refinement_study.png)
+
+![Fresh FE surface prediction](figures/geometry_refinement_prediction.png)
+
 **Full passive reference trajectory and temporal sensitivity.** A pressure-only variant of the pinned dynamic benchmark, with P1 displacement/fibers, zero activation and initial u/v/a=0. Generalized-alpha histories are updated after every converged solve; pressure is evaluated at the source intermediate time. This differs from the default active/P2 benchmark.
 
 999/999 steps completed over0.001–0.999s, dt1ms; minimum endpoint detF 0.629753, zero inverted elements across all stored states. Measured FE trajectory wall time 1477.2s. The40ms endpoint volume-L2 differences versus dt0.5ms were 0.00620% for dt1ms and 0.03329% for dt2ms. This short-interval check does not prove full-cycle timestep convergence. Earlier two-level mesh sensitivity also does not establish mesh independence.
@@ -78,15 +104,17 @@ With true histories supplied, balanced physics weighting reduced conditional one
 
 **Matched speed and cost.** CPU float64, two threads, same P1 startup task, four held-out numerical geometries×four loads. Neural inference returns the full4577×3 field.
 
-Warm FE median 994.556ms, five-member ensemble median 2.545ms: 390.8× for this startup task. Batch-one repetitions:32 timed FE solves and800 ensemble calls. No full-cycle, Dalton or clinical speedup follows. Input preprocessing, model load and geometry activation are recorded separately in geometry_runtime.json. Fiber-field generation is excluded from the resident-input inference comparison.
+Warm FE median 998.184ms, five-member mean plus coordinate sample variance median 3.639ms: 274.3× for this startup task. Batch-one repetitions:32 timed FE solves and800 ensemble calls. No full-cycle, Dalton or clinical speedup follows. Including warm input-file reads, graph pooling and normalization, mean/variance inference costs 4.956ms (201.4×). Model load and geometry activation are recorded separately in geometry_runtime.json. Fiber-field generation is excluded from the resident-input inference comparison.
 
-New cohort generation wall time 741.5s; GPU study training/validation grid plus ablations 394.2s. Measured partial-cost recovery about1145 comparable queries. This excludes the CPU pilot, verification, temporal experiments, preprocessing and software setup; it is not whole-project break-even.
+New cohort generation wall time 741.5s; GPU study training/validation grid plus ablations 394.2s. Measured partial-cost recovery about1143 comparable queries. This excludes the CPU pilot, verification, temporal experiments, preprocessing and software setup; it is not whole-project break-even.
+
+Fresh-cohort refinement timing (selected physics-lambda100 five-member ensemble): mean plus variance 3.732ms with resident normalized inputs, or 5.178ms including warm file reads and input processing; matched warm FE 1017.522ms (196.5× including input processing). Same CPU float64/two threads;32 timed FE solves,800 resident ensemble calls,160 input-inclusive calls. Extra cohort generation258.3s and refinement screening/training/validation277.2s. This additional-cost accounting excludes the parent v2 training/corpus and all other research costs. Lower latency does not remedy the negative physics/shift results.
 
 Physics-only backpropagation through an actual trained graph/POD model was verified: parameter-gradient norm 6.29037e-06; relative difference versus native float64 VJP through the same network graph 3.32e-05. Independent assembly checks include nonzero histories and a strongly deformed state. GPU optimization uses float32 after controlled precision checks; final mechanics uses float64.
 
-**Go/no-go and reproducibility.** No external data/solver blocker remains for these numerical studies. The scientific blockers are the remaining released-model accuracy gap, no useful startup physics advantage, shift undercoverage and unstable recursive dynamics. The next experiment should train for closed-loop stability and test on independent trajectories before scaling the full trajectory cohort. Independent anatomical sources and full-cycle mesh/timestep convergence remain unvalidated.
+**Go/no-go and reproducibility.** No external data/solver blocker remains for these numerical studies. The remaining scientific limitations include the released-model accuracy gap, the study-specific physics outcomes above, shift undercoverage and unstable recursive dynamics. The next experiment should train for closed-loop stability and test on independent trajectories before scaling the full trajectory cohort. Independent anatomical sources and full-cycle mesh/timestep convergence remain unvalidated.
 
-Reproduce the extensions with `make graph-study`, `make geometry-study`, `make temporal-study` and `make report` after the original data/environment setup. Runtime requires the legacy solver environment; MPS training requires Apple GPU access. Configs, split IDs, checkpoint hashes, per-geometry/seed results and failed-rollout artifacts are retained. Large datasets/checkpoints/logs remain ignored.
+Reproduce the extensions with `make graph-study`, `make geometry-study`, `make temporal-study`, `make geometry-confirmation` and `make report` after the original data/environment setup. Runtime requires the legacy solver environment; MPS training requires Apple GPU access. Configs, split IDs, checkpoint hashes, per-geometry/seed results and failed-rollout artifacts are retained. Large datasets/checkpoints/logs remain ignored.
 
 Official conference requirements were verified and checksummed in experiments/manifests/conference.json: [CMBBE2027 submission page](https://www.cmbbe-symposium.com/2027/abstract-submission/). The mandatory template is one A4 page in two columns, including figures/references; deadline15November2026 at23:59CET. No manuscript or submission was created, respecting the user request to exclude paper/.
 

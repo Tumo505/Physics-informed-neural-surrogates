@@ -1,0 +1,39 @@
+{
+  "name": "cardiac_geometry_refinement_v3",
+  "seeds": [
+    11,
+    22,
+    33,
+    44,
+    55
+  ],
+  "steps": 400,
+  "validation_every": 50,
+  "learning_rate": 0.0001,
+  "minimum_lr": 1e-05,
+  "physics_lambdas": [
+    100.0,
+    1000.0,
+    10000.0
+  ],
+  "lambda_screen_seed": 11,
+  "lambda_selection": "minimum validation full residual subject to component RMSE at most 10% above matched data-only",
+  "checkpoint_selection": "validation scaled data MSE plus lambda times full or specified-region residual loss; all32 validation loads",
+  "physics_schedule": "four training cases sampled without replacement per update, step/seed-derived random draws across geometries",
+  "ablation_regions": [],
+  "ablation_seeds": [
+    11
+  ],
+  "residual_partition": "all = interior DOF contribution + natural-boundary DOF contribution, both normalized by total DOF count; includes full assembled weak form, not zero external traction",
+  "scope": "affine numerical shape distribution, startup only; separate from passive full trajectory",
+  "backend": "MPS float32 analytic Piola residual, exact analytic stress with autodiff tangent",
+  "backend_gate": "physics_backend.json: force and gradient relative error below1%; float64 analytic tangent also checked against trusted FE",
+  "final_validation": "trusted float64 assembly for lambda selection and final checkpoint reporting",
+  "supersedes": "additional matched refinement after v2; v2 results retained",
+  "physics_batch_size": 4,
+  "initialize_from_run": "cardiac_geometry_models_v2",
+  "initialize_from_label": "data",
+  "protocol": "matched refinement from each seed shared data-trained checkpoint; random mixed-geometry physics batches; original training20/validation8 only",
+  "lambda_grid_reason": "training-only median per-case parameter-gradient norm ratio at shared data-trained seed11 warm start, rounded to decade",
+  "final_assessment": "new independent confirmation cohort; previous v2 results retained, no calibration/test outcome used for model selection"
+}

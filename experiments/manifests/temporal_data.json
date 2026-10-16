@@ -32,5 +32,8 @@
   "normalization_fit": "first600 training timesteps only",
   "split_unit": "contiguous time blocks within ONE cycle; no exchangeability or independent trajectory claim",
   "dt_s": 0.001,
-  "pod_rank": 16
+  "pod_rank": 16,
+  "normalizers_sha256": "57573e0a9d13e05646eb39a4e661c9d9d0be73b52e6ddd7dcd621c1bad461c70",
+  "trajectory_metadata_sha256": "9e398c72b37d73c147aaa034c343acb2b1a8d96639e0a5b8cb131d1b19524dc7",
+  "cache_contract": "immutable train-only POD/features; reused on resume"
 }

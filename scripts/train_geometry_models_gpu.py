@@ -1,6 +1,6 @@
 """Matched five-seed data/physics graph-POD study; training/selection data ONLY."""
 from pathlib import Path
-import sys,json,time,copy,hashlib
+import sys,json,time,copy,hashlib,argparse
 import numpy as np,torch
 P=Path(__file__).resolve().parents[1];sys.path.insert(0,str(P/'src'))
 from lv_surrogate.models.geometry_pod import GeometryPOD
@@ -10,7 +10,8 @@ torch.set_num_threads(2);torch.use_deterministic_algorithms(True,warn_only=True)
 if not torch.backends.mps.is_available():raise RuntimeError('MPS required for GPU protocol')
 backend=json.loads((P/'experiments/metrics/physics_backend.json').read_text())
 if not backend['passed']:raise RuntimeError('GPU residual precision gate failed')
-cfg=json.loads((P/'configs/physics/geometry_training_gpu.json').read_text())
+ap=argparse.ArgumentParser();ap.add_argument('--config',default='configs/physics/geometry_training_gpu.json');args=ap.parse_args()
+cfg=json.loads((P/args.config).read_text())
 verify=json.loads((P/'experiments/metrics/extended_mechanics_verification.json').read_text())
 if not verify['passed']:raise RuntimeError('Extended mechanics gates failed')
 D=P/'data/processed/cardiac_geometry_ml';raw=P/'data/processed/cardiac_geometry_v1';norm=np.load(D/'normalizers.npz');topology=torch.from_numpy(np.load(D/'topology.npy')).to(device)
@@ -27,7 +28,10 @@ def force_loss(u,g,p,region='all'):
  elif region=='interior':R=R*(~boundary)[:,None]
  return R.square().mean()
 def model_new(seed):
- torch.manual_seed(seed);return GeometryPOD(*kwargs).float().to(device)
+ torch.manual_seed(seed);net=GeometryPOD(*kwargs).float().to(device)
+ if cfg.get('initialize_from_run'):
+  source=P/'experiments/checkpoints'/cfg['initialize_from_run']/f'{cfg.get("initialize_from_label","data")}_seed{seed}_best.pt';net.load_state_dict(torch.load(source,map_location='cpu',weights_only=False)['model'])
+ return net
 def predict(net,split):
  a=tensors[split];return net(a['coarse'],a['globals'],a['edges'],topology)
 def evaluate(net,region='all',trusted=False):
@@ -44,17 +48,23 @@ def evaluate(net,region='all',trusted=False):
 def train(seed,lam,region='all',label=None):
  name=label or ('data' if not lam else f'physics_lambda{lam:g}')
  stem=f'{name}_seed{seed}';record_path=metrics/f'{stem}.json';bestpath=out/f'{stem}_best.pt';latest=out/f'{stem}_latest.pt'
- if record_path.exists() and json.loads(record_path.read_text()).get('complete'):return json.loads(record_path.read_text())
+ record=json.loads(record_path.read_text()) if record_path.exists() else {}
+ if record.get('complete') and record.get('final_validation_backend')=='trusted float64 FE':return record
  net=model_new(seed);opt=torch.optim.Adam(net.parameters(),lr=cfg['learning_rate']);sched=torch.optim.lr_scheduler.CosineAnnealingLR(opt,T_max=cfg['steps'],eta_min=cfg['minimum_lr']);history=[];best=float('inf');start_step=0;prior=0.;best_val=None
  if latest.exists():
   ck=torch.load(latest,weights_only=False,map_location='cpu');net.load_state_dict(ck['model']);opt.load_state_dict(ck['optimizer']);sched.load_state_dict(ck['scheduler']);history=ck['history'];best=ck['best'];best_val=ck['best_validation'];start_step=ck['step']+1;prior=ck['seconds']
- start=time.perf_counter()
+ start=time.perf_counter();rng=np.random.default_rng(seed)
+ # A seed/step-derived sampler permits exact resumption without RNG snapshots.
  for step in range(start_step,cfg['steps']):
   net.train();opt.zero_grad();pred=predict(net,'train');loss_data=(pred-tensors['train']['targets']).square().mean()/u_scale**2;eq=pred.new_zeros(())
   if lam:
-   # Each 400-update pass visits each of20 geometries for20 updates.
-   g=(step//20)%20;j=step%4;i=g*4+j
-   eq=force_loss(pred[i],g,float(data['train']['pressures'][i]),region)
+   if cfg.get('physics_batch_size'):
+    ids=np.random.default_rng(np.random.SeedSequence([seed,step])).choice(len(pred),cfg['physics_batch_size'],replace=False)
+    eq=torch.stack([force_loss(pred[int(i)],int(data['train']['geometry_ids'][i]),float(data['train']['pressures'][i]),region) for i in ids]).mean()
+   else:
+    # Original protocol: each400-update pass visits20 geometries for20 updates.
+    g=(step//20)%20;j=step%4;i=g*4+j
+    eq=force_loss(pred[i],g,float(data['train']['pressures'][i]),region)
   loss=loss_data+lam*eq
   if not torch.isfinite(loss):raise FloatingPointError(stem)
   loss.backward();torch.nn.utils.clip_grad_norm_(net.parameters(),5.);opt.step();sched.step()
@@ -62,10 +72,10 @@ def train(seed,lam,region='all',label=None):
    net.eval();val=evaluate(net,region);score=val['component_mse_m2']/u_scale**2+lam*val['region_residual_loss'];row={'step':step,'train_scaled_data_mse':float(loss_data.detach()),'validation':val,'selection_score':score};history.append(row)
    if score<best:
     best=score;best_val=val;torch.save({'model':net.state_dict(),'step':step,'validation':val},bestpath)
-   elapsed=prior+time.perf_counter()-start;record={'name':name,'seed':seed,'lambda':lam,'region':region,'complete':step==cfg['steps']-1,'steps_completed':step+1,'best_validation':best_val,'seconds':elapsed,'history':history,'parameters':sum(p.numel() for p in net.parameters())}
+   elapsed=prior+time.perf_counter()-start;record={'name':name,'seed':seed,'lambda':lam,'region':region,'complete':False,'steps_completed':step+1,'best_validation':best_val,'seconds':elapsed,'history':history,'parameters':sum(p.numel() for p in net.parameters())}
    record_path.write_text(json.dumps(record,indent=2));tmp=latest.with_suffix('.tmp');torch.save({'model':net.state_dict(),'optimizer':opt.state_dict(),'scheduler':sched.state_dict(),'step':step,'history':history,'best':best,'best_validation':best_val,'seconds':elapsed},tmp);tmp.replace(latest)
    print(stem,step,best_val,flush=True)
- net.load_state_dict(torch.load(bestpath,map_location='cpu',weights_only=False)['model']);net.eval();record['selection_validation_float32']=record['best_validation'];record['best_validation']=evaluate(net,region,trusted=True);record['final_validation_backend']='trusted float64 FE';record['seconds']=prior+time.perf_counter()-start;record_path.write_text(json.dumps(record,indent=2))
+ net.load_state_dict(torch.load(bestpath,map_location='cpu',weights_only=False)['model']);net.eval();record['selection_validation_float32']=record['best_validation'];record['best_validation']=evaluate(net,region,trusted=True);record['final_validation_backend']='trusted float64 FE';record['complete']=True;record['seconds']=prior+time.perf_counter()-start;record_path.write_text(json.dumps(record,indent=2))
  return record
 try:
  screen={};screen['data']=train(11,0.)
@@ -78,5 +88,11 @@ try:
   train(seed,0.);train(seed,lam)
  for region in cfg['ablation_regions']:train(11,lam,region,label=f'{region}_lambda{lam:g}')
  manifest={'config':cfg,'complete':True,'lambda_selection':selection,'data_access':['train','validation'],'source_sha256':{str(q.relative_to(P)):hashlib.sha256(q.read_bytes()).hexdigest() for q in [Path(__file__),P/'src/lv_surrogate/models/geometry_pod.py',P/'scripts/fem_service.py',P/'src/lv_surrogate/physics/fem_bridge.py',P/'src/lv_surrogate/physics/reference_fem.py',P/'src/lv_surrogate/physics/cardiac_residual.py',P/'experiments/metrics/physics_backend.json']},'normalizer_sha256':hashlib.sha256((D/'normalizers.npz').read_bytes()).hexdigest(),'scope':'numerical benchmark ellipsoid sensitivity distribution; not an anatomical population; startup only'}
- (P/f'experiments/manifests/{cfg["name"]}.json').write_text(json.dumps(manifest,indent=2));print('GEOMETRY MODEL STUDY COMPLETE',flush=True)
+ target=P/f'experiments/manifests/{cfg["name"]}.json'
+ if target.exists():
+  old=json.loads(target.read_text())
+  if old.get('complete'):
+   manifest['reproduction_source_sha256']=manifest['source_sha256'];manifest['source_sha256']=old['source_sha256']
+   if 'executed_source_revision' in old:manifest['executed_source_revision']=old['executed_source_revision']
+ target.write_text(json.dumps(manifest,indent=2));print('GEOMETRY MODEL STUDY COMPLETE',flush=True)
 finally:bridge.close()

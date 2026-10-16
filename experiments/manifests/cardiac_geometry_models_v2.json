@@ -77,5 +77,16 @@
     "experiments/metrics/physics_backend.json": "40d9a20fa1aaa799e37ff7efa91e57656249c0aca8b833dd4a1d066551878ac7"
   },
   "normalizer_sha256": "8fa3ca1c8574843249d12002982dd762675545b28b9e89d08e3af8197f15f3ce",
-  "scope": "numerical benchmark ellipsoid sensitivity distribution; not an anatomical population; startup only"
+  "scope": "numerical benchmark ellipsoid sensitivity distribution; not an anatomical population; startup only",
+  "reproduction_source_sha256": {
+    "scripts/train_geometry_models_gpu.py": "e24611b845074f0348b70da8113a7e143bf1ede656d3f9e20c3af21ced18aef6",
+    "src/lv_surrogate/models/geometry_pod.py": "8a2b4a07f255b29a07515b3ecf52a55288262f3713df8a9bda0054adba0a3545",
+    "scripts/fem_service.py": "1a157880e65381bcc404f9bebe74ac0594842a389d870a45bde4d597cb505713",
+    "src/lv_surrogate/physics/fem_bridge.py": "47697b393faa15283461ed06ee8b6ae0bbf2243429e823308d0e42bce5c4de81",
+    "src/lv_surrogate/physics/reference_fem.py": "437300455595263276a94840a68af76b802e4b6f62ba45436341607074b6f5d3",
+    "src/lv_surrogate/physics/cardiac_residual.py": "3a3e88d814a775c869489d207aea9ed9531168c3340f378d645388b629a67790",
+    "experiments/metrics/physics_backend.json": "40d9a20fa1aaa799e37ff7efa91e57656249c0aca8b833dd4a1d066551878ac7"
+  },
+  "executed_source_revision": "497f0698182f875e85475ba1e63aa8dd7eceb2f6",
+  "reproduction_note": "Current reproduction sources include completion/resume provenance repairs; original executed source hashes retained above"
 }

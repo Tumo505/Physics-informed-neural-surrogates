@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "case": "terminal optimizer checkpoint with interrupted final FE validation",
+  "steps_retrained": 0,
+  "final_validation_recomputed": true,
+  "best_checkpoint_unchanged": true,
+  "completion_requires_trusted_validation": true,
+  "scope": "integration check using copied real trained artifacts; original scientific checkpoints preserved"
+}

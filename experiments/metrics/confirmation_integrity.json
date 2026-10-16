@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "frozen_checkpoints_verified": 10,
+  "FE_geometry_checksums_verified": 52,
+  "disjoint_confirmation_geometry_splits": true,
+  "training_normalizers_unchanged": true,
+  "normalizer_sha256": "8fa3ca1c8574843249d12002982dd762675545b28b9e89d08e3af8197f15f3ce",
+  "training_data_access": [
+    "train",
+    "validation"
+  ],
+  "scope": "artifact integrity and split/provenance audit; not a claim of model accuracy or anatomical independence"
+}

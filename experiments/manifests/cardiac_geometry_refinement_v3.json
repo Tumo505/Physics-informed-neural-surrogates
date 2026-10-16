@@ -1,0 +1,102 @@
+{
+  "config": {
+    "name": "cardiac_geometry_refinement_v3",
+    "seeds": [
+      11,
+      22,
+      33,
+      44,
+      55
+    ],
+    "steps": 400,
+    "validation_every": 50,
+    "learning_rate": 0.0001,
+    "minimum_lr": 1e-05,
+    "physics_lambdas": [
+      100.0,
+      1000.0,
+      10000.0
+    ],
+    "lambda_screen_seed": 11,
+    "lambda_selection": "minimum validation full residual subject to component RMSE at most 10% above matched data-only",
+    "checkpoint_selection": "validation scaled data MSE plus lambda times full or specified-region residual loss; all32 validation loads",
+    "physics_schedule": "four training cases sampled without replacement per update, step/seed-derived random draws across geometries",
+    "ablation_regions": [],
+    "ablation_seeds": [
+      11
+    ],
+    "residual_partition": "all = interior DOF contribution + natural-boundary DOF contribution, both normalized by total DOF count; includes full assembled weak form, not zero external traction",
+    "scope": "affine numerical shape distribution, startup only; separate from passive full trajectory",
+    "backend": "MPS float32 analytic Piola residual, exact analytic stress with autodiff tangent",
+    "backend_gate": "physics_backend.json: force and gradient relative error below1%; float64 analytic tangent also checked against trusted FE",
+    "final_validation": "trusted float64 assembly for lambda selection and final checkpoint reporting",
+    "supersedes": "additional matched refinement after v2; v2 results retained",
+    "physics_batch_size": 4,
+    "initialize_from_run": "cardiac_geometry_models_v2",
+    "initialize_from_label": "data",
+    "protocol": "matched refinement from each seed shared data-trained checkpoint; random mixed-geometry physics batches; original training20/validation8 only",
+    "lambda_grid_reason": "training-only median per-case parameter-gradient norm ratio at shared data-trained seed11 warm start, rounded to decade",
+    "final_assessment": "new independent confirmation cohort; previous v2 results retained, no calibration/test outcome used for model selection"
+  },
+  "complete": true,
+  "lambda_selection": {
+    "selected_label": "physics_lambda100",
+    "lambda": 100.0,
+    "meets_10percent_constraint": true,
+    "screening_seed": 11,
+    "validation_only": true,
+    "screen": {
+      "data": {
+        "component_mse_m2": 6.175196990901439e-14,
+        "component_rmse_m": 2.4849943643600963e-07,
+        "full_residual_loss": 3.37798510060746e-08,
+        "region_residual_loss": 3.37798510060746e-08
+      },
+      "physics_lambda100": {
+        "component_mse_m2": 7.391699997746717e-14,
+        "component_rmse_m": 2.718768102973609e-07,
+        "full_residual_loss": 4.136620591603465e-08,
+        "region_residual_loss": 4.136620591603465e-08
+      },
+      "physics_lambda1000": {
+        "component_mse_m2": 7.835636954748629e-14,
+        "component_rmse_m": 2.799220776349845e-07,
+        "full_residual_loss": 3.5371473493252155e-08,
+        "region_residual_loss": 3.5371473493252155e-08
+      },
+      "physics_lambda10000": {
+        "component_mse_m2": 1.294643730275376e-13,
+        "component_rmse_m": 3.598115798963919e-07,
+        "full_residual_loss": 2.2830004248091716e-08,
+        "region_residual_loss": 2.2830004248091716e-08
+      }
+    },
+    "test_and_calibration_opened": false
+  },
+  "data_access": [
+    "train",
+    "validation"
+  ],
+  "source_sha256": {
+    "scripts/train_geometry_models_gpu.py": "4f2cba9f14863a9040db48efed2f3f57dcbb0ce4a314761a0bdc447f6b0fcd45",
+    "src/lv_surrogate/models/geometry_pod.py": "8a2b4a07f255b29a07515b3ecf52a55288262f3713df8a9bda0054adba0a3545",
+    "scripts/fem_service.py": "1a157880e65381bcc404f9bebe74ac0594842a389d870a45bde4d597cb505713",
+    "src/lv_surrogate/physics/fem_bridge.py": "47697b393faa15283461ed06ee8b6ae0bbf2243429e823308d0e42bce5c4de81",
+    "src/lv_surrogate/physics/reference_fem.py": "437300455595263276a94840a68af76b802e4b6f62ba45436341607074b6f5d3",
+    "src/lv_surrogate/physics/cardiac_residual.py": "3a3e88d814a775c869489d207aea9ed9531168c3340f378d645388b629a67790",
+    "experiments/metrics/physics_backend.json": "40d9a20fa1aaa799e37ff7efa91e57656249c0aca8b833dd4a1d066551878ac7"
+  },
+  "normalizer_sha256": "8fa3ca1c8574843249d12002982dd762675545b28b9e89d08e3af8197f15f3ce",
+  "scope": "numerical benchmark ellipsoid sensitivity distribution; not an anatomical population; startup only",
+  "metadata_correction": "Inherited schedule description corrected to the effective physics_batch_size=4 branch; no hyperparameters, weights or selection changed",
+  "reproduction_source_sha256": {
+    "scripts/train_geometry_models_gpu.py": "e24611b845074f0348b70da8113a7e143bf1ede656d3f9e20c3af21ced18aef6",
+    "src/lv_surrogate/models/geometry_pod.py": "8a2b4a07f255b29a07515b3ecf52a55288262f3713df8a9bda0054adba0a3545",
+    "scripts/fem_service.py": "1a157880e65381bcc404f9bebe74ac0594842a389d870a45bde4d597cb505713",
+    "src/lv_surrogate/physics/fem_bridge.py": "47697b393faa15283461ed06ee8b6ae0bbf2243429e823308d0e42bce5c4de81",
+    "src/lv_surrogate/physics/reference_fem.py": "437300455595263276a94840a68af76b802e4b6f62ba45436341607074b6f5d3",
+    "src/lv_surrogate/physics/cardiac_residual.py": "3a3e88d814a775c869489d207aea9ed9531168c3340f378d645388b629a67790",
+    "experiments/metrics/physics_backend.json": "40d9a20fa1aaa799e37ff7efa91e57656249c0aca8b833dd4a1d066551878ac7"
+  },
+  "reproduction_note": "Current reproduction sources include completion/resume provenance repairs; original executed source hashes retained above"
+}

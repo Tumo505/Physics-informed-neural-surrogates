@@ -1,0 +1,106 @@
+{
+  "name": "cardiac_confirmation_v1",
+  "seed_geometry": 271828,
+  "iid_geometry_count": 36,
+  "scale_bounds": [
+    0.95,
+    1.05
+  ],
+  "parameter_order": [
+    "radial_scale",
+    "longitudinal_scale"
+  ],
+  "long_axis": "x, confirmed in pinned source ellipsoid_point and microstructure.compute_system",
+  "parameter_space_role": "controlled numerical sensitivity distribution around documented benchmark ellipsoid; not an empirical or physiological shape distribution",
+  "bounds_reason": "predeclared small 5-percent numerical perturbation of benchmark radii; no claim of anatomical population validity",
+  "shift_scales": [
+    [
+      0.9484275164699696,
+      1.073249014906179
+    ],
+    [
+      0.9445102375976417,
+      1.0990132318539754
+    ],
+    [
+      1.076391422186675,
+      0.9204789273834375
+    ],
+    [
+      0.9475784143179296,
+      0.9274951152909425
+    ],
+    [
+      1.0761428670868625,
+      0.9038479751862758
+    ],
+    [
+      0.9183610165832161,
+      0.9265808585255022
+    ],
+    [
+      0.9452817927897292,
+      0.9185003538242876
+    ],
+    [
+      1.0892142016921051,
+      0.9425253016538689
+    ],
+    [
+      0.9191615076816322,
+      1.072451916032448
+    ],
+    [
+      1.0592159141750854,
+      0.9150709996647192
+    ],
+    [
+      0.9222563255791268,
+      0.9118597102657994
+    ],
+    [
+      0.903630922435985,
+      0.9187418869292827
+    ],
+    [
+      1.0972839580615785,
+      1.0862754508200196
+    ],
+    [
+      0.9430526604329892,
+      1.057237328354027
+    ],
+    [
+      1.098955126476119,
+      0.912082523579693
+    ],
+    [
+      1.0502078192040418,
+      1.0604882146629062
+    ]
+  ],
+  "shift_role": "16 independent draws in predeclared corner regions, each axis outside training \u00b15% support and inside \u00b110%; no conformal guarantee",
+  "pressure_fractions_of_documented_waveform_max": [
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "splits": {
+    "calibration": [
+      0,
+      20
+    ],
+    "test": [
+      20,
+      36
+    ],
+    "shift": [
+      36,
+      52
+    ]
+  },
+  "scope": "fresh independent numerical geometry draws for the frozen-refinement study; source ellipsoid family only",
+  "material_and_BC": "unchanged pinned benchmark defaults; P1 displacement and source microstructure algorithm on every geometry",
+  "protocol": "same source mechanics/pressure grid; no training or model selection reads these targets"
+}
