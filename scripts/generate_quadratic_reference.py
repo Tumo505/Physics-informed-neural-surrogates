@@ -121,12 +121,20 @@ start = time.perf_counter()
 stop = min(n, args.max_steps) if args.max_steps else n
 def reject(step, reason, force, kind):
     durable = json.loads(manifest.read_text()).get('completed_steps', 0) if manifest.exists() else 0
+    snes = problem.solver._snes
+    ksp = snes.getKSP()
     failure = dict(complete_trajectory=False, reference_name=cfg['name'],
         accepted_steps_before_failure=step, persisted_checkpoint_steps=durable,
         failed_zero_based_step=step, failed_time_s=float(times[step]), SNES_reason=reason,
         residual_l2_N=float(force) if force is not None and np.isfinite(force) else None,
         rejection_kind=kind, config=cfg, config_sha256=config_hash,
-        source_sha256=source_hash, scope='Rejected reference attempt; no full-cycle result.')
+        source_sha256=source_hash,
+        KSP_reason=int(ksp.getConvergedReason()),
+        last_linear_iterations=int(ksp.getIterationNumber()),
+        total_linear_iterations=int(snes.getLinearSolveIterations()),
+        nonlinear_iterations=int(snes.getIterationNumber()),
+        effective_KSP=ksp.getType(), effective_PC=ksp.getPC().getType(),
+        scope='Rejected reference attempt; no full-cycle result.')
     payload = json.dumps(failure, indent=2, allow_nan=False)
     failure_flag.write_text(payload)
     (P/f'experiments/metrics/{cfg["name"]}_failure.json').write_text(payload)

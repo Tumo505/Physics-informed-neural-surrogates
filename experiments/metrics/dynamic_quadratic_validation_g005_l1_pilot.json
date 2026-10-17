@@ -1,0 +1,124 @@
+{
+  "complete": false,
+  "pilot": true,
+  "comparison": "mesh",
+  "config_a": {
+    "name": "cardiac_quadratic_g005_l1_r0_q6_v1",
+    "dt_s": 0.00125,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 0,
+    "geometry_scales": [
+      1.021498796532157,
+      0.9510379040647747
+    ],
+    "amplitude": 1.05,
+    "timing_scale": 0.95,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "native_solver": "gamg",
+    "scope": "Prospective800-step P2 convergence controls on the two existing validation geometries and their fixed different loading histories. Entire trajectories start from zero histories on both mesh levels; same passive law, P1 fibers, solver, pressure waveform and timestep. These are validation inputs, never calibration/test selection. Generate coarse reference first, then fine reference, independent native norms and whole-element positivity. Completed numerical sensitivity does not imply passing1%. Frozen neural models remain unchanged; geometry/template-specific convergence does not establish anatomical validity.",
+    "validation_source_case": {
+      "id": "g005_l1",
+      "geometry": 5,
+      "split": "validation",
+      "scales": [
+        1.021498796532157,
+        0.9510379040647747
+      ],
+      "amplitude": 1.05,
+      "timing_scale": 0.95,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    "validation_protocol_sha256": "8b0a8fa96ccfa05075ce74a8becfd19ad76f58de691fc70d2ffb6d8039ae6b76"
+  },
+  "config_b": {
+    "name": "cardiac_quadratic_g005_l1_r1_q6_v1",
+    "dt_s": 0.00125,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 1,
+    "geometry_scales": [
+      1.021498796532157,
+      0.9510379040647747
+    ],
+    "amplitude": 1.05,
+    "timing_scale": 0.95,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "native_solver": "gamg",
+    "scope": "Prospective800-step P2 convergence controls on the two existing validation geometries and their fixed different loading histories. Entire trajectories start from zero histories on both mesh levels; same passive law, P1 fibers, solver, pressure waveform and timestep. These are validation inputs, never calibration/test selection. Generate coarse reference first, then fine reference, independent native norms and whole-element positivity. Completed numerical sensitivity does not imply passing1%. Frozen neural models remain unchanged; geometry/template-specific convergence does not establish anatomical validity.",
+    "validation_source_case": {
+      "id": "g005_l1",
+      "geometry": 5,
+      "split": "validation",
+      "scales": [
+        1.021498796532157,
+        0.9510379040647747
+      ],
+      "amplitude": 1.05,
+      "timing_scale": 0.95,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    "validation_protocol_sha256": "8b0a8fa96ccfa05075ce74a8becfd19ad76f58de691fc70d2ffb6d8039ae6b76"
+  },
+  "config_paths": [
+    "data/processed/quadratic_geometry_controls/configs/g005_l1/refinement_0.json",
+    "data/processed/quadratic_geometry_controls/configs/g005_l1/refinement_1.json"
+  ],
+  "config_sha256": [
+    "187376ce8292b0e928fc8ccc80d98de831136baba957dce77b3de5d06fbc3429",
+    "6fb3ea09c4bb31e8c68c3e218d9e5cee7a3e5638c2e7e5d7bbcf35f6edb16766"
+  ],
+  "output_sha256": [
+    {
+      "displacement_coefficients.npy": "afe47d6cd75ab6f6621624e4f03239936fdada0abea21e66d0caf14f2f768593",
+      "displacement_vertices.npy": "d76d90759cfb27292ad627a0484b2c8965119ed716289c2c129ea874f5c7146e",
+      "inputs.npz": "27c2563d218b6dc8b859298b74399d0e33abea991e10593f09e67ef5c8a5634f"
+    },
+    null
+  ],
+  "executed_source_sha256": "f5a22ae49a6b8dcdb8f6c405407a835818f7ff18cdc5081edb593adcad8b7989",
+  "common_endpoints": 2,
+  "end_time_s": 0.0025,
+  "physical_volume_m3": 0.00017633867240655966,
+  "relative_space_time_L2": 0.19340870725905618,
+  "component_volume_time_RMSE_m": 2.2707388877981242e-08,
+  "tolerance_relative_L2": 0.01,
+  "passes_declared_one_percent_sensitivity": false,
+  "integration": "Trapezoid in time including exactly zero initial fields; exact degree-4 consistent-mass spatial integration at common endpoints.",
+  "manufactured_transfer_max_abs_error": 9.71445146547012e-17,
+  "independent_native_checks": [
+    {
+      "time_s": 0.00125,
+      "mass_norm_squared": 1.0465011131812353e-19,
+      "independent_UFL_norm_squared": 1.0465011131812471e-19,
+      "relative_discrepancy": 1.1272153235950524e-14
+    },
+    {
+      "time_s": 0.0025,
+      "mass_norm_squared": 8.817963913438069e-19,
+      "independent_UFL_norm_squared": 8.817963913438163e-19,
+      "relative_discrepancy": 1.0702081364968873e-14
+    }
+  ],
+  "records": [
+    {
+      "time_s": 0.00125,
+      "a_step": 0,
+      "b_step": 0,
+      "error_squared_integral_m5": 1.0465011131812353e-19,
+      "reference_squared_integral_m5": 1.6907230705082592e-18
+    },
+    {
+      "time_s": 0.0025,
+      "a_step": 1,
+      "b_step": 1,
+      "error_squared_integral_m5": 8.817963913438069e-19,
+      "reference_squared_integral_m5": 2.5786856925938164e-17
+    }
+  ],
+  "scope": "Controlled two-level sensitivity in one factor with frozen mechanics and initial/loading conditions. Finer discretization is not assumed continuum truth. Two levels do not establish an asymptotic convergence rate. Partial pilot checks never pass the full-cycle criterion."
+}

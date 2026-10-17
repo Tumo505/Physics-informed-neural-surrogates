@@ -156,18 +156,20 @@ A separate history/load homotopy reproduced the previous native equilibrium, the
 
 **Controlled P2 time sensitivity.** Only the time discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared 200 common endpoints through 1s. Space-time volume-L2 discrepancy 0.0459%; component volume/time RMSE 0.00491mm. Within the declared1% tolerance: True. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.
 
-**Controlled P2 mesh refinement in progress:** 200/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 mesh refinement in progress:** 210/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
-**Controlled P2 mesh (GMRES/GAMG) refinement in progress:** 190/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 mesh (GMRES/GAMG) workflow stopped:** generation failed with return code 1; see preserved log. Last recorded phase generation. Existing accepted checkpoints remain available; no completed validation claim follows.
 
-**Controlled P2 quadrature refinement in progress:** 330/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 quadrature refinement in progress:** 580/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+
+**Refined iterative solver failure retained.** Native GAMG/SNES stopped at0.270s after215 accepted states (210 persisted). Native log reports linear-solve divergence: True; SNES reason-3. The underlying Krylov/preconditioner cause was not recorded and remains unresolved. Across210 common persisted states through0.2625s, direct/iterative maximum relative coefficient discrepancy was1.06e-09, with maximum absolute discrepancy1.19e-13m. This is partial solver agreement, not full-cycle equivalence or a successful mesh-convergence check. The separate MUMPS control continues; rejected iterative data are preserved and have not been restarted.
 
 **Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.
 
 | Validation input | Coarse/fine persisted steps | Full-cycle relative volume L2 difference | Within1% |
 |---|---|---:|---|
-| g004_l0 | 800/800; 2/800 | pending | pending |
-| g005_l1 | 800/800; 2/800 | pending | pending |
+| g004_l0 | 800/800; 130/800 | pending | pending |
+| g005_l1 | 800/800; 130/800 | pending | pending |
 
 **Completed coarse P2 validation reference g004_l0.** All800 native steps converged; maximum residual 9.9e-09N. Output hashes verified. Minimum whole-element Bernstein bounds at endpoint/stress states: 0.402018/0.401928, using the float64 sufficient-condition audit described below. Independent canonical P2 quadrature and native UFL displacement norms agree at four fixed frames (largest relative discrepancy 6.66e-15). This verifies the completed calculation; its refined-mesh sensitivity test remains separate.
 
