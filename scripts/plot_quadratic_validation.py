@@ -56,7 +56,7 @@ if solver_path.exists():
         fig.tight_layout()
         fig.savefig(P/'reports/figures/dynamic_quadratic_solver_equivalence.png', dpi=180)
         plt.close(fig)
-for factor in ['time', 'mesh']:
+for factor in ['time', 'mesh', 'mesh_gamg']:
     f = P/f'experiments/metrics/dynamic_quadratic_controlled_{factor}.json'
     if f.exists():
         d = json.loads(f.read_text())
@@ -66,11 +66,12 @@ if not evidence:
     raise SystemExit(0 if audit_path.exists() else 'No completed validation evidence to plot')
 fig, axes = plt.subplots(1, len(evidence), figsize=(6.4*len(evidence), 4.4), squeeze=False)
 for ax, (factor, d) in zip(axes[0], evidence):
+    label = dict(time='timestep', mesh='mesh (MUMPS)', mesh_gamg='mesh (GMRES/GAMG)')[factor]
     records = d['records']
     ax.plot([r['time_s'] for r in records],
             [1e3*np.sqrt(r['error_squared_integral_m5']/(3*d['physical_volume_m3'])) for r in records])
     ax.set(xlabel='Time (s)', ylabel='Volume component RMSE (mm)',
-           title=f'Controlled {factor} sensitivity\nSpace-time relative L2: {d["relative_space_time_L2"]:.2%}')
+           title=f'Controlled {label} sensitivity\nSpace-time relative L2: {d["relative_space_time_L2"]:.2%}')
     ax.grid(alpha=.25)
 fig.suptitle('Passive P2 reference: controlled two-level sensitivity\nFiner level is not continuum truth')
 fig.tight_layout()

@@ -1,12 +1,17 @@
 """Full-cycle same-equation solver agreement, not a discretization accuracy test."""
 import hashlib
+import argparse
 import json
 from pathlib import Path
 import numpy as np
 
 P = Path(__file__).resolve().parents[1]
+ap = argparse.ArgumentParser()
+ap.add_argument('--refined', action='store_true')
+args = ap.parse_args()
 roots = [P/'data/processed'/name for name in
-         ['cardiac_quadratic_reference_dt00125_v1', 'cardiac_quadratic_reference_gamg_v1']]
+         (['cardiac_quadratic_reference_refined_v1', 'cardiac_quadratic_reference_refined_gamg_v1']
+          if args.refined else ['cardiac_quadratic_reference_dt00125_v1', 'cardiac_quadratic_reference_gamg_v1'])]
 manifests = [json.loads((r/'manifest.json').read_text()) for r in roots]
 for root, manifest in zip(roots, manifests):
     assert manifest['complete'] and not (root/'failure.json').exists()
@@ -33,6 +38,7 @@ for i, (a, b) in enumerate(zip(*fields)):
 maximum_relative = max(r['relative_coefficient_difference'] for r in records)
 maximum_absolute = max(r['maximum_absolute_coefficient_difference_m'] for r in records)
 result = dict(complete=True, engineering_only=True,
+    refinement_level=manifests[0]['config']['refinement_level'],
     passed=bool(maximum_relative < 1e-6 and maximum_absolute < 1e-9),
     n_steps=len(records), maximum_relative_coefficient_difference=maximum_relative,
     maximum_absolute_coefficient_difference_m=maximum_absolute,
@@ -42,5 +48,6 @@ result = dict(complete=True, engineering_only=True,
     source_segments=[m['source_segments'] for m in manifests], records=records,
     executed_source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     scope='Both native trajectories start from rest and recursively update their own histories. All800 states have identical forcing, space and discretization. Coefficient agreement at all displacement DOFs checks same-root accumulation. Source pressure/geometry/DOF maps are identical and both files checksum-verified. This is not a continuum accuracy, temporal convergence, mesh convergence, population generalization or isolated runtime result. Whole-element positivity is audited separately.')
-(P/'experiments/metrics/dynamic_quadratic_solver_equivalence.json').write_text(json.dumps(result, indent=2, allow_nan=False))
+stem = 'dynamic_quadratic_solver_equivalence'+('_refined' if args.refined else '')
+(P/'experiments/metrics'/f'{stem}.json').write_text(json.dumps(result, indent=2, allow_nan=False))
 print(json.dumps({k:result[k] for k in ['complete','passed','maximum_relative_coefficient_difference','maximum_absolute_coefficient_difference_m']}, indent=2), flush=True)

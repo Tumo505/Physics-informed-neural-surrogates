@@ -1,0 +1,14 @@
+{
+  "name": "cardiac_quadratic_reference_refined_gamg_v1",
+  "dt_s": 0.00125,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 1,
+  "geometry_scales": [1.0, 1.0],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 6,
+  "checkpoint_interval": 10,
+  "native_solver": "gamg",
+  "scope": "Distinct refined-backend control from rest after full800-step coarse GMRES/GAMG agreement with MUMPS to8.1e-14m and five accepted fixed-history nonlinear probes. Compare against completed coarse GAMG reference at identical1.25ms timestep and against the separately continuing refined MUMPS reference for solver agreement. Same passive mechanics, polyhedral domain, P1 fiber field and source loading. All native force/Jacobian acceptance criteria remain unchanged. This is not a duplicate worker or replacement for the prespecified direct mesh control; all outcomes remain reported. No neural selection or recalibration."
+}

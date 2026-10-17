@@ -54,6 +54,7 @@ for key in ['duration_s', 'geometry_scales', 'amplitude', 'timing_scale',
 mesh_changed = ca['refinement_level'] != cb['refinement_level']
 time_changed = ca['dt_s'] != cb['dt_s']
 assert mesh_changed != time_changed, 'Change exactly one discretization factor'
+assert ca.get('native_solver', 'mumps') == cb.get('native_solver', 'mumps'), 'Match solver backend for a one-factor discretization control'
 assert cb['refinement_level'] >= ca['refinement_level']
 assert cb['dt_s'] <= ca['dt_s']
 ta = ia['time'][:ma['completed_steps']]

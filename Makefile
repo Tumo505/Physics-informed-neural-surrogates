@@ -196,6 +196,12 @@ dynamic-quadratic-reference: dynamic-convergence
 
 .PHONY: dynamic-quadratic-time dynamic-quadratic-mesh dynamic-quadratic-positivity dynamic-quadratic-solver
 .PHONY: dynamic-quadratic-order-control
+.PHONY: dynamic-quadratic-mesh-gamg dynamic-quadratic-refined-solver-check
+dynamic-quadratic-mesh-gamg:
+	$(PY) scripts/run_quadratic_validation.py mesh_gamg
+dynamic-quadratic-refined-solver-check:
+	$(PY) scripts/compare_quadratic_solvers.py --refined
+	$(PY) scripts/write_reports.py
 dynamic-quadratic-order-control:
 	$(FEM_RUN) scripts/compare_quadratic_order.py
 	$(PY) scripts/plot_quadratic_validation.py

@@ -10,10 +10,10 @@ import time
 
 P = Path(__file__).resolve().parents[1]
 ap = argparse.ArgumentParser()
-ap.add_argument('factor', choices=['time', 'mesh', 'solver'])
+ap.add_argument('factor', choices=['time', 'mesh', 'solver', 'mesh_gamg'])
 args = ap.parse_args()
-baseline = 'configs/physics/dynamic_quadratic_reference_dt00125.json'
-candidate = 'configs/physics/dynamic_quadratic_reference_'+dict(time='dt001',mesh='refined',solver='gamg')[args.factor]+'.json'
+baseline = 'configs/physics/dynamic_quadratic_reference_'+('gamg' if args.factor == 'mesh_gamg' else 'dt00125')+'.json'
+candidate = 'configs/physics/dynamic_quadratic_reference_'+dict(time='dt001',mesh='refined',solver='gamg',mesh_gamg='refined_gamg')[args.factor]+'.json'
 name = json.loads((P/candidate).read_text())['name']
 stem = 'dynamic_quadratic_controlled_'+args.factor
 output = P/'experiments/metrics'/f'{stem}_pipeline.json'
@@ -53,7 +53,7 @@ persist()
 try:
     if (P/'data/processed'/name/'failure.json').exists():
         raise RuntimeError('A rejected trajectory is preserved; automatic retries are disabled')
-    if args.factor == 'mesh':
+    if args.factor in ['mesh', 'mesh_gamg']:
         progress = P/'data/processed'/name/'manifest.json'
         completed_reference = progress.exists() and json.loads(progress.read_text()).get('complete')
         if not completed_reference:
