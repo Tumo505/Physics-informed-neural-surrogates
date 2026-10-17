@@ -1,0 +1,43 @@
+{
+  "complete": true,
+  "engineering_only": true,
+  "records": [
+    {
+      "zero_based_step": 0,
+      "time_s": 0.00125,
+      "method": "mumps",
+      "seconds": 42.19117754197214,
+      "iterations": 1,
+      "KSP_reason": 4,
+      "true_linear_residual_l2_N": 2.4187519698545736e-17,
+      "known_nonlinear_reference_residual_l2_N": 6.623608638853702e-13,
+      "error": null,
+      "accepted": true
+    },
+    {
+      "zero_based_step": 0,
+      "time_s": 0.00125,
+      "method": "gamg",
+      "seconds": 14.003803208004683,
+      "iterations": 79,
+      "KSP_reason": 3,
+      "true_linear_residual_l2_N": 9.635298454139602e-13,
+      "known_nonlinear_reference_residual_l2_N": 6.623608638853702e-13,
+      "error": null,
+      "accepted": true,
+      "relative_correction_difference_vs_MUMPS": 1.597406593128739e-09
+    }
+  ],
+  "reference_name": "cardiac_quadratic_reference_refined_v1",
+  "reference_complete": false,
+  "steps": [
+    0
+  ],
+  "executed_source_sha256": "93b9e6b3b17cc62546ec97f661293d5fec24e6e91c85a4c40a915e6f9851d093",
+  "config_sha256": "d17c08e61e0b7704a2d390340a5bdf98e6d38a83ccddd3e2a921e1d6639c765a",
+  "reference_output_sha256": null,
+  "compared_field_sha256": {
+    "0": "648f8352a4b0d04a864c4f68493598fc521c052950dab2b263b24c2f24a82e5c"
+  },
+  "scope": "Identical native P2 tangent matrices and right-hand sides at the specified known-case Newton initial guesses. GAMG receives six rigid-body near-nullspace vectors. No equations, states, trajectories or model selection change. Linear correction agreement does not establish nonlinear full-cycle equivalence or end-to-end speedup. Startup results on an incomplete reference are engineering evidence only. 120s per-solve monitor guard is checked at Krylov iteration boundaries, not inside preconditioner setup."
+}

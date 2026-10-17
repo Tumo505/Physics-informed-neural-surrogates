@@ -90,6 +90,15 @@ def dynamic_rows(P):
  capacity=P/'experiments/metrics/dynamic_refinement_capacity_p2_r1.json'
  if capacity.exists():
   d=json.loads(capacity.read_text());w=d['worker'];rows+=['',f'**Refined P2 resource probe:** {w["displacement_dofs"]} displacement DOFs; single1000Pa startup query accepted {w.get("solve_accepted",False)}, residual {fmt(w.get("residual_l2_N"))}N, nonlinear solve {w.get("nonlinear_seconds",0):.2f}s, sampled peak worker memory {d["sampled_peak_worker_RSS_bytes"]/1e9:.2f}GB. This bounded engineering query does not establish full-cycle feasibility or convergence. The matched mesh-refinement trajectory uses fixed1.25ms steps and a20,000MB MUMPS allocation cap.']
+ solver_probes=[P/f'experiments/metrics/{name}.json' for name in ['dynamic_quadratic_krylov_probe','dynamic_quadratic_krylov_refined_startup']]
+ if any(p.exists() for p in solver_probes):
+  rows+=['','**Iterative linear-solver engineering check.** Identical native Newton tangent matrices and right-hand sides are solved with MUMPS and GMRES/GAMG. Six rigid-body modes supply the near-nullspace. The previous accepted reference fields independently verify reconstructed histories. This does not replace any reference trajectory or alter its mechanics. Timings overlap other FE calculations and are engineering measurements, not isolated end-to-end speedups.', '', '| Reference | Time(s) | MUMPS(s) | GMRES/GAMG(s) | Linear correction relative difference | GAMG accepted |','|---|---:|---:|---:|---:|---|']
+  for path in solver_probes:
+   if path.exists():
+    d=json.loads(path.read_text())
+    for step in d['steps']:
+     pair={r['method']:r for r in d['records'] if r['zero_based_step']==step};a,b=pair['mumps'],pair['gamg'];rows.append(f'| {d["reference_name"]} | {a["time_s"]:g} | {a["seconds"]:.3f} | {b["seconds"]:.3f} | {b["relative_correction_difference_vs_MUMPS"]:.3g} | {b["accepted"]} |')
+  rows+=['','Acceptance requires positive KSP reason, finite correction and true linear residual below1e-8N. Full nonlinear convergence, refined-mesh loaded-state robustness and complete-cycle equivalence must be verified before changing the trajectory solver. Startup agreement alone cannot justify such a change.']
  for candidate in ['dt00125', 'dt001', 'refined']:
   config=P/f'configs/physics/dynamic_quadratic_reference_{candidate}.json'
   if config.exists():

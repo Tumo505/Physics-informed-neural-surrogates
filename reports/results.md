@@ -152,11 +152,22 @@ Two1.25ms substeps across that interval accepted:True. This changes the discrete
 
 A separate history/load homotopy reproduced the previous native equilibrium, then attempted the EXACT failed2.5ms algebraic target with ten continuation stages and at most ten Newton iterations per stage. Target recovered:False; last fraction0.40, residual0.0325689N. Intermediate continuation equations are not physical timesteps or surrogate labels. The original accepted checkpoint remains unchanged.
 
-**Controlled P2 time refinement in progress:** 150/1000 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 time refinement in progress:** 240/1000 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
 **Controlled P2 mesh refinement in progress:** 2/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
 **Refined P2 resource probe:** 639735 displacement DOFs; single1000Pa startup query accepted True, residual 8.95821e-12N, nonlinear solve 180.37s, sampled peak worker memory 10.68GB. This bounded engineering query does not establish full-cycle feasibility or convergence. The matched mesh-refinement trajectory uses fixed1.25ms steps and a20,000MB MUMPS allocation cap.
+
+**Iterative linear-solver engineering check.** Identical native Newton tangent matrices and right-hand sides are solved with MUMPS and GMRES/GAMG. Six rigid-body modes supply the near-nullspace. The previous accepted reference fields independently verify reconstructed histories. This does not replace any reference trajectory or alter its mechanics. Timings overlap other FE calculations and are engineering measurements, not isolated end-to-end speedups.
+
+| Reference | Time(s) | MUMPS(s) | GMRES/GAMG(s) | Linear correction relative difference | GAMG accepted |
+|---|---:|---:|---:|---:|---|
+| cardiac_quadratic_reference_dt00125_v1 | 0.00125 | 1.693 | 1.376 | 1.53e-09 | True |
+| cardiac_quadratic_reference_dt00125_v1 | 0.28 | 1.712 | 2.862 | 1.12e-09 | True |
+| cardiac_quadratic_reference_dt00125_v1 | 0.5 | 2.076 | 1.827 | 3.91e-11 | True |
+| cardiac_quadratic_reference_refined_v1 | 0.00125 | 42.191 | 14.004 | 1.6e-09 | True |
+
+Acceptance requires positive KSP reason, finite correction and true linear residual below1e-8N. Full nonlinear convergence, refined-mesh loaded-state robustness and complete-cycle equivalence must be verified before changing the trajectory solver. Startup agreement alone cannot justify such a change.
 
 **Whole-element P2 positivity audit (cardiac_quadratic_reference_dt00125_v1).** 800 endpoint and stress-state fields, 17625 tetrahedra each. Minimum cubic Bernstein lower bounds: endpoint 0.230261, stress 0.243632; unresolved element-states 0/0. Sufficient whole-element positivity condition passed: True. A P2 deformation gradient is affine and its determinant is cubic; nonnegative tetrahedral Bernstein basis functions partition unity. Thus positive coefficients bound the determinant throughout each element in exact arithmetic. This implementation uses float64 with1e-9 margin and checks polynomial reconstruction and integral identities at four frames; it is not an interval-arithmetic proof or evidence of discretization accuracy.
 

@@ -1,0 +1,101 @@
+{
+  "complete": true,
+  "engineering_only": true,
+  "records": [
+    {
+      "zero_based_step": 0,
+      "time_s": 0.00125,
+      "method": "mumps",
+      "seconds": 1.6933557499432936,
+      "iterations": 1,
+      "KSP_reason": 4,
+      "true_linear_residual_l2_N": 1.380638874694695e-17,
+      "known_nonlinear_reference_residual_l2_N": 2.1698830412787356e-13,
+      "error": null,
+      "accepted": true
+    },
+    {
+      "zero_based_step": 0,
+      "time_s": 0.00125,
+      "method": "gamg",
+      "seconds": 1.375677749980241,
+      "iterations": 67,
+      "KSP_reason": 3,
+      "true_linear_residual_l2_N": 7.725520802328078e-13,
+      "known_nonlinear_reference_residual_l2_N": 2.1698830412787356e-13,
+      "error": null,
+      "accepted": true,
+      "relative_correction_difference_vs_MUMPS": 1.5342827569959812e-09
+    },
+    {
+      "zero_based_step": 223,
+      "time_s": 0.28,
+      "method": "mumps",
+      "seconds": 1.7119831660529599,
+      "iterations": 1,
+      "KSP_reason": 4,
+      "true_linear_residual_l2_N": 1.540282088767176e-13,
+      "known_nonlinear_reference_residual_l2_N": 2.810584885732079e-10,
+      "error": null,
+      "accepted": true
+    },
+    {
+      "zero_based_step": 223,
+      "time_s": 0.28,
+      "method": "gamg",
+      "seconds": 2.8623492079786956,
+      "iterations": 220,
+      "KSP_reason": 2,
+      "true_linear_residual_l2_N": 7.481337990389284e-09,
+      "known_nonlinear_reference_residual_l2_N": 2.810584885732079e-10,
+      "error": null,
+      "accepted": true,
+      "relative_correction_difference_vs_MUMPS": 1.1239305382690687e-09
+    },
+    {
+      "zero_based_step": 399,
+      "time_s": 0.5,
+      "method": "mumps",
+      "seconds": 2.07557191606611,
+      "iterations": 1,
+      "KSP_reason": 4,
+      "true_linear_residual_l2_N": 7.186292657271433e-14,
+      "known_nonlinear_reference_residual_l2_N": 1.1876973321856808e-11,
+      "error": null,
+      "accepted": true
+    },
+    {
+      "zero_based_step": 399,
+      "time_s": 0.5,
+      "method": "gamg",
+      "seconds": 1.8274230420356616,
+      "iterations": 114,
+      "KSP_reason": 2,
+      "true_linear_residual_l2_N": 7.844425109950999e-11,
+      "known_nonlinear_reference_residual_l2_N": 1.1876973321856808e-11,
+      "error": null,
+      "accepted": true,
+      "relative_correction_difference_vs_MUMPS": 3.912068997117916e-11
+    }
+  ],
+  "reference_name": "cardiac_quadratic_reference_dt00125_v1",
+  "reference_complete": true,
+  "steps": [
+    0,
+    223,
+    399
+  ],
+  "executed_source_sha256": "93b9e6b3b17cc62546ec97f661293d5fec24e6e91c85a4c40a915e6f9851d093",
+  "config_sha256": "c4c4841a1bc57c5337b242b470f4501238587641c95c7984d5d468a9ea2b91bd",
+  "reference_output_sha256": {
+    "displacement_coefficients.npy": "19bbc46a5909b8e5be042e93aa4e71bc68479e81bd53139486cb017f41fcbf73",
+    "displacement_vertices.npy": "43836c7740b47aebb6bcb02201ecb343ddc63208575aadf506153e46bf9ee7ca",
+    "inputs.npz": "f76e4e91651c729c00b2b08019ce0dc172a6ebf953ba634e1e4c1c9871b5aa51"
+  },
+  "compared_field_sha256": {
+    "0": "ee215ffbc8df803f2c0b48f0d8c39e7b6f78621f7ea6637a141b8220069c737b",
+    "223": "17f31d88c22a6581d347585058722d1c276db7ebe04cbfa445e48b89eea8ac79",
+    "399": "4b77c148078105c44a6493d29e56e1da73d80a6ad006d7e9b765190b4df9d430"
+  },
+  "scope": "Identical native P2 tangent matrices and right-hand sides at the specified known-case Newton initial guesses. GAMG receives six rigid-body near-nullspace vectors. No equations, states, trajectories or model selection change. Linear correction agreement does not establish nonlinear full-cycle equivalence or end-to-end speedup. Startup results on an incomplete reference are engineering evidence only. 120s per-solve monitor guard is checked at Krylov iteration boundaries, not inside preconditioner setup."
+}
