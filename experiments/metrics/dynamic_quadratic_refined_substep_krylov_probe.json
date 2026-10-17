@@ -1,5 +1,5 @@
 {
-  "complete": false,
+  "complete": true,
   "engineering_only": true,
   "reference_name": "cardiac_quadratic_reference_refined_v1",
   "local_changed_grid_probe": true,
@@ -12,6 +12,185 @@
     13
   ],
   "executed_source_sha256": "445028bafd741c897ef0ec29b6bbbed3d6139ecdf42e5d4bf158fdb8bf45277b",
-  "records": [],
+  "records": [
+    {
+      "zero_based_step": 9,
+      "time_s": 0.26875,
+      "accepted": true,
+      "seconds": 133.39519120799378,
+      "SNES_reason": 2,
+      "nonlinear_iterations": 6,
+      "total_linear_iterations": 425,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "Jacobian_near_nullspace_attachments": 7,
+      "known_reference_residual_l2_N": 2.894825716173754e-12,
+      "residual_l2_N": 3.009252980985003e-12,
+      "relative_coefficient_difference_vs_MUMPS": 4.0819638508471576e-15,
+      "minimum_endpoint_sampled_detF": 0.4536389516990606,
+      "minimum_stress_sampled_detF": 0.4614035142303569,
+      "error": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_l2_N": 1.7840728142742464
+        },
+        {
+          "iteration": 1,
+          "residual_l2_N": 0.12596968337498038
+        },
+        {
+          "iteration": 2,
+          "residual_l2_N": 0.027372319845550743
+        },
+        {
+          "iteration": 3,
+          "residual_l2_N": 0.0035153937292858616
+        },
+        {
+          "iteration": 4,
+          "residual_l2_N": 0.0001059044450292685
+        },
+        {
+          "iteration": 5,
+          "residual_l2_N": 1.0699467576622738e-07
+        },
+        {
+          "iteration": 6,
+          "residual_l2_N": 3.009252980985003e-12
+        }
+      ],
+      "accepted_reference_nonlinear_seconds": 291.18551166704856,
+      "reference_field_sha256": "cead41220bdfa1ae2ee7289ba5e434219187b9f16b13b26bbaf1fe292d5b03b0"
+    },
+    {
+      "zero_based_step": 11,
+      "time_s": 0.27,
+      "accepted": true,
+      "seconds": 230.37540691706818,
+      "SNES_reason": 2,
+      "nonlinear_iterations": 10,
+      "total_linear_iterations": 1071,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "Jacobian_near_nullspace_attachments": 10,
+      "known_reference_residual_l2_N": 3.224733516113339e-12,
+      "residual_l2_N": 3.3520783712281306e-12,
+      "relative_coefficient_difference_vs_MUMPS": 5.242366430589863e-15,
+      "minimum_endpoint_sampled_detF": 0.421885220378921,
+      "minimum_stress_sampled_detF": 0.43950314312404715,
+      "error": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_l2_N": 2.0142904598561406
+        },
+        {
+          "iteration": 1,
+          "residual_l2_N": 1.8028743979388477
+        },
+        {
+          "iteration": 2,
+          "residual_l2_N": 1.602856660762155
+        },
+        {
+          "iteration": 3,
+          "residual_l2_N": 1.390465603046123
+        },
+        {
+          "iteration": 4,
+          "residual_l2_N": 0.5062033341818233
+        },
+        {
+          "iteration": 5,
+          "residual_l2_N": 0.20059537206334718
+        },
+        {
+          "iteration": 6,
+          "residual_l2_N": 0.05116489165512536
+        },
+        {
+          "iteration": 7,
+          "residual_l2_N": 0.007314017641873328
+        },
+        {
+          "iteration": 8,
+          "residual_l2_N": 0.0002678985692753815
+        },
+        {
+          "iteration": 9,
+          "residual_l2_N": 4.355158827774607e-07
+        },
+        {
+          "iteration": 10,
+          "residual_l2_N": 3.3520783712281306e-12
+        }
+      ],
+      "accepted_reference_nonlinear_seconds": 487.836619541049,
+      "reference_field_sha256": "6ce20395c0a8213ebb3c7e4d5a544e784a3d6c2cdf424c1412448c038c10384f"
+    },
+    {
+      "zero_based_step": 13,
+      "time_s": 0.27125,
+      "accepted": true,
+      "seconds": 206.256060665939,
+      "SNES_reason": 2,
+      "nonlinear_iterations": 9,
+      "total_linear_iterations": 994,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "Jacobian_near_nullspace_attachments": 9,
+      "known_reference_residual_l2_N": 7.91699636977003e-12,
+      "residual_l2_N": 7.978105971162831e-12,
+      "relative_coefficient_difference_vs_MUMPS": 4.096967038298692e-15,
+      "minimum_endpoint_sampled_detF": 0.38908137725194775,
+      "minimum_stress_sampled_detF": 0.40058823939075333,
+      "error": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_l2_N": 3.7022695153239544
+        },
+        {
+          "iteration": 1,
+          "residual_l2_N": 2.3601226340730372
+        },
+        {
+          "iteration": 2,
+          "residual_l2_N": 2.1308669709275785
+        },
+        {
+          "iteration": 3,
+          "residual_l2_N": 0.9109510230324368
+        },
+        {
+          "iteration": 4,
+          "residual_l2_N": 0.29223514838190856
+        },
+        {
+          "iteration": 5,
+          "residual_l2_N": 0.08129010510270791
+        },
+        {
+          "iteration": 6,
+          "residual_l2_N": 0.013163642403474046
+        },
+        {
+          "iteration": 7,
+          "residual_l2_N": 0.0005491016141793048
+        },
+        {
+          "iteration": 8,
+          "residual_l2_N": 1.2522148449412752e-06
+        },
+        {
+          "iteration": 9,
+          "residual_l2_N": 7.978105971162831e-12
+        }
+      ],
+      "accepted_reference_nonlinear_seconds": 428.7702797499951,
+      "reference_field_sha256": "07effdce1d907876277a571424cd5ca4f70d1a7443936c668fcc876d715923ad"
+    }
+  ],
   "scope": "Native nonlinear solves at the same frozen histories, pressure, passive law and P2 discretization as accepted MUMPS states. Reconstructed histories must first reproduce the recorded solution residual. The three original production predictor candidates are screened by native residual. Only linear solver/preconditioner differ. A 20-Newton-iteration/300s monitor budget bounds engineering effort; the time guard acts at nonlinear iteration boundaries. Acceptance additionally requires same-root relative coefficient agreement below1e-6 and positive sampled endpoint/stress Jacobians. These isolated probes do not establish full-cycle equivalence or isolated runtime speedup, and never overwrite reference data."
 }

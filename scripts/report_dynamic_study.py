@@ -126,6 +126,12 @@ def dynamic_rows(P):
    cfg=json.loads(halfstep_config.read_text());progress=P/'data/processed'/cfg['name']/'manifest.json'
    if progress.exists():
     v=json.loads(progress.read_text());rows+=['',f'Half-step coarse reference: {v["completed_steps"]}/{v["n_steps"]} persisted steps; full cycle complete {v["complete"]}.']
+  halfstep_mesh=P/'experiments/metrics/dynamic_quadratic_controlled_halfstep_mesh.json'
+  halfstep_workflow=P/'experiments/metrics/dynamic_quadratic_controlled_halfstep_mesh_pipeline.json'
+  if halfstep_mesh.exists() and json.loads(halfstep_mesh.read_text()).get('complete'):
+   v=json.loads(halfstep_mesh.read_text());rows+=['',f'**Full-cycle half-step mesh control.** Relative volume/time L2 discrepancy {v["relative_space_time_L2"]:.4%}; component RMSE {v["component_volume_time_RMSE_m"]*1000:.5f}mm; within1% {v["passes_declared_one_percent_sensitivity"]}. Same0.625ms, strict nonlinear stopping, Q6, backend and physical acceptance on both meshes. This remains two-level numerical sensitivity with separately unresolved integration uncertainty.']
+  elif halfstep_workflow.exists():
+   v=json.loads(halfstep_workflow.read_text());rows+=['',f'Half-step mesh workflow phase: {v.get("active_phase")}; complete {v.get("complete",False)}. The queued worker acquires the existing coarse workflow lock, requires completed baseline hash/positivity/norm verification and three passed backend probes, then starts the separate refined reference. No duplicate coarse job is launched. Failure if recorded: {v.get("failure","none")}.']
  geometry_protocol=P/'configs/physics/dynamic_quadratic_geometry_controls.json'
  if geometry_protocol.exists():
   protocol=json.loads(geometry_protocol.read_text());rows+=['','**Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.', '', '| Validation input | Coarse/fine persisted steps | Full-cycle relative volume L2 difference | Within1% |','|---|---|---:|---|']

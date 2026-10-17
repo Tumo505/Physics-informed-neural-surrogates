@@ -96,7 +96,7 @@ if solver_path.exists():
         fig.tight_layout()
         fig.savefig(P/'reports/figures/dynamic_quadratic_solver_equivalence.png', dpi=180)
         plt.close(fig)
-for factor in ['time', 'mesh', 'mesh_gamg', 'quadrature', 'quadrature10']:
+for factor in ['time', 'mesh', 'mesh_gamg', 'quadrature', 'quadrature10', 'halfstep_mesh']:
     f = P/f'experiments/metrics/dynamic_quadratic_controlled_{factor}.json'
     if f.exists():
         d = json.loads(f.read_text())
@@ -106,7 +106,7 @@ if not evidence:
     raise SystemExit(0 if audit_path.exists() else 'No completed validation evidence to plot')
 fig, axes = plt.subplots(1, len(evidence), figsize=(6.4*len(evidence), 4.4), squeeze=False)
 for ax, (factor, d) in zip(axes[0], evidence):
-    label = dict(time='timestep', mesh='mesh (MUMPS)', mesh_gamg='mesh (GMRES/GAMG)', quadrature='integration degree 6/8', quadrature10='integration degree 8/10')[factor]
+    label = dict(time='timestep', mesh='mesh (MUMPS)', mesh_gamg='mesh (GMRES/GAMG)', quadrature='integration degree 6/8', quadrature10='integration degree 8/10', halfstep_mesh='mesh at 0.625 ms')[factor]
     records = d['records']
     ax.plot([r['time_s'] for r in records],
             [1e3*np.sqrt(r['error_squared_integral_m5']/(3*d['physical_volume_m3'])) for r in records])

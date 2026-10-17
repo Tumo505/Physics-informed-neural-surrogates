@@ -14,6 +14,8 @@ ap.add_argument('factor', choices=['time', 'mesh', 'solver', 'mesh_gamg', 'quadr
 ap.add_argument('--baseline-config')
 ap.add_argument('--candidate-config')
 ap.add_argument('--output-stem')
+ap.add_argument('--wait-for-workflow', help='Wait for this existing workflow lock, then require its successful audited completion')
+ap.add_argument('--require-krylov-probe', help='Require a completed three-state same-root backend probe')
 args = ap.parse_args()
 baseline = 'configs/physics/dynamic_quadratic_reference_'+('gamg' if args.factor in ['mesh_gamg','quadrature'] else 'dt00125')+'.json'
 candidate = 'configs/physics/dynamic_quadratic_reference_'+dict(time='dt001',mesh='refined',solver='gamg',mesh_gamg='refined_gamg',quadrature='quadrature8',reference='halfstep_gamg')[args.factor]+'.json'
@@ -58,6 +60,28 @@ def run(label, command):
 
 persist()
 try:
+    if args.wait_for_workflow:
+        state['active_phase'] = 'waiting_for_audited_baseline'; persist()
+        prerequisite_lock = (P/'experiments/logs'/f'{args.wait_for_workflow}.lock').open('w')
+        fcntl.flock(prerequisite_lock, fcntl.LOCK_EX)
+        prerequisite_path = P/'experiments/metrics'/f'{args.wait_for_workflow}_pipeline.json'
+        prerequisite = json.loads(prerequisite_path.read_text())
+        assert prerequisite['complete'] and not prerequisite.get('failure'), 'Baseline workflow did not complete successfully'
+        baseline_name = json.loads((P/baseline).read_text())['name']
+        verification = json.loads((P/'experiments/metrics'/f'{baseline_name}_verification.json').read_text())
+        baseline_manifest = json.loads((P/'data/processed'/baseline_name/'manifest.json').read_text())
+        assert verification['passed'] and baseline_manifest['complete']
+        assert verification['output_sha256'] == baseline_manifest['output_sha256']
+        state['baseline_workflow_sha256'] = hashlib.sha256(prerequisite_path.read_bytes()).hexdigest()
+        fcntl.flock(prerequisite_lock, fcntl.LOCK_UN); prerequisite_lock.close()
+    if args.require_krylov_probe:
+        path = P/args.require_krylov_probe
+        probe = json.loads(path.read_text())
+        assert probe['complete'] and probe['requested_steps'] == [9,11,13]
+        assert len(probe['records']) == 3 and all(r['accepted'] for r in probe['records'])
+        assert probe['local_changed_grid_probe']
+        state['required_krylov_probe_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+        persist()
     if (P/'data/processed'/name/'failure.json').exists():
         raise RuntimeError('A rejected trajectory is preserved; automatic retries are disabled')
     if args.factor in ['mesh', 'mesh_gamg']:
