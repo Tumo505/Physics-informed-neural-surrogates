@@ -128,7 +128,7 @@ These FE discrepancies are from one baseline geometry/waveform and use volume-we
 
 A quadratic-displacement capacity probe on the baseline mesh (89679 DOFs) used 1.33GiB and31.80s for the same startup query, including first-use compilation. It is not a matched speedup measurement. The pinned source defaults to P2 displacement; the neural corpus uses P1 displacement. The follow-up retains the same P1 fiber fields and passive mechanics to isolate displacement-order sensitivity. A strong bulk penalty makes volumetric locking a possible contributor, but this is not an isolated causal diagnosis.
 
-**Quadratic reference follow-up in progress:** 80/400 accepted steps. No full-cycle quadratic discrepancy is claimed until all steps and independent native norm verification pass. Frozen model selection and held-out results remain unchanged.
+**Quadratic reference follow-up in progress:** 100/400 accepted steps. No full-cycle quadratic discrepancy is claimed until all steps and independent native norm verification pass. Frozen model selection and held-out results remain unchanged.
 
 **Matched original-timestep stability check.** A separate one-geometry/one-cycle, seed11 pilot uses the archived1ms pressure/reference trajectory. Train first600 frames, select on the next200, evaluate the already-inspected last199. This is a repeated temporal benchmark, not independent trajectory confirmation. Every999-step inference begins at zero and uses only prescribed pressure and its own predicted histories. A training-only15% relative field-RMSE gate excludes the trivial zero predictor; the initial version that selected zeros on low-motion validation is retained as a FAILED acceptance test, not a stability success.
 

@@ -186,5 +186,6 @@ dynamic-reference-capacity:
 dynamic-quadratic-reference: dynamic-convergence
 	$(FEM_RUN) scripts/generate_quadratic_reference.py
 	env OPENBLAS_NUM_THREADS=2 $(PY) scripts/analyze_quadratic_reference.py
+	$(PY) scripts/evaluate_reference_sensitivity.py
 	$(PY) scripts/plot_quadratic_reference.py
 	$(PY) scripts/write_reports.py

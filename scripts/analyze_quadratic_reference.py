@@ -24,6 +24,7 @@ metric = P / ('experiments/metrics/dynamic_quadratic_comparison_pilot.json'
 if args.native_verify:
     sys.path.insert(0, str(P / 'src'))
     from lv_surrogate.physics.reference_fem import setup, LVProblem, assign_nodes, df
+    from lv_surrogate.physics.quadratic import QuadraticKinematics
     result = json.loads(metric.read_text())
     _, material, coarse = setup(dt=.0025, geometry_scales=[1, 1])
     parameters = dict(coarse.parameters); parameters['function_space'] = 'P_2'
@@ -32,12 +33,30 @@ if args.native_verify:
                                              'petsc': {'ksp_type': 'preonly', 'pc_type': 'none'}})
     fine_geo, _, fine = setup(dt=.0025, geometry_scales=[1, 1], refinement_level=1)
     common = df.VectorFunctionSpace(fine_geo.mesh, 'CG', 2)
+    saved_inputs = np.load(root/'inputs.npz')
+    np.testing.assert_array_equal(coarse.geometry.mesh.cells(), saved_inputs['cells'])
+    np.testing.assert_allclose(quadratic.u_space.tabulate_dof_coordinates(),
+                               saved_inputs['dof_coordinates'], rtol=0, atol=1e-14)
+    kinematics = QuadraticKinematics(quadratic.u_space, saved_inputs['qpoints'],
+                                     saved_inputs['qweights'])
+    saved_fine = np.load(P/'data/processed/cardiac_dynamic_v1/convergence_refined_dt00025/geometry.npz')
+    np.testing.assert_array_equal(fine_geo.mesh.cells(), saved_fine['cells'])
+    np.testing.assert_allclose(fine_geo.mesh.coordinates(), saved_fine['coords'],
+                               rtol=0, atol=1e-14)
     coefficients = np.load(root / 'displacement_coefficients.npy', mmap_mode='r')
     fine_fields = np.load(P / 'data/processed/cardiac_dynamic_v1/convergence_refined_dt00025/trajectory.npz')['u']
     coarse_fields = np.load(P / 'data/processed/cardiac_dynamic_v1/convergence_dt0.0025/trajectory.npz')['u']
     checks = []
+    determinant_checks = []
     for i in ([0, 9] if args.pilot else [0, 99, 199, 399]):
         quadratic.u.vector().set_local(coefficients[i]); quadratic.u.vector().apply('insert')
+        minimum, determinant_integral = kinematics.audit(coefficients[i])
+        native_determinant = float(df.assemble(df.det(df.Identity(3)+df.grad(quadratic.u))*df.dx))
+        np.testing.assert_allclose(determinant_integral, native_determinant,
+                                   rtol=1e-10, atol=1e-13)
+        determinant_checks.append(dict(step=i, sampled_minimum_detF=minimum,
+            relative_integral_discrepancy=abs(determinant_integral-native_determinant)
+                                          /max(abs(native_determinant), 1e-30)))
         p2fine = df.interpolate(quadratic.u, common)
         assign_nodes(fine, fine_fields[i])
         p1fine = df.interpolate(fine.u, common)
@@ -58,7 +77,10 @@ if args.native_verify:
                                relative_discrepancy=abs(algebraic-native)/max(abs(native), 1e-30)))
         print('NATIVE P2 NORM VERIFIED', i, flush=True)
     result['native_norm_verification'] = dict(passed=True, records=checks,
+        source_sha256=ENTRY_SOURCE_SHA256,
         scope='Independent native interpolation to common P2 space, then exact degree-4 UFL integration.')
+    result['native_kinematics_verification'] = dict(passed=True, records=determinant_checks,
+        scope='Actual nonlinear P2-field determinant integration versus native UFL at fixed frames.')
     result['complete'] = True
     metric.write_text(json.dumps(result, indent=2, allow_nan=False))
     sys.exit(0)
@@ -196,4 +218,5 @@ env.update(FI_PROVIDER='tcp', FI_TCP_IFACE='en0', OMP_NUM_THREADS='2', OPENBLAS_
 subprocess.run([str(P/'.tools/bin/micromamba'), 'run', '-p', str(P/'.fenics'),
                 'python', str(Path(__file__).resolve()), '--native-verify']
                + (['--pilot'] if args.pilot else []), cwd=P, env=env, check=True)
-print('QUADRATIC FULL-CYCLE COMPARISON COMPLETE', flush=True)
+print('QUADRATIC STARTUP NORM PILOT COMPLETE' if args.pilot
+      else 'QUADRATIC FULL-CYCLE COMPARISON COMPLETE', flush=True)

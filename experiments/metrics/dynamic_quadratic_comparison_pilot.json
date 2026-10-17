@@ -1,6 +1,19 @@
 {
   "complete": true,
-  "source_sha256": "0a728d7489e80561bc2044a09af115b907119d7265e74af2196ed72621d7a798",
+  "source_sha256": "e9e656f0b3def81aa05e7dff2080a4db1572459caaafea030a9608db9717f5f6",
+  "reference_output_sha256": null,
+  "reference_summary": {
+    "completed_steps": 90,
+    "dofs": 89679,
+    "tetrahedra": 17625,
+    "minimum_endpoint_sampled_detF": 0.8189814867211803,
+    "minimum_stress_sampled_detF": 0.8244489369676862,
+    "maximum_residual_l2_N": 9.994710309320908e-09,
+    "native_integral_checked_steps": [
+      0
+    ],
+    "positivity_scope": "Source degree-6 quadrature points and all tetrahedral vertices, endpoint and generalized-alpha stress states; not a mathematical positivity guarantee between sample locations."
+  },
   "full_cycle": false,
   "n_endpoints": 10,
   "dt_s": 0.0025,
@@ -161,7 +174,7 @@
       ]
     }
   },
-  "scope": "Full-cycle discretization sensitivity on one passive geometry/loading: P2 on 17625 tetrahedra versus P1 on 17625 and141000 tetrahedra. P2 is a comparison reference, not assumed continuum truth.",
+  "scope": "Ten-step startup pilot only. Discretization sensitivity on one passive geometry/loading: P2 on 17625 tetrahedra versus P1 on 17625 and141000 tetrahedra. P2 is a comparison reference, not assumed continuum truth.",
   "limitations": [
     "Not a three-level asymptotic convergence study.",
     "No claim of continuum-calibrated neural intervals.",
@@ -199,6 +212,7 @@
         "relative_discrepancy": 1.4306535381483274e-13
       }
     ],
+    "source_sha256": "e9e656f0b3def81aa05e7dff2080a4db1572459caaafea030a9608db9717f5f6",
     "scope": "Independent native interpolation to common P2 space, then exact degree-4 UFL integration."
   }
 }
