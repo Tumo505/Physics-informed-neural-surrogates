@@ -1,0 +1,20 @@
+{
+  "complete": false,
+  "engineering_only": true,
+  "protocol": {
+    "reference": "cardiac_quadratic_reference_refined_v1",
+    "steps_after_checkpoint": 6,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 20,
+    "wall_budget_seconds": 1800,
+    "mumps_memory_limit_MB": 20000,
+    "scope": "Bounded engineering probe after direct solver reports relative convergence at0.270s but fails the unchanged physical force threshold. Start at immutable persisted210-step checkpoint, tighten nonlinear stopping, preserve dt/mesh/quadrature/physics/pressure. No reference overwrite, model training or relaxed acceptance. Successful recovery is not full-cycle convergence. Wall guard checked at nonlinear iteration boundaries."
+  },
+  "records": [],
+  "protocol_sha256": "861315b0b266c4ce56ca0bb6dc7c923a76d7f37f9450644358e13ef9c02c5925",
+  "reference_config_sha256": "d17c08e61e0b7704a2d390340a5bdf98e6d38a83ccddd3e2a921e1d6639c765a",
+  "start_step": 210,
+  "checkpoint_sha256": "2f72860ce17a5ff39894fa11ff331ad2ec34e811d491e14d5e7148488f618254",
+  "source_sha256": "e2ed0809862cb815b643f309e98106960919b6443910386c6788982a6fecae64"
+}

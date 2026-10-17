@@ -1,0 +1,17 @@
+{
+  "name": "cardiac_quadratic_reference_quadrature10_v1",
+  "dt_s": 0.00125,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 0,
+  "geometry_scales": [
+    1.0,
+    1.0
+  ],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 10,
+  "checkpoint_interval": 10,
+  "native_solver": "gamg",
+  "scope": "Prospective follow-up to retained degree6-versus8 sensitivity failure (1.568%). Compare full degree8 versus10 trajectories, P2 coarse mesh, dt1.25ms, GAMG, same passive mechanics and rest/load histories. Only quadrature degree changes. Same declared1% tolerance, no neural selection or calibration. This sensitivity check does not establish continuum truth."
+}

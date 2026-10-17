@@ -1,0 +1,43 @@
+{
+  "complete": true,
+  "reference_name": "cardiac_quadratic_reference_quadrature8_v1",
+  "passed": true,
+  "config_sha256": "9d02d55d4b43e36dc0d9e026663da217a55f59888f360ff5a399e972457a5001",
+  "output_sha256": {
+    "displacement_coefficients.npy": "68c16a75e0f8cd80a2ed1afb5993576756d7114da11a4bc3c4b29bbe618d7794",
+    "displacement_vertices.npy": "2d55a39573e0ec1a2343d9aeaf7e8b00f53db05902197084c7f24754b4a973c9",
+    "inputs.npz": "d4bdb921fa9e3afcf74310a7e80c2b3d99447956d7dde36d1cb530cd1e3603b5"
+  },
+  "verifier_sha256": "2ffc1f78daf2d3639f3fbd74f08c5c4a6c4b3250578c75e481b797611c4a5171",
+  "accepted_steps": 800,
+  "maximum_native_residual_N": 4.410210345878912e-08,
+  "minimum_endpoint_Bernstein_bound": 0.3125348650385306,
+  "minimum_stress_Bernstein_bound": 0.31254693167511294,
+  "norm_checks": [
+    {
+      "step": 0,
+      "time_s": 0.00125,
+      "physical_L2_squared_m5": 1.5104617883884139e-18,
+      "independent_relative_error": 2.5501207103585262e-15
+    },
+    {
+      "step": 266,
+      "time_s": 0.33375,
+      "physical_L2_squared_m5": 1.954707379000736e-07,
+      "independent_relative_error": 0.0
+    },
+    {
+      "step": 532,
+      "time_s": 0.66625,
+      "physical_L2_squared_m5": 1.959598757178261e-10,
+      "independent_relative_error": 5.276466735364569e-16
+    },
+    {
+      "step": 799,
+      "time_s": 1.0,
+      "physical_L2_squared_m5": 2.8931947519986522e-11,
+      "independent_relative_error": 4.467275167775183e-15
+    }
+  ],
+  "scope": "Native convergence records, immutable hashes, whole-element float64 sufficient positivity audit and independent canonical P2 quadrature versus UFL norms. Does not establish mesh/time/quadrature convergence or continuum accuracy."
+}
