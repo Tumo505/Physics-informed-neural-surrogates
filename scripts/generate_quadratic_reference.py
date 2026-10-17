@@ -41,6 +41,8 @@ if old.get('complete'):
 failure_flag = out/'failure.json'
 if failure_flag.exists():
     failure_flag.unlink()  # The public failure record remains preserved in metrics/Git.
+if 'mumps_memory_limit_MB' in cfg:
+    df.PETScOptions.set('mat_mumps_icntl_23', int(cfg['mumps_memory_limit_MB']))
 geo, material, base_problem = setup(dt=cfg['dt_s'], geometry_scales=cfg['geometry_scales'],
                                     refinement_level=cfg['refinement_level'])
 parameters = dict(base_problem.parameters)

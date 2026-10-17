@@ -1,0 +1,95 @@
+{
+  "complete": false,
+  "pilot": true,
+  "comparison": "mesh",
+  "config_a": {
+    "name": "cardiac_quadratic_reference_dt00125_v1",
+    "dt_s": 0.00125,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 0,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "scope": "New full-cycle passive P2 reference from rest after the failed P2/2.5ms attempt. Fixed 1.25ms steps on the same polyhedral domain and P1 fiber fields. Comparison against P1/2.5ms changes both element order and timestep; it does not isolate p-convergence or establish continuum truth. Frozen neural models remain unchanged."
+  },
+  "config_b": {
+    "name": "cardiac_quadratic_reference_refined_v1",
+    "dt_s": 0.00125,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 1,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "mumps_memory_limit_MB": 20000,
+    "scope": "Controlled full-cycle P2 mesh sensitivity at fixed 1.25ms timestep against completed unrefined P2 reference. Same polyhedral domain, passive law, P1 fiber field, loading and zero initial histories. Capacity query accepted before launch; 639735 displacement DOFs. Two mesh levels do not establish asymptotic convergence or continuum truth. Frozen models and calibration unchanged."
+  },
+  "config_paths": [
+    "configs/physics/dynamic_quadratic_reference_dt00125.json",
+    "configs/physics/dynamic_quadratic_reference_refined.json"
+  ],
+  "config_sha256": [
+    "c4c4841a1bc57c5337b242b470f4501238587641c95c7984d5d468a9ea2b91bd",
+    "d17c08e61e0b7704a2d390340a5bdf98e6d38a83ccddd3e2a921e1d6639c765a"
+  ],
+  "output_sha256": [
+    {
+      "displacement_coefficients.npy": "19bbc46a5909b8e5be042e93aa4e71bc68479e81bd53139486cb017f41fcbf73",
+      "displacement_vertices.npy": "43836c7740b47aebb6bcb02201ecb343ddc63208575aadf506153e46bf9ee7ca",
+      "inputs.npz": "f76e4e91651c729c00b2b08019ce0dc172a6ebf953ba634e1e4c1c9871b5aa51"
+    },
+    null
+  ],
+  "executed_source_sha256": "74c135662a0cd698357854bbdc28a8cb31d271dcceb13a40b05bd71e5e560586",
+  "common_endpoints": 2,
+  "end_time_s": 0.0025,
+  "physical_volume_m3": 0.0001776945147994016,
+  "relative_space_time_L2": 0.20148160354367606,
+  "component_volume_time_RMSE_m": 2.2211955177919816e-08,
+  "tolerance_relative_L2": 0.01,
+  "passes_declared_one_percent_sensitivity": false,
+  "integration": "Trapezoid in time including exactly zero initial fields; exact degree-4 consistent-mass spatial integration at common endpoints.",
+  "manufactured_transfer_max_abs_error": 9.71445146547012e-17,
+  "independent_native_checks": [
+    {
+      "time_s": 0.00125,
+      "mass_norm_squared": 1.0157531566396563e-19,
+      "independent_UFL_norm_squared": 1.0157531566396534e-19,
+      "relative_discrepancy": 2.8440914977197677e-15
+    },
+    {
+      "time_s": 0.0025,
+      "mass_norm_squared": 8.488811136143099e-19,
+      "independent_UFL_norm_squared": 8.488811136143118e-19,
+      "relative_discrepancy": 2.268786421913823e-15
+    }
+  ],
+  "records": [
+    {
+      "time_s": 0.00125,
+      "a_step": 0,
+      "b_step": 0,
+      "error_squared_integral_m5": 1.0157531566396563e-19,
+      "reference_squared_integral_m5": 1.5204065623247502e-18
+    },
+    {
+      "time_s": 0.0025,
+      "a_step": 1,
+      "b_step": 1,
+      "error_squared_integral_m5": 8.488811136143099e-19,
+      "reference_squared_integral_m5": 2.2874594693733062e-17
+    }
+  ],
+  "scope": "Controlled two-level sensitivity in one factor with frozen mechanics and initial/loading conditions. Finer discretization is not assumed continuum truth. Two levels do not establish an asymptotic convergence rate. Partial pilot checks never pass the full-cycle criterion."
+}

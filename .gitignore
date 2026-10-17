@@ -21,3 +21,6 @@ experiments/metrics/*.npz
 /paper/
 /reports/*.md
 !/reports/results.md
+# Local workflow progress; completed scientific comparisons remain versioned.
+experiments/metrics/dynamic_quadratic_controlled_*_pipeline.json
+experiments/metrics/*_bernstein_pilot.json

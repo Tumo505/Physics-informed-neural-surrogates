@@ -1,0 +1,120 @@
+{
+  "complete": false,
+  "pilot": true,
+  "comparison": "timestep",
+  "config_a": {
+    "name": "cardiac_quadratic_reference_dt00125_v1",
+    "dt_s": 0.00125,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 0,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "scope": "New full-cycle passive P2 reference from rest after the failed P2/2.5ms attempt. Fixed 1.25ms steps on the same polyhedral domain and P1 fiber fields. Comparison against P1/2.5ms changes both element order and timestep; it does not isolate p-convergence or establish continuum truth. Frozen neural models remain unchanged."
+  },
+  "config_b": {
+    "name": "cardiac_quadratic_reference_dt001_v1",
+    "dt_s": 0.001,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 0,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "scope": "Controlled full-cycle temporal sensitivity against completed P2/1.25ms on identical mesh, passive mechanics, pressure history and P1 fibers. Start from rest; compare common 5ms endpoints. Neither level is assumed continuum truth. Frozen neural models and calibration remain unchanged."
+  },
+  "config_paths": [
+    "configs/physics/dynamic_quadratic_reference_dt00125.json",
+    "configs/physics/dynamic_quadratic_reference_dt001.json"
+  ],
+  "config_sha256": [
+    "c4c4841a1bc57c5337b242b470f4501238587641c95c7984d5d468a9ea2b91bd",
+    "06762808788e0265f670a914bb10211d81973171d039315a061c4ba0d56a19e6"
+  ],
+  "output_sha256": [
+    {
+      "displacement_coefficients.npy": "19bbc46a5909b8e5be042e93aa4e71bc68479e81bd53139486cb017f41fcbf73",
+      "displacement_vertices.npy": "43836c7740b47aebb6bcb02201ecb343ddc63208575aadf506153e46bf9ee7ca",
+      "inputs.npz": "f76e4e91651c729c00b2b08019ce0dc172a6ebf953ba634e1e4c1c9871b5aa51"
+    },
+    null
+  ],
+  "executed_source_sha256": "74c135662a0cd698357854bbdc28a8cb31d271dcceb13a40b05bd71e5e560586",
+  "common_endpoints": 4,
+  "end_time_s": 0.02,
+  "physical_volume_m3": 0.00017769451479940427,
+  "relative_space_time_L2": 0.0005625142031752436,
+  "component_volume_time_RMSE_m": 6.37276704222256e-09,
+  "tolerance_relative_L2": 0.01,
+  "passes_declared_one_percent_sensitivity": false,
+  "integration": "Trapezoid in time including exactly zero initial fields; exact degree-4 consistent-mass spatial integration at common endpoints.",
+  "manufactured_transfer_max_abs_error": 0.0,
+  "independent_native_checks": [
+    {
+      "time_s": 0.005,
+      "mass_norm_squared": 2.598885562476562e-20,
+      "independent_UFL_norm_squared": 2.598885562476679e-20,
+      "relative_discrepancy": 4.492675805517463e-14
+    },
+    {
+      "time_s": 0.01,
+      "mass_norm_squared": 4.824952472946819e-20,
+      "independent_UFL_norm_squared": 4.8249524729475044e-20,
+      "relative_discrepancy": 1.4207615379091219e-13
+    },
+    {
+      "time_s": 0.015,
+      "mass_norm_squared": 1.1735869363472115e-20,
+      "independent_UFL_norm_squared": 1.1735869363486641e-20,
+      "relative_discrepancy": 1.2377203854727998e-12
+    },
+    {
+      "time_s": 0.02,
+      "mass_norm_squared": 1.248893190379925e-21,
+      "independent_UFL_norm_squared": 1.2488931903844373e-21,
+      "relative_discrepancy": 3.613114163109109e-12
+    }
+  ],
+  "records": [
+    {
+      "time_s": 0.005,
+      "a_step": 3,
+      "b_step": 4,
+      "error_squared_integral_m5": 2.598885562476562e-20,
+      "reference_squared_integral_m5": 3.818378417951132e-16
+    },
+    {
+      "time_s": 0.01,
+      "a_step": 7,
+      "b_step": 9,
+      "error_squared_integral_m5": 4.824952472946819e-20,
+      "reference_squared_integral_m5": 1.2302267835094149e-14
+    },
+    {
+      "time_s": 0.015,
+      "a_step": 11,
+      "b_step": 14,
+      "error_squared_integral_m5": 1.1735869363472115e-20,
+      "reference_squared_integral_m5": 8.968163646571129e-14
+    },
+    {
+      "time_s": 0.02,
+      "a_step": 15,
+      "b_step": 19,
+      "error_squared_integral_m5": 1.248893190379925e-21,
+      "reference_squared_integral_m5": 3.4263016377891646e-13
+    }
+  ],
+  "scope": "Controlled two-level sensitivity in one factor with frozen mechanics and initial/loading conditions. Finer discretization is not assumed continuum truth. Two levels do not establish an asymptotic convergence rate. Partial pilot checks never pass the full-cycle criterion."
+}

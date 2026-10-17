@@ -193,3 +193,13 @@ dynamic-quadratic-reference: dynamic-convergence
 	$(PY) scripts/evaluate_reference_sensitivity.py
 	$(PY) scripts/plot_quadratic_reference.py
 	$(PY) scripts/write_reports.py
+
+.PHONY: dynamic-quadratic-time dynamic-quadratic-mesh dynamic-quadratic-positivity
+dynamic-quadratic-time:
+	$(PY) scripts/run_quadratic_validation.py time
+dynamic-quadratic-mesh:
+	$(PY) scripts/run_quadratic_validation.py mesh
+dynamic-quadratic-positivity:
+	$(PY) scripts/audit_quadratic_positivity.py
+	$(PY) scripts/plot_quadratic_validation.py
+	$(PY) scripts/write_reports.py

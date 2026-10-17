@@ -1,0 +1,31 @@
+{
+  "engineering_only": true,
+  "complete": true,
+  "worker": {
+    "pid": 12623,
+    "phase": "finished",
+    "tetrahedra": 141000,
+    "vertices": 29893,
+    "displacement_dofs": 639735,
+    "nonlinear_seconds": 180.37180379102938,
+    "setup_and_solve_seconds": 185.87496266700327,
+    "iterations": 3,
+    "snes_reason": 2,
+    "residual_l2_N": 8.958205085440981e-12,
+    "solve_accepted": true
+  },
+  "executed_source_sha256": "f6f7487ad6a9afc4046f9f25d5fe134987776175deff1b9b77e57f45454e2f6b",
+  "displacement_degree": 2,
+  "refinement_level": 1,
+  "process_exit_code": 0,
+  "stop_reason": null,
+  "measured_wall_seconds": 188.8145776670426,
+  "sampled_peak_worker_RSS_bytes": 10680532992,
+  "RSS_sample_interval_s": 2,
+  "declared_limits": {
+    "wall_seconds": 300,
+    "RSS_GiB": 30,
+    "MUMPS_MB_per_process": 20000
+  },
+  "scope": "One 1000 Pa startup query from zero histories at dt=2.5 ms; same benchmark mechanics; resource feasibility only. Does not establish full-cycle convergence, stability or accuracy."
+}

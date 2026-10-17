@@ -1,0 +1,13 @@
+{
+  "name": "cardiac_quadratic_reference_dt001_v1",
+  "dt_s": 0.001,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 0,
+  "geometry_scales": [1.0, 1.0],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 6,
+  "checkpoint_interval": 10,
+  "scope": "Controlled full-cycle temporal sensitivity against completed P2/1.25ms on identical mesh, passive mechanics, pressure history and P1 fibers. Start from rest; compare common 5ms endpoints. Neither level is assumed continuum truth. Frozen neural models and calibration remain unchanged."
+}

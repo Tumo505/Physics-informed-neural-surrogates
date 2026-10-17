@@ -1,0 +1,48 @@
+"""Plot completed one-factor refinement evidence, never provisional curves."""
+from pathlib import Path
+import json
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+P = Path(__file__).resolve().parents[1]
+audit_path = P/'experiments/metrics/cardiac_quadratic_reference_dt00125_v1_bernstein.json'
+if audit_path.exists():
+    audit = json.loads(audit_path.read_text())
+    native = json.loads((P/'data/processed'/audit['reference_name']/'manifest.json').read_text())
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.5), sharey=True)
+    for ax, state in zip(axes, ['endpoint', 'stress']):
+        times = [r['time_s'] for r in audit['records']]
+        ax.plot(times, [r[state+'_minimum_Bernstein_lower_bound'] for r in audit['records']],
+                label='Whole-element Bernstein lower bound')
+        ax.plot(times, [r['minimum_'+state+'_sampled_detF'] for r in native['steps']],
+                label='Minimum at source sample points', linestyle='--')
+        ax.axhline(0, color='black', linewidth=.8)
+        ax.set(xlabel='Time (s)', ylabel='Minimum determinant / lower bound', title=state.capitalize()+' state')
+        ax.grid(alpha=.2)
+    axes[0].legend(fontsize=8)
+    fig.suptitle('P2 / 1.25 ms: 800 steps, 17,625 tetrahedra\nSufficient positivity bound in float64; not an interval-arithmetic proof')
+    fig.tight_layout()
+    fig.savefig(P/'reports/figures/dynamic_quadratic_positivity.png', dpi=180)
+    plt.close(fig)
+evidence = []
+for factor in ['time', 'mesh']:
+    f = P/f'experiments/metrics/dynamic_quadratic_controlled_{factor}.json'
+    if f.exists():
+        d = json.loads(f.read_text())
+        if d['complete']:
+            evidence.append((factor, d))
+if not evidence:
+    raise SystemExit(0 if audit_path.exists() else 'No completed validation evidence to plot')
+fig, axes = plt.subplots(1, len(evidence), figsize=(6.4*len(evidence), 4.4), squeeze=False)
+for ax, (factor, d) in zip(axes[0], evidence):
+    records = d['records']
+    ax.plot([r['time_s'] for r in records],
+            [1e3*np.sqrt(r['error_squared_integral_m5']/(3*d['physical_volume_m3'])) for r in records])
+    ax.set(xlabel='Time (s)', ylabel='Volume component RMSE (mm)',
+           title=f'Controlled {factor} sensitivity\nSpace-time relative L2: {d["relative_space_time_L2"]:.2%}')
+    ax.grid(alpha=.25)
+fig.suptitle('Passive P2 reference: two-level sensitivity; finer level is not continuum truth')
+fig.tight_layout()
+fig.savefig(P/'reports/figures/dynamic_quadratic_controlled.png', dpi=180)
