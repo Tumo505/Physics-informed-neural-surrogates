@@ -107,6 +107,22 @@ Raw uncertainty/error Spearman correlations and selective-risk values are in dyn
 
 ![Independent geometry confirmation and uncertainty](figures/dynamic_confirmation.png)
 
+**Post-hoc representation diagnosis, not model selection.** Already evaluated test fields are projected onto the exact frozen rank12 basis. A convex bounded least-squares oracle also respects the deployed coefficient box. These fitted coefficients are unavailable at deployment and are not physically certified predictions. No rank, bounds, weights, calibration or selected model is changed.
+
+| Regime | Mean span oracle RMSE(mm) | Mean bounded oracle RMSE(mm) |
+|---|---:|---:|
+| full | 0.04627 | 0.04685 |
+| limited | 0.06002 | 0.06011 |
+
+| Frozen ensemble | Oracle fraction of mean geometry MSE |
+|---|---:|
+| full/data | 0.912% |
+| full/physics_10 | 0.618% |
+| limited/data | 0.554% |
+| limited/physics_1 | 0.665% |
+
+For these20 coarse-reference test cases, over99% of measured MSE lies above the best field attainable in the existing basis/box. This diagnoses learned coefficient prediction, rather than POD truncation/readout bounds, as the dominant model-error contribution. It does not distinguish optimization, recurrent-network capacity and generalization; it does not resolve FE discretization uncertainty.
+
 Actual routing test: g030_l0 rejected before NN execution and sent to an independent full FE trajectory; fresh-cache flagTrue, observed wall340.7s. This run overlapped cohort generation and is not an isolated latency benchmark. Inputs were geometry/loading descriptors and zero initial histories only.
 
 **Full-cycle reference numerical uncertainty.** Exact consistent-mass volume-L2 comparisons use200 common endpoints0.005–1.0s on the baseline geometry. A separately verified history continuation adds the exact1s endpoint without changing the archived999 frames.
@@ -132,7 +148,9 @@ A quadratic-displacement capacity probe on the baseline mesh (89679 DOFs) used 1
 
 Two1.25ms substeps across that interval accepted:True. This changes the discrete time problem; it does not validate the rejected2.5ms root or complete the trajectory. It motivates a separate800-step1.25ms reference from rest, without patching the failed run or changing frozen neural models.
 
-**Finer quadratic reference in progress:** 190/800 accepted steps. No full-cycle discrepancy is claimed until every step, output checksum and independent native norm check passes. Frozen model selection and held-out results remain unchanged.
+A separate history/load homotopy reproduced the previous native equilibrium, then attempted the EXACT failed2.5ms algebraic target with ten continuation stages and at most ten Newton iterations per stage. Target recovered:False; last fraction0.40, residual0.0325689N. Intermediate continuation equations are not physical timesteps or surrogate labels. The original accepted checkpoint remains unchanged.
+
+**Finer quadratic reference in progress:** 420/800 accepted steps. No full-cycle discrepancy is claimed until every step, output checksum and independent native norm check passes. Frozen model selection and held-out results remain unchanged.
 
 **Matched original-timestep stability check.** A separate one-geometry/one-cycle, seed11 pilot uses the archived1ms pressure/reference trajectory. Train first600 frames, select on the next200, evaluate the already-inspected last199. This is a repeated temporal benchmark, not independent trajectory confirmation. Every999-step inference begins at zero and uses only prescribed pressure and its own predicted histories. A training-only15% relative field-RMSE gate excludes the trivial zero predictor; the initial version that selected zeros on low-motion validation is retained as a FAILED acceptance test, not a stability success.
 

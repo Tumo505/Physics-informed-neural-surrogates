@@ -1,0 +1,49 @@
+{
+  "complete": true,
+  "full_cycle": false,
+  "original_failed_step_recovered": false,
+  "zero_based_target_step": 110,
+  "unchanged_dt_s": 0.0025,
+  "previous_equilibrium_residual_l2_N": 5.313900536520148e-09,
+  "checkpoint_sha256": "b72effc8c506ae685b5ffecdee9ddabb6134d4ecdb6a18e893e2cbf0b9d39c55",
+  "records": [
+    {
+      "continuation_fraction": 0.1,
+      "SNES_reason": 2,
+      "iterations": 3,
+      "residual_l2_N": 5.819462241565738e-09,
+      "minimum_endpoint_sampled_detF": 0.5401749136710531,
+      "minimum_stress_sampled_detF": 0.5589300744962185,
+      "accepted": true
+    },
+    {
+      "continuation_fraction": 0.2,
+      "SNES_reason": 2,
+      "iterations": 4,
+      "residual_l2_N": 1.729629620319357e-12,
+      "minimum_endpoint_sampled_detF": 0.5361537929807838,
+      "minimum_stress_sampled_detF": 0.5545048488056395,
+      "accepted": true
+    },
+    {
+      "continuation_fraction": 0.30000000000000004,
+      "SNES_reason": 2,
+      "iterations": 6,
+      "residual_l2_N": 1.5207497340053336e-12,
+      "minimum_endpoint_sampled_detF": 0.5322244556059829,
+      "minimum_stress_sampled_detF": 0.550141901452237,
+      "accepted": true
+    },
+    {
+      "continuation_fraction": 0.4,
+      "SNES_reason": -5,
+      "iterations": 10,
+      "residual_l2_N": 0.03256887032408399,
+      "minimum_endpoint_sampled_detF": 0.5284302952077297,
+      "minimum_stress_sampled_detF": 0.5458660596908356,
+      "accepted": false
+    }
+  ],
+  "source_sha256": "67dedaa0ff5d5ddc48117db7dc0d638e3d731c8bbfc2b2c6da4546cad5045ed2",
+  "scope": "Solver homotopy from the prior converged algebraic equation to the exact original failed equation. Material, timestep, final histories/loading/tolerances unchanged. Intermediate states are not physical timesteps or surrogate labels. Original checkpoint remains untouched; this is not a full-cycle result."
+}

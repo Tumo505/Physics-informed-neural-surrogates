@@ -1,0 +1,309 @@
+{
+  "complete": true,
+  "diagnostic_only": true,
+  "n_geometries": 20,
+  "regimes": {
+    "full": {
+      "rank": 12,
+      "basis_Gram_condition": 1.0000000043347346,
+      "per_case": [
+        {
+          "case": "g026_l0",
+          "span_oracle_component_mse_m2": 2.5486310278871213e-09,
+          "bounded_oracle_component_mse_m2": 2.5487136356704974e-09,
+          "unconstrained_projection_frames_outside_readout_box": 5
+        },
+        {
+          "case": "g027_l0",
+          "span_oracle_component_mse_m2": 5.60057126217728e-10,
+          "bounded_oracle_component_mse_m2": 5.60057126217728e-10,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "g028_l0",
+          "span_oracle_component_mse_m2": 8.424393651756599e-10,
+          "bounded_oracle_component_mse_m2": 8.424393651756599e-10,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "g029_l0",
+          "span_oracle_component_mse_m2": 2.985598568468852e-09,
+          "bounded_oracle_component_mse_m2": 2.990641686532438e-09,
+          "unconstrained_projection_frames_outside_readout_box": 34
+        },
+        {
+          "case": "h000_l0",
+          "span_oracle_component_mse_m2": 2.021872910072484e-09,
+          "bounded_oracle_component_mse_m2": 2.021872910072484e-09,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h001_l0",
+          "span_oracle_component_mse_m2": 4.702860858588034e-09,
+          "bounded_oracle_component_mse_m2": 5.07112596107966e-09,
+          "unconstrained_projection_frames_outside_readout_box": 57
+        },
+        {
+          "case": "h002_l0",
+          "span_oracle_component_mse_m2": 1.5846270141883453e-09,
+          "bounded_oracle_component_mse_m2": 1.5854328437534623e-09,
+          "unconstrained_projection_frames_outside_readout_box": 3
+        },
+        {
+          "case": "h003_l0",
+          "span_oracle_component_mse_m2": 1.3297066991651706e-09,
+          "bounded_oracle_component_mse_m2": 1.3297066991651706e-09,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h004_l0",
+          "span_oracle_component_mse_m2": 1.0418209939584862e-09,
+          "bounded_oracle_component_mse_m2": 1.0418209939584862e-09,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h005_l0",
+          "span_oracle_component_mse_m2": 4.301390367002072e-09,
+          "bounded_oracle_component_mse_m2": 4.518934101045164e-09,
+          "unconstrained_projection_frames_outside_readout_box": 53
+        },
+        {
+          "case": "h006_l0",
+          "span_oracle_component_mse_m2": 4.6229901170734316e-10,
+          "bounded_oracle_component_mse_m2": 4.6229901170734316e-10,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h007_l0",
+          "span_oracle_component_mse_m2": 2.539417035444362e-09,
+          "bounded_oracle_component_mse_m2": 2.546152971812034e-09,
+          "unconstrained_projection_frames_outside_readout_box": 8
+        },
+        {
+          "case": "h008_l0",
+          "span_oracle_component_mse_m2": 2.6945526308490578e-09,
+          "bounded_oracle_component_mse_m2": 2.6959024560621785e-09,
+          "unconstrained_projection_frames_outside_readout_box": 14
+        },
+        {
+          "case": "h009_l0",
+          "span_oracle_component_mse_m2": 4.679477252274638e-10,
+          "bounded_oracle_component_mse_m2": 4.679477252274638e-10,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h010_l0",
+          "span_oracle_component_mse_m2": 4.018855605030318e-09,
+          "bounded_oracle_component_mse_m2": 4.20296045870275e-09,
+          "unconstrained_projection_frames_outside_readout_box": 52
+        },
+        {
+          "case": "h011_l0",
+          "span_oracle_component_mse_m2": 5.654184794094899e-09,
+          "bounded_oracle_component_mse_m2": 6.317224443959112e-09,
+          "unconstrained_projection_frames_outside_readout_box": 52
+        },
+        {
+          "case": "h012_l0",
+          "span_oracle_component_mse_m2": 1.225201300557415e-09,
+          "bounded_oracle_component_mse_m2": 1.2252170954606048e-09,
+          "unconstrained_projection_frames_outside_readout_box": 1
+        },
+        {
+          "case": "h013_l0",
+          "span_oracle_component_mse_m2": 3.1744795812774305e-09,
+          "bounded_oracle_component_mse_m2": 3.176910419800798e-09,
+          "unconstrained_projection_frames_outside_readout_box": 24
+        },
+        {
+          "case": "h014_l0",
+          "span_oracle_component_mse_m2": 1.9345017340531523e-09,
+          "bounded_oracle_component_mse_m2": 1.9345017340531523e-09,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h015_l0",
+          "span_oracle_component_mse_m2": 3.670790382726935e-09,
+          "bounded_oracle_component_mse_m2": 3.839795571557209e-09,
+          "unconstrained_projection_frames_outside_readout_box": 51
+        }
+      ],
+      "mean_span_oracle_rmse_m": 4.6271572839043e-05,
+      "mean_bounded_oracle_rmse_m": 4.684820303982531e-05
+    },
+    "limited": {
+      "rank": 12,
+      "basis_Gram_condition": 1.0000000037115206,
+      "per_case": [
+        {
+          "case": "g026_l0",
+          "span_oracle_component_mse_m2": 5.7917477847360565e-09,
+          "bounded_oracle_component_mse_m2": 5.79206035698335e-09,
+          "unconstrained_projection_frames_outside_readout_box": 9
+        },
+        {
+          "case": "g027_l0",
+          "span_oracle_component_mse_m2": 4.733005188015121e-10,
+          "bounded_oracle_component_mse_m2": 4.733005188015121e-10,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "g028_l0",
+          "span_oracle_component_mse_m2": 1.7361208511156012e-09,
+          "bounded_oracle_component_mse_m2": 1.7361208511156012e-09,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "g029_l0",
+          "span_oracle_component_mse_m2": 6.702473076387702e-09,
+          "bounded_oracle_component_mse_m2": 6.7067708447162406e-09,
+          "unconstrained_projection_frames_outside_readout_box": 36
+        },
+        {
+          "case": "h000_l0",
+          "span_oracle_component_mse_m2": 4.522464922766763e-09,
+          "bounded_oracle_component_mse_m2": 4.522464922766763e-09,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h001_l0",
+          "span_oracle_component_mse_m2": 7.691651575920976e-09,
+          "bounded_oracle_component_mse_m2": 7.758347503929587e-09,
+          "unconstrained_projection_frames_outside_readout_box": 47
+        },
+        {
+          "case": "h002_l0",
+          "span_oracle_component_mse_m2": 1.937969692373423e-09,
+          "bounded_oracle_component_mse_m2": 1.9379984227444125e-09,
+          "unconstrained_projection_frames_outside_readout_box": 2
+        },
+        {
+          "case": "h003_l0",
+          "span_oracle_component_mse_m2": 1.6699908182710253e-09,
+          "bounded_oracle_component_mse_m2": 1.6699908182710253e-09,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h004_l0",
+          "span_oracle_component_mse_m2": 1.0994499072430055e-09,
+          "bounded_oracle_component_mse_m2": 1.0994499072430055e-09,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h005_l0",
+          "span_oracle_component_mse_m2": 6.8653471957479695e-09,
+          "bounded_oracle_component_mse_m2": 6.894314354964895e-09,
+          "unconstrained_projection_frames_outside_readout_box": 39
+        },
+        {
+          "case": "h006_l0",
+          "span_oracle_component_mse_m2": 4.021942319712683e-10,
+          "bounded_oracle_component_mse_m2": 4.021942319712683e-10,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h007_l0",
+          "span_oracle_component_mse_m2": 3.6799364558108554e-09,
+          "bounded_oracle_component_mse_m2": 3.6807449925747965e-09,
+          "unconstrained_projection_frames_outside_readout_box": 4
+        },
+        {
+          "case": "h008_l0",
+          "span_oracle_component_mse_m2": 6.09503145145668e-09,
+          "bounded_oracle_component_mse_m2": 6.096734395018133e-09,
+          "unconstrained_projection_frames_outside_readout_box": 36
+        },
+        {
+          "case": "h009_l0",
+          "span_oracle_component_mse_m2": 6.216885737551098e-10,
+          "bounded_oracle_component_mse_m2": 6.216885737551098e-10,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h010_l0",
+          "span_oracle_component_mse_m2": 6.358991904870445e-09,
+          "bounded_oracle_component_mse_m2": 6.384781942372857e-09,
+          "unconstrained_projection_frames_outside_readout_box": 38
+        },
+        {
+          "case": "h011_l0",
+          "span_oracle_component_mse_m2": 9.412666603490662e-09,
+          "bounded_oracle_component_mse_m2": 9.54345588150051e-09,
+          "unconstrained_projection_frames_outside_readout_box": 51
+        },
+        {
+          "case": "h012_l0",
+          "span_oracle_component_mse_m2": 1.320241443956273e-09,
+          "bounded_oracle_component_mse_m2": 1.320241443956273e-09,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h013_l0",
+          "span_oracle_component_mse_m2": 7.135457878648811e-09,
+          "bounded_oracle_component_mse_m2": 7.137958641602999e-09,
+          "unconstrained_projection_frames_outside_readout_box": 37
+        },
+        {
+          "case": "h014_l0",
+          "span_oracle_component_mse_m2": 4.334224554519206e-09,
+          "bounded_oracle_component_mse_m2": 4.334224554519206e-09,
+          "unconstrained_projection_frames_outside_readout_box": 0
+        },
+        {
+          "case": "h015_l0",
+          "span_oracle_component_mse_m2": 5.79275056585916e-09,
+          "bounded_oracle_component_mse_m2": 5.820273208523583e-09,
+          "unconstrained_projection_frames_outside_readout_box": 35
+        }
+      ],
+      "mean_span_oracle_rmse_m": 6.00242263740129e-05,
+      "mean_bounded_oracle_rmse_m": 6.0105670573492406e-05
+    }
+  },
+  "models": {
+    "full/data": {
+      "mean_recorded_rmse_m": 0.0005094914264707045,
+      "bounded_oracle_fraction_of_geometry_mean_MSE": 0.009116816476614734,
+      "excess_geometry_mean_MSE_above_bounded_oracle_m2": 2.683473560318446e-07
+    },
+    "full/physics_10": {
+      "mean_recorded_rmse_m": 0.0006299605157849008,
+      "bounded_oracle_fraction_of_geometry_mean_MSE": 0.006177216776171943,
+      "excess_geometry_mean_MSE_above_bounded_oracle_m2": 3.972228120064433e-07
+    },
+    "limited/data": {
+      "mean_recorded_rmse_m": 0.0008469286268438642,
+      "bounded_oracle_fraction_of_geometry_mean_MSE": 0.005539984707896483,
+      "excess_geometry_mean_MSE_above_bounded_oracle_m2": 7.533245359612431e-07
+    },
+    "limited/physics_1": {
+      "mean_recorded_rmse_m": 0.0007823734694736193,
+      "bounded_oracle_fraction_of_geometry_mean_MSE": 0.0066539376682726034,
+      "excess_geometry_mean_MSE_above_bounded_oracle_m2": 6.265059488028202e-07
+    }
+  },
+  "source_sha256": "8fc8ec88a3d3251f687aa5cacacfa4c5380cea190a34987e2fadada9c226ace1",
+  "frozen_checkpoint_sha256": {
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed11.pt": "15629338e3a5f0071c574c165dd49f2d21aa02ab4527ec62d3a6f292c8caea1a",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed22.pt": "225ad977eb4b850d960c8c6b1d49a52c8c9bb16cf5410cf6d2f27c88b8219733",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed33.pt": "650bf39698a4f5e4570906b33522785c20bca2fefd3afacb40d43557d5b19154",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed44.pt": "d63885b610f7403e4e596956993c3fde6986617c75e8c0e112fdeae8a93127c6",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed55.pt": "9393782534e6691ea2cbf126bed6e61d97696ef15fdce9ddb946172aca571d3b",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/physics_10_seed11.pt": "50af84bf700e5efebf4224172bdfa09c073a64aafe044039f327e4d21c82d7e6",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/physics_10_seed22.pt": "ae76a4487c0135c23b42f1f75770ee171c804fe31c8b0c34576d83d4c4cda14d",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/physics_10_seed33.pt": "ef27bed2506e3b7b62e1fb858c9a7ce49ad8c27c3d96d93c11c435de4b5c86b0",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/physics_10_seed44.pt": "d84bdca440989faf8611939e3727626b8f64cea7ba4181104c5741461eb631aa",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/physics_10_seed55.pt": "7b7ba29cfb91808179650f0c7991aaa6d242eb9ebd17f3a2f2dd1ce7c26c55df",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/data_seed11.pt": "7075a5226d0f4637176c01a98b34222b1f41f95169cbe4a2f2993d8b409b2f5e",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/data_seed22.pt": "d347b2ab4df2016e9054e5041ec6101e4f4786ee9533875d5fc89793f107b7a9",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/data_seed33.pt": "0c94674c3b32c3244d4af79d93265da645eb39e8e98e5c33e9f548a3bc369571",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/data_seed44.pt": "2a00b21f3ce4a80391a4d54588859b3ec2867b59b0f7a4610890ff840aae288f",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/data_seed55.pt": "c8f0e826f4fba44e8583f8d7d8a16fea1614547684cb3c4cfcfa4e57d1e4266d",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/physics_1_seed11.pt": "1a8189ac05475ebd43a7312138364c40d9e8458587b7efdfa24c1d512feb7038",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/physics_1_seed22.pt": "985bf27940d343d765a71dcd27f14dcaa855466ce8e24d20e25670a8db2f7f62",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/physics_1_seed33.pt": "e27f6952e36d263aded49e720fdb15b84460e126617956560c2b2d5e153af25a",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/physics_1_seed44.pt": "356bdec359d2e66b7d8995a4534411138af1b0ad0e9ea625e3386fdff5723aa9",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/physics_1_seed55.pt": "2f5810e93411e593b4fbe81f3620abc733f2392091ce2ac982d5fafd4793cfd3"
+  },
+  "scope": "Post-hoc projection of already evaluated held-out labels. Oracle coefficients are not deployable predictions, physically certified fields or additional training data. No architecture, weights, rank, bounds or model selection is changed. All errors still target the coarse P1/5ms reference."
+}
