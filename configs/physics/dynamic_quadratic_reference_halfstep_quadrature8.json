@@ -1,0 +1,19 @@
+{
+  "name": "cardiac_quadratic_reference_halfstep_quadrature8_v1",
+  "dt_s": 0.000625,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 0,
+  "geometry_scales": [
+    1.0,
+    1.0
+  ],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 8,
+  "checkpoint_interval": 10,
+  "native_solver": "gamg",
+  "scope": "Prospective full-cycle integration control on the new0.625ms strict-stopping grid after the separate baseline1.25ms degree8/10 check passed0.227%. Compare with completed coarse P2/Q6/GAMG/0.625ms from rest, strict1e-8N absolute/zero-relative stopping on both, unchanged physical acceptance and pressure/geometry/material. Only quadrature changes6 to8. Retain the earlier Q6/8 failure and do not assume integration sensitivity transfers across grids or meshes. Same1% criterion; no neural training, calibration or continuum claim.",
+  "nonlinear_absolute_tolerance_N": 1e-08,
+  "nonlinear_relative_tolerance": 0.0
+}
