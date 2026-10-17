@@ -33,6 +33,8 @@ def read(config):
         assert not (root / 'failure.json').exists()
         for filename, digest in manifest['output_sha256'].items():
             assert hashlib.sha256((root / filename).read_bytes()).hexdigest() == digest
+        (P/'experiments/manifests'/f'{cfg["name"]}.json').write_text(
+            json.dumps(manifest, indent=2, allow_nan=False))
     inputs = np.load(root / 'inputs.npz')
     coefficients = np.load(root / 'displacement_coefficients.npy', mmap_mode='r')
     geo, _, _ = setup(dt=cfg['dt_s'], refinement_level=cfg['refinement_level'],

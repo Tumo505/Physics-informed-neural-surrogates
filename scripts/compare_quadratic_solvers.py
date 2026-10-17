@@ -12,6 +12,8 @@ for root, manifest in zip(roots, manifests):
     assert manifest['complete'] and not (root/'failure.json').exists()
     for name, digest in manifest['output_sha256'].items():
         assert hashlib.sha256((root/name).read_bytes()).hexdigest() == digest
+    (P/'experiments/manifests'/f'{manifest["config"]["name"]}.json').write_text(
+        json.dumps(manifest, indent=2, allow_nan=False))
 for key in ['dt_s','duration_s','displacement_degree','refinement_level','geometry_scales',
             'amplitude','timing_scale','quadrature_degree']:
     assert manifests[0]['config'][key] == manifests[1]['config'][key]

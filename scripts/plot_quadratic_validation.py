@@ -27,6 +27,20 @@ if audit_path.exists():
     fig.savefig(P/'reports/figures/dynamic_quadratic_positivity.png', dpi=180)
     plt.close(fig)
 evidence = []
+order_path = P/'experiments/metrics/dynamic_quadratic_order_control.json'
+if order_path.exists():
+    order = json.loads(order_path.read_text())
+    if order['complete']:
+        fig, ax = plt.subplots(figsize=(9, 4.8))
+        ax.plot([r['time_s'] for r in order['records']],
+            [1e3*np.sqrt(r['difference_squared_integral_m5']/(3*order['physical_volume_m3'])) for r in order['records']])
+        ax.set(xlabel='Time (s)', ylabel='Volume component RMSE (mm)',
+            title=f'Same mesh and 1 ms timestep: P1 versus P2 displacement\nFull-cycle volume L2 difference {order["relative_space_time_volume_L2_difference"]:.2%}; component RMSE {order["component_volume_time_RMSE_m"]*1000:.3f} mm')
+        ax.grid(alpha=.2)
+        fig.text(.5, .015, 'One known passive baseline case; P2 remains a discrete reference, not continuum truth.', ha='center', fontsize=9)
+        fig.tight_layout(rect=(0, .04, 1, 1))
+        fig.savefig(P/'reports/figures/dynamic_quadratic_order_control.png', dpi=180)
+        plt.close(fig)
 solver_path = P/'experiments/metrics/dynamic_quadratic_solver_equivalence.json'
 if solver_path.exists():
     solver = json.loads(solver_path.read_text())
@@ -58,6 +72,6 @@ for ax, (factor, d) in zip(axes[0], evidence):
     ax.set(xlabel='Time (s)', ylabel='Volume component RMSE (mm)',
            title=f'Controlled {factor} sensitivity\nSpace-time relative L2: {d["relative_space_time_L2"]:.2%}')
     ax.grid(alpha=.25)
-fig.suptitle('Passive P2 reference: two-level sensitivity; finer level is not continuum truth')
+fig.suptitle('Passive P2 reference: controlled two-level sensitivity\nFiner level is not continuum truth')
 fig.tight_layout()
 fig.savefig(P/'reports/figures/dynamic_quadratic_controlled.png', dpi=180)

@@ -195,6 +195,11 @@ dynamic-quadratic-reference: dynamic-convergence
 	$(PY) scripts/write_reports.py
 
 .PHONY: dynamic-quadratic-time dynamic-quadratic-mesh dynamic-quadratic-positivity dynamic-quadratic-solver
+.PHONY: dynamic-quadratic-order-control
+dynamic-quadratic-order-control:
+	$(FEM_RUN) scripts/compare_quadratic_order.py
+	$(PY) scripts/plot_quadratic_validation.py
+	$(PY) scripts/write_reports.py
 dynamic-quadratic-solver:
 	$(PY) scripts/run_quadratic_validation.py solver
 dynamic-quadratic-time:
