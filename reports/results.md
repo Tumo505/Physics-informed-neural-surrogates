@@ -6,6 +6,8 @@ All results are computational. Released-model inference uses unedited author equ
 
 **Numerical validation gate remains unmet.** Full-cycle mesh refinement changes displacement by 13.12%, exceeding the stated1% tolerance. The5ms temporal target also misses1%. All model improvements and calibration below refer to the coarse discrete reference; they exclude FE discretization uncertainty and do not establish continuum accuracy.
 
+**Reference-change counterexample.** On one known baseline geometry/loading, changing from P1/5ms to P2/1.25ms changes FE labels by2.522mm nodal component RMSE. The original nominal95% regions miss the changed reference for4/4 ensembles on this SINGLE case. This is combined element/timestep sensitivity, not a population coverage estimate; P2 is not assumed continuum truth.
+
 **Protocol and split.** Thirty-two independent numerical geometry draws from one affine benchmark ellipsoid family. Eight training trajectories on four geometries, four validation trajectories on two geometries, twenty calibration trajectories on twenty geometries, and four primary test trajectories on four geometries. Four additional loading-shift trajectories share the four test geometries; four combined shape/loading-shift trajectories use two further geometries. All are200-step trajectories from zero histories over0.005–1s. No geometry spans training/validation/calibration/test roles. Calibration and primary test independently draw the same numerical shape and waveform-descriptor distribution. Load amplitude/timing perturbations are numerical sensitivity inputs, not empirical physiology.
 
 Reference collection: 47/47 planned accepted trajectories complete, including convergence variants. The44-trajectory cohort is separate from these convergence repeats. Every newly accepted step requires a positive SNES convergence reason, finite residual below1e-6N and positive endpoint element determinants. Failed10ms attempts and refined5ms retries are retained. The source legacy convergence flag could be negative/truthy; explicit positive-reason checks correct that issue. Earlier archived1ms states were independently checked to have finite small residuals.
@@ -142,7 +144,7 @@ These FE discrepancies are from one baseline geometry/waveform and use volume-we
 
 **Reference refinement capacity.** A bounded engineering probe on the third linear mesh (1128000 tetrahedra, 639735 displacement DOFs) used sampled peak RSS 8.25GiB. One1000Pa startup query converged:True, nonlinear solve155.01s. This is not a full trajectory or a convergence result.
 
-A quadratic-displacement capacity probe on the baseline mesh (89679 DOFs) used 1.33GiB and31.80s for the same startup query, including first-use compilation. It is not a matched speedup measurement. The pinned source defaults to P2 displacement; the neural corpus uses P1 displacement. The follow-up retains the same P1 fiber fields and passive mechanics to isolate displacement-order sensitivity. A strong bulk penalty makes volumetric locking a possible contributor, but this is not an isolated causal diagnosis.
+A quadratic-displacement capacity probe on the baseline mesh (89679 DOFs) used 1.33GiB and31.80s for the same startup query, including first-use compilation. It is not a matched speedup measurement. The pinned source defaults to P2 displacement; the neural corpus uses P1 displacement. The follow-up retains the same P1 fiber fields and passive mechanics while changing discretization. A strong bulk penalty makes volumetric locking a possible contributor, but this is not an isolated causal diagnosis.
 
 **Rejected quadratic2.5ms trajectory.** 110 steps were accepted before step111 at0.2775s failed withDIVERGED_MAX_IT after100 Newton iterations; residual0.286541N. No failed state was accepted or used for training/calibration. Bounded trust-region and previous-state backtracking retries also failed.
 
@@ -150,7 +152,29 @@ Two1.25ms substeps across that interval accepted:True. This changes the discrete
 
 A separate history/load homotopy reproduced the previous native equilibrium, then attempted the EXACT failed2.5ms algebraic target with ten continuation stages and at most ten Newton iterations per stage. Target recovered:False; last fraction0.40, residual0.0325689N. Intermediate continuation equations are not physical timesteps or surrogate labels. The original accepted checkpoint remains unchanged.
 
-**Finer quadratic reference in progress:** 670/800 accepted steps. No full-cycle discrepancy is claimed until every step, output checksum and independent native norm check passes. Frozen model selection and held-out results remain unchanged.
+**Full-cycle quadratic-reference sensitivity.** Same baseline geometry/loading and zero initial histories; 800 P2 steps at1.25ms, compared against linear fields at2.5ms on400 common endpoints. Unequal timesteps change BOTH temporal discretization and element order. All native solves require positive SNES reason and residual<1e-6N. Jacobians are sampled at every source quadrature point and every tetrahedral vertex, at endpoint and stress states; positivity between sample locations is not guaranteed.
+
+| Linear comparison | Space-time volume-L2 discrepancy relative to P2 | Volume/time component RMSE(µm) | Within1% |
+|---|---:|---:|---|
+| coarse_P1 | 24.194% | 2592.176 | False |
+| refined_P1 | 12.757% | 1366.810 | False |
+
+Exact mixed-space mass/cross-mass norms passed independent native interpolation/integration at four fixed frames; maximum relative discrepancy3.07e-14. This is a combined discretization sensitivity comparison on one passive case. P2 is not assumed continuum truth. There is no asymptotic higher-order mesh/timestep convergence or revised neural-calibration claim.
+
+![Quadratic and linear discretization sensitivity](figures/dynamic_quadratic_reference.png)
+
+**Fixed-model reference sensitivity, one baseline case.** All20 original frozen checkpoint hashes are rechecked. The same200 prediction endpoints are compared against original P1/5ms and quadratic P2/1.25ms labels on the same4577 vertices. This changes both element order and timestep; it is not a one-factor causal study or a new population test. No model, calibration radius or method choice is refitted.
+
+The two FE targets differ by2.5219mm in nodal component RMSE. This deterministic one-case discrepancy cannot be added as an independent random variance to model error.
+
+| Frozen ensemble | RMSE vs P1/5ms(mm) | RMSE vs changed P2 reference(mm) |
+|---|---:|---:|
+| full/data | 0.41457 | 2.43001 |
+| full/physics_10 | 0.56135 | 2.70018 |
+| limited/data | 0.70543 | 2.32411 |
+| limited/physics_1 | 0.56142 | 2.55193 |
+
+The original nominal95% balls miss the changed reference for4/4 ensembles on this single case, although they contain its original coarse-reference field. This is not a population coverage estimate. Input-support checking does not quantify this numerical-reference uncertainty; an FE fallback also inherits its chosen discretization. P2 remains a discrete comparison, not continuum truth; this case is not added to the20 independent primary/confirmation test geometries.
 
 **Matched original-timestep stability check.** A separate one-geometry/one-cycle, seed11 pilot uses the archived1ms pressure/reference trajectory. Train first600 frames, select on the next200, evaluate the already-inspected last199. This is a repeated temporal benchmark, not independent trajectory confirmation. Every999-step inference begins at zero and uses only prescribed pressure and its own predicted histories. A training-only15% relative field-RMSE gate excludes the trivial zero predictor; the initial version that selected zeros on low-motion validation is retained as a FAILED acceptance test, not a stability success.
 

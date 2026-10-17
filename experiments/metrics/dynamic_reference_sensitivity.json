@@ -1,0 +1,170 @@
+{
+  "complete": true,
+  "source_sha256": "69a547ac45be24bdf9b9a49af27808c86846e46921249e13f4275b71608087f8",
+  "frozen_checkpoint_sha256": {
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed11.pt": "15629338e3a5f0071c574c165dd49f2d21aa02ab4527ec62d3a6f292c8caea1a",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed22.pt": "225ad977eb4b850d960c8c6b1d49a52c8c9bb16cf5410cf6d2f27c88b8219733",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed33.pt": "650bf39698a4f5e4570906b33522785c20bca2fefd3afacb40d43557d5b19154",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed44.pt": "d63885b610f7403e4e596956993c3fde6986617c75e8c0e112fdeae8a93127c6",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed55.pt": "9393782534e6691ea2cbf126bed6e61d97696ef15fdce9ddb946172aca571d3b",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/physics_10_seed11.pt": "50af84bf700e5efebf4224172bdfa09c073a64aafe044039f327e4d21c82d7e6",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/physics_10_seed22.pt": "ae76a4487c0135c23b42f1f75770ee171c804fe31c8b0c34576d83d4c4cda14d",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/physics_10_seed33.pt": "ef27bed2506e3b7b62e1fb858c9a7ce49ad8c27c3d96d93c11c435de4b5c86b0",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/physics_10_seed44.pt": "d84bdca440989faf8611939e3727626b8f64cea7ba4181104c5741461eb631aa",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_full/physics_10_seed55.pt": "7b7ba29cfb91808179650f0c7991aaa6d242eb9ebd17f3a2f2dd1ce7c26c55df",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/data_seed11.pt": "7075a5226d0f4637176c01a98b34222b1f41f95169cbe4a2f2993d8b409b2f5e",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/data_seed22.pt": "d347b2ab4df2016e9054e5041ec6101e4f4786ee9533875d5fc89793f107b7a9",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/data_seed33.pt": "0c94674c3b32c3244d4af79d93265da645eb39e8e98e5c33e9f548a3bc369571",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/data_seed44.pt": "2a00b21f3ce4a80391a4d54588859b3ec2867b59b0f7a4610890ff840aae288f",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/data_seed55.pt": "c8f0e826f4fba44e8583f8d7d8a16fea1614547684cb3c4cfcfa4e57d1e4266d",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/physics_1_seed11.pt": "1a8189ac05475ebd43a7312138364c40d9e8458587b7efdfa24c1d512feb7038",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/physics_1_seed22.pt": "985bf27940d343d765a71dcd27f14dcaa855466ce8e24d20e25670a8db2f7f62",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/physics_1_seed33.pt": "e27f6952e36d263aded49e720fdb15b84460e126617956560c2b2d5e153af25a",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/physics_1_seed44.pt": "356bdec359d2e66b7d8995a4534411138af1b0ad0e9ea625e3386fdff5723aa9",
+    "experiments/checkpoints/cardiac_dynamic_graph_v2_limited/physics_1_seed55.pt": "2f5810e93411e593b4fbe81f3620abc733f2392091ce2ac982d5fafd4793cfd3"
+  },
+  "n_cases": 1,
+  "n_common_endpoints": 200,
+  "reference_change_component_rmse_m": 0.0025219445893445496,
+  "models": {
+    "full/data": {
+      "P1_dt005": {
+        "component_rmse_m": 0.0004145690563713335,
+        "maximum_nodal_L2_error_over_complete_cycle_m": 0.004046422740603341,
+        "original_coarse_reference_balls": [
+          {
+            "nominal": 0.9,
+            "radius_m": 0.004769276448923072,
+            "contains_this_single_case": true
+          },
+          {
+            "nominal": 0.95,
+            "radius_m": 0.00481673174554952,
+            "contains_this_single_case": true
+          }
+        ]
+      },
+      "P2_changed_reference": {
+        "component_rmse_m": 0.002430011494818741,
+        "maximum_nodal_L2_error_over_complete_cycle_m": 0.012881248371593578,
+        "original_coarse_reference_balls": [
+          {
+            "nominal": 0.9,
+            "radius_m": 0.004769276448923072,
+            "contains_this_single_case": false
+          },
+          {
+            "nominal": 0.95,
+            "radius_m": 0.00481673174554952,
+            "contains_this_single_case": false
+          }
+        ]
+      }
+    },
+    "full/physics_10": {
+      "P1_dt005": {
+        "component_rmse_m": 0.0005613490824456783,
+        "maximum_nodal_L2_error_over_complete_cycle_m": 0.006533167383745078,
+        "original_coarse_reference_balls": [
+          {
+            "nominal": 0.9,
+            "radius_m": 0.007215350935210326,
+            "contains_this_single_case": true
+          },
+          {
+            "nominal": 0.95,
+            "radius_m": 0.0072166530145845505,
+            "contains_this_single_case": true
+          }
+        ]
+      },
+      "P2_changed_reference": {
+        "component_rmse_m": 0.0027001818122688297,
+        "maximum_nodal_L2_error_over_complete_cycle_m": 0.013850666526503545,
+        "original_coarse_reference_balls": [
+          {
+            "nominal": 0.9,
+            "radius_m": 0.007215350935210326,
+            "contains_this_single_case": false
+          },
+          {
+            "nominal": 0.95,
+            "radius_m": 0.0072166530145845505,
+            "contains_this_single_case": false
+          }
+        ]
+      }
+    },
+    "limited/data": {
+      "P1_dt005": {
+        "component_rmse_m": 0.0007054318754115868,
+        "maximum_nodal_L2_error_over_complete_cycle_m": 0.005654209248377623,
+        "original_coarse_reference_balls": [
+          {
+            "nominal": 0.9,
+            "radius_m": 0.007483878096763396,
+            "contains_this_single_case": true
+          },
+          {
+            "nominal": 0.95,
+            "radius_m": 0.007842948311316576,
+            "contains_this_single_case": true
+          }
+        ]
+      },
+      "P2_changed_reference": {
+        "component_rmse_m": 0.0023241065410906374,
+        "maximum_nodal_L2_error_over_complete_cycle_m": 0.012863407600308222,
+        "original_coarse_reference_balls": [
+          {
+            "nominal": 0.9,
+            "radius_m": 0.007483878096763396,
+            "contains_this_single_case": false
+          },
+          {
+            "nominal": 0.95,
+            "radius_m": 0.007842948311316576,
+            "contains_this_single_case": false
+          }
+        ]
+      }
+    },
+    "limited/physics_1": {
+      "P1_dt005": {
+        "component_rmse_m": 0.0005614216536274871,
+        "maximum_nodal_L2_error_over_complete_cycle_m": 0.006486321897498316,
+        "original_coarse_reference_balls": [
+          {
+            "nominal": 0.9,
+            "radius_m": 0.008582260943589355,
+            "contains_this_single_case": true
+          },
+          {
+            "nominal": 0.95,
+            "radius_m": 0.00908361865730458,
+            "contains_this_single_case": true
+          }
+        ]
+      },
+      "P2_changed_reference": {
+        "component_rmse_m": 0.0025519323465543376,
+        "maximum_nodal_L2_error_over_complete_cycle_m": 0.013490361616941761,
+        "original_coarse_reference_balls": [
+          {
+            "nominal": 0.9,
+            "radius_m": 0.008582260943589355,
+            "contains_this_single_case": false
+          },
+          {
+            "nominal": 0.95,
+            "radius_m": 0.00908361865730458,
+            "contains_this_single_case": false
+          }
+        ]
+      }
+    }
+  },
+  "quadratic_reference_dt_s": 0.00125,
+  "preferred_from_original_validation": "full/physics_10",
+  "scope": "One known baseline numerical geometry/waveform, fixed models, no selection/refitting. Combined element-order AND timestep reference change; not an independent population test. Original conformal radii target coarse P1/5ms labels; their containment here does not establish coverage against the changed P2 reference or continuum truth. No cases are added to the20-test cohort."
+}
