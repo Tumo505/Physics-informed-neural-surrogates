@@ -1,0 +1,46 @@
+{
+  "complete": true,
+  "frames": [
+    0,
+    223,
+    399
+  ],
+  "cases": [
+    {
+      "frame": 0,
+      "time_s": 0.00125,
+      "pressure_Pa": 5.203032307896686,
+      "known_reference_residual_l2_N": 2.1698830412787356e-13,
+      "minimum_stress_sampled_detF": 0.9993551036315945,
+      "native_trial_residual_l2_N": 1.087475715018259,
+      "history_chain_FD_epsilon": 1e-06
+    },
+    {
+      "frame": 223,
+      "time_s": 0.28,
+      "pressure_Pa": 11474.803242463768,
+      "known_reference_residual_l2_N": 2.810584885732079e-10,
+      "minimum_stress_sampled_detF": 0.48600338883516386,
+      "native_trial_residual_l2_N": 1.2159587835616663,
+      "history_chain_FD_epsilon": 1e-06
+    },
+    {
+      "frame": 399,
+      "time_s": 0.5,
+      "pressure_Pa": 10888.594880170265,
+      "known_reference_residual_l2_N": 1.1876973321856808e-11,
+      "minimum_stress_sampled_detF": 0.38332417938380714,
+      "native_trial_residual_l2_N": 1.3167640548522292,
+      "history_chain_FD_epsilon": 1e-06
+    }
+  ],
+  "oracle_path": "experiments/logs/quadratic_backend_cases.npz",
+  "oracle_sha256": "f53177cedf832fcf26269d70df69f532b7a98f70ecfb3ef459a1e0954bcee73c",
+  "source_sha256": "82b6b47fd19f7e347f1b7f4a6d1573b48a35b22723e0147ae1ada5fff95683bb",
+  "reference_output_sha256": {
+    "displacement_coefficients.npy": "19bbc46a5909b8e5be042e93aa4e71bc68479e81bd53139486cb017f41fcbf73",
+    "displacement_vertices.npy": "43836c7740b47aebb6bcb02201ecb343ddc63208575aadf506153e46bf9ee7ca",
+    "inputs.npz": "f76e4e91651c729c00b2b08019ce0dc172a6ebf953ba634e1e4c1c9871b5aa51"
+  },
+  "scope": "Three predeclared same-geometry P2 states: startup and nonzero deformed histories. Trial u=.997*u_reference plus the fixed small affine perturbation; these are positive-J operator-verification fields, not new FE labels. Exact native force/Jv/J-transpose-R and centered coupled-history force differences are exported. No neural models or test-case selection changed."
+}

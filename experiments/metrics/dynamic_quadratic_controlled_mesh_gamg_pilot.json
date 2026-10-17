@@ -1,0 +1,96 @@
+{
+  "complete": false,
+  "pilot": true,
+  "comparison": "mesh",
+  "config_a": {
+    "name": "cardiac_quadratic_reference_gamg_v1",
+    "dt_s": 0.00125,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 0,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "native_solver": "gamg",
+    "scope": "Separate full-cycle solver-equivalence experiment after five accepted fixed-history nonlinear probes. Native GMRES/GAMG with rigid-body near-nullspace; all mechanics, geometry, P2 space, 1.25ms timestep, initial conditions and physical acceptance criteria match the completed direct reference. No direct trajectory is replaced. Compare all800 recursively generated states and whole-element positivity before considering changes to the production solver. This engineering control does not establish mesh/time convergence or select neural models."
+  },
+  "config_b": {
+    "name": "cardiac_quadratic_reference_refined_gamg_v1",
+    "dt_s": 0.00125,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 1,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "native_solver": "gamg",
+    "scope": "Distinct refined-backend control from rest after full800-step coarse GMRES/GAMG agreement with MUMPS to8.1e-14m and five accepted fixed-history nonlinear probes. Compare against completed coarse GAMG reference at identical1.25ms timestep and against the separately continuing refined MUMPS reference for solver agreement. Same passive mechanics, polyhedral domain, P1 fiber field and source loading. All native force/Jacobian acceptance criteria remain unchanged. This is not a duplicate worker or replacement for the prespecified direct mesh control; all outcomes remain reported. No neural selection or recalibration."
+  },
+  "config_paths": [
+    "configs/physics/dynamic_quadratic_reference_gamg.json",
+    "configs/physics/dynamic_quadratic_reference_refined_gamg.json"
+  ],
+  "config_sha256": [
+    "65c77dfa21cb3537f835ed7ae72612ce53c81a61c378b9d699a656faf9f89f0f",
+    "daa8d3d0cca0a4a6745c395e6085d2053c155a043fa19d6cc7fa3ce970f04808"
+  ],
+  "output_sha256": [
+    {
+      "displacement_coefficients.npy": "90aa06583f7b8a9bae9d81cd164ca84ad273aac714096e47ec4fe3a8f6c0eb85",
+      "displacement_vertices.npy": "0a1d0338c24d5cdfc19377cf53587173d9c17e169c4dc866e049eb745618baff",
+      "inputs.npz": "f76e4e91651c729c00b2b08019ce0dc172a6ebf953ba634e1e4c1c9871b5aa51"
+    },
+    null
+  ],
+  "executed_source_sha256": "c526042760adef5e1286cba8da9f6156ba18b4fdc7ece6e8b1dfb9308bb9832d",
+  "common_endpoints": 2,
+  "end_time_s": 0.0025,
+  "physical_volume_m3": 0.0001776945147994016,
+  "relative_space_time_L2": 0.20148160352594183,
+  "component_volume_time_RMSE_m": 2.2211955175963114e-08,
+  "tolerance_relative_L2": 0.01,
+  "passes_declared_one_percent_sensitivity": false,
+  "integration": "Trapezoid in time including exactly zero initial fields; exact degree-4 consistent-mass spatial integration at common endpoints.",
+  "manufactured_transfer_max_abs_error": 9.71445146547012e-17,
+  "independent_native_checks": [
+    {
+      "time_s": 0.00125,
+      "mass_norm_squared": 1.0157531564565084e-19,
+      "independent_UFL_norm_squared": 1.0157531564565146e-19,
+      "relative_discrepancy": 6.162198246170532e-15
+    },
+    {
+      "time_s": 0.0025,
+      "mass_norm_squared": 8.48881113465588e-19,
+      "independent_UFL_norm_squared": 8.488811134655734e-19,
+      "relative_discrepancy": 1.7129337488450715e-14
+    }
+  ],
+  "records": [
+    {
+      "time_s": 0.00125,
+      "a_step": 0,
+      "b_step": 0,
+      "error_squared_integral_m5": 1.0157531564565084e-19,
+      "reference_squared_integral_m5": 1.5204065623385608e-18
+    },
+    {
+      "time_s": 0.0025,
+      "a_step": 1,
+      "b_step": 1,
+      "error_squared_integral_m5": 8.48881113465588e-19,
+      "reference_squared_integral_m5": 2.287459469370165e-17
+    }
+  ],
+  "scope": "Controlled two-level sensitivity in one factor with frozen mechanics and initial/loading conditions. Finer discretization is not assumed continuum truth. Two levels do not establish an asymptotic convergence rate. Partial pilot checks never pass the full-cycle criterion."
+}

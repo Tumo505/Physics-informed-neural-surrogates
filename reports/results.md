@@ -156,9 +156,9 @@ A separate history/load homotopy reproduced the previous native equilibrium, the
 
 **Controlled P2 time sensitivity.** Only the time discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared 200 common endpoints through 1s. Space-time volume-L2 discrepancy 0.0459%; component volume/time RMSE 0.00491mm. Within the declared1% tolerance: True. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.
 
-**Controlled P2 mesh refinement in progress:** 160/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 mesh refinement in progress:** 170/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
-**Controlled P2 mesh (GMRES/GAMG) refinement in progress:** 2/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 mesh (GMRES/GAMG) refinement in progress:** 40/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
 **Refined P2 resource probe:** 639735 displacement DOFs; single1000Pa startup query accepted True, residual 8.95821e-12N, nonlinear solve 180.37s, sampled peak worker memory 10.68GB. This bounded engineering query does not establish full-cycle feasibility or convergence. The matched mesh-refinement trajectory uses fixed1.25ms steps and a20,000MB MUMPS allocation cap.
 
@@ -169,6 +169,16 @@ The exact P1-to-P2 transfer and consistent mass norms passed independent native 
 A qualified higher-order teacher will require a matching displacement representation and physics residual. Feeding only P2 vertex labels into the existing P1 residual would not verify higher-order mechanics. Finer-reference retraining and independent calibration must follow a separately frozen protocol after numerical qualification.
 
 ![Polynomial-order sensitivity at identical timestep](figures/dynamic_quadratic_order_control.png)
+
+**Standalone differentiable P2 mechanics verification.** Passed: True. Three fixed positive-stress-J trial fields use startup and deformed nonzero histories from the known baseline case. The new flat native-DOF operator assembles source HGO elasticity, viscosity, quadratic consistent inertia, quadratic Robin terms and follower pressure evaluated at facet quadrature. Fibers and reference geometry remain P1. All density, Robin and time-scheme constants are exported from the native problem.
+
+| Precision/device | Largest force relative error | Largest loss-gradient relative error | All3 passed |
+|---|---:|---:|---|
+| cpu32 | 0.00197193 | 0.00478301 | True |
+| cpu64 | 3.01309e-11 | 8.87459e-11 | True |
+| mps32 | 0.00200208 | 0.00482936 | True |
+
+CPU64 tangent actions agree with native UFL at relative error at most 2.59e-13; analytic Piola agrees with energy autodiff at 1.74e-13. Coupled displacement/history directional derivatives agree with centered native force differences at 4.6e-08. Thresholds fixed before verification:1e-7 for CPU64 force/tangent/gradient/Piola,1e-4 for native history differences and1% for float32 force/gradient. Precision results apply to these perturbed fields, not uniformly near vanishing equilibrium residuals. Current neural weights and calibration remain frozen. A trained P2-neural directional-gradient check remains required before any higher-order physics-loss claim. Reproduce with `make quadratic-backend-verify`.
 
 **Iterative linear-solver engineering check.** Identical native Newton tangent matrices and right-hand sides are solved with MUMPS and GMRES/GAMG. Six rigid-body modes supply the near-nullspace. The previous accepted reference fields independently verify reconstructed histories. This does not replace any reference trajectory or alter its mechanics. Timings overlap other FE calculations and are engineering measurements, not isolated end-to-end speedups.
 

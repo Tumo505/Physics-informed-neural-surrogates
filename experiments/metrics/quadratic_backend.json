@@ -1,0 +1,98 @@
+{
+  "complete": true,
+  "passed": true,
+  "mps_available": true,
+  "records": [
+    {
+      "device_precision": "cpu64",
+      "frame": 0,
+      "force_relative_error": 5.178362732900733e-14,
+      "loss_gradient_relative_error": 1.4377298876609225e-13,
+      "minimum_endpoint_quadrature_detF": 0.9989366023237098,
+      "tangent_action_relative_error": 3.8871544051358656e-15,
+      "coupled_history_action_relative_error_vs_native_FD": 3.8599951529085663e-10,
+      "piola_relative_error_vs_energy_autodiff": 1.743601617473199e-13,
+      "passed": true
+    },
+    {
+      "device_precision": "cpu64",
+      "frame": 223,
+      "force_relative_error": 2.7999051380744313e-11,
+      "loss_gradient_relative_error": 8.874588698305039e-11,
+      "minimum_endpoint_quadrature_detF": 0.4855763831933051,
+      "tangent_action_relative_error": 2.2266469626529856e-13,
+      "coupled_history_action_relative_error_vs_native_FD": 1.1347355689656505e-08,
+      "piola_relative_error_vs_energy_autodiff": 4.427001288743249e-15,
+      "passed": true
+    },
+    {
+      "device_precision": "cpu64",
+      "frame": 399,
+      "force_relative_error": 3.0130913658120774e-11,
+      "loss_gradient_relative_error": 5.053272269064524e-11,
+      "minimum_endpoint_quadrature_detF": 0.42802311249664793,
+      "tangent_action_relative_error": 2.5874216592567955e-13,
+      "coupled_history_action_relative_error_vs_native_FD": 4.600386581749381e-08,
+      "piola_relative_error_vs_energy_autodiff": 4.6470013046292414e-15,
+      "passed": true
+    },
+    {
+      "device_precision": "cpu32",
+      "frame": 0,
+      "force_relative_error": 1.652874974305682e-05,
+      "loss_gradient_relative_error": 4.31674114292781e-05,
+      "minimum_endpoint_quadrature_detF": 0.9989365935325623,
+      "passed": true
+    },
+    {
+      "device_precision": "cpu32",
+      "frame": 223,
+      "force_relative_error": 0.0016426880063194235,
+      "loss_gradient_relative_error": 0.0047830096288851934,
+      "minimum_endpoint_quadrature_detF": 0.4855770468711853,
+      "passed": true
+    },
+    {
+      "device_precision": "cpu32",
+      "frame": 399,
+      "force_relative_error": 0.001971929789305806,
+      "loss_gradient_relative_error": 0.0029542285101626536,
+      "minimum_endpoint_quadrature_detF": 0.42802339792251587,
+      "passed": true
+    },
+    {
+      "device_precision": "mps32",
+      "frame": 0,
+      "force_relative_error": 1.6529767521636687e-05,
+      "loss_gradient_relative_error": 4.3185650157988496e-05,
+      "minimum_endpoint_quadrature_detF": 0.9989365935325623,
+      "passed": true
+    },
+    {
+      "device_precision": "mps32",
+      "frame": 223,
+      "force_relative_error": 0.0016677805192737733,
+      "loss_gradient_relative_error": 0.004829356317021841,
+      "minimum_endpoint_quadrature_detF": 0.48557689785957336,
+      "passed": true
+    },
+    {
+      "device_precision": "mps32",
+      "frame": 399,
+      "force_relative_error": 0.002002075093297804,
+      "loss_gradient_relative_error": 0.002977670847548215,
+      "minimum_endpoint_quadrature_detF": 0.4280232787132263,
+      "passed": true
+    }
+  ],
+  "native_oracle_sha256": "f53177cedf832fcf26269d70df69f532b7a98f70ecfb3ef459a1e0954bcee73c",
+  "native_exporter_sha256": "82b6b47fd19f7e347f1b7f4a6d1573b48a35b22723e0147ae1ada5fff95683bb",
+  "executed_source_sha256": "d132e343558db855b1954c1801eeded9cfeaf77a5da63f763126ba9c95eb5c4e",
+  "operator_sha256": "c1d99f9ce4c60c4c3790b2bd3a9afbbdc4f704169ed1f0f3a72851c18c065fc4",
+  "declared_tolerances": {
+    "cpu64_force_tangent_gradient_piola": 1e-07,
+    "native_history_FD": 0.0001,
+    "float32_force_gradient": 0.01
+  },
+  "scope": "Standalone passive P2 operator on three fixed perturbed baseline fields with nonzero deformed histories. Native P2 weak forms supply force, tangent actions and transpose-gradient oracles. Combined-history derivatives use centered native force differences. CPU32 and MPS32 checks quantify finite-precision behavior at these fields, not uniform error bounds or accuracy near exactly vanishing residuals. Volume and boundary P2 quadrature, follower pressure, Robin terms, viscosity and source Newmark inertia are included. No neural model or calibration changed; a trained P2-network directional-gradient check remains required before any new physics-loss result."
+}
