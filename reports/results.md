@@ -109,12 +109,12 @@ Raw uncertainty/error Spearman correlations and selective-risk values are in dyn
 
 Actual routing test: g030_l0 rejected before NN execution and sent to an independent full FE trajectory; fresh-cache flagTrue, observed wall340.7s. This run overlapped cohort generation and is not an isolated latency benchmark. Inputs were geometry/loading descriptors and zero initial histories only.
 
-**Full-cycle reference numerical uncertainty.** Exact consistent-mass volume-L2 comparisons use199 common endpoints0.005–0.995s on the baseline geometry; the archived1ms trajectory excludes1s.
+**Full-cycle reference numerical uncertainty.** Exact consistent-mass volume-L2 comparisons use200 common endpoints0.005–1.0s on the baseline geometry. A separately verified history continuation adds the exact1s endpoint without changing the archived999 frames.
 
 | Timestep | Space-time volume-L2 discrepancy vs1ms | Volume/time component RMSE(µm) |
 |---|---:|---:|
-| dt005 | 1.6261% | 139.940 |
-| dt0025 | 0.3497% | 30.095 |
+| dt005 | 1.6262% | 139.602 |
+| dt0025 | 0.3497% | 30.022 |
 
 The5ms model task misses the preregistered1% temporal tolerance;2.5ms is below that tolerance relative to1ms. Refinement reduces the discrepancy, but1ms is not continuum truth and unequal timestep ratios do not establish an asymptotic rate. The reported NN error remains relative to the5ms discrete target.
 
@@ -128,7 +128,11 @@ These FE discrepancies are from one baseline geometry/waveform and use volume-we
 
 A quadratic-displacement capacity probe on the baseline mesh (89679 DOFs) used 1.33GiB and31.80s for the same startup query, including first-use compilation. It is not a matched speedup measurement. The pinned source defaults to P2 displacement; the neural corpus uses P1 displacement. The follow-up retains the same P1 fiber fields and passive mechanics to isolate displacement-order sensitivity. A strong bulk penalty makes volumetric locking a possible contributor, but this is not an isolated causal diagnosis.
 
-**Quadratic reference follow-up in progress:** 100/400 accepted steps. No full-cycle quadratic discrepancy is claimed until all steps and independent native norm verification pass. Frozen model selection and held-out results remain unchanged.
+**Rejected quadratic2.5ms trajectory.** 110 steps were accepted before step111 at0.2775s failed withDIVERGED_MAX_IT after100 Newton iterations; residual0.286541N. No failed state was accepted or used for training/calibration. Bounded trust-region and previous-state backtracking retries also failed.
+
+Two1.25ms substeps across that interval accepted:True. This changes the discrete time problem; it does not validate the rejected2.5ms root or complete the trajectory. It motivates a separate800-step1.25ms reference from rest, without patching the failed run or changing frozen neural models.
+
+**Finer quadratic reference in progress:** 190/800 accepted steps. No full-cycle discrepancy is claimed until every step, output checksum and independent native norm check passes. Frozen model selection and held-out results remain unchanged.
 
 **Matched original-timestep stability check.** A separate one-geometry/one-cycle, seed11 pilot uses the archived1ms pressure/reference trajectory. Train first600 frames, select on the next200, evaluate the already-inspected last199. This is a repeated temporal benchmark, not independent trajectory confirmation. Every999-step inference begins at zero and uses only prescribed pressure and its own predicted histories. A training-only15% relative field-RMSE gate excludes the trivial zero predictor; the initial version that selected zeros on low-motion validation is retained as a FAILED acceptance test, not a stability success.
 

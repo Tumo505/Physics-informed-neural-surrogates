@@ -12,7 +12,7 @@ while True:
  pilot_name=json.loads((P/'configs/physics/dynamic_dt001_pilot.json').read_text())['name'];pilot=complete(P/f'experiments/metrics/{pilot_name}.json')
  if n==len(cases) and models==2 and evaluated and confirmed and pilot:break
  print('WAIT FINAL GATES',n,'/',len(cases),'reference trajectories;',models,'/2 ensemble studies; frozen evaluation complete',evaluated,'confirmation complete',confirmed,'1ms pilot complete',pilot,flush=True);time.sleep(30)
-commands=[[py,'scripts/audit_dynamic_study.py','--require-complete'],[py,'scripts/analyze_dynamic_convergence.py'],[*fem,'scripts/analyze_dynamic_mesh.py'],[py,'scripts/benchmark_dynamic_study.py'],[py,'scripts/plot_dynamic_study.py'],[py,'scripts/plot_dynamic_confirmation.py'],[py,'scripts/verify_dynamic_artifacts.py'],[py,'scripts/write_reports.py']]
+commands=[[py,'scripts/audit_dynamic_study.py','--require-complete'],[*fem,'scripts/extend_dynamic_time_reference.py'],[py,'scripts/analyze_dynamic_convergence.py'],[*fem,'scripts/analyze_dynamic_mesh.py'],[py,'scripts/benchmark_dynamic_study.py'],[py,'scripts/plot_dynamic_study.py'],[py,'scripts/plot_dynamic_confirmation.py'],[py,'scripts/verify_dynamic_artifacts.py'],[py,'scripts/write_reports.py']]
 for cmd in commands:
  print('EXECUTE',cmd[-1],flush=True);subprocess.run(cmd,cwd=P,env=env,check=True)
 print('DYNAMIC FINAL EXPERIMENTS COMPLETE',flush=True)

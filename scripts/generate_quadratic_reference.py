@@ -38,6 +38,9 @@ if old.get('complete'):
         assert hashlib.sha256((out / name).read_bytes()).hexdigest() == digest
     print('REUSED COMPLETE QUADRATIC REFERENCE', flush=True)
     sys.exit(0)
+failure_flag = out/'failure.json'
+if failure_flag.exists():
+    failure_flag.unlink()  # The public failure record remains preserved in metrics/Git.
 geo, material, base_problem = setup(dt=cfg['dt_s'], geometry_scales=cfg['geometry_scales'],
                                     refinement_level=cfg['refinement_level'])
 parameters = dict(base_problem.parameters)
@@ -112,6 +115,18 @@ np.testing.assert_allclose(integral, native_integral, rtol=1e-11, atol=1e-14)
 problem.u.vector().set_local(saved_u); problem.u.vector().apply('insert')
 start = time.perf_counter()
 stop = min(n, args.max_steps) if args.max_steps else n
+def reject(step, reason, force, kind):
+    durable = json.loads(manifest.read_text()).get('completed_steps', 0) if manifest.exists() else 0
+    failure = dict(complete_trajectory=False, reference_name=cfg['name'],
+        accepted_steps_before_failure=step, persisted_checkpoint_steps=durable,
+        failed_zero_based_step=step, failed_time_s=float(times[step]), SNES_reason=reason,
+        residual_l2_N=float(force) if force is not None and np.isfinite(force) else None,
+        rejection_kind=kind, config=cfg, config_sha256=config_hash,
+        source_sha256=source_hash, scope='Rejected reference attempt; no full-cycle result.')
+    payload = json.dumps(failure, indent=2, allow_nan=False)
+    failure_flag.write_text(payload)
+    (P/f'experiments/metrics/{cfg["name"]}_failure.json').write_text(payload)
+    raise RuntimeError(f'Invalid quadratic reference at step {step}: SNES={reason}, R={force}, {kind}')
 for i in range(start_step, stop):
     uold = problem.u_old.vector().get_local().copy()
     vold = problem.v_old.vector().get_local()
@@ -126,17 +141,23 @@ for i in range(start_step, stop):
             best = guess; best_residual = r
     problem.u.vector().set_local(best); problem.u.vector().apply('insert')
     tick = time.perf_counter()
-    iterations, _ = problem.solver.solve()
+    try:
+        iterations, _ = problem.solver.solve()
+    except RuntimeError:
+        reject(i, int(problem.solver._snes.getConvergedReason()), None, 'native_solver_exception')
     solve_seconds = time.perf_counter() - tick
     reason = int(problem.solver._snes.getConvergedReason())
     R = float(residual(problem).norm('l2'))
     current = problem.u.vector().get_local().copy()
     if reason <= 0 or not np.isfinite(current).all() or not np.isfinite(R) or R > 1e-6:
-        raise RuntimeError(f'Invalid quadratic reference at step {i}: SNES={reason}, R={R}')
-    endpoint_min, integral = kin.audit(current)
-    stress_min, _ = kin.audit(.4 * uold + .6 * current)
+        reject(i, reason, R, 'nonconvergence_or_invalid_force_or_field')
+    try:
+        endpoint_min, integral = kin.audit(current)
+        stress_min, _ = kin.audit(.4 * uold + .6 * current)
+    except FloatingPointError:
+        reject(i, reason, R, 'nonfinite_sampled_Jacobian')
     if min(endpoint_min, stress_min) <= 0:
-        raise RuntimeError(f'Nonpositive sampled P2 Jacobian at step {i}')
+        reject(i, reason, R, 'nonpositive_sampled_Jacobian')
     if i in [0, n//4-1, n//2-1, n-1]:
         native = float(df.assemble(df.det(df.Identity(3) + df.grad(problem.u)) * df.dx))
         np.testing.assert_allclose(integral, native, rtol=1e-10, atol=1e-13)

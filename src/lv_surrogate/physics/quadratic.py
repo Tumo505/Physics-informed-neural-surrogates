@@ -48,6 +48,8 @@ class QuadraticKinematics:
         integral = 0.
         for i, bary in enumerate(self.sample_bary):
             J = self.determinants(coefficients, bary)
+            if not np.isfinite(J).all():
+                raise FloatingPointError('Nonfinite quadratic-element Jacobian')
             minimum = min(minimum, float(J.min()))
             if i < len(self.weights):
                 integral += self.weights[i] * float(self.measure @ J)

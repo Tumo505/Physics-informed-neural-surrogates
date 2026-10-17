@@ -1,0 +1,16 @@
+{
+  "complete": true,
+  "predecessor_sha256": {
+    "data/processed/cardiac_passive_trajectory_v1/state.npz": "a6b15bf6a1142e2487329af9e89c5bce24652f93048e6d9edb0175f292d50c61",
+    "data/processed/cardiac_passive_trajectory_v1/step_0998.npz": "d95d451ad3ed7df90cb55a5f9aa19720ec082a130aef06c2433e40ddbf392b02"
+  },
+  "endpoint_sha256": "5f90e22771720947e2c3db00987bfd12f3d863c2af36434b2327b70fe52adadb",
+  "time_s": 1.0,
+  "dt_s": 0.001,
+  "SNES_reason": 2,
+  "residual_l2_N": 1.8050515406491806e-13,
+  "minimum_detF": 0.999000402045025,
+  "nonlinear_seconds": 1.0225351250264794,
+  "source_sha256": "0c65fbee49c8d3e10b004fa6fe5175937020cf7892404b50a56397cd3562d0e1",
+  "scope": "One exact history continuation of archived P1/passive1ms trajectory to1s. Original999 frames/state remain unchanged; not another independent geometry."
+}

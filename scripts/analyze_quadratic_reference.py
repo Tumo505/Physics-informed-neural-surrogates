@@ -99,6 +99,8 @@ while True:
     needed_steps = int(round(.025/reference_config['dt_s']))
     if (manifest.get('complete') and manifest.get('output_sha256')) or (args.pilot and manifest.get('completed_steps', 0) >= needed_steps):
         break
+    if (root/'failure.json').exists():
+        raise RuntimeError('Reference attempt rejected; inspect its failure.json; no full-cycle analysis executed')
     if not args.wait:
         raise RuntimeError('Full quadratic reference is not complete; no full-cycle result claimed')
     print('WAIT QUADRATIC REFERENCE', manifest.get('completed_steps', 0),

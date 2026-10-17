@@ -118,6 +118,7 @@ dynamic-cohort:
 	$(PY) scripts/run_dynamic_cohort.py --group cohort --workers 5
 dynamic-convergence:
 	$(PY) scripts/run_dynamic_cohort.py --group convergence --workers 1
+	$(FEM_RUN) scripts/extend_dynamic_time_reference.py
 	$(PY) scripts/analyze_dynamic_convergence.py
 	$(FEM_RUN) scripts/analyze_dynamic_mesh.py
 dynamic-train: dynamic-cohort
@@ -179,13 +180,14 @@ dynamic-convergence: cardiac-trajectory dynamic-inputs
 cardiac-trajectory: dynamic-inputs
 
 .PHONY: dynamic-reference-capacity dynamic-quadratic-reference
+QUADRATIC_CONFIG ?= configs/physics/dynamic_quadratic_reference_dt00125.json
 dynamic-reference-capacity:
 	$(PY) scripts/probe_dynamic_refinement.py
 	$(PY) scripts/probe_dynamic_refinement.py --degree 2 --refinement 0
 
 dynamic-quadratic-reference: dynamic-convergence
-	$(FEM_RUN) scripts/generate_quadratic_reference.py
-	env OPENBLAS_NUM_THREADS=2 $(PY) scripts/analyze_quadratic_reference.py
+	$(FEM_RUN) scripts/generate_quadratic_reference.py --config $(QUADRATIC_CONFIG)
+	env OPENBLAS_NUM_THREADS=2 $(PY) scripts/analyze_quadratic_reference.py --config $(QUADRATIC_CONFIG)
 	$(PY) scripts/evaluate_reference_sensitivity.py
 	$(PY) scripts/plot_quadratic_reference.py
 	$(PY) scripts/write_reports.py

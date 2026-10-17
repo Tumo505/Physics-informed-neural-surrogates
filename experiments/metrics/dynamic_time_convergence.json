@@ -1,9 +1,9 @@
 {
   "complete": true,
-  "n_common_endpoints": 199,
+  "n_common_endpoints": 200,
   "time_range_s": [
     0.005,
-    0.995
+    1.0
   ],
   "dt_s": [
     0.005,
@@ -15,7 +15,7 @@
   "cases": [
     {
       "resolution": "dt005",
-      "relative_spacetime_volume_L2_error_vs_dt001": 0.016260978722394216,
+      "relative_spacetime_volume_L2_error_vs_dt001": 0.01626241599558349,
       "maximum_endpoint_relative_volume_L2_error": 1.9824974864342315,
       "endpoint_relative_volume_L2_errors": [
         0.31928426374192237,
@@ -216,13 +216,14 @@
         0.4789528510582825,
         0.1581354509243709,
         0.4166886443494118,
-        0.9068820057699661
+        0.9068820057699661,
+        1.2053387699745919
       ],
-      "volume_time_component_rmse_m": 0.00013993991916069943
+      "volume_time_component_rmse_m": 0.0001396019712295204
     },
     {
       "resolution": "dt0025",
-      "relative_spacetime_volume_L2_error_vs_dt001": 0.003497058532847354,
+      "relative_spacetime_volume_L2_error_vs_dt001": 0.00349726459481748,
       "maximum_endpoint_relative_volume_L2_error": 0.3890732873392543,
       "endpoint_relative_volume_L2_errors": [
         0.08289998857868952,
@@ -423,14 +424,33 @@
         0.03435671160086177,
         0.07646898744588716,
         0.15702412969111132,
-        0.22102236485489582
+        0.22102236485489582,
+        0.2116572066347524
       ],
-      "volume_time_component_rmse_m": 3.0095241912649054e-05
+      "volume_time_component_rmse_m": 3.0021678911689456e-05
     }
   ],
   "refining_time_reduces_error_vs_dt001": true,
-  "error_ratio_dt0025_over_dt005": 0.2150583056868091,
+  "error_ratio_dt0025_over_dt005": 0.21505196987749295,
   "dt005_within_1percent_spacetime_tolerance": false,
+  "endpoint_1s_source": {
+    "complete": true,
+    "predecessor_sha256": {
+      "data/processed/cardiac_passive_trajectory_v1/state.npz": "a6b15bf6a1142e2487329af9e89c5bce24652f93048e6d9edb0175f292d50c61",
+      "data/processed/cardiac_passive_trajectory_v1/step_0998.npz": "d95d451ad3ed7df90cb55a5f9aa19720ec082a130aef06c2433e40ddbf392b02"
+    },
+    "endpoint_sha256": "5f90e22771720947e2c3db00987bfd12f3d863c2af36434b2327b70fe52adadb",
+    "time_s": 1.0,
+    "dt_s": 0.001,
+    "SNES_reason": 2,
+    "residual_l2_N": 1.8050515406491806e-13,
+    "minimum_detF": 0.999000402045025,
+    "nonlinear_seconds": 1.0225351250264794,
+    "source_sha256": "0c65fbee49c8d3e10b004fa6fe5175937020cf7892404b50a56397cd3562d0e1",
+    "scope": "One exact history continuation of archived P1/passive1ms trajectory to1s. Original999 frames/state remain unchanged; not another independent geometry."
+  },
+  "endpoint_1s_independent_stress_minimum_detF": 0.9989969564343602,
+  "source_sha256": "c8ef0f7ff79f17c12dcbae20b2b3ffa8089d1b27c5ad4dc9a16a7fbbbc8ac00c",
   "limitations": [
     "finest1ms is a reference, not continuum truth",
     "unequal timestep ratios; no asymptotic rate asserted",
