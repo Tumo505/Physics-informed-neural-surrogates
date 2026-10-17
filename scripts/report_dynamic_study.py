@@ -99,6 +99,13 @@ def dynamic_rows(P):
     for step in d['steps']:
      pair={r['method']:r for r in d['records'] if r['zero_based_step']==step};a,b=pair['mumps'],pair['gamg'];rows.append(f'| {d["reference_name"]} | {a["time_s"]:g} | {a["seconds"]:.3f} | {b["seconds"]:.3f} | {b["relative_correction_difference_vs_MUMPS"]:.3g} | {b["accepted"]} |')
   rows+=['','Acceptance requires positive KSP reason, finite correction and true linear residual below1e-8N. Full nonlinear convergence, refined-mesh loaded-state robustness and complete-cycle equivalence must be verified before changing the trajectory solver. Startup agreement alone cannot justify such a change.']
+ nonlinear_probes=[P/f'experiments/metrics/{name}.json' for name in ['dynamic_quadratic_nonlinear_krylov','dynamic_quadratic_nonlinear_krylov_refined']]
+ completed_nonlinear=[json.loads(path.read_text()) for path in nonlinear_probes if path.exists() and json.loads(path.read_text()).get('complete')]
+ if completed_nonlinear:
+  rows+=['','**Native nonlinear iterative-solver verification.** Frozen histories and prescribed pressure reproduce each accepted MUMPS state before an independent GMRES/GAMG solve from the production predictor. Effective KSP and PC types and Jacobian near-nullspace attachment are checked. All physical equations, displacement space and reference data remain unchanged.', '', '| Reference | Time(s) | GMRES/GAMG nonlinear(s) | Native residual(N) | Relative coefficient difference vs MUMPS | Accepted same root |','|---|---:|---:|---:|---:|---|']
+  for d in completed_nonlinear:
+   for r in d['records']:rows.append(f'| {d["reference_name"]} | {r["time_s"]:g} | {r["seconds"]:.3f} | {fmt(r["residual_l2_N"])} | {fmt(r["relative_coefficient_difference_vs_MUMPS"])} | {r["accepted"]} |')
+  rows+=['','Probe acceptance requires a positive SNES reason, native residual below1e-6N, positive sampled endpoint/stress determinants and relative coefficient agreement below1e-6 with the accepted direct root. The probes use at most20 Newton iterations with a300s monitor guard at nonlinear iteration boundaries. These fixed-history checks do not establish error accumulation, complete-cycle equivalence, loaded refined-mesh robustness or isolated runtime speedup. The production reference solver is unchanged.']
  for candidate in ['dt00125', 'dt001', 'refined']:
   config=P/f'configs/physics/dynamic_quadratic_reference_{candidate}.json'
   if config.exists():

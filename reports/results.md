@@ -152,9 +152,9 @@ Two1.25ms substeps across that interval accepted:True. This changes the discrete
 
 A separate history/load homotopy reproduced the previous native equilibrium, then attempted the EXACT failed2.5ms algebraic target with ten continuation stages and at most ten Newton iterations per stage. Target recovered:False; last fraction0.40, residual0.0325689N. Intermediate continuation equations are not physical timesteps or surrogate labels. The original accepted checkpoint remains unchanged.
 
-**Controlled P2 time refinement in progress:** 240/1000 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 time refinement in progress:** 920/1000 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
-**Controlled P2 mesh refinement in progress:** 2/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 mesh refinement in progress:** 70/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
 **Refined P2 resource probe:** 639735 displacement DOFs; single1000Pa startup query accepted True, residual 8.95821e-12N, nonlinear solve 180.37s, sampled peak worker memory 10.68GB. This bounded engineering query does not establish full-cycle feasibility or convergence. The matched mesh-refinement trajectory uses fixed1.25ms steps and a20,000MB MUMPS allocation cap.
 
@@ -168,6 +168,18 @@ A separate history/load homotopy reproduced the previous native equilibrium, the
 | cardiac_quadratic_reference_refined_v1 | 0.00125 | 42.191 | 14.004 | 1.6e-09 | True |
 
 Acceptance requires positive KSP reason, finite correction and true linear residual below1e-8N. Full nonlinear convergence, refined-mesh loaded-state robustness and complete-cycle equivalence must be verified before changing the trajectory solver. Startup agreement alone cannot justify such a change.
+
+**Native nonlinear iterative-solver verification.** Frozen histories and prescribed pressure reproduce each accepted MUMPS state before an independent GMRES/GAMG solve from the production predictor. Effective KSP and PC types and Jacobian near-nullspace attachment are checked. All physical equations, displacement space and reference data remain unchanged.
+
+| Reference | Time(s) | GMRES/GAMG nonlinear(s) | Native residual(N) | Relative coefficient difference vs MUMPS | Accepted same root |
+|---|---:|---:|---:|---:|---|
+| cardiac_quadratic_reference_dt00125_v1 | 0.00125 | 6.468 | 9.13173e-13 | 1.00696e-09 | True |
+| cardiac_quadratic_reference_dt00125_v1 | 0.28 | 31.062 | 2.81062e-10 | 6.39829e-15 | True |
+| cardiac_quadratic_reference_dt00125_v1 | 0.5 | 5.322 | 1.19126e-11 | 3.83358e-15 | True |
+| cardiac_quadratic_reference_refined_v1 | 0.00125 | 54.998 | 1.11101e-12 | 1.06149e-09 | True |
+| cardiac_quadratic_reference_refined_v1 | 0.0875 | 19.153 | 1.29544e-12 | 1.59848e-13 | True |
+
+Probe acceptance requires a positive SNES reason, native residual below1e-6N, positive sampled endpoint/stress determinants and relative coefficient agreement below1e-6 with the accepted direct root. The probes use at most20 Newton iterations with a300s monitor guard at nonlinear iteration boundaries. These fixed-history checks do not establish error accumulation, complete-cycle equivalence, loaded refined-mesh robustness or isolated runtime speedup. The production reference solver is unchanged.
 
 **Whole-element P2 positivity audit (cardiac_quadratic_reference_dt00125_v1).** 800 endpoint and stress-state fields, 17625 tetrahedra each. Minimum cubic Bernstein lower bounds: endpoint 0.230261, stress 0.243632; unresolved element-states 0/0. Sufficient whole-element positivity condition passed: True. A P2 deformation gradient is affine and its determinant is cubic; nonnegative tetrahedral Bernstein basis functions partition unity. Thus positive coefficients bound the determinant throughout each element in exact arithmetic. This implementation uses float64 with1e-9 margin and checks polynomial reconstruction and integral identities at four frames; it is not an interval-arithmetic proof or evidence of discretization accuracy.
 
