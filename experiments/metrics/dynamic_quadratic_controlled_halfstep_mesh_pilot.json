@@ -1,0 +1,100 @@
+{
+  "complete": false,
+  "pilot": true,
+  "comparison": "mesh",
+  "config_a": {
+    "name": "cardiac_quadratic_reference_halfstep_gamg_v1",
+    "dt_s": 0.000625,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 0,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "native_solver": "gamg",
+    "scope": "Separate full-cycle from-rest numerical qualification after fourteen verified local0.625ms refined direct steps crossed the difficult interval. P2/Q6/GAMG with strict1e-8N absolute and zero relative nonlinear stopping, unchanged native force/Jacobian acceptance. Compare matched coarse/fine references at this same timestep and solver stopping. Local recovery does not guarantee this full cycle; retain failures. No neural training/calibration or continuum claim. Finer backend must pass saved direct-state engineering probes before launching. Q6 integration uncertainty remains separately unresolved.",
+    "nonlinear_absolute_tolerance_N": 1e-08,
+    "nonlinear_relative_tolerance": 0.0
+  },
+  "config_b": {
+    "name": "cardiac_quadratic_reference_halfstep_refined_gamg_v1",
+    "dt_s": 0.000625,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 1,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "native_solver": "gamg",
+    "scope": "Separate full-cycle from-rest numerical qualification after fourteen verified local0.625ms refined direct steps crossed the difficult interval. P2/Q6/GAMG with strict1e-8N absolute and zero relative nonlinear stopping, unchanged native force/Jacobian acceptance. Compare matched coarse/fine references at this same timestep and solver stopping. Local recovery does not guarantee this full cycle; retain failures. No neural training/calibration or continuum claim. Finer backend must pass saved direct-state engineering probes before launching. Q6 integration uncertainty remains separately unresolved.",
+    "nonlinear_absolute_tolerance_N": 1e-08,
+    "nonlinear_relative_tolerance": 0.0
+  },
+  "config_paths": [
+    "configs/physics/dynamic_quadratic_reference_halfstep_gamg.json",
+    "configs/physics/dynamic_quadratic_reference_halfstep_refined_gamg.json"
+  ],
+  "config_sha256": [
+    "ff57549b3a47ae2d18b314fabc328bdb209c3bd9964c754158e6a71e57d0edd9",
+    "c39148048523cce37d86f444020120722616c7891923d3531bcb8dc0a2760851"
+  ],
+  "output_sha256": [
+    {
+      "displacement_coefficients.npy": "d2d9627b8c6a53c6305ba16f7b3e1355efca22a96b6668ea1ab8633a2f955ed4",
+      "displacement_vertices.npy": "1082ec82c7ac4f6d1036624d752e982f11cb9fc3aa03d212fbb3fc2b44f5235a",
+      "inputs.npz": "d5e2dfd90a39a8fe4f5e411378cd83ab8c53809057b8a43c4e37d6a014265ea6"
+    },
+    null
+  ],
+  "executed_source_sha256": "f5a22ae49a6b8dcdb8f6c405407a835818f7ff18cdc5081edb593adcad8b7989",
+  "common_endpoints": 2,
+  "end_time_s": 0.00125,
+  "physical_volume_m3": 0.0001776945147994016,
+  "relative_space_time_L2": 0.30215143940603656,
+  "component_volume_time_RMSE_m": 8.833946723145292e-09,
+  "tolerance_relative_L2": 0.01,
+  "passes_declared_one_percent_sensitivity": false,
+  "integration": "Trapezoid in time including exactly zero initial fields; exact degree-4 consistent-mass spatial integration at common endpoints.",
+  "manufactured_transfer_max_abs_error": 9.71445146547012e-17,
+  "independent_native_checks": [
+    {
+      "time_s": 0.000625,
+      "mass_norm_squared": 1.7118322693717387e-20,
+      "independent_UFL_norm_squared": 1.711832269371735e-20,
+      "relative_discrepancy": 2.1095049499513146e-15
+    },
+    {
+      "time_s": 0.00125,
+      "mass_norm_squared": 1.321677599250867e-19,
+      "independent_UFL_norm_squared": 1.3216775992508774e-19,
+      "relative_discrepancy": 7.832374140977195e-15
+    }
+  ],
+  "records": [
+    {
+      "time_s": 0.000625,
+      "a_step": 0,
+      "b_step": 0,
+      "error_squared_integral_m5": 1.7118322693717387e-20,
+      "reference_squared_integral_m5": 8.515013089622896e-20
+    },
+    {
+      "time_s": 0.00125,
+      "a_step": 1,
+      "b_step": 1,
+      "error_squared_integral_m5": 1.321677599250867e-19,
+      "reference_squared_integral_m5": 1.6524009587854632e-18
+    }
+  ],
+  "scope": "Controlled two-level sensitivity in one factor with frozen mechanics and initial/loading conditions. Finer discretization is not assumed continuum truth. Two levels do not establish an asymptotic convergence rate. Partial pilot checks never pass the full-cycle criterion."
+}

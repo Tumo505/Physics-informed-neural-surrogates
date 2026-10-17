@@ -126,6 +126,9 @@ def dynamic_rows(P):
    cfg=json.loads(halfstep_config.read_text());progress=P/'data/processed'/cfg['name']/'manifest.json'
    if progress.exists():
     v=json.loads(progress.read_text());rows+=['',f'Half-step coarse reference: {v["completed_steps"]}/{v["n_steps"]} persisted steps; full cycle complete {v["complete"]}.']
+  halfstep_verified=P/'experiments/metrics/cardiac_quadratic_reference_halfstep_gamg_v1_verification.json'
+  if halfstep_verified.exists():
+   v=json.loads(halfstep_verified.read_text());rows+=['',f'**Completed coarse half-step reference audit.** All{v["accepted_steps"]} from-rest states accepted; maximum native residual {v["maximum_native_residual_N"]:.3g}N. All output hashes verified. Whole-element endpoint/stress Bernstein lower bounds {v["minimum_endpoint_Bernstein_bound"]:.6f}/{v["minimum_stress_Bernstein_bound"]:.6f}, no unresolved element states at the declared float64 margin. Four independent physical L2 norm checks have maximum relative discrepancy {max(r["independent_relative_error"] for r in v["norm_checks"]):.3g}. This validates the completed coarse computation; matched full-cycle mesh and integration qualification remain separate.']
   halfstep_mesh=P/'experiments/metrics/dynamic_quadratic_controlled_halfstep_mesh.json'
   halfstep_workflow=P/'experiments/metrics/dynamic_quadratic_controlled_halfstep_mesh_pipeline.json'
   if halfstep_mesh.exists() and json.loads(halfstep_mesh.read_text()).get('complete'):
