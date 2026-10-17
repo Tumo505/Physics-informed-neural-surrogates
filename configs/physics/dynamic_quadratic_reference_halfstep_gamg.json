@@ -1,0 +1,19 @@
+{
+  "name": "cardiac_quadratic_reference_halfstep_gamg_v1",
+  "dt_s": 0.000625,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 0,
+  "geometry_scales": [
+    1.0,
+    1.0
+  ],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 6,
+  "checkpoint_interval": 10,
+  "native_solver": "gamg",
+  "scope": "Separate full-cycle from-rest numerical qualification after fourteen verified local0.625ms refined direct steps crossed the difficult interval. P2/Q6/GAMG with strict1e-8N absolute and zero relative nonlinear stopping, unchanged native force/Jacobian acceptance. Compare matched coarse/fine references at this same timestep and solver stopping. Local recovery does not guarantee this full cycle; retain failures. No neural training/calibration or continuum claim. Finer backend must pass saved direct-state engineering probes before launching. Q6 integration uncertainty remains separately unresolved.",
+  "nonlinear_absolute_tolerance_N": 1e-08,
+  "nonlinear_relative_tolerance": 0.0
+}

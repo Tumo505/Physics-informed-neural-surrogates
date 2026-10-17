@@ -162,7 +162,7 @@ A separate history/load homotopy reproduced the previous native equilibrium, the
 
 **Controlled P2 quadrature sensitivity.** Only the quadrature discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared 800 common endpoints through 1s. Space-time volume-L2 discrepancy 1.5680%; component volume/time RMSE 0.16767mm. Within the declared1% tolerance: False. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.
 
-**Controlled P2 quadrature degree8/10 refinement in progress:** 230/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 quadrature degree8/10 refinement in progress:** 430/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
 **Refined iterative solver failure retained.** Native GAMG/SNES stopped at0.270s after215 accepted states (210 persisted). Native log reports linear-solve divergence: True; SNES reason-3. The underlying Krylov/preconditioner cause was not recorded and remains unresolved. Across210 common persisted states through0.2625s, direct/iterative maximum relative coefficient discrepancy was1.06e-09, with maximum absolute discrepancy1.19e-13m. This is partial solver agreement, not full-cycle equivalence or a successful mesh-convergence check. Rejected iterative data are preserved and have not been restarted; the direct control status is reported separately.
 
@@ -176,13 +176,21 @@ Half-step probe: finished True, accepted 9/14 steps, all requested accepted Fals
 
 **Half-step budget extension.** The first0.625ms probe accepted nine steps through0.268125s, then its total solve-budget guard fired at1840.9s during the0.26875s attempt. No nonlinear-convergence conclusion follows for that unfinished attempt. A separately fixed5400s extension repeats the same fourteen steps and physical acceptance. The earlier probe saved residual diagnostics but no displacement histories, requiring repeated computation; the extension now saves each accepted displacement and an atomic separate history checkpoint. Original references and earlier probe records remain unchanged. No full-cycle claim follows.
 
-Extended half-step probe: finished False, accepted 0/14, all requested accepted False, budget exhausted False.
+Extended half-step probe: finished True, accepted 14/14, all requested accepted True, budget exhausted False.
+
+**Verified local half-step recovery.** All14 steps through0.27125s accepted; independent verification passed True. Maximum independently reassembled native residual 4.97e-09N. Minimum whole-element endpoint/stress Bernstein bounds 0.084064/0.108821; no unresolved elements at1e-9 float64 margin. Four independent canonical-quadrature/UFL norm checks have maximum relative discrepancy 1.05e-14. Field/input/checkpoint hashes are recorded. This crosses the difficult interval on a changed time grid with inherited histories; it does not recover the rejected1.25ms algebraic problem or establish full-cycle convergence.
+
+![Verified local half-step diagnostic](figures/dynamic_quadratic_local_recovery.png)
+
+Faster-backend qualification on three fixed accepted half-step states: probe complete False, same-root accepted 0/3. A refined full-cycle GAMG run requires all three probes to pass. These bounded same-history probes do not establish recursive solver equivalence or isolated speedup.
+
+**Prospective full-cycle half-step references.** Separate coarse/fine P2/Q6/GAMG protocols use0.625ms,1600 steps from rest, strict1e-8N absolute/zero-relative nonlinear stopping and unchanged physical acceptance. Coarse generation begins first; refined generation is gated on the local faster-backend probes and a completed coarse reference. Their matched mesh comparison remains pending. Q6 integration sensitivity is still unresolved; these runs are numerical diagnosis, not automatically qualified teacher data or continuum truth.
 
 **Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.
 
 | Validation input | Coarse/fine persisted steps | Full-cycle relative volume L2 difference | Within1% |
 |---|---|---:|---|
-| g004_l0 | 800/800; 260/800 | pending | pending |
+| g004_l0 | 800/800; 360/800 | pending | pending |
 | g005_l1 | 800/800; 210/800; rejected nonconvergence_or_invalid_force_or_field | pending | pending |
 
 **P2 correspondence audit (inputs only).** All4 geometry/mesh-level pairs have bijectively matching displacement coordinates and physical components after undoing the exact affine scale (tolerance1e-12m). Coarse connectivity matches after vertex permutation; refined connectivity differs on both validation geometries. Shared displacement-coefficient representation therefore requires explicit per-case DOF permutation; mechanics/graph operators must retain each case's own elements. No displacement labels or calibration/test outcomes were read. This checks these inputs, not arbitrary future geometries or numerical convergence.

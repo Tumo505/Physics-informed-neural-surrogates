@@ -1,5 +1,5 @@
 {
-  "complete": false,
+  "complete": true,
   "engineering_only": true,
   "protocol": {
     "reference": "cardiac_quadratic_reference_refined_v1",
@@ -15,7 +15,550 @@
     "checkpoint": "experiments/logs/quadratic_refined_substep_extended_restart.npz",
     "fields": "experiments/logs/quadratic_refined_substep_extended_fields.npy"
   },
-  "records": [],
+  "records": [
+    {
+      "step": 210,
+      "time_s": 0.263125,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.4585262964045e-09,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.5781116672749386,
+      "minimum_stress_sampled_detF": 0.5842297457147801,
+      "nonlinear_seconds": 161.70685575006064,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.14865244188582186
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0023059633830708063
+        },
+        {
+          "iteration": 2,
+          "residual_N": 2.122554781093512e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.4585262964045e-09
+        }
+      ]
+    },
+    {
+      "step": 211,
+      "time_s": 0.26375,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.715594072373562e-10,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.5624919855920066,
+      "minimum_stress_sampled_detF": 0.568515065535514,
+      "nonlinear_seconds": 146.97766345890705,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.11023936462183055
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0012131376317650244
+        },
+        {
+          "iteration": 2,
+          "residual_N": 5.622035876197953e-06
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.715594072373562e-10
+        }
+      ]
+    },
+    {
+      "step": 212,
+      "time_s": 0.264375,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 7.2594489452536024e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.5459989391712661,
+      "minimum_stress_sampled_detF": 0.5526897877336128,
+      "nonlinear_seconds": 146.48939212504774,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.13028652438428515
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.000772400769762346
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.1338900297354186e-06
+        },
+        {
+          "iteration": 3,
+          "residual_N": 7.2594489452536024e-12
+        }
+      ]
+    },
+    {
+      "step": 213,
+      "time_s": 0.265,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.8833708947945187e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.5269929498604444,
+      "minimum_stress_sampled_detF": 0.5356703332883173,
+      "nonlinear_seconds": 146.62985987507273,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.07542008027585272
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.00030269660637304133
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.9876490264338755e-07
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.8833708947945187e-12
+        }
+      ]
+    },
+    {
+      "step": 214,
+      "time_s": 0.265625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.4276084632190908e-11,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.5097030002051471,
+      "minimum_stress_sampled_detF": 0.5159289091905932,
+      "nonlinear_seconds": 147.8271605829941,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.09422546147470799
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.000522865219851333
+        },
+        {
+          "iteration": 2,
+          "residual_N": 9.623497609429261e-07
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.4276084632190908e-11
+        }
+      ]
+    },
+    {
+      "step": 215,
+      "time_s": 0.26625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.8786299761431044e-11,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.4715537789813945,
+      "minimum_stress_sampled_detF": 0.4927804677741058,
+      "nonlinear_seconds": 150.05619158397894,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.05756134993111748
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0006651147198751219
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.909948742720381e-06
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.8786299761431044e-11
+        }
+      ]
+    },
+    {
+      "step": 216,
+      "time_s": 0.26687500000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.2014152970968465e-09,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.43646499930860294,
+      "minimum_stress_sampled_detF": 0.4435117054564337,
+      "nonlinear_seconds": 149.61766383296344,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.07260608844433716
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0021832959925980355
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.9186738067723812e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.2014152970968465e-09
+        }
+      ]
+    },
+    {
+      "step": 217,
+      "time_s": 0.2675,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 6.910386760424653e-11,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.4598711227550847,
+      "minimum_stress_sampled_detF": 0.4574765113559186,
+      "nonlinear_seconds": 195.64041324995924,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.08695600950136122
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.010893114307831334
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.0005498669041577271
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.553223123976558e-06
+        },
+        {
+          "iteration": 4,
+          "residual_N": 6.910386760424653e-11
+        }
+      ]
+    },
+    {
+      "step": 218,
+      "time_s": 0.268125,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.8395653234108208e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.4580268316244108,
+      "minimum_stress_sampled_detF": 0.46147208345503543,
+      "nonlinear_seconds": 290.9583550830139,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 1.836981011557161
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.09945776963485661
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.01611781562130823
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.001955904022267563
+        },
+        {
+          "iteration": 4,
+          "residual_N": 4.6550489088912646e-05
+        },
+        {
+          "iteration": 5,
+          "residual_N": 2.88860596172126e-08
+        },
+        {
+          "iteration": 6,
+          "residual_N": 2.8395653234108208e-12
+        }
+      ]
+    },
+    {
+      "step": 219,
+      "time_s": 0.26875,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.894777346735828e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.4536389516994578,
+      "minimum_stress_sampled_detF": 0.46140351423055287,
+      "nonlinear_seconds": 291.18551166704856,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 1.7840728142742466
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.12596968342652773
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.027372319856208572
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.003515393732533715
+        },
+        {
+          "iteration": 4,
+          "residual_N": 0.0001059044451994939
+        },
+        {
+          "iteration": 5,
+          "residual_N": 1.0699467780485051e-07
+        },
+        {
+          "iteration": 6,
+          "residual_N": 2.894777346735828e-12
+        }
+      ]
+    },
+    {
+      "step": 220,
+      "time_s": 0.26937500000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.877083388391722e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.4512825945233838,
+      "minimum_stress_sampled_detF": 0.44683785881633037,
+      "nonlinear_seconds": 388.30057674995624,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 1.7326077818771346
+        },
+        {
+          "iteration": 1,
+          "residual_N": 1.0611334905945327
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.24161778003453568
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.07033603165455375
+        },
+        {
+          "iteration": 4,
+          "residual_N": 0.016879354386314795
+        },
+        {
+          "iteration": 5,
+          "residual_N": 0.0020719185002297568
+        },
+        {
+          "iteration": 6,
+          "residual_N": 4.1742576133621084e-05
+        },
+        {
+          "iteration": 7,
+          "residual_N": 1.7322608341058948e-08
+        },
+        {
+          "iteration": 8,
+          "residual_N": 2.877083388391722e-12
+        }
+      ]
+    },
+    {
+      "step": 221,
+      "time_s": 0.27,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 3.22464424904316e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.4218852203788562,
+      "minimum_stress_sampled_detF": 0.43950314312407446,
+      "nonlinear_seconds": 487.836619541049,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 2.0142904598561406
+        },
+        {
+          "iteration": 1,
+          "residual_N": 1.8028743978663633
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.6028566606001664
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.390465599237256
+        },
+        {
+          "iteration": 4,
+          "residual_N": 0.5062033509258077
+        },
+        {
+          "iteration": 5,
+          "residual_N": 0.2005953770217371
+        },
+        {
+          "iteration": 6,
+          "residual_N": 0.051164893894460724
+        },
+        {
+          "iteration": 7,
+          "residual_N": 0.007314018339631241
+        },
+        {
+          "iteration": 8,
+          "residual_N": 0.0002678986252290295
+        },
+        {
+          "iteration": 9,
+          "residual_N": 4.35516062456049e-07
+        },
+        {
+          "iteration": 10,
+          "residual_N": 3.22464424904316e-12
+        }
+      ]
+    },
+    {
+      "step": 222,
+      "time_s": 0.270625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 4.973740995369595e-09,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.419266861881531,
+      "minimum_stress_sampled_detF": 0.43376830827009893,
+      "nonlinear_seconds": 568.7243475409923,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 28.43928763648455
+        },
+        {
+          "iteration": 1,
+          "residual_N": 25.70417042339818
+        },
+        {
+          "iteration": 2,
+          "residual_N": 8.366799017962938
+        },
+        {
+          "iteration": 3,
+          "residual_N": 7.280296675170395
+        },
+        {
+          "iteration": 4,
+          "residual_N": 2.7022063006159525
+        },
+        {
+          "iteration": 5,
+          "residual_N": 0.7694118541000876
+        },
+        {
+          "iteration": 6,
+          "residual_N": 0.38226873185312554
+        },
+        {
+          "iteration": 7,
+          "residual_N": 0.1640321079622957
+        },
+        {
+          "iteration": 8,
+          "residual_N": 0.06759593796830955
+        },
+        {
+          "iteration": 9,
+          "residual_N": 0.019762671986278235
+        },
+        {
+          "iteration": 10,
+          "residual_N": 0.0018583139942887437
+        },
+        {
+          "iteration": 11,
+          "residual_N": 2.2494459915786995e-05
+        },
+        {
+          "iteration": 12,
+          "residual_N": 4.973740995369595e-09
+        }
+      ]
+    },
+    {
+      "step": 223,
+      "time_s": 0.27125,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 7.916977665457082e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.3890813772519595,
+      "minimum_stress_sampled_detF": 0.4005882393907579,
+      "nonlinear_seconds": 428.7702797499951,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 3.7022695153239544
+        },
+        {
+          "iteration": 1,
+          "residual_N": 2.3601226387408096
+        },
+        {
+          "iteration": 2,
+          "residual_N": 2.1308669750851195
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.9109510225999368
+        },
+        {
+          "iteration": 4,
+          "residual_N": 0.2922351487137275
+        },
+        {
+          "iteration": 5,
+          "residual_N": 0.08129010503648684
+        },
+        {
+          "iteration": 6,
+          "residual_N": 0.013163642305467477
+        },
+        {
+          "iteration": 7,
+          "residual_N": 0.0005491016008340068
+        },
+        {
+          "iteration": 8,
+          "residual_N": 1.252214767934652e-06
+        },
+        {
+          "iteration": 9,
+          "residual_N": 7.916977665457082e-12
+        }
+      ]
+    }
+  ],
   "protocol_sha256": "e9b305bd6ab4fd5d401ff18ec5a0e796fd57307807ff8c4292363e13d4df3a2c",
   "reference_config_sha256": "d17c08e61e0b7704a2d390340a5bdf98e6d38a83ccddd3e2a921e1d6639c765a",
   "start_step": 210,
@@ -23,5 +566,52 @@
   "source_sha256": "edd1d75d0979d987fd04de867fe42f6c106c1fd5269017d69d7377c77fa17b65",
   "dt_s": 0.000625,
   "full_cycle": false,
-  "changed_time_discretization": true
+  "changed_time_discretization": true,
+  "last_attempt_time_s": 0.27125,
+  "probe_checkpoint_sha256": "6ead56a88be1ba276ee3e0aaf60560e959b8879f5a6054ba38ab69219583b751",
+  "all_requested_steps_accepted": true,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 3.7022695153239544
+    },
+    {
+      "iteration": 1,
+      "residual_N": 2.3601226387408096
+    },
+    {
+      "iteration": 2,
+      "residual_N": 2.1308669750851195
+    },
+    {
+      "iteration": 3,
+      "residual_N": 0.9109510225999368
+    },
+    {
+      "iteration": 4,
+      "residual_N": 0.2922351487137275
+    },
+    {
+      "iteration": 5,
+      "residual_N": 0.08129010503648684
+    },
+    {
+      "iteration": 6,
+      "residual_N": 0.013163642305467477
+    },
+    {
+      "iteration": 7,
+      "residual_N": 0.0005491016008340068
+    },
+    {
+      "iteration": 8,
+      "residual_N": 1.252214767934652e-06
+    },
+    {
+      "iteration": 9,
+      "residual_N": 7.916977665457082e-12
+    }
+  ],
+  "wall_seconds": 3733.634470082936
 }

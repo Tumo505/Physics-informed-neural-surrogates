@@ -50,6 +50,11 @@ parameters = dict(base_problem.parameters)
 parameters['function_space'] = 'P_2'
 df.parameters['form_compiler']['quadrature_degree'] = cfg['quadrature_degree']
 problem = make_quadratic_problem(geo, material, parameters, cfg.get('native_solver', 'mumps'))
+for key, native_key in [('nonlinear_absolute_tolerance_N','absolute_tolerance'),
+                        ('nonlinear_relative_tolerance','relative_tolerance')]:
+    if key in cfg:
+        problem.solver._solver.parameters[native_key] = float(cfg[key])
+        assert float(problem.solver._solver.parameters[native_key]) == float(cfg[key])
 del base_problem
 problem.solver._solver.parameters['line_search'] = 'bt'
 dt = cfg['dt_s']

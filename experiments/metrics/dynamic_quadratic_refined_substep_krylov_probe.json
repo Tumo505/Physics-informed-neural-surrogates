@@ -1,0 +1,17 @@
+{
+  "complete": false,
+  "engineering_only": true,
+  "reference_name": "cardiac_quadratic_reference_refined_v1",
+  "local_changed_grid_probe": true,
+  "reference_complete": false,
+  "config_sha256": "d17c08e61e0b7704a2d390340a5bdf98e6d38a83ccddd3e2a921e1d6639c765a",
+  "reference_output_sha256": null,
+  "requested_steps": [
+    9,
+    11,
+    13
+  ],
+  "executed_source_sha256": "445028bafd741c897ef0ec29b6bbbed3d6139ecdf42e5d4bf158fdb8bf45277b",
+  "records": [],
+  "scope": "Native nonlinear solves at the same frozen histories, pressure, passive law and P2 discretization as accepted MUMPS states. Reconstructed histories must first reproduce the recorded solution residual. The three original production predictor candidates are screened by native residual. Only linear solver/preconditioner differ. A 20-Newton-iteration/300s monitor budget bounds engineering effort; the time guard acts at nonlinear iteration boundaries. Acceptance additionally requires same-root relative coefficient agreement below1e-6 and positive sampled endpoint/stress Jacobians. These isolated probes do not establish full-cycle equivalence or isolated runtime speedup, and never overwrite reference data."
+}

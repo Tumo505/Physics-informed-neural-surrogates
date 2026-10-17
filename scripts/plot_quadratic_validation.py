@@ -7,6 +7,27 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 P = Path(__file__).resolve().parents[1]
+local_path = P/'experiments/metrics/dynamic_quadratic_refined_substep_extended_verification.json'
+if local_path.exists():
+    local = json.loads(local_path.read_text())
+    if local['complete']:
+        records = local['records']; times = [r['time_s'] for r in records]
+        fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+        axes[0].semilogy(times, [r['native_residual_N'] for r in records], marker='.')
+        axes[0].axhline(1e-6, linestyle='--', color='black', label='Unchanged acceptance threshold')
+        axes[0].set(xlabel='Time (s)', ylabel='Independently reassembled force norm (N)')
+        axes[0].legend(fontsize=8)
+        for state in ['endpoint', 'stress']:
+            axes[1].plot(times, [r[state+'_minimum_Bernstein_bound'] for r in records], marker='.', label=state)
+        axes[1].axhline(0, color='black', linewidth=.8)
+        axes[1].set(xlabel='Time (s)', ylabel='Minimum whole-element determinant lower bound')
+        axes[1].legend(fontsize=8)
+        for ax in axes:
+            ax.grid(alpha=.2); ax.ticklabel_format(axis='x', style='plain', useOffset=False)
+        fig.suptitle('Local refined P2 / 0.625 ms diagnostic: fourteen accepted steps\nInherited nonzero histories; not full-cycle convergence or a recovered 1.25 ms root')
+        fig.tight_layout()
+        fig.savefig(P/'reports/figures/dynamic_quadratic_local_recovery.png', dpi=180)
+        plt.close(fig)
 audit_path = P/'experiments/metrics/cardiac_quadratic_reference_dt00125_v1_bernstein.json'
 if audit_path.exists():
     audit = json.loads(audit_path.read_text())

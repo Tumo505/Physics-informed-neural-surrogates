@@ -10,15 +10,17 @@ import time
 
 P = Path(__file__).resolve().parents[1]
 ap = argparse.ArgumentParser()
-ap.add_argument('factor', choices=['time', 'mesh', 'solver', 'mesh_gamg', 'quadrature'])
+ap.add_argument('factor', choices=['time', 'mesh', 'solver', 'mesh_gamg', 'quadrature', 'reference'])
 ap.add_argument('--baseline-config')
 ap.add_argument('--candidate-config')
 ap.add_argument('--output-stem')
 args = ap.parse_args()
 baseline = 'configs/physics/dynamic_quadratic_reference_'+('gamg' if args.factor in ['mesh_gamg','quadrature'] else 'dt00125')+'.json'
-candidate = 'configs/physics/dynamic_quadratic_reference_'+dict(time='dt001',mesh='refined',solver='gamg',mesh_gamg='refined_gamg',quadrature='quadrature8')[args.factor]+'.json'
+candidate = 'configs/physics/dynamic_quadratic_reference_'+dict(time='dt001',mesh='refined',solver='gamg',mesh_gamg='refined_gamg',quadrature='quadrature8',reference='halfstep_gamg')[args.factor]+'.json'
 baseline = args.baseline_config or baseline
 candidate = args.candidate_config or candidate
+if args.factor == 'reference':
+    baseline = candidate
 name = json.loads((P/candidate).read_text())['name']
 stem = args.output_stem or 'dynamic_quadratic_controlled_'+args.factor
 output = P/'experiments/metrics'/f'{stem}_pipeline.json'
@@ -72,7 +74,7 @@ try:
     run('generation', native+['scripts/generate_quadratic_reference.py', '--config', candidate])
     if args.factor == 'solver':
         run('equivalence', modern+['scripts/compare_quadratic_solvers.py'])
-    else:
+    elif args.factor != 'reference':
         run('norms', native+['scripts/compare_quadratic_references.py', '--config-a', baseline,
             '--config-b', candidate, '--output', f'experiments/metrics/{stem}.json'])
     run('positivity', modern+['scripts/audit_quadratic_positivity.py', '--config', candidate])

@@ -21,15 +21,35 @@ ap = argparse.ArgumentParser()
 ap.add_argument('--reference', default='cardiac_quadratic_reference_dt00125_v1')
 ap.add_argument('--steps', nargs='+', type=int, default=[0, 223, 399])
 ap.add_argument('--allow-incomplete', action='store_true')
+ap.add_argument('--local-probe', action='store_true', help='Use saved accepted half-step diagnostic fields and its nonzero initial history')
 ap.add_argument('--output', default='experiments/metrics/dynamic_quadratic_nonlinear_krylov.json')
 args = ap.parse_args()
 source_hash = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 root = P/'data/processed'/args.reference
 m = json.loads((root/'manifest.json').read_text())
+local_saved = None
+if args.local_probe:
+    protocol = json.loads((P/'configs/physics/dynamic_quadratic_refined_substep_extended_probe.json').read_text())
+    local = json.loads((P/protocol['output']).read_text())
+    assert protocol['reference'] == args.reference and local['all_requested_steps_accepted']
+    assert hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest() == local['checkpoint_sha256']
+    local_saved = dict(np.load(root/'restart.npz'))
+    m = dict(m, complete=False, completed_steps=len(local['records']),
+             config=dict(m['config'], dt_s=local['dt_s']),
+             steps=[dict(r, nonlinear_solve_seconds=r['nonlinear_seconds']) for r in local['records']])
 assert m['complete'] or args.allow_incomplete
 assert min(args.steps) >= 0 and max(args.steps) < m['completed_steps']
 cfg = m['config']; data = np.load(root/'inputs.npz')
 u = np.load(root/'displacement_coefficients.npy', mmap_mode='r')
+if args.local_probe:
+    from lv_surrogate.physics.reference_fem import pressure_function, default_parameters_benchmark1
+    u = np.load(P/protocol['fields'], mmap_mode='r')
+    data = dict(data)
+    data['time'] = np.array([r['time_s'] for r in local['records']])
+    par = default_parameters_benchmark1()
+    for key in ['t_sys_pre', 't_dias_pre', 'gamma']:
+        par[key] *= m['config']['timing_scale']
+    data['pressure'] = m['config']['amplitude']*pressure_function((0,m['config']['duration_s']),parameters=par,t_eval=data['time']-.4*m['config']['dt_s'])
 geo, material, base = setup(dt=cfg['dt_s'], geometry_scales=cfg['geometry_scales'],
                             refinement_level=cfg['refinement_level'])
 parameters = dict(base.parameters); parameters['function_space'] = 'P_2'
@@ -60,9 +80,14 @@ def with_nullspace(A, x):
 problem._problem.J = with_nullspace
 problem.solver._solver.parameters['line_search'] = 'bt'
 problem.solver._solver.parameters['maximum_iterations'] = 20
+if args.local_probe:
+    problem.solver._solver.parameters['relative_tolerance'] = 0.
+    problem.solver._solver.parameters['absolute_tolerance'] = 1e-8
 kin = QuadraticKinematics(problem.u_space, data['qpoints'], data['qweights'])
 dt = cfg['dt_s']; beta = float(problem._beta); gamma = float(problem._gamma)
 previous = np.zeros(u.shape[1]); velocity = previous.copy(); acceleration = previous.copy()
+if local_saved is not None:
+    previous, velocity, acceleration = (local_saved[k].copy() for k in ['u_old','v_old','a_old'])
 records = []
 target = P/args.output
 
@@ -73,6 +98,7 @@ def assign(field, values):
 
 def persist(complete):
     result = dict(complete=complete, engineering_only=True, reference_name=args.reference,
+        local_changed_grid_probe=args.local_probe,
         reference_complete=m['complete'], config_sha256=m['config_sha256'],
         reference_output_sha256=m.get('output_sha256'), requested_steps=args.steps,
         executed_source_sha256=source_hash, records=records,
@@ -105,6 +131,7 @@ for i in range(max(args.steps)+1):
             print('NONLINEAR KRYLOV', i, iteration, norm, flush=True)
             if time.perf_counter()-started > 300:
                 raise RuntimeError('Declared engineering nonlinear wall limit exceeded')
+        problem.solver._snes.cancelMonitor()
         problem.solver._snes.setMonitor(monitor)
         error = None
         try:
