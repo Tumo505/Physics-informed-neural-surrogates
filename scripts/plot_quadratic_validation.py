@@ -27,6 +27,21 @@ if audit_path.exists():
     fig.savefig(P/'reports/figures/dynamic_quadratic_positivity.png', dpi=180)
     plt.close(fig)
 evidence = []
+solver_path = P/'experiments/metrics/dynamic_quadratic_solver_equivalence.json'
+if solver_path.exists():
+    solver = json.loads(solver_path.read_text())
+    if solver['complete']:
+        fig, ax = plt.subplots(figsize=(8, 4.5))
+        ax.semilogy([r['time_s'] for r in solver['records']],
+            [max(r['maximum_absolute_coefficient_difference_m']*1e9, 1e-10) for r in solver['records']],
+            label='Maximum absolute displacement-DOF difference')
+        ax.axhline(1, color='black', linestyle='--', label='Declared 1 nm tolerance')
+        ax.set(xlabel='Time (s)', ylabel='Maximum coefficient difference (nm)',
+            title=f'800-step recursive solver control: GMRES/GAMG versus MUMPS\nSame discretization; agreement passed: {solver["passed"]}')
+        ax.legend(fontsize=8); ax.grid(alpha=.2)
+        fig.tight_layout()
+        fig.savefig(P/'reports/figures/dynamic_quadratic_solver_equivalence.png', dpi=180)
+        plt.close(fig)
 for factor in ['time', 'mesh']:
     f = P/f'experiments/metrics/dynamic_quadratic_controlled_{factor}.json'
     if f.exists():

@@ -10,10 +10,10 @@ import time
 
 P = Path(__file__).resolve().parents[1]
 ap = argparse.ArgumentParser()
-ap.add_argument('factor', choices=['time', 'mesh'])
+ap.add_argument('factor', choices=['time', 'mesh', 'solver'])
 args = ap.parse_args()
 baseline = 'configs/physics/dynamic_quadratic_reference_dt00125.json'
-candidate = 'configs/physics/dynamic_quadratic_reference_'+('dt001' if args.factor == 'time' else 'refined')+'.json'
+candidate = 'configs/physics/dynamic_quadratic_reference_'+dict(time='dt001',mesh='refined',solver='gamg')[args.factor]+'.json'
 name = json.loads((P/candidate).read_text())['name']
 stem = 'dynamic_quadratic_controlled_'+args.factor
 output = P/'experiments/metrics'/f'{stem}_pipeline.json'
@@ -65,8 +65,11 @@ try:
     # Native generator locks its own reference directory and safely reuses an
     # independently running matching generation after checking all output hashes.
     run('generation', native+['scripts/generate_quadratic_reference.py', '--config', candidate])
-    run('norms', native+['scripts/compare_quadratic_references.py', '--config-a', baseline,
-        '--config-b', candidate, '--output', f'experiments/metrics/{stem}.json'])
+    if args.factor == 'solver':
+        run('equivalence', modern+['scripts/compare_quadratic_solvers.py'])
+    else:
+        run('norms', native+['scripts/compare_quadratic_references.py', '--config-a', baseline,
+            '--config-b', candidate, '--output', f'experiments/metrics/{stem}.json'])
     run('positivity', modern+['scripts/audit_quadratic_positivity.py', '--config', candidate])
     run('figures', modern+['scripts/plot_quadratic_validation.py'])
     state['complete'] = True  # Workflow completed; sensitivity tolerance may FAIL.

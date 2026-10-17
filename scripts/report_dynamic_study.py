@@ -106,7 +106,18 @@ def dynamic_rows(P):
   for d in completed_nonlinear:
    for r in d['records']:rows.append(f'| {d["reference_name"]} | {r["time_s"]:g} | {r["seconds"]:.3f} | {fmt(r["residual_l2_N"])} | {fmt(r["relative_coefficient_difference_vs_MUMPS"])} | {r["accepted"]} |')
   rows+=['','Probe acceptance requires a positive SNES reason, native residual below1e-6N, positive sampled endpoint/stress determinants and relative coefficient agreement below1e-6 with the accepted direct root. The probes use at most20 Newton iterations with a300s monitor guard at nonlinear iteration boundaries. These fixed-history checks do not establish error accumulation, complete-cycle equivalence, loaded refined-mesh robustness or isolated runtime speedup. The production reference solver is unchanged.']
- for candidate in ['dt00125', 'dt001', 'refined']:
+ solver_control=P/'experiments/metrics/dynamic_quadratic_solver_equivalence.json'
+ if solver_control.exists() and json.loads(solver_control.read_text()).get('complete'):
+  d=json.loads(solver_control.read_text());rows+=['',f'**Full-cycle iterative/direct solver agreement.** Both800-step trajectories start from rest and recursively update their own histories. Geometry, DOF maps, forcing and discretization are byte-identical. Maximum per-frame relative coefficient difference {d["maximum_relative_coefficient_difference"]:.6g}; maximum absolute coefficient difference {d["maximum_absolute_coefficient_difference_m"]:.6g}m. Passed the predeclared1e-6 relative AND1nm absolute tolerances: {d["passed"]}. This controls solver-induced accumulation on one known baseline case; it does not validate discretization accuracy, independent geometries or loaded refined-mesh robustness.']
+ else:
+  progress=P/'data/processed/cardiac_quadratic_reference_gamg_v1/manifest.json'
+  failure=P/'data/processed/cardiac_quadratic_reference_gamg_v1/failure.json'
+  if failure.exists():
+   d=json.loads(failure.read_text());rows+=['',f'**Full-cycle iterative solver control rejected:** {d["accepted_steps_before_failure"]} accepted steps, failed at{d["failed_time_s"]}s; {d["rejection_kind"]}. No direct reference was replaced.']
+  elif progress.exists():
+   d=json.loads(progress.read_text());rows+=['',f'**Full-cycle iterative solver control in progress:** {d["completed_steps"]}/{d["n_steps"]} accepted native steps. Fixed-history agreement does not establish recursive-cycle equivalence. Direct reference jobs continue unchanged.']
+ if (P/'reports/figures/dynamic_quadratic_solver_equivalence.png').exists():rows+=['','![Full-cycle native solver equivalence](figures/dynamic_quadratic_solver_equivalence.png)']
+ for candidate in ['dt00125', 'dt001', 'refined', 'gamg']:
   config=P/f'configs/physics/dynamic_quadratic_reference_{candidate}.json'
   if config.exists():
    cfg=json.loads(config.read_text());audit=P/f'experiments/metrics/{cfg["name"]}_bernstein.json'

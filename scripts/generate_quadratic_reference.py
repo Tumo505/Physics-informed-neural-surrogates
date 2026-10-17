@@ -13,6 +13,7 @@ sys.path.insert(0, str(P / 'src'))
 from lv_surrogate.physics.reference_fem import (setup, LVProblem, df, residual,
     pressure_function, default_parameters_benchmark1)
 from lv_surrogate.physics.quadratic import QuadraticKinematics
+from lv_surrogate.physics.quadratic_solver import make_quadratic_problem
 from FIAT.reference_element import UFCTetrahedron
 from FIAT.quadrature_schemes import create_quadrature
 
@@ -48,9 +49,7 @@ geo, material, base_problem = setup(dt=cfg['dt_s'], geometry_scales=cfg['geometr
 parameters = dict(base_problem.parameters)
 parameters['function_space'] = 'P_2'
 df.parameters['form_compiler']['quadrature_degree'] = cfg['quadrature_degree']
-problem = LVProblem(geo, material, parameters=parameters,
-                    solver_parameters={'linear_solver': 'mumps',
-                                       'petsc': {'ksp_type': 'preonly', 'pc_type': 'none'}})
+problem = make_quadratic_problem(geo, material, parameters, cfg.get('native_solver', 'mumps'))
 del base_problem
 problem.solver._solver.parameters['line_search'] = 'bt'
 dt = cfg['dt_s']
@@ -92,7 +91,10 @@ if old and not segments:
     segments.append(dict(start_step=0, generator_sha256=old['source_sha256']))
 segments.append(dict(start_step=start_step, generator_sha256=source_hash,
                      kinematics_sha256=hashlib.sha256(
-                         (P / 'src/lv_surrogate/physics/quadratic.py').read_bytes()).hexdigest()))
+                         (P / 'src/lv_surrogate/physics/quadratic.py').read_bytes()).hexdigest(),
+                     native_solver=cfg.get('native_solver', 'mumps'),
+                     solver_helper_sha256=hashlib.sha256(
+                         (P/'src/lv_surrogate/physics/quadratic_solver.py').read_bytes()).hexdigest()))
 native_checks = old.get('native_integral_checked_steps', [0] if start_step else [])
 if start_step:
     saved = np.load(out / 'restart.npz')
@@ -149,6 +151,10 @@ for i in range(start_step, stop):
         reject(i, int(problem.solver._snes.getConvergedReason()), None, 'native_solver_exception')
     solve_seconds = time.perf_counter() - tick
     reason = int(problem.solver._snes.getConvergedReason())
+    if cfg.get('native_solver') == 'gamg':
+        ksp = problem.solver._snes.getKSP()
+        if (ksp.getType(), ksp.getPC().getType()) != ('gmres', 'gamg'):
+            reject(i, reason, None, 'requested_iterative_solver_not_effective')
     R = float(residual(problem).norm('l2'))
     current = problem.u.vector().get_local().copy()
     if reason <= 0 or not np.isfinite(current).all() or not np.isfinite(R) or R > 1e-6:

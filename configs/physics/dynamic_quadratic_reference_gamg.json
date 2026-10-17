@@ -1,0 +1,14 @@
+{
+  "name": "cardiac_quadratic_reference_gamg_v1",
+  "dt_s": 0.00125,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 0,
+  "geometry_scales": [1.0, 1.0],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 6,
+  "checkpoint_interval": 10,
+  "native_solver": "gamg",
+  "scope": "Separate full-cycle solver-equivalence experiment after five accepted fixed-history nonlinear probes. Native GMRES/GAMG with rigid-body near-nullspace; all mechanics, geometry, P2 space, 1.25ms timestep, initial conditions and physical acceptance criteria match the completed direct reference. No direct trajectory is replaced. Compare all800 recursively generated states and whole-element positivity before considering changes to the production solver. This engineering control does not establish mesh/time convergence or select neural models."
+}
