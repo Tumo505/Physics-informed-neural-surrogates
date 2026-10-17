@@ -1,0 +1,45 @@
+{
+  "complete_trajectory": false,
+  "reference_name": "cardiac_quadratic_g005_l1_r1_q6_v1",
+  "accepted_steps_before_failure": 211,
+  "persisted_checkpoint_steps": 210,
+  "failed_zero_based_step": 211,
+  "failed_time_s": 0.265,
+  "SNES_reason": -3,
+  "residual_l2_N": 1.0209398291917568e+16,
+  "rejection_kind": "nonconvergence_or_invalid_force_or_field",
+  "config": {
+    "name": "cardiac_quadratic_g005_l1_r1_q6_v1",
+    "dt_s": 0.00125,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 1,
+    "geometry_scales": [
+      1.021498796532157,
+      0.9510379040647747
+    ],
+    "amplitude": 1.05,
+    "timing_scale": 0.95,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "native_solver": "gamg",
+    "scope": "Prospective800-step P2 convergence controls on the two existing validation geometries and their fixed different loading histories. Entire trajectories start from zero histories on both mesh levels; same passive law, P1 fibers, solver, pressure waveform and timestep. These are validation inputs, never calibration/test selection. Generate coarse reference first, then fine reference, independent native norms and whole-element positivity. Completed numerical sensitivity does not imply passing1%. Frozen neural models remain unchanged; geometry/template-specific convergence does not establish anatomical validity.",
+    "validation_source_case": {
+      "id": "g005_l1",
+      "geometry": 5,
+      "split": "validation",
+      "scales": [
+        1.021498796532157,
+        0.9510379040647747
+      ],
+      "amplitude": 1.05,
+      "timing_scale": 0.95,
+      "dt": 0.005,
+      "refinement": 0
+    },
+    "validation_protocol_sha256": "8b0a8fa96ccfa05075ce74a8becfd19ad76f58de691fc70d2ffb6d8039ae6b76"
+  },
+  "config_sha256": "6fb3ea09c4bb31e8c68c3e218d9e5cee7a3e5638c2e7e5d7bbcf35f6edb16766",
+  "source_sha256": "4b35969fff30f0893f6c1b5423e6a3eb3c14678825cf8cae3ae1b777b81f6125",
+  "scope": "Rejected reference attempt; no full-cycle result."
+}

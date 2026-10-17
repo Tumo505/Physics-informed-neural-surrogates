@@ -1,0 +1,335 @@
+{
+  "complete": false,
+  "engineering_only": true,
+  "protocol": {
+    "reference": "cardiac_quadratic_reference_refined_v1",
+    "timestep_divisor": 2,
+    "steps_after_checkpoint": 14,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 20,
+    "wall_budget_seconds": 1800,
+    "mumps_memory_limit_MB": 20000,
+    "output": "experiments/metrics/dynamic_quadratic_refined_substep_probe.json",
+    "scope": "Bounded local timestep diagnostic after the strict1.25ms stopping probe exhausted its1800s solve budget at0.26875s. From immutable210-step refined direct checkpoint at0.2625s, attempt fourteen0.625ms steps through0.27125s. Keep geometry, Q6, passive law, strict absolute stopping, physical acceptance and continuous pressure model fixed. This changes time discretization and inherits the coarse-time history; it neither recovers the rejected1.25ms equation nor establishes a full-cycle fine-time reference. Preserve original failures; do not overwrite references or retrain. Wall guard checked at nonlinear iteration boundaries."
+  },
+  "records": [
+    {
+      "step": 210,
+      "time_s": 0.263125,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.4585261618512303e-09,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.5781116672749378,
+      "minimum_stress_sampled_detF": 0.5842297457147788,
+      "nonlinear_seconds": 197.18583137507085,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.14865244188582186
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0023059633830707373
+        },
+        {
+          "iteration": 2,
+          "residual_N": 2.1225547810910123e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.4585261618512303e-09
+        }
+      ]
+    },
+    {
+      "step": 211,
+      "time_s": 0.26375,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.7154827086594314e-10,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.5624919855920055,
+      "minimum_stress_sampled_detF": 0.5685150655355145,
+      "nonlinear_seconds": 151.21991737489589,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.11023936462182791
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0012131376317625982
+        },
+        {
+          "iteration": 2,
+          "residual_N": 5.622035875430732e-06
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.7154827086594314e-10
+        }
+      ]
+    },
+    {
+      "step": 212,
+      "time_s": 0.264375,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 7.2567856350015185e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.5459989391712663,
+      "minimum_stress_sampled_detF": 0.5526897877336132,
+      "nonlinear_seconds": 148.48851970792748,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.13028652438429367
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0007724007697639238
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.1338900397198489e-06
+        },
+        {
+          "iteration": 3,
+          "residual_N": 7.2567856350015185e-12
+        }
+      ]
+    },
+    {
+      "step": 213,
+      "time_s": 0.265,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.859009842827251e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.5269929498604442,
+      "minimum_stress_sampled_detF": 0.535670333288318,
+      "nonlinear_seconds": 148.15519399999175,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.07542008027588586
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.00030269660637909443
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.9876489829749303e-07
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.859009842827251e-12
+        }
+      ]
+    },
+    {
+      "step": 214,
+      "time_s": 0.265625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.4277962966467865e-11,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.5097030002051471,
+      "minimum_stress_sampled_detF": 0.5159289091905939,
+      "nonlinear_seconds": 148.18699779210147,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.09422546147466643
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0005228652198505054
+        },
+        {
+          "iteration": 2,
+          "residual_N": 9.62349760268666e-07
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.4277962966467865e-11
+        }
+      ]
+    },
+    {
+      "step": 215,
+      "time_s": 0.26625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.878657747261147e-11,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.47155377898139283,
+      "minimum_stress_sampled_detF": 0.49278046777410595,
+      "nonlinear_seconds": 148.69626624998637,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.05756134993113805
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0006651147198761846
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.9099487428869287e-06
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.878657747261147e-11
+        }
+      ]
+    },
+    {
+      "step": 216,
+      "time_s": 0.26687500000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.2014156539339216e-09,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.4364649993086039,
+      "minimum_stress_sampled_detF": 0.4435117054564288,
+      "nonlinear_seconds": 148.85177562502213,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.0726060884442574
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0021832959925961325
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.918673806953443e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.2014156539339216e-09
+        }
+      ]
+    },
+    {
+      "step": 217,
+      "time_s": 0.2675,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 6.910151720708236e-11,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.45987112275508485,
+      "minimum_stress_sampled_detF": 0.4574765113559167,
+      "nonlinear_seconds": 195.01347416697536,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.08695600950137271
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.010893114307836065
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.000549866904159169
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.5532231250028726e-06
+        },
+        {
+          "iteration": 4,
+          "residual_N": 6.910151720708236e-11
+        }
+      ]
+    },
+    {
+      "step": 218,
+      "time_s": 0.268125,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.82814613003679e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.45802683162441077,
+      "minimum_stress_sampled_detF": 0.4614720834550347,
+      "nonlinear_seconds": 293.58474850002676,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 1.8369810115571485
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.09945776963485194
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.016117815621302878
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.001955904022267401
+        },
+        {
+          "iteration": 4,
+          "residual_N": 4.6550489091221915e-05
+        },
+        {
+          "iteration": 5,
+          "residual_N": 2.888606048001879e-08
+        },
+        {
+          "iteration": 6,
+          "residual_N": 2.82814613003679e-12
+        }
+      ]
+    }
+  ],
+  "protocol_sha256": "63aef7d856376291bdcfe1be4fb2d13e9838597696bb762f3b0c5a40fbc7db9b",
+  "reference_config_sha256": "d17c08e61e0b7704a2d390340a5bdf98e6d38a83ccddd3e2a921e1d6639c765a",
+  "start_step": 210,
+  "checkpoint_sha256": "2f72860ce17a5ff39894fa11ff331ad2ec34e811d491e14d5e7148488f618254",
+  "source_sha256": "dd42a636ac9706eb775ec50351c198dc6fff745aa4c3a9b2437c04fdb679caf0",
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": true,
+  "last_attempt_time_s": 0.26875,
+  "budget_exhausted": true,
+  "failure": "\n\n*** -------------------------------------------------------------------------\n*** DOLFIN encountered an error. If you are not able to resolve this issue\n*** using the information listed below, you can ask for help at\n***\n***     fenics-support@googlegroups.com\n***\n*** Remember to include the error message listed below and, if possible,\n*** include a *minimal* running example to reproduce the error.\n***\n*** -------------------------------------------------------------------------\n*** Error:   Unable to successfully call PETSc function 'SNESSolve'.\n*** Reason:  PETSc error code is: 101 (Unhandled Python Exception).\n*** Where:   This error was encountered inside /Users/runner/miniforge3/conda-bld/bld/rattler-build_fenics-libdolfin_1792146198/work/dolfin/nls/PETScSNESSolver.cpp.\n*** Process: 0\n*** \n*** DOLFIN version: 2019.1.0\n*** Git changeset:  \n*** -------------------------------------------------------------------------\n",
+  "all_requested_steps_accepted": false,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 1.7840728142742517
+    },
+    {
+      "iteration": 1,
+      "residual_N": 0.12596968342652692
+    },
+    {
+      "iteration": 2,
+      "residual_N": 0.027372319856204443
+    },
+    {
+      "iteration": 3,
+      "residual_N": 0.003515393732534281
+    },
+    {
+      "iteration": 4,
+      "residual_N": 0.00010590444519809719
+    },
+    {
+      "iteration": 5,
+      "residual_N": 1.0699467640282036e-07
+    }
+  ],
+  "wall_seconds": 1840.8658621660434
+}

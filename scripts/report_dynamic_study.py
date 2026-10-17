@@ -107,6 +107,12 @@ def dynamic_rows(P):
    substep=P/'experiments/metrics/dynamic_quadratic_refined_substep_probe.json'
    if substep.exists():
     v=json.loads(substep.read_text());rows+=['',f'Half-step probe: finished {v.get("finished",False)}, accepted {sum(r["accepted"] for r in v["records"])}/14 steps, all requested accepted {v.get("all_requested_steps_accepted",False)}.']
+  extended_protocol=P/'configs/physics/dynamic_quadratic_refined_substep_extended_probe.json'
+  if extended_protocol.exists():
+   rows+=['','**Half-step budget extension.** The first0.625ms probe accepted nine steps through0.268125s, then its total solve-budget guard fired at1840.9s during the0.26875s attempt. No nonlinear-convergence conclusion follows for that unfinished attempt. A separately fixed5400s extension repeats the same fourteen steps and physical acceptance. The earlier probe saved residual diagnostics but no displacement histories, requiring repeated computation; the extension now saves each accepted displacement and an atomic separate history checkpoint. Original references and earlier probe records remain unchanged. No full-cycle claim follows.']
+   extended=P/'experiments/metrics/dynamic_quadratic_refined_substep_extended_probe.json'
+   if extended.exists():
+    v=json.loads(extended.read_text());rows+=['',f'Extended half-step probe: finished {v.get("finished",False)}, accepted {sum(r["accepted"] for r in v["records"])}/14, all requested accepted {v.get("all_requested_steps_accepted",False)}, budget exhausted {v.get("budget_exhausted",False)}.']
  geometry_protocol=P/'configs/physics/dynamic_quadratic_geometry_controls.json'
  if geometry_protocol.exists():
   protocol=json.loads(geometry_protocol.read_text());rows+=['','**Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.', '', '| Validation input | Coarse/fine persisted steps | Full-cycle relative volume L2 difference | Within1% |','|---|---|---:|---|']

@@ -1,0 +1,27 @@
+{
+  "complete": false,
+  "engineering_only": true,
+  "protocol": {
+    "reference": "cardiac_quadratic_reference_refined_v1",
+    "timestep_divisor": 2,
+    "steps_after_checkpoint": 14,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 20,
+    "wall_budget_seconds": 5400,
+    "mumps_memory_limit_MB": 20000,
+    "output": "experiments/metrics/dynamic_quadratic_refined_substep_extended_probe.json",
+    "scope": "Separate bounded extension after the original half-step probe accepted9 steps then exhausted its1800s total solve budget, without establishing nonlinear divergence. Same immutable210-step baseline checkpoint, fourteen0.625ms steps through0.27125s, strict absolute1e-8N stopping, unchanged mechanics/Q6/loading/physical acceptance. Allow5400s total solve time, checked at nonlinear iteration boundaries. Previous accepted fields were not saved, so this repeat is necessary; now save every accepted field and a separate atomic history checkpoint. Preserve both earlier negative probes. Local changed-grid diagnostic only: inherited coarse-time history, not a full-cycle reference or recovered1.25ms root. Do not train or recalibrate.",
+    "checkpoint": "experiments/logs/quadratic_refined_substep_extended_restart.npz",
+    "fields": "experiments/logs/quadratic_refined_substep_extended_fields.npy"
+  },
+  "records": [],
+  "protocol_sha256": "e9b305bd6ab4fd5d401ff18ec5a0e796fd57307807ff8c4292363e13d4df3a2c",
+  "reference_config_sha256": "d17c08e61e0b7704a2d390340a5bdf98e6d38a83ccddd3e2a921e1d6639c765a",
+  "start_step": 210,
+  "checkpoint_sha256": "2f72860ce17a5ff39894fa11ff331ad2ec34e811d491e14d5e7148488f618254",
+  "source_sha256": "edd1d75d0979d987fd04de867fe42f6c106c1fd5269017d69d7377c77fa17b65",
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": true
+}

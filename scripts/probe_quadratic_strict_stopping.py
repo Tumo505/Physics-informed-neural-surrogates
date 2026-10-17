@@ -1,5 +1,6 @@
 """Bounded continuation from rejected-reference checkpoint; no data replacement."""
 import argparse
+import fcntl
 import hashlib
 import json
 from pathlib import Path
@@ -30,6 +31,10 @@ result = dict(complete=False, engineering_only=True, protocol=protocol, records=
     checkpoint_sha256=hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest(),
     source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
 output = P/protocol.get('output', 'experiments/metrics/dynamic_quadratic_strict_stopping_probe.json')
+lock = (P/'experiments/logs'/f'{output.stem}.lock').open('w')
+fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+if output.exists():
+    raise RuntimeError('Probe output already exists; preserve it and use a separate protocol/output for another attempt')
 divisor = int(protocol.get('timestep_divisor', 1)); assert divisor >= 1
 dt = cfg['dt_s']/divisor
 times = float(inputs['time'][start_step-1])+dt*np.arange(1, protocol['steps_after_checkpoint']+1)
@@ -59,6 +64,11 @@ np.testing.assert_allclose(problem.u_space.tabulate_dof_coordinates(), inputs['d
 for name in ['u', 'u_old', 'v_old', 'a_old']:
     field = getattr(problem, name); field.vector().set_local(saved[name]); field.vector().apply('insert')
 kin = QuadraticKinematics(problem.u_space, inputs['qpoints'], inputs['qweights'])
+checkpoint_path = P/protocol['checkpoint'] if 'checkpoint' in protocol else None
+fields = None
+if 'fields' in protocol:
+    fields = np.lib.format.open_memmap(P/protocol['fields'], mode='w+', dtype=np.float64,
+        shape=(protocol['steps_after_checkpoint'], problem.u_space.dim()))
 started = time.perf_counter()
 history = []
 def monitor(snes, iteration, norm):
@@ -100,6 +110,19 @@ try:
         if not accepted:
             raise RuntimeError('Physical acceptance criteria failed in strict probe')
         problem._update_fields()
+        if fields is not None:
+            fields[offset] = u
+            fields.flush()
+        if checkpoint_path is not None:
+            temporary = checkpoint_path.with_suffix('.pending.npz')
+            np.savez_compressed(temporary, completed_probe_steps=offset+1,
+                protocol_sha256=result['protocol_sha256'],
+                original_checkpoint_sha256=result['checkpoint_sha256'],
+                **{name:getattr(problem,name).vector().get_local()
+                   for name in ['u','u_old','v_old','a_old']})
+            temporary.replace(checkpoint_path)
+            result['probe_checkpoint_sha256'] = hashlib.sha256(checkpoint_path.read_bytes()).hexdigest()
+            persist()
     result['complete'] = True
     result['all_requested_steps_accepted'] = True
 except Exception as error:
