@@ -1,0 +1,13 @@
+{
+  "name": "cardiac_quadratic_reference_v1",
+  "dt_s": 0.0025,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 0,
+  "geometry_scales": [1.0, 1.0],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 6,
+  "checkpoint_interval": 10,
+  "scope": "Full-cycle passive P2 displacement reference on the same fixed polyhedral domain and P1 fiber fields. A p-sensitivity experiment, not proof of asymptotic mesh convergence. Does not alter the frozen neural benchmark or its model selection."
+}

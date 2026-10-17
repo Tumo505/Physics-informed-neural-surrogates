@@ -177,3 +177,14 @@ dynamic-inputs:
 dynamic-cohort: dynamic-inputs
 dynamic-convergence: cardiac-trajectory dynamic-inputs
 cardiac-trajectory: dynamic-inputs
+
+.PHONY: dynamic-reference-capacity dynamic-quadratic-reference
+dynamic-reference-capacity:
+	$(PY) scripts/probe_dynamic_refinement.py
+	$(PY) scripts/probe_dynamic_refinement.py --degree 2 --refinement 0
+
+dynamic-quadratic-reference: dynamic-convergence
+	$(FEM_RUN) scripts/generate_quadratic_reference.py
+	env OPENBLAS_NUM_THREADS=2 $(PY) scripts/analyze_quadratic_reference.py
+	$(PY) scripts/plot_quadratic_reference.py
+	$(PY) scripts/write_reports.py

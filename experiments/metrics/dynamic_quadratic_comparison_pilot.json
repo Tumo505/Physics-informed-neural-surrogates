@@ -1,0 +1,204 @@
+{
+  "complete": true,
+  "source_sha256": "0a728d7489e80561bc2044a09af115b907119d7265e74af2196ed72621d7a798",
+  "full_cycle": false,
+  "n_endpoints": 10,
+  "dt_s": 0.0025,
+  "domain_volume_m3": 0.00017769451479940392,
+  "comparisons": {
+    "coarse_P1": {
+      "relative_spacetime_volume_L2_difference_vs_P2": 0.053237958073018066,
+      "volume_time_component_rmse_m": 1.0726358856356753e-06,
+      "within_1percent_tolerance": false,
+      "frames": [
+        {
+          "time_s": 0.0025,
+          "difference_volume_L2_squared": 1.7595910651319162e-19,
+          "P2_volume_L2_squared": 2.2453760397983933e-17,
+          "P1_volume_L2_squared": 2.1721314647592312e-17,
+          "relative_difference_vs_P2": 0.088524061661435
+        },
+        {
+          "time_s": 0.005,
+          "difference_volume_L2_squared": 1.9301771298838e-18,
+          "P2_volume_L2_squared": 4.277886338130479e-16,
+          "P1_volume_L2_squared": 4.1183438243955795e-16,
+          "relative_difference_vs_P2": 0.06717133225915434
+        },
+        {
+          "time_s": 0.0075,
+          "difference_volume_L2_squared": 1.0103386160749745e-17,
+          "P2_volume_L2_squared": 3.008057986042627e-15,
+          "P1_volume_L2_squared": 2.8880149133415214e-15,
+          "relative_difference_vs_P2": 0.057954928490055665
+        },
+        {
+          "time_s": 0.01,
+          "difference_volume_L2_squared": 3.5897814366052494e-17,
+          "P2_volume_L2_squared": 1.2527548562702937e-14,
+          "P1_volume_L2_squared": 1.2009530463203476e-14,
+          "relative_difference_vs_P2": 0.053530457638271856
+        },
+        {
+          "time_s": 0.0125,
+          "difference_volume_L2_squared": 9.840607490256135e-17,
+          "P2_volume_L2_squared": 3.743673266477011e-14,
+          "P1_volume_L2_squared": 3.581139332417572e-14,
+          "relative_difference_vs_P2": 0.051269842784017125
+        },
+        {
+          "time_s": 0.015,
+          "difference_volume_L2_squared": 2.278287095659725e-16,
+          "P2_volume_L2_squared": 9.002842102712769e-14,
+          "P1_volume_L2_squared": 8.583966620271795e-14,
+          "relative_difference_vs_P2": 0.050305377052424875
+        },
+        {
+          "time_s": 0.0175,
+          "difference_volume_L2_squared": 4.703128494487462e-16,
+          "P2_volume_L2_squared": 1.8587059188290428e-13,
+          "P1_volume_L2_squared": 1.7642451901547442e-13,
+          "relative_difference_vs_P2": 0.05030232758964319
+        },
+        {
+          "time_s": 0.02,
+          "difference_volume_L2_squared": 8.96321449695701e-16,
+          "P2_volume_L2_squared": 3.426305812713811e-13,
+          "P1_volume_L2_squared": 3.2333773123098794e-13,
+          "relative_difference_vs_P2": 0.05114684310447819
+        },
+        {
+          "time_s": 0.0225,
+          "difference_volume_L2_squared": 1.6133533971047048e-15,
+          "P2_volume_L2_squared": 5.789653684673027e-13,
+          "P1_volume_L2_squared": 5.425705229741915e-13,
+          "relative_difference_vs_P2": 0.05278839535035469
+        },
+        {
+          "time_s": 0.025,
+          "difference_volume_L2_squared": 2.7790508717150506e-15,
+          "P2_volume_L2_squared": 9.130818842201134e-13,
+          "P1_volume_L2_squared": 8.488812118807875e-13,
+          "relative_difference_vs_P2": 0.0551687806513731
+        }
+      ]
+    },
+    "refined_P1": {
+      "relative_spacetime_volume_L2_difference_vs_P2": 0.026018659972354575,
+      "volume_time_component_rmse_m": 5.242227424316747e-07,
+      "within_1percent_tolerance": false,
+      "frames": [
+        {
+          "time_s": 0.0025,
+          "difference_volume_L2_squared": 6.274897098610569e-19,
+          "P2_volume_L2_squared": 2.2453760397983933e-17,
+          "P1_volume_L2_squared": 2.435709468084069e-17,
+          "relative_difference_vs_P2": 0.16717016153740394
+        },
+        {
+          "time_s": 0.005,
+          "difference_volume_L2_squared": 5.723590350589081e-18,
+          "P2_volume_L2_squared": 4.277886338130479e-16,
+          "P1_volume_L2_squared": 4.606210809065683e-16,
+          "relative_difference_vs_P2": 0.11566971106429991
+        },
+        {
+          "time_s": 0.0075,
+          "difference_volume_L2_squared": 1.9240034784355293e-17,
+          "P2_volume_L2_squared": 3.008057986042627e-15,
+          "P1_volume_L2_squared": 3.1791598337519927e-15,
+          "relative_difference_vs_P2": 0.0799760267771841
+        },
+        {
+          "time_s": 0.01,
+          "difference_volume_L2_squared": 4.3726666498200915e-17,
+          "P2_volume_L2_squared": 1.2527548562702937e-14,
+          "P1_volume_L2_squared": 1.3044333234643852e-14,
+          "relative_difference_vs_P2": 0.05907995251944266
+        },
+        {
+          "time_s": 0.0125,
+          "difference_volume_L2_squared": 7.997595211098321e-17,
+          "P2_volume_L2_squared": 3.743673266477011e-14,
+          "P1_volume_L2_squared": 3.8587564456422727e-14,
+          "relative_difference_vs_P2": 0.046220085066368884
+        },
+        {
+          "time_s": 0.015,
+          "difference_volume_L2_squared": 1.2727387951990585e-16,
+          "P2_volume_L2_squared": 9.002842102712769e-14,
+          "P1_volume_L2_squared": 9.211700265889159e-14,
+          "relative_difference_vs_P2": 0.03759930562193454
+        },
+        {
+          "time_s": 0.0175,
+          "difference_volume_L2_squared": 1.8448745050312644e-16,
+          "P2_volume_L2_squared": 1.8587059188290428e-13,
+          "P1_volume_L2_squared": 1.8909567189210197e-13,
+          "relative_difference_vs_P2": 0.03150489769399614
+        },
+        {
+          "time_s": 0.02,
+          "difference_volume_L2_squared": 2.511933885416678e-16,
+          "P2_volume_L2_squared": 3.426305812713811e-13,
+          "P1_volume_L2_squared": 3.4692123308953427e-13,
+          "relative_difference_vs_P2": 0.027076407445548296
+        },
+        {
+          "time_s": 0.0225,
+          "difference_volume_L2_squared": 3.2919809626543096e-16,
+          "P2_volume_L2_squared": 5.789653684673027e-13,
+          "P1_volume_L2_squared": 5.837861535901583e-13,
+          "relative_difference_vs_P2": 0.023845276582577676
+        },
+        {
+          "time_s": 0.025,
+          "difference_volume_L2_squared": 4.235175876734337e-16,
+          "P2_volume_L2_squared": 9.130818842201134e-13,
+          "P1_volume_L2_squared": 9.172303472613224e-13,
+          "relative_difference_vs_P2": 0.021536784474512533
+        }
+      ]
+    }
+  },
+  "scope": "Full-cycle discretization sensitivity on one passive geometry/loading: P2 on 17625 tetrahedra versus P1 on 17625 and141000 tetrahedra. P2 is a comparison reference, not assumed continuum truth.",
+  "limitations": [
+    "Not a three-level asymptotic convergence study.",
+    "No claim of continuum-calibrated neural intervals.",
+    "Does not modify frozen models or their held-out results."
+  ],
+  "native_norm_verification": {
+    "passed": true,
+    "records": [
+      {
+        "step": 0,
+        "comparison": "refined_P1",
+        "algebraic": 6.274897098610569e-19,
+        "native": 6.274897098610589e-19,
+        "relative_discrepancy": 3.2227244683492364e-15
+      },
+      {
+        "step": 0,
+        "comparison": "coarse_P1",
+        "algebraic": 1.7595910651319162e-19,
+        "native": 1.7595910651320357e-19,
+        "relative_discrepancy": 6.786102687049535e-14
+      },
+      {
+        "step": 9,
+        "comparison": "refined_P1",
+        "algebraic": 4.235175876734337e-16,
+        "native": 4.2351758767351333e-16,
+        "relative_discrepancy": 1.8801025019562758e-13
+      },
+      {
+        "step": 9,
+        "comparison": "coarse_P1",
+        "algebraic": 2.7790508717150506e-15,
+        "native": 2.779050871715448e-15,
+        "relative_discrepancy": 1.4306535381483274e-13
+      }
+    ],
+    "scope": "Independent native interpolation to common P2 space, then exact degree-4 UFL integration."
+  }
+}

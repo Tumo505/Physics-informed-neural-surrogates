@@ -1,0 +1,29 @@
+{
+  "engineering_only": true,
+  "complete": true,
+  "worker": {
+    "pid": 7100,
+    "phase": "finished",
+    "tetrahedra": 1128000,
+    "vertices": 213245,
+    "displacement_dofs": 639735,
+    "nonlinear_seconds": 155.00603795796633,
+    "setup_and_solve_seconds": 196.68116899998859,
+    "iterations": 3,
+    "snes_reason": 2,
+    "residual_l2_N": 1.579785660989647e-12,
+    "solve_accepted": true
+  },
+  "process_exit_code": 0,
+  "stop_reason": null,
+  "measured_wall_seconds": 199.24793295899872,
+  "sampled_peak_worker_RSS_bytes": 8858992640,
+  "RSS_sample_interval_s": 2,
+  "declared_limits": {
+    "wall_seconds": 300,
+    "RSS_GiB": 30,
+    "MUMPS_MB_per_process": 20000
+  },
+  "scope": "One 1000 Pa startup query from zero histories at dt=2.5 ms; same benchmark mechanics on third mesh; resource feasibility only. Does not establish full-cycle convergence, stability or accuracy.",
+  "executed_source_sha256": "6ff3d325c9771d9cb3acdc3cb4c1df985d18660afd30c6283798d92c441c2b78"
+}
