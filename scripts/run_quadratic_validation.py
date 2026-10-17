@@ -76,6 +76,7 @@ try:
         run('norms', native+['scripts/compare_quadratic_references.py', '--config-a', baseline,
             '--config-b', candidate, '--output', f'experiments/metrics/{stem}.json'])
     run('positivity', modern+['scripts/audit_quadratic_positivity.py', '--config', candidate])
+    run('reference_verification', native+['scripts/verify_completed_quadratic_reference.py', '--config', candidate])
     run('figures', modern+['scripts/plot_quadratic_validation.py'])
     state['complete'] = True  # Workflow completed; sensitivity tolerance may FAIL.
     state['active_phase'] = None

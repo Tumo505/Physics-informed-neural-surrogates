@@ -107,6 +107,10 @@ def dynamic_rows(P):
      if f.exists():status+='; rejected '+json.loads(f.read_text())['rejection_kind']
      progress.append(status)
     rows.append(f'| {case} | {"; ".join(progress)} | pending | pending |')
+  for case in protocol['case_ids']:
+   verification=P/f'experiments/metrics/cardiac_quadratic_{case}_r0_q{protocol["quadrature_degree"]}_v1_verification.json'
+   if verification.exists():
+    v=json.loads(verification.read_text());rows+=['',f'**Completed coarse P2 validation reference {case}.** All{v["accepted_steps"]} native steps converged; maximum residual {v["maximum_native_residual_N"]:.3g}N. Output hashes verified. Minimum whole-element Bernstein bounds at endpoint/stress states: {v["minimum_endpoint_Bernstein_bound"]:.6f}/{v["minimum_stress_Bernstein_bound"]:.6f}, using the float64 sufficient-condition audit described below. Independent canonical P2 quadrature and native UFL displacement norms agree at four fixed frames (largest relative discrepancy {max(c["independent_relative_error"] for c in v["norm_checks"]):.3g}). This verifies the completed calculation; its refined-mesh sensitivity test remains separate.']
   rows+=['','Run `make dynamic-quadratic-validation-g004` and `make dynamic-quadratic-validation-g005` after native setup. A completed numerical control can still fail the sensitivity tolerance. The original frozen20-member model comparison remains separate.']
   if (P/'reports/figures/dynamic_quadratic_geometry_controls.png').exists():rows+=['','![Validation geometry mesh controls](figures/dynamic_quadratic_geometry_controls.png)']
  if (P/'configs/physics/dynamic_quadratic_reference_quadrature8.json').exists():

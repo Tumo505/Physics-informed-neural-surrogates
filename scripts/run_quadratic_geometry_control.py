@@ -69,6 +69,7 @@ try:
             raise RuntimeError(f'Rejected native attempt retained for{name}; automatic retry disabled')
     run('coarse', native+['scripts/generate_quadratic_reference.py','--config',configs[0]])
     run('coarse_positivity', modern+['scripts/audit_quadratic_positivity.py','--config',configs[0]])
+    run('coarse_verification', native+['scripts/verify_completed_quadratic_reference.py','--config',configs[0]])
     run('mesh_control', modern+['scripts/run_quadratic_validation.py','mesh',
         '--baseline-config',configs[0],'--candidate-config',configs[1],
         '--output-stem',f'dynamic_quadratic_validation_{args.case}'])

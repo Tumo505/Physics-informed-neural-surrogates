@@ -156,18 +156,22 @@ A separate history/load homotopy reproduced the previous native equilibrium, the
 
 **Controlled P2 time sensitivity.** Only the time discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared 200 common endpoints through 1s. Space-time volume-L2 discrepancy 0.0459%; component volume/time RMSE 0.00491mm. Within the declared1% tolerance: True. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.
 
-**Controlled P2 mesh refinement in progress:** 190/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 mesh refinement in progress:** 200/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
-**Controlled P2 mesh (GMRES/GAMG) refinement in progress:** 110/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 mesh (GMRES/GAMG) refinement in progress:** 190/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
-**Controlled P2 quadrature refinement in progress:** 140/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 quadrature refinement in progress:** 330/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
 **Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.
 
 | Validation input | Coarse/fine persisted steps | Full-cycle relative volume L2 difference | Within1% |
 |---|---|---:|---|
-| g004_l0 | 180/800; not started | pending | pending |
-| g005_l1 | 170/800; not started | pending | pending |
+| g004_l0 | 800/800; 2/800 | pending | pending |
+| g005_l1 | 800/800; 2/800 | pending | pending |
+
+**Completed coarse P2 validation reference g004_l0.** All800 native steps converged; maximum residual 9.9e-09N. Output hashes verified. Minimum whole-element Bernstein bounds at endpoint/stress states: 0.402018/0.401928, using the float64 sufficient-condition audit described below. Independent canonical P2 quadrature and native UFL displacement norms agree at four fixed frames (largest relative discrepancy 6.66e-15). This verifies the completed calculation; its refined-mesh sensitivity test remains separate.
+
+**Completed coarse P2 validation reference g005_l1.** All800 native steps converged; maximum residual 1.17e-08N. Output hashes verified. Minimum whole-element Bernstein bounds at endpoint/stress states: 0.365006/0.367751, using the float64 sufficient-condition audit described below. Independent canonical P2 quadrature and native UFL displacement norms agree at four fixed frames (largest relative discrepancy 5.09e-15). This verifies the completed calculation; its refined-mesh sensitivity test remains separate.
 
 Run `make dynamic-quadratic-validation-g004` and `make dynamic-quadratic-validation-g005` after native setup. A completed numerical control can still fail the sensitivity tolerance. The original frozen20-member model comparison remains separate.
 
