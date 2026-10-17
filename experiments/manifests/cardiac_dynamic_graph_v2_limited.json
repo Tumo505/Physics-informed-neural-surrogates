@@ -104,6 +104,11 @@
     "physics_1_seed11.pt": "1a8189ac05475ebd43a7312138364c40d9e8458587b7efdfa24c1d512feb7038",
     "physics_1_seed55.pt": "2f5810e93411e593b4fbe81f3620abc733f2392091ce2ac982d5fafd4793cfd3"
   },
-  "executed_source_revision": "47d0d18",
-  "reproduction_note": "Original executed source hashes preserved; later completion/cache/replay guards do not change training equations"
+  "executed_source_revision": "47d0d18d08c4bf38a1a526e3a6bf5e6d1b7c19a9",
+  "reproduction_note": "Original executed source hashes preserved; later completion/cache/replay guards do not change training equations",
+  "current_reproduction_source_sha256": {
+    "scripts/train_dynamic_study.py": "cf810297d3a0626b302448bbbb3129fe6ea0e726f15b82f7cf5e6187e49362e1",
+    "src/lv_surrogate/models/dynamic_graph.py": "e8a8f56774ab21ec55b81932888514fb3a0ac64cac630cfa021407dda7ad6e63",
+    "src/lv_surrogate/physics/cardiac_residual.py": "3a3e88d814a775c869489d207aea9ed9531168c3340f378d645388b629a67790"
+  }
 }

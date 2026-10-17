@@ -487,5 +487,6 @@
   "scope": "one existing geometry and one existing cycle; repeated temporal benchmark, no independent trajectory or population claim; all rollouts start from zero and use predicted histories only",
   "evaluation": "repeated temporal evaluation; first600 frames train, next200 select, last199 test; inference over all999 starts from zero and uses no true histories",
   "caveat": "one geometry/cycle/seed, not an independent population; no conformal claim",
-  "serialization_note": "Ineligible selection scores use null; acceptance flag retained"
+  "serialization_note": "Ineligible selection scores use null; acceptance flag retained",
+  "executed_source_revision": "9ff026e542b3f69febd4e3b44375f16f7dca5024"
 }

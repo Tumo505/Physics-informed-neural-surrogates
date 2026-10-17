@@ -6,6 +6,9 @@ P=Path(__file__).resolve().parents[1];sys.path.insert(0,str(P/'src'))
 from lv_surrogate.models.dynamic_graph import DynamicGraph
 from lv_surrogate.eval.fallback import InputDomainGate
 ap=argparse.ArgumentParser();ap.add_argument('--repeat-benchmark',action='store_true');args=ap.parse_args();torch.set_num_threads(2);cfg=json.loads((P/'configs/physics/dynamic_study.json').read_text());evaluation=json.loads((P/'experiments/metrics/dynamic_final_evaluation.json').read_text());key=evaluation['preferred_from_validation_only'];regime,label=key.split('/');tcfg=json.loads((P/'configs/physics/dynamic_training.json').read_text());name=tcfg['name']+'_'+regime;stats=dict(np.load(P/f'data/processed/{tcfg.get("data_tag","cardiac_dynamic_ml")}_{regime}/normalizers.npz'));case=next(c for c in cfg['cases'] if c['split']=='test');root=P/f'data/processed/cardiac_dynamic_v1/{case["id"]}';top=torch.tensor(np.load(P/'data/processed/cardiac_geometry_ml/topology.npy'));cluster=np.load(P/'data/processed/cardiac_geometry_ml/cluster_labels.npy');counts=np.bincount(cluster,minlength=64);nets=[];t=time.perf_counter()
+frozen_hashes=json.loads((P/'experiments/manifests/dynamic_final_freeze.json').read_text())['checkpoint_sha256']
+for path,digest in frozen_hashes.items():assert hashlib.sha256((P/path).read_bytes()).hexdigest()==digest
+t=time.perf_counter()
 for seed in [11,22,33,44,55]:
  net=DynamicGraph(stats).double();net.load_state_dict(torch.load(P/f'experiments/checkpoints/{name}/{label}_seed{seed}.pt',map_location='cpu',weights_only=False)['model']);net.eval();nets.append(net)
 load_seconds=time.perf_counter()-t
@@ -38,6 +41,27 @@ with torch.inference_mode():
   mean,var=predict(ready);input_times.append(time.perf_counter()-t)
  for _ in range(10):
   t=time.perf_counter();mean,var=predict(b);jac=minJ(mean.numpy());with_checks.append(time.perf_counter()-t);assert jac>0
+def summary(a):return {'n':len(a),'median_s':float(np.median(a)),'p95_s':float(np.quantile(a,.95))}
+model_timings={key:{'resident':summary(resident),'input_processing':summary(input_times),'endpoint_and_stress_state_J_checks':summary(with_checks),'raw_seconds':{'resident':resident,'input_processing':input_times,'J_checks':with_checks}}}
+# Time every frozen arm on exactly the same task and host, without retraining.
+for other_key in evaluation['models']:
+ if other_key==key:continue
+ other_regime,other_label=other_key.split('/');other_name=tcfg['name']+'_'+other_regime
+ other_stats=dict(np.load(P/f'data/processed/{tcfg.get("data_tag","cardiac_dynamic_ml")}_{other_regime}/normalizers.npz'));nets=[]
+ for seed in [11,22,33,44,55]:
+  net=DynamicGraph(other_stats).double();net.load_state_dict(torch.load(P/f'experiments/checkpoints/{other_name}/{other_label}_seed{seed}.pt',map_location='cpu',weights_only=False)['model']);net.eval();nets.append(net)
+ timed={'resident':[],'input_processing':[],'J_checks':[]}
+ with torch.inference_mode():
+  for _ in range(5):mean,var=predict(b)
+  for scope,repeats in [('resident',30),('input_processing',20),('J_checks',10)]:
+   for _ in range(repeats):
+    t=time.perf_counter();ready=b
+    if scope=='input_processing':
+     with np.load(root/'geometry.npz') as source:ready=preprocess(source)
+    mean,var=predict(ready)
+    if scope=='J_checks':assert minJ(mean.numpy())>0
+    timed[scope].append(time.perf_counter()-t)
+ model_timings[other_key]={'resident':summary(timed['resident']),'input_processing':summary(timed['input_processing']),'endpoint_and_stress_state_J_checks':summary(timed['J_checks']),'raw_seconds':timed}
 # No FE workers should overlap this isolated benchmark (pipeline waits for completion).
 env=os.environ.copy();env.update(FI_PROVIDER='tcp',FI_TCP_IFACE='en0',XDG_CACHE_HOME=str(P/'.cache'),DIJITSO_CACHE_DIR=str(P/'.fenics-cache-activated'),MAMBA_ROOT_PREFIX=str(P/'.mamba'),OMP_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2');fe=[];walls=[];identical=[]
 for repeat in range(2):
@@ -45,4 +69,4 @@ for repeat in range(2):
  if (folder/'manifest.json').exists():raise RuntimeError('Benchmark output exists; preserve prior timings rather than silently timing cache reuse')
  t=time.perf_counter();subprocess.run([str(P/'.tools/bin/micromamba'),'run','-p',str(P/'.fenics'),'python',str(P/'scripts/generate_dynamic_study.py'),'--case',case['id'],'--output-suffix',suffix],cwd=P,env=env,check=True);walls.append(time.perf_counter()-t);m=json.loads((folder/'manifest.json').read_text());assert m['complete'];fe.append(sum(s['nonlinear_solver_seconds'] for s in m['steps']));truth=np.load(root/'trajectory.npz')['u'];repeated=np.load(folder/'trajectory.npz')['u'];identical.append(float(np.max(abs(truth-repeated))))
 def summary(a):return {'n':len(a),'median_s':float(np.median(a)),'p95_s':float(np.quantile(a,.95))}
-result={'frozen_checkpoint_sha256':run_manifest['checkpoints'],'model':key,'case':case,'hardware':{'machine':platform.machine(),'system':platform.system(),'cpu':subprocess.check_output(['sysctl','-n','machdep.cpu.brand_string'],text=True).strip()},'precision':'CPU float64 weights cast from float32 training; FE float64','threads':2,'task':'full200-step passive rollout from rest,4577 nodes; ensemble emits full displacement mean and coordinate sample variance','NN_resident_mean_and_variance':summary(resident),'NN_with_input_processing':summary(input_times),'NN_with_endpoint_and_stress_state_J_checks':summary(with_checks),'FE_sum_nonlinear_solve_seconds':summary(fe),'FE_process_setup_generation_IO_and_audit_wall':summary(walls),'median_speedup_resident':float(np.median(fe)/np.median(resident)),'median_speedup_input_processing':float(np.median(fe)/np.median(input_times)),'median_speedup_with_J_checks':float(np.median(fe)/np.median(with_checks)),'five_member_load_seconds':load_seconds,'FE_repeat_max_absolute_displacement_difference_m':identical,'scope':'isolated same host, same geometry/loading/discretization, two fresh FE full-cycle runs; n2 FE timing precision limited; no speedup claimed for rejected requests routed to FE','raw_seconds':{'resident':resident,'input_processing':input_times,'J_checks':with_checks,'FE_solver':fe,'FE_wall':walls},'source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()};(P/'experiments/metrics/dynamic_runtime.json').write_text(json.dumps(result,indent=2));print('DYNAMIC TIMING COMPLETE',result['median_speedup_input_processing'],flush=True)
+result={'all_checkpoint_sha256':frozen_hashes,'all_frozen_model_timings':model_timings,'frozen_checkpoint_sha256':run_manifest['checkpoints'],'model':key,'case':case,'hardware':{'machine':platform.machine(),'system':platform.system(),'cpu':subprocess.check_output(['sysctl','-n','machdep.cpu.brand_string'],text=True).strip()},'precision':'CPU float64 weights cast from float32 training; FE float64','threads':2,'task':'full200-step passive rollout from rest,4577 nodes; ensemble emits full displacement mean and coordinate sample variance','NN_resident_mean_and_variance':summary(resident),'NN_with_input_processing':summary(input_times),'NN_with_endpoint_and_stress_state_J_checks':summary(with_checks),'FE_sum_nonlinear_solve_seconds':summary(fe),'FE_process_setup_generation_IO_and_audit_wall':summary(walls),'median_speedup_resident':float(np.median(fe)/np.median(resident)),'median_speedup_input_processing':float(np.median(fe)/np.median(input_times)),'median_speedup_with_J_checks':float(np.median(fe)/np.median(with_checks)),'five_member_load_seconds':load_seconds,'FE_repeat_max_absolute_displacement_difference_m':identical,'scope':'isolated same host, same geometry/loading/discretization, two fresh FE full-cycle runs; n2 FE timing precision limited; no speedup claimed for rejected requests routed to FE','raw_seconds':{'resident':resident,'input_processing':input_times,'J_checks':with_checks,'FE_solver':fe,'FE_wall':walls},'source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()};(P/'experiments/metrics/dynamic_runtime.json').write_text(json.dumps(result,indent=2));print('DYNAMIC TIMING COMPLETE',result['median_speedup_input_processing'],flush=True)

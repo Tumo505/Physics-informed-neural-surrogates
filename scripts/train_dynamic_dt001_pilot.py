@@ -1,13 +1,15 @@
 """Original1ms temporal benchmark with causal bounded recurrent whole-cycle losses."""
 from pathlib import Path
-import sys,json,time,numpy as np,torch
+import sys,json,time,hashlib,math,numpy as np,torch
 from scipy.linalg import svd
 P=Path(__file__).resolve().parents[1];sys.path.insert(0,str(P/'src'))
 from lv_surrogate.models.dynamic_graph import DynamicGraph,newmark_operators
 from lv_surrogate.physics.cardiac_residual import CardiacFirstStep
 from lv_surrogate.physics.fem_bridge import FEMBridge
 torch.set_num_threads(2);cfg=json.loads((P/'configs/physics/dynamic_dt001_pilot.json').read_text());name=cfg['name'];out=P/'experiments/checkpoints'/name;out.mkdir(exist_ok=True);metric=P/f'experiments/metrics/{name}.json'
-if metric.exists() and json.loads(metric.read_text()).get('complete'):print('REUSED ORIGINAL1ms RECURRENT PILOT',flush=True);sys.exit(0)
+if metric.exists():
+ old=json.loads(metric.read_text());labels=['data',old.get('selection','')]
+ if old.get('complete') and all((out/f'{label}.pt').exists() and (P/f'experiments/metrics/{name}_{label}_prediction.npz').exists() for label in labels):print('REUSED ORIGINAL1ms RECURRENT PILOT',flush=True);sys.exit(0)
 values={'u':[],'pressure':[],'time':[]}
 for i in range(999):
  with np.load(P/f'data/processed/cardiac_passive_trajectory_v1/step_{i:04d}.npz') as a:
@@ -68,5 +70,11 @@ try:
   for t in np.linspace(800,998,12,dtype=int):
    h={k:net.decode(x[t]).reshape(-1,3).detach().numpy() for k,x in zip(['u_old','v_old','a_old'],old)};rr.append(float(bridge.evaluate(u[t],float(a['pressure'][t]),False,history=h)['loss'])**.5)
   results[label]={'completed_steps':999,'full_cycle_component_rmse_m':float(np.sqrt(np.mean((u-a['u'])**2))),'test_block_component_rmse_m':float(np.sqrt(np.mean((u[800:]-a['u'][800:])**2))),'minimum_endpoint_detF':minima[0],'minimum_stress_state_detF':minima[1],'test_block_sampled_normalized_force_rms':float(np.mean(rr)),'training_relative_RMSE':float(np.sqrt(np.mean((u[:600]-a['u'][:600])**2))/field_scale),'nontrivial_training_fit':float(np.sqrt(np.mean((u[:600]-a['u'][:600])**2))/field_scale)<=cfg.get('maximum_training_relative_RMSE',.15),'full_cycle_noninverted':min(minima)>0};np.savez_compressed(P/f'experiments/metrics/{name}_{label}_prediction.npz',prediction=u,truth=a['u'],time=a['time'])
- result={'complete':True,'config':cfg,'training_gradient_balance_ratios':ratios,'lambda_grid':grid,'selection':selected,'meets_validation_10percent_constraint':bool(eligible),'training_records':records,'models':results,'scope':cfg['scope'],'evaluation':'repeated temporal evaluation; first600 frames train, next200 select, last199 test; inference over all999 starts from zero and uses no true histories','caveat':'one geometry/cycle/seed, not an independent population; no conformal claim'};metric.write_text(json.dumps(result,indent=2));print('ORIGINAL1ms RECURRENT PILOT COMPLETE',results,flush=True)
+ result={'source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'complete':True,'config':cfg,'training_gradient_balance_ratios':ratios,'lambda_grid':grid,'selection':selected,'meets_validation_10percent_constraint':bool(eligible),'training_records':records,'models':results,'scope':cfg['scope'],'evaluation':'repeated temporal evaluation; first600 frames train, next200 select, last199 test; inference over all999 starts from zero and uses no true histories','caveat':'one geometry/cycle/seed, not an independent population; no conformal claim'};
+ def serializable(v):
+  if isinstance(v,dict):return {k:serializable(x) for k,x in v.items()}
+  if isinstance(v,list):return [serializable(x) for x in v]
+  if isinstance(v,float) and not math.isfinite(v):return None
+  return v
+ metric.write_text(json.dumps(serializable(result),indent=2,allow_nan=False));print('ORIGINAL1ms RECURRENT PILOT COMPLETE',results,flush=True)
 finally:bridge.close()

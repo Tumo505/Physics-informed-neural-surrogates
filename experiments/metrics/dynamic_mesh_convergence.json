@@ -1,0 +1,2433 @@
+{
+  "complete": true,
+  "n_endpoints": 400,
+  "dt_s": 0.0025,
+  "mesh_tetrahedra": [
+    17625,
+    141000
+  ],
+  "boundary_areas_m2": {
+    "coarse": [
+      0.015526387258143778,
+      0.02285060355480936,
+      0.0018577331746508022
+    ],
+    "refined": [
+      0.015526387258143953,
+      0.022850603554809227,
+      0.0018577331746507998
+    ]
+  },
+  "mesh_volume_m3": 0.00017769451479940164,
+  "relative_spacetime_volume_L2_difference": 0.13119107942962946,
+  "maximum_endpoint_relative_volume_L2_difference": 0.983759863157585,
+  "volume_time_component_rmse_m": 0.0012637066044490469,
+  "within_1percent_spacetime_tolerance": false,
+  "cases": [
+    {
+      "time_s": 0.0025,
+      "absolute_volume_L2_difference_m_power2_5": 7.389828878983102e-10,
+      "relative_volume_L2_difference": 0.14973441828310963,
+      "refined_volume_L2_m_power2_5": 4.935290739241274e-09
+    },
+    {
+      "time_s": 0.005,
+      "absolute_volume_L2_difference_m_power2_5": 2.4004960178195194e-09,
+      "relative_volume_L2_difference": 0.11184822202278022,
+      "refined_volume_L2_m_power2_5": 2.1462084728808728e-08
+    },
+    {
+      "time_s": 0.0075,
+      "absolute_volume_L2_difference_m_power2_5": 4.808131764212859e-09,
+      "relative_volume_L2_difference": 0.0852746959026677,
+      "refined_volume_L2_m_power2_5": 5.6384038820857805e-08
+    },
+    {
+      "time_s": 0.01,
+      "absolute_volume_L2_difference_m_power2_5": 7.94727948170503e-09,
+      "relative_volume_L2_difference": 0.0695837041220703,
+      "refined_volume_L2_m_power2_5": 1.1421179113665985e-07
+    },
+    {
+      "time_s": 0.0125,
+      "absolute_volume_L2_difference_m_power2_5": 1.1844935704615723e-08,
+      "relative_volume_L2_difference": 0.060298849196404145,
+      "refined_volume_L2_m_power2_5": 1.964371768694067e-07
+    },
+    {
+      "time_s": 0.015,
+      "absolute_volume_L2_difference_m_power2_5": 1.6575591048590377e-08,
+      "relative_volume_L2_difference": 0.054613388615712556,
+      "refined_volume_L2_m_power2_5": 3.03507829650063e-07
+    },
+    {
+      "time_s": 0.0175,
+      "absolute_volume_L2_difference_m_power2_5": 2.2298719322165246e-08,
+      "relative_volume_L2_difference": 0.051278950332779266,
+      "refined_volume_L2_m_power2_5": 4.348513215940604e-07
+    },
+    {
+      "time_s": 0.02,
+      "absolute_volume_L2_difference_m_power2_5": 2.925236636800695e-08,
+      "relative_volume_L2_difference": 0.04966444234458626,
+      "refined_volume_L2_m_power2_5": 5.890001978688409e-07
+    },
+    {
+      "time_s": 0.0225,
+      "absolute_volume_L2_difference_m_power2_5": 3.7734261934566754e-08,
+      "relative_volume_L2_difference": 0.04938658139708637,
+      "refined_volume_L2_m_power2_5": 7.640589987626263e-07
+    },
+    {
+      "time_s": 0.025,
+      "absolute_volume_L2_difference_m_power2_5": 4.806096259255554e-08,
+      "relative_volume_L2_difference": 0.050182611384530756,
+      "refined_volume_L2_m_power2_5": 9.577214351059214e-07
+    },
+    {
+      "time_s": 0.0275,
+      "absolute_volume_L2_difference_m_power2_5": 6.052587547288573e-08,
+      "relative_volume_L2_difference": 0.0518415511498457,
+      "refined_volume_L2_m_power2_5": 1.1675166759177088e-06
+    },
+    {
+      "time_s": 0.03,
+      "absolute_volume_L2_difference_m_power2_5": 7.536562998513136e-08,
+      "relative_volume_L2_difference": 0.05418353042076401,
+      "refined_volume_L2_m_power2_5": 1.3909324364779678e-06
+    },
+    {
+      "time_s": 0.0325,
+      "absolute_volume_L2_difference_m_power2_5": 9.273797463231533e-08,
+      "relative_volume_L2_difference": 0.05705353273955443,
+      "refined_volume_L2_m_power2_5": 1.6254554307032659e-06
+    },
+    {
+      "time_s": 0.035,
+      "absolute_volume_L2_difference_m_power2_5": 1.1271687873235902e-07,
+      "relative_volume_L2_difference": 0.06031834184960407,
+      "refined_volume_L2_m_power2_5": 1.8686998892211573e-06
+    },
+    {
+      "time_s": 0.0375,
+      "absolute_volume_L2_difference_m_power2_5": 1.3529434740267066e-07,
+      "relative_volume_L2_difference": 0.06386594877237302,
+      "refined_volume_L2_m_power2_5": 2.1184112974642906e-06
+    },
+    {
+      "time_s": 0.04,
+      "absolute_volume_L2_difference_m_power2_5": 1.6038833486607635e-07,
+      "relative_volume_L2_difference": 0.06760304756308501,
+      "refined_volume_L2_m_power2_5": 2.3725015461234504e-06
+    },
+    {
+      "time_s": 0.0425,
+      "absolute_volume_L2_difference_m_power2_5": 1.8785447979707081e-07,
+      "relative_volume_L2_difference": 0.07145272925008656,
+      "refined_volume_L2_m_power2_5": 2.6290735395085452e-06
+    },
+    {
+      "time_s": 0.045,
+      "absolute_volume_L2_difference_m_power2_5": 2.1749720147914011e-07,
+      "relative_volume_L2_difference": 0.07535218232001499,
+      "refined_volume_L2_m_power2_5": 2.8864087911275884e-06
+    },
+    {
+      "time_s": 0.0475,
+      "absolute_volume_L2_difference_m_power2_5": 2.4908193179239045e-07,
+      "relative_volume_L2_difference": 0.07925011701892817,
+      "refined_volume_L2_m_power2_5": 3.1429850347463774e-06
+    },
+    {
+      "time_s": 0.05,
+      "absolute_volume_L2_difference_m_power2_5": 2.823463526171393e-07,
+      "relative_volume_L2_difference": 0.08310498526349192,
+      "refined_volume_L2_m_power2_5": 3.3974658887422275e-06
+    },
+    {
+      "time_s": 0.0525,
+      "absolute_volume_L2_difference_m_power2_5": 3.170104231310527e-07,
+      "relative_volume_L2_difference": 0.08688328795813695,
+      "refined_volume_L2_m_power2_5": 3.6486927530159553e-06
+    },
+    {
+      "time_s": 0.055,
+      "absolute_volume_L2_difference_m_power2_5": 3.527858372296454e-07,
+      "relative_volume_L2_difference": 0.09055826118275087,
+      "refined_volume_L2_m_power2_5": 3.895678126125974e-06
+    },
+    {
+      "time_s": 0.0575,
+      "absolute_volume_L2_difference_m_power2_5": 3.893840835375977e-07,
+      "relative_volume_L2_difference": 0.0941088735584942,
+      "refined_volume_L2_m_power2_5": 4.137591587424246e-06
+    },
+    {
+      "time_s": 0.06,
+      "absolute_volume_L2_difference_m_power2_5": 4.265234383067084e-07,
+      "relative_volume_L2_difference": 0.0975188300468019,
+      "refined_volume_L2_m_power2_5": 4.3737546697597624e-06
+    },
+    {
+      "time_s": 0.0625,
+      "absolute_volume_L2_difference_m_power2_5": 4.6393459368116705e-07,
+      "relative_volume_L2_difference": 0.10077595303113435,
+      "refined_volume_L2_m_power2_5": 4.603623977019956e-06
+    },
+    {
+      "time_s": 0.065,
+      "absolute_volume_L2_difference_m_power2_5": 5.013650592749599e-07,
+      "relative_volume_L2_difference": 0.1038716939630054,
+      "refined_volume_L2_m_power2_5": 4.826772724564639e-06
+    },
+    {
+      "time_s": 0.0675,
+      "absolute_volume_L2_difference_m_power2_5": 5.385827672935071e-07,
+      "relative_volume_L2_difference": 0.10680063239292108,
+      "refined_volume_L2_m_power2_5": 5.0428799458045644e-06
+    },
+    {
+      "time_s": 0.07,
+      "absolute_volume_L2_difference_m_power2_5": 5.753784926665007e-07,
+      "relative_volume_L2_difference": 0.10956006992540925,
+      "refined_volume_L2_m_power2_5": 5.251717099653462e-06
+    },
+    {
+      "time_s": 0.0725,
+      "absolute_volume_L2_difference_m_power2_5": 6.115672850671211e-07,
+      "relative_volume_L2_difference": 0.11214962211769544,
+      "refined_volume_L2_m_power2_5": 5.4531372778529e-06
+    },
+    {
+      "time_s": 0.075,
+      "absolute_volume_L2_difference_m_power2_5": 6.469891517230903e-07,
+      "relative_volume_L2_difference": 0.1145708453919237,
+      "refined_volume_L2_m_power2_5": 5.6470662279733655e-06
+    },
+    {
+      "time_s": 0.0775,
+      "absolute_volume_L2_difference_m_power2_5": 6.815089342013183e-07,
+      "relative_volume_L2_difference": 0.11682691311311956,
+      "refined_volume_L2_m_power2_5": 5.833492609202437e-06
+    },
+    {
+      "time_s": 0.08,
+      "absolute_volume_L2_difference_m_power2_5": 7.150156424181225e-07,
+      "relative_volume_L2_difference": 0.11892229868880352,
+      "refined_volume_L2_m_power2_5": 6.012460659620943e-06
+    },
+    {
+      "time_s": 0.0825,
+      "absolute_volume_L2_difference_m_power2_5": 7.474212897118411e-07,
+      "relative_volume_L2_difference": 0.12086254607063382,
+      "refined_volume_L2_m_power2_5": 6.184060438996852e-06
+    },
+    {
+      "time_s": 0.085,
+      "absolute_volume_L2_difference_m_power2_5": 7.7865939898412e-07,
+      "relative_volume_L2_difference": 0.12265405367493146,
+      "refined_volume_L2_m_power2_5": 6.348419605011926e-06
+    },
+    {
+      "time_s": 0.08750000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 8.086833902559246e-07,
+      "relative_volume_L2_difference": 0.12430381195635219,
+      "refined_volume_L2_m_power2_5": 6.505700650112679e-06
+    },
+    {
+      "time_s": 0.09,
+      "absolute_volume_L2_difference_m_power2_5": 8.374646705570524e-07,
+      "relative_volume_L2_difference": 0.12581921478139602,
+      "refined_volume_L2_m_power2_5": 6.656095191915649e-06
+    },
+    {
+      "time_s": 0.0925,
+      "absolute_volume_L2_difference_m_power2_5": 8.649905794474695e-07,
+      "relative_volume_L2_difference": 0.12720794801059734,
+      "refined_volume_L2_m_power2_5": 6.799815522339921e-06
+    },
+    {
+      "time_s": 0.095,
+      "absolute_volume_L2_difference_m_power2_5": 8.912624392521822e-07,
+      "relative_volume_L2_difference": 0.128477897177209,
+      "refined_volume_L2_m_power2_5": 6.937087692390138e-06
+    },
+    {
+      "time_s": 0.0975,
+      "absolute_volume_L2_difference_m_power2_5": 9.162936530258577e-07,
+      "relative_volume_L2_difference": 0.1296370486893097,
+      "refined_volume_L2_m_power2_5": 7.068146508193521e-06
+    },
+    {
+      "time_s": 0.1,
+      "absolute_volume_L2_difference_m_power2_5": 9.401078365275708e-07,
+      "relative_volume_L2_difference": 0.13069338998418836,
+      "refined_volume_L2_m_power2_5": 7.1932317054543274e-06
+    },
+    {
+      "time_s": 0.10250000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 9.627370344575066e-07,
+      "relative_volume_L2_difference": 0.13165482132162684,
+      "refined_volume_L2_m_power2_5": 7.312584718075635e-06
+    },
+    {
+      "time_s": 0.105,
+      "absolute_volume_L2_difference_m_power2_5": 9.842200459890097e-07,
+      "relative_volume_L2_difference": 0.1325290718126568,
+      "refined_volume_L2_m_power2_5": 7.426446382875932e-06
+    },
+    {
+      "time_s": 0.1075,
+      "absolute_volume_L2_difference_m_power2_5": 1.0046008794098204e-06,
+      "relative_volume_L2_difference": 0.1333236264930021,
+      "refined_volume_L2_m_power2_5": 7.535055157403401e-06
+    },
+    {
+      "time_s": 0.11,
+      "absolute_volume_L2_difference_m_power2_5": 1.023927357968785e-06,
+      "relative_volume_L2_difference": 0.13404566590146144,
+      "refined_volume_L2_m_power2_5": 7.638645763612275e-06
+    },
+    {
+      "time_s": 0.1125,
+      "absolute_volume_L2_difference_m_power2_5": 1.0422498914849621e-06,
+      "relative_volume_L2_difference": 0.1347020159647494,
+      "refined_volume_L2_m_power2_5": 7.737448352352141e-06
+    },
+    {
+      "time_s": 0.115,
+      "absolute_volume_L2_difference_m_power2_5": 1.0596204130501933e-06,
+      "relative_volume_L2_difference": 0.13529911156114013,
+      "refined_volume_L2_m_power2_5": 7.831687886371396e-06
+    },
+    {
+      "time_s": 0.11750000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 1.0760914831834534e-06,
+      "relative_volume_L2_difference": 0.13584297137032736,
+      "refined_volume_L2_m_power2_5": 7.921583813489137e-06
+    },
+    {
+      "time_s": 0.12,
+      "absolute_volume_L2_difference_m_power2_5": 1.0917155382227605e-06,
+      "relative_volume_L2_difference": 0.1363391985750157,
+      "refined_volume_L2_m_power2_5": 8.00734894757419e-06
+    },
+    {
+      "time_s": 0.1225,
+      "absolute_volume_L2_difference_m_power2_5": 1.1065442918400273e-06,
+      "relative_volume_L2_difference": 0.13679299487341476,
+      "refined_volume_L2_m_power2_5": 8.089188286754005e-06
+    },
+    {
+      "time_s": 0.125,
+      "absolute_volume_L2_difference_m_power2_5": 1.12062828426839e-06,
+      "relative_volume_L2_difference": 0.1372091758673256,
+      "refined_volume_L2_m_power2_5": 8.167298412694947e-06
+    },
+    {
+      "time_s": 0.1275,
+      "absolute_volume_L2_difference_m_power2_5": 1.134016534236719e-06,
+      "relative_volume_L2_difference": 0.13759218950488628,
+      "refined_volume_L2_m_power2_5": 8.241867058859813e-06
+    },
+    {
+      "time_s": 0.13,
+      "absolute_volume_L2_difference_m_power2_5": 1.146756279106186e-06,
+      "relative_volume_L2_difference": 0.13794613423473712,
+      "refined_volume_L2_m_power2_5": 8.313072964805228e-06
+    },
+    {
+      "time_s": 0.1325,
+      "absolute_volume_L2_difference_m_power2_5": 1.1588927923431755e-06,
+      "relative_volume_L2_difference": 0.13827477583065564,
+      "refined_volume_L2_m_power2_5": 8.38108603236837e-06
+    },
+    {
+      "time_s": 0.135,
+      "absolute_volume_L2_difference_m_power2_5": 1.170469258647306e-06,
+      "relative_volume_L2_difference": 0.13858156290082344,
+      "refined_volume_L2_m_power2_5": 8.44606767413179e-06
+    },
+    {
+      "time_s": 0.1375,
+      "absolute_volume_L2_difference_m_power2_5": 1.1815266978486866e-06,
+      "relative_volume_L2_difference": 0.13886964229253557,
+      "refined_volume_L2_m_power2_5": 8.508171248542167e-06
+    },
+    {
+      "time_s": 0.14,
+      "absolute_volume_L2_difference_m_power2_5": 1.1921039296390842e-06,
+      "relative_volume_L2_difference": 0.13914187673800704,
+      "refined_volume_L2_m_power2_5": 8.567542407694558e-06
+    },
+    {
+      "time_s": 0.14250000000000002,
+      "absolute_volume_L2_difference_m_power2_5": 1.2022375726887397e-06,
+      "relative_volume_L2_difference": 0.13940086472503868,
+      "refined_volume_L2_m_power2_5": 8.624319333026333e-06
+    },
+    {
+      "time_s": 0.145,
+      "absolute_volume_L2_difference_m_power2_5": 1.2119620758922062e-06,
+      "relative_volume_L2_difference": 0.13964895997965157,
+      "refined_volume_L2_m_power2_5": 8.678633024326158e-06
+    },
+    {
+      "time_s": 0.1475,
+      "absolute_volume_L2_difference_m_power2_5": 1.2213097757480614e-06,
+      "relative_volume_L2_difference": 0.13988828741136775,
+      "refined_volume_L2_m_power2_5": 8.730607818198324e-06
+    },
+    {
+      "time_s": 0.15,
+      "absolute_volume_L2_difference_m_power2_5": 1.2303109756337282e-06,
+      "relative_volume_L2_difference": 0.14012075045574524,
+      "refined_volume_L2_m_power2_5": 8.780362449045697e-06
+    },
+    {
+      "time_s": 0.1525,
+      "absolute_volume_L2_difference_m_power2_5": 1.2389940460768607e-06,
+      "relative_volume_L2_difference": 0.14034802368790883,
+      "refined_volume_L2_m_power2_5": 8.828012062585259e-06
+    },
+    {
+      "time_s": 0.155,
+      "absolute_volume_L2_difference_m_power2_5": 1.2473855337837213e-06,
+      "relative_volume_L2_difference": 0.14057153640985418,
+      "refined_volume_L2_m_power2_5": 8.873670770352898e-06
+    },
+    {
+      "time_s": 0.1575,
+      "absolute_volume_L2_difference_m_power2_5": 1.2555104646339293e-06,
+      "relative_volume_L2_difference": 0.14079228749791065,
+      "refined_volume_L2_m_power2_5": 8.917466197518533e-06
+    },
+    {
+      "time_s": 0.16,
+      "absolute_volume_L2_difference_m_power2_5": 1.2633929187646698e-06,
+      "relative_volume_L2_difference": 0.1410103281141603,
+      "refined_volume_L2_m_power2_5": 8.959577186018896e-06
+    },
+    {
+      "time_s": 0.1625,
+      "absolute_volume_L2_difference_m_power2_5": 1.2710564187986797e-06,
+      "relative_volume_L2_difference": 0.14122421400598562,
+      "refined_volume_L2_m_power2_5": 9.000272564765753e-06
+    },
+    {
+      "time_s": 0.165,
+      "absolute_volume_L2_difference_m_power2_5": 1.2785277986108564e-06,
+      "relative_volume_L2_difference": 0.1414274629192777,
+      "refined_volume_L2_m_power2_5": 9.040166402055868e-06
+    },
+    {
+      "time_s": 0.1675,
+      "absolute_volume_L2_difference_m_power2_5": 1.2858426838498404e-06,
+      "relative_volume_L2_difference": 0.14160204006829588,
+      "refined_volume_L2_m_power2_5": 9.080679086471264e-06
+    },
+    {
+      "time_s": 0.17,
+      "absolute_volume_L2_difference_m_power2_5": 1.2930546414385696e-06,
+      "relative_volume_L2_difference": 0.1417068962895587,
+      "refined_volume_L2_m_power2_5": 9.124853308454296e-06
+    },
+    {
+      "time_s": 0.17250000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 1.3002440705956802e-06,
+      "relative_volume_L2_difference": 0.1416671702590342,
+      "refined_volume_L2_m_power2_5": 9.178160813251388e-06
+    },
+    {
+      "time_s": 0.17500000000000002,
+      "absolute_volume_L2_difference_m_power2_5": 1.3080106018837078e-06,
+      "relative_volume_L2_difference": 0.14093679324060257,
+      "refined_volume_L2_m_power2_5": 9.280831298969006e-06
+    },
+    {
+      "time_s": 0.1775,
+      "absolute_volume_L2_difference_m_power2_5": 1.3179851377091867e-06,
+      "relative_volume_L2_difference": 0.13786094341812669,
+      "refined_volume_L2_m_power2_5": 9.560250387318118e-06
+    },
+    {
+      "time_s": 0.18,
+      "absolute_volume_L2_difference_m_power2_5": 1.331793816667437e-06,
+      "relative_volume_L2_difference": 0.13067666020403124,
+      "refined_volume_L2_m_power2_5": 1.0191520158137259e-05
+    },
+    {
+      "time_s": 0.1825,
+      "absolute_volume_L2_difference_m_power2_5": 1.350511475625683e-06,
+      "relative_volume_L2_difference": 0.11934322915777898,
+      "refined_volume_L2_m_power2_5": 1.1316196864760757e-05
+    },
+    {
+      "time_s": 0.185,
+      "absolute_volume_L2_difference_m_power2_5": 1.3757178116622785e-06,
+      "relative_volume_L2_difference": 0.10567168354764712,
+      "refined_volume_L2_m_power2_5": 1.3018793355761862e-05
+    },
+    {
+      "time_s": 0.1875,
+      "absolute_volume_L2_difference_m_power2_5": 1.4100127778036353e-06,
+      "relative_volume_L2_difference": 0.09191473381721921,
+      "refined_volume_L2_m_power2_5": 1.534044346587103e-05
+    },
+    {
+      "time_s": 0.19,
+      "absolute_volume_L2_difference_m_power2_5": 1.4566225536619545e-06,
+      "relative_volume_L2_difference": 0.07961705085695917,
+      "refined_volume_L2_m_power2_5": 1.8295359322953797e-05
+    },
+    {
+      "time_s": 0.1925,
+      "absolute_volume_L2_difference_m_power2_5": 1.5190926168624634e-06,
+      "relative_volume_L2_difference": 0.06943072798969385,
+      "refined_volume_L2_m_power2_5": 2.1879255206541323e-05
+    },
+    {
+      "time_s": 0.195,
+      "absolute_volume_L2_difference_m_power2_5": 1.60128207303279e-06,
+      "relative_volume_L2_difference": 0.06140388560779893,
+      "refined_volume_L2_m_power2_5": 2.607786229133048e-05
+    },
+    {
+      "time_s": 0.1975,
+      "absolute_volume_L2_difference_m_power2_5": 1.7073480871321384e-06,
+      "relative_volume_L2_difference": 0.05530448064207448,
+      "refined_volume_L2_m_power2_5": 3.087178592602539e-05
+    },
+    {
+      "time_s": 0.2,
+      "absolute_volume_L2_difference_m_power2_5": 1.8416403321999017e-06,
+      "relative_volume_L2_difference": 0.050818488086836984,
+      "refined_volume_L2_m_power2_5": 3.623957346100038e-05
+    },
+    {
+      "time_s": 0.2025,
+      "absolute_volume_L2_difference_m_power2_5": 2.0088502356844843e-06,
+      "relative_volume_L2_difference": 0.04764711551378681,
+      "refined_volume_L2_m_power2_5": 4.216100416620642e-05
+    },
+    {
+      "time_s": 0.20500000000000002,
+      "absolute_volume_L2_difference_m_power2_5": 2.2149748149656513e-06,
+      "relative_volume_L2_difference": 0.04555935159850751,
+      "refined_volume_L2_m_power2_5": 4.861734720206624e-05
+    },
+    {
+      "time_s": 0.20750000000000002,
+      "absolute_volume_L2_difference_m_power2_5": 2.4688599492697585e-06,
+      "relative_volume_L2_difference": 0.0444106223254798,
+      "refined_volume_L2_m_power2_5": 5.559165397809105e-05
+    },
+    {
+      "time_s": 0.21,
+      "absolute_volume_L2_difference_m_power2_5": 2.7830523937741056e-06,
+      "relative_volume_L2_difference": 0.04412760414820172,
+      "refined_volume_L2_m_power2_5": 6.306828678999378e-05
+    },
+    {
+      "time_s": 0.2125,
+      "absolute_volume_L2_difference_m_power2_5": 3.173458871467163e-06,
+      "relative_volume_L2_difference": 0.04467678794275883,
+      "refined_volume_L2_m_power2_5": 7.103149124178507e-05
+    },
+    {
+      "time_s": 0.215,
+      "absolute_volume_L2_difference_m_power2_5": 3.6587864042528108e-06,
+      "relative_volume_L2_difference": 0.046043592068181864,
+      "refined_volume_L2_m_power2_5": 7.946353096940914e-05
+    },
+    {
+      "time_s": 0.2175,
+      "absolute_volume_L2_difference_m_power2_5": 4.260333963366696e-06,
+      "relative_volume_L2_difference": 0.04822587217645198,
+      "refined_volume_L2_m_power2_5": 8.834125275699953e-05
+    },
+    {
+      "time_s": 0.22,
+      "absolute_volume_L2_difference_m_power2_5": 5.0022282094219455e-06,
+      "relative_volume_L2_difference": 0.0512354508635797,
+      "refined_volume_L2_m_power2_5": 9.763216923260722e-05
+    },
+    {
+      "time_s": 0.2225,
+      "absolute_volume_L2_difference_m_power2_5": 5.91323123540693e-06,
+      "relative_volume_L2_difference": 0.055113550077276564,
+      "refined_volume_L2_m_power2_5": 0.00010729178626881755
+    },
+    {
+      "time_s": 0.225,
+      "absolute_volume_L2_difference_m_power2_5": 7.033105867074775e-06,
+      "relative_volume_L2_difference": 0.059975697844908096,
+      "refined_volume_L2_m_power2_5": 0.00011726592803074624
+    },
+    {
+      "time_s": 0.2275,
+      "absolute_volume_L2_difference_m_power2_5": 8.426303310687042e-06,
+      "relative_volume_L2_difference": 0.06608566066295361,
+      "refined_volume_L2_m_power2_5": 0.0001275057739630145
+    },
+    {
+      "time_s": 0.23,
+      "absolute_volume_L2_difference_m_power2_5": 1.0193076972960727e-05,
+      "relative_volume_L2_difference": 0.07385772302565122,
+      "refined_volume_L2_m_power2_5": 0.00013800962926274632
+    },
+    {
+      "time_s": 0.2325,
+      "absolute_volume_L2_difference_m_power2_5": 1.2423134366780448e-05,
+      "relative_volume_L2_difference": 0.08342859244975155,
+      "refined_volume_L2_m_power2_5": 0.0001489073949589023
+    },
+    {
+      "time_s": 0.23500000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 1.4987559286944493e-05,
+      "relative_volume_L2_difference": 0.09333907553352283,
+      "refined_volume_L2_m_power2_5": 0.00016057111345142575
+    },
+    {
+      "time_s": 0.23750000000000002,
+      "absolute_volume_L2_difference_m_power2_5": 1.7191912397604587e-05,
+      "relative_volume_L2_difference": 0.09901364725714341,
+      "refined_volume_L2_m_power2_5": 0.00017363174545985895
+    },
+    {
+      "time_s": 0.24,
+      "absolute_volume_L2_difference_m_power2_5": 1.7676146146288412e-05,
+      "relative_volume_L2_difference": 0.09369100030359995,
+      "refined_volume_L2_m_power2_5": 0.00018866429100991496
+    },
+    {
+      "time_s": 0.2425,
+      "absolute_volume_L2_difference_m_power2_5": 1.5094183280653012e-05,
+      "relative_volume_L2_difference": 0.07362406906450973,
+      "refined_volume_L2_m_power2_5": 0.00020501696622374162
+    },
+    {
+      "time_s": 0.245,
+      "absolute_volume_L2_difference_m_power2_5": 1.0932091888651542e-05,
+      "relative_volume_L2_difference": 0.05010553143548011,
+      "refined_volume_L2_m_power2_5": 0.00021818133797719673
+    },
+    {
+      "time_s": 0.2475,
+      "absolute_volume_L2_difference_m_power2_5": 1.0711907121413925e-05,
+      "relative_volume_L2_difference": 0.04847582223843786,
+      "refined_volume_L2_m_power2_5": 0.00022097422233965014
+    },
+    {
+      "time_s": 0.25,
+      "absolute_volume_L2_difference_m_power2_5": 9.630584013853858e-06,
+      "relative_volume_L2_difference": 0.0447542983313806,
+      "refined_volume_L2_m_power2_5": 0.0002151879120647755
+    },
+    {
+      "time_s": 0.2525,
+      "absolute_volume_L2_difference_m_power2_5": 6.5971669695034875e-06,
+      "relative_volume_L2_difference": 0.030932348045086527,
+      "refined_volume_L2_m_power2_5": 0.0002132772772337734
+    },
+    {
+      "time_s": 0.255,
+      "absolute_volume_L2_difference_m_power2_5": 5.635996442302869e-06,
+      "relative_volume_L2_difference": 0.025366547976712537,
+      "refined_volume_L2_m_power2_5": 0.00022218223967553367
+    },
+    {
+      "time_s": 0.2575,
+      "absolute_volume_L2_difference_m_power2_5": 6.87943983425681e-06,
+      "relative_volume_L2_difference": 0.02892835803616226,
+      "refined_volume_L2_m_power2_5": 0.00023780955094848728
+    },
+    {
+      "time_s": 0.26,
+      "absolute_volume_L2_difference_m_power2_5": 8.818789254921836e-06,
+      "relative_volume_L2_difference": 0.03469664014775998,
+      "refined_volume_L2_m_power2_5": 0.00025416839259841643
+    },
+    {
+      "time_s": 0.2625,
+      "absolute_volume_L2_difference_m_power2_5": 9.189265533226888e-06,
+      "relative_volume_L2_difference": 0.03406999879125681,
+      "refined_volume_L2_m_power2_5": 0.00026971722510260484
+    },
+    {
+      "time_s": 0.265,
+      "absolute_volume_L2_difference_m_power2_5": 8.867394362822485e-06,
+      "relative_volume_L2_difference": 0.031002402636659387,
+      "refined_volume_L2_m_power2_5": 0.0002860228114171082
+    },
+    {
+      "time_s": 0.2675,
+      "absolute_volume_L2_difference_m_power2_5": 9.810048292019422e-06,
+      "relative_volume_L2_difference": 0.03230812746607612,
+      "refined_volume_L2_m_power2_5": 0.00030364026210804316
+    },
+    {
+      "time_s": 0.27,
+      "absolute_volume_L2_difference_m_power2_5": 1.2002359320908901e-05,
+      "relative_volume_L2_difference": 0.037361331413046324,
+      "refined_volume_L2_m_power2_5": 0.00032125084591385196
+    },
+    {
+      "time_s": 0.2725,
+      "absolute_volume_L2_difference_m_power2_5": 1.4450556304260101e-05,
+      "relative_volume_L2_difference": 0.04285383451002249,
+      "refined_volume_L2_m_power2_5": 0.0003372056776128274
+    },
+    {
+      "time_s": 0.275,
+      "absolute_volume_L2_difference_m_power2_5": 1.6658730560235915e-05,
+      "relative_volume_L2_difference": 0.04749521211915357,
+      "refined_volume_L2_m_power2_5": 0.0003507454713212637
+    },
+    {
+      "time_s": 0.2775,
+      "absolute_volume_L2_difference_m_power2_5": 1.899279109592339e-05,
+      "relative_volume_L2_difference": 0.05245136226880421,
+      "refined_volume_L2_m_power2_5": 0.0003621029135256507
+    },
+    {
+      "time_s": 0.28,
+      "absolute_volume_L2_difference_m_power2_5": 2.178925599158643e-05,
+      "relative_volume_L2_difference": 0.058612347800609435,
+      "refined_volume_L2_m_power2_5": 0.0003717519739306514
+    },
+    {
+      "time_s": 0.28250000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 2.4872181768089057e-05,
+      "relative_volume_L2_difference": 0.06549597782213785,
+      "refined_volume_L2_m_power2_5": 0.00037975128542446434
+    },
+    {
+      "time_s": 0.28500000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 2.789041039137441e-05,
+      "relative_volume_L2_difference": 0.07228117315414183,
+      "refined_volume_L2_m_power2_5": 0.00038585995736257974
+    },
+    {
+      "time_s": 0.28750000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 3.069014821825325e-05,
+      "relative_volume_L2_difference": 0.07867126292422319,
+      "refined_volume_L2_m_power2_5": 0.00039010621003776505
+    },
+    {
+      "time_s": 0.29,
+      "absolute_volume_L2_difference_m_power2_5": 3.3313686397438275e-05,
+      "relative_volume_L2_difference": 0.08478399952225266,
+      "refined_volume_L2_m_power2_5": 0.00039292421429935805
+    },
+    {
+      "time_s": 0.2925,
+      "absolute_volume_L2_difference_m_power2_5": 3.578039481871119e-05,
+      "relative_volume_L2_difference": 0.09064190931785088,
+      "refined_volume_L2_m_power2_5": 0.00039474449609442036
+    },
+    {
+      "time_s": 0.295,
+      "absolute_volume_L2_difference_m_power2_5": 3.8016455463426634e-05,
+      "relative_volume_L2_difference": 0.09606628009493245,
+      "refined_volume_L2_m_power2_5": 0.0003957315243794063
+    },
+    {
+      "time_s": 0.2975,
+      "absolute_volume_L2_difference_m_power2_5": 3.994570404698932e-05,
+      "relative_volume_L2_difference": 0.10088103786083583,
+      "refined_volume_L2_m_power2_5": 0.0003959684088707923
+    },
+    {
+      "time_s": 0.3,
+      "absolute_volume_L2_difference_m_power2_5": 4.1558339722606563e-05,
+      "relative_volume_L2_difference": 0.1050304521605041,
+      "refined_volume_L2_m_power2_5": 0.00039567895660487556
+    },
+    {
+      "time_s": 0.3025,
+      "absolute_volume_L2_difference_m_power2_5": 4.287878901626136e-05,
+      "relative_volume_L2_difference": 0.1085131119976226,
+      "refined_volume_L2_m_power2_5": 0.00039514845926822914
+    },
+    {
+      "time_s": 0.305,
+      "absolute_volume_L2_difference_m_power2_5": 4.391791483457284e-05,
+      "relative_volume_L2_difference": 0.11131225092080986,
+      "refined_volume_L2_m_power2_5": 0.0003945470015319075
+    },
+    {
+      "time_s": 0.3075,
+      "absolute_volume_L2_difference_m_power2_5": 4.467890620507465e-05,
+      "relative_volume_L2_difference": 0.11341599478002948,
+      "refined_volume_L2_m_power2_5": 0.00039393831788655094
+    },
+    {
+      "time_s": 0.31,
+      "absolute_volume_L2_difference_m_power2_5": 4.518489809168399e-05,
+      "relative_volume_L2_difference": 0.1148584668086657,
+      "refined_volume_L2_m_power2_5": 0.0003933963193758645
+    },
+    {
+      "time_s": 0.3125,
+      "absolute_volume_L2_difference_m_power2_5": 4.547980157900554e-05,
+      "relative_volume_L2_difference": 0.11571676149158103,
+      "refined_volume_L2_m_power2_5": 0.0003930269132386186
+    },
+    {
+      "time_s": 0.315,
+      "absolute_volume_L2_difference_m_power2_5": 4.560761047745139e-05,
+      "relative_volume_L2_difference": 0.11607860238736882,
+      "refined_volume_L2_m_power2_5": 0.0003929028222208697
+    },
+    {
+      "time_s": 0.3175,
+      "absolute_volume_L2_difference_m_power2_5": 4.560335980876695e-05,
+      "relative_volume_L2_difference": 0.11602722065650581,
+      "refined_volume_L2_m_power2_5": 0.00039304018100867874
+    },
+    {
+      "time_s": 0.32,
+      "absolute_volume_L2_difference_m_power2_5": 4.550037209937291e-05,
+      "relative_volume_L2_difference": 0.1156487895438012,
+      "refined_volume_L2_m_power2_5": 0.00039343578327847477
+    },
+    {
+      "time_s": 0.3225,
+      "absolute_volume_L2_difference_m_power2_5": 4.533650246213256e-05,
+      "relative_volume_L2_difference": 0.11504019918049453,
+      "refined_volume_L2_m_power2_5": 0.00039409269790120045
+    },
+    {
+      "time_s": 0.325,
+      "absolute_volume_L2_difference_m_power2_5": 4.51504553563744e-05,
+      "relative_volume_L2_difference": 0.11430215381772543,
+      "refined_volume_L2_m_power2_5": 0.00039500966384565785
+    },
+    {
+      "time_s": 0.3275,
+      "absolute_volume_L2_difference_m_power2_5": 4.497492979485392e-05,
+      "relative_volume_L2_difference": 0.11352496423791768,
+      "refined_volume_L2_m_power2_5": 0.00039616775126745347
+    },
+    {
+      "time_s": 0.33,
+      "absolute_volume_L2_difference_m_power2_5": 4.4835168344418e-05,
+      "relative_volume_L2_difference": 0.11278282033449302,
+      "refined_volume_L2_m_power2_5": 0.0003975354421129492
+    },
+    {
+      "time_s": 0.3325,
+      "absolute_volume_L2_difference_m_power2_5": 4.47520399704758e-05,
+      "relative_volume_L2_difference": 0.11213783426021649,
+      "refined_volume_L2_m_power2_5": 0.0003990806516436588
+    },
+    {
+      "time_s": 0.335,
+      "absolute_volume_L2_difference_m_power2_5": 4.4743627395462766e-05,
+      "relative_volume_L2_difference": 0.1116429377363702,
+      "refined_volume_L2_m_power2_5": 0.00040077436426045
+    },
+    {
+      "time_s": 0.3375,
+      "absolute_volume_L2_difference_m_power2_5": 4.482326358966233e-05,
+      "relative_volume_L2_difference": 0.11133815638801205,
+      "refined_volume_L2_m_power2_5": 0.0004025867235797747
+    },
+    {
+      "time_s": 0.34,
+      "absolute_volume_L2_difference_m_power2_5": 4.499791133724917e-05,
+      "relative_volume_L2_difference": 0.11124735430834684,
+      "refined_volume_L2_m_power2_5": 0.0004044852267904496
+    },
+    {
+      "time_s": 0.3425,
+      "absolute_volume_L2_difference_m_power2_5": 4.526960351322423e-05,
+      "relative_volume_L2_difference": 0.1113812323356585,
+      "refined_volume_L2_m_power2_5": 0.0004064383430127595
+    },
+    {
+      "time_s": 0.34500000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 4.563743048489497e-05,
+      "relative_volume_L2_difference": 0.11174159015433835,
+      "refined_volume_L2_m_power2_5": 0.0004084193756493012
+    },
+    {
+      "time_s": 0.34750000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 4.609751458208467e-05,
+      "relative_volume_L2_difference": 0.1123217619517767,
+      "refined_volume_L2_m_power2_5": 0.0004104059069325835
+    },
+    {
+      "time_s": 0.35000000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 4.664242070895411e-05,
+      "relative_volume_L2_difference": 0.11310614232371177,
+      "refined_volume_L2_m_power2_5": 0.0004123774337158691
+    },
+    {
+      "time_s": 0.3525,
+      "absolute_volume_L2_difference_m_power2_5": 4.7262061987200104e-05,
+      "relative_volume_L2_difference": 0.11407255168505719,
+      "refined_volume_L2_m_power2_5": 0.0004143158129546001
+    },
+    {
+      "time_s": 0.355,
+      "absolute_volume_L2_difference_m_power2_5": 4.794522049288224e-05,
+      "relative_volume_L2_difference": 0.11519554495921253,
+      "refined_volume_L2_m_power2_5": 0.00041620724577376916
+    },
+    {
+      "time_s": 0.3575,
+      "absolute_volume_L2_difference_m_power2_5": 4.8680068401845435e-05,
+      "relative_volume_L2_difference": 0.11644776715477043,
+      "refined_volume_L2_m_power2_5": 0.00041804209381829437
+    },
+    {
+      "time_s": 0.36,
+      "absolute_volume_L2_difference_m_power2_5": 4.945413777105317e-05,
+      "relative_volume_L2_difference": 0.11780033781241434,
+      "refined_volume_L2_m_power2_5": 0.00041981320842902935
+    },
+    {
+      "time_s": 0.3625,
+      "absolute_volume_L2_difference_m_power2_5": 5.025482453198323e-05,
+      "relative_volume_L2_difference": 0.1192241364460989,
+      "refined_volume_L2_m_power2_5": 0.0004215155255471561
+    },
+    {
+      "time_s": 0.365,
+      "absolute_volume_L2_difference_m_power2_5": 5.107019435951899e-05,
+      "relative_volume_L2_difference": 0.12069148344038497,
+      "refined_volume_L2_m_power2_5": 0.0004231466289396044
+    },
+    {
+      "time_s": 0.3675,
+      "absolute_volume_L2_difference_m_power2_5": 5.1889374655023386e-05,
+      "relative_volume_L2_difference": 0.1221770271623257,
+      "refined_volume_L2_m_power2_5": 0.00042470647600618576
+    },
+    {
+      "time_s": 0.37,
+      "absolute_volume_L2_difference_m_power2_5": 5.270261637051797e-05,
+      "relative_volume_L2_difference": 0.12365803446800534,
+      "refined_volume_L2_m_power2_5": 0.00042619645862278346
+    },
+    {
+      "time_s": 0.3725,
+      "absolute_volume_L2_difference_m_power2_5": 5.35014571435181e-05,
+      "relative_volume_L2_difference": 0.1251147907088886,
+      "refined_volume_L2_m_power2_5": 0.0004276189636763479
+    },
+    {
+      "time_s": 0.375,
+      "absolute_volume_L2_difference_m_power2_5": 5.427895937170473e-05,
+      "relative_volume_L2_difference": 0.12653105270268905,
+      "refined_volume_L2_m_power2_5": 0.0004289773791675029
+    },
+    {
+      "time_s": 0.3775,
+      "absolute_volume_L2_difference_m_power2_5": 5.502978281295284e-05,
+      "relative_volume_L2_difference": 0.12789418716584075,
+      "refined_volume_L2_m_power2_5": 0.00043027587126845385
+    },
+    {
+      "time_s": 0.38,
+      "absolute_volume_L2_difference_m_power2_5": 5.575010192720996e-05,
+      "relative_volume_L2_difference": 0.1291950243064493,
+      "refined_volume_L2_m_power2_5": 0.0004315189553660463
+    },
+    {
+      "time_s": 0.3825,
+      "absolute_volume_L2_difference_m_power2_5": 5.6437507552706314e-05,
+      "relative_volume_L2_difference": 0.1304276457201717,
+      "refined_volume_L2_m_power2_5": 0.0004327112341948666
+    },
+    {
+      "time_s": 0.385,
+      "absolute_volume_L2_difference_m_power2_5": 5.7090910952756564e-05,
+      "relative_volume_L2_difference": 0.1315891423104348,
+      "refined_volume_L2_m_power2_5": 0.00043385730730026456
+    },
+    {
+      "time_s": 0.3875,
+      "absolute_volume_L2_difference_m_power2_5": 5.771039002379139e-05,
+      "relative_volume_L2_difference": 0.1326792573346596,
+      "refined_volume_L2_m_power2_5": 0.00043496166004477473
+    },
+    {
+      "time_s": 0.39,
+      "absolute_volume_L2_difference_m_power2_5": 5.829696757676666e-05,
+      "relative_volume_L2_difference": 0.13369990223415096,
+      "refined_volume_L2_m_power2_5": 0.0004360284981710022
+    },
+    {
+      "time_s": 0.3925,
+      "absolute_volume_L2_difference_m_power2_5": 5.885236624766086e-05,
+      "relative_volume_L2_difference": 0.134654623416041,
+      "refined_volume_L2_m_power2_5": 0.00043706160809514356
+    },
+    {
+      "time_s": 0.395,
+      "absolute_volume_L2_difference_m_power2_5": 5.937879117023491e-05,
+      "relative_volume_L2_difference": 0.13554811869571623,
+      "refined_volume_L2_m_power2_5": 0.0004380642958500277
+    },
+    {
+      "time_s": 0.3975,
+      "absolute_volume_L2_difference_m_power2_5": 5.9878766278685224e-05,
+      "relative_volume_L2_difference": 0.13638586058975682,
+      "refined_volume_L2_m_power2_5": 0.0004390393990972286
+    },
+    {
+      "time_s": 0.4,
+      "absolute_volume_L2_difference_m_power2_5": 6.035501238615116e-05,
+      "relative_volume_L2_difference": 0.13717381011584368,
+      "refined_volume_L2_m_power2_5": 0.000439989326936251
+    },
+    {
+      "time_s": 0.4025,
+      "absolute_volume_L2_difference_m_power2_5": 6.081034101629872e-05,
+      "relative_volume_L2_difference": 0.13791816956182976,
+      "refined_volume_L2_m_power2_5": 0.00044091609691090765
+    },
+    {
+      "time_s": 0.405,
+      "absolute_volume_L2_difference_m_power2_5": 6.124755297025233e-05,
+      "relative_volume_L2_difference": 0.13862514601708503,
+      "refined_volume_L2_m_power2_5": 0.0004418213775060969
+    },
+    {
+      "time_s": 0.40750000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 6.166934138389177e-05,
+      "relative_volume_L2_difference": 0.13930072617960998,
+      "refined_volume_L2_m_power2_5": 0.000442706531941386
+    },
+    {
+      "time_s": 0.41000000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 6.20782007097975e-05,
+      "relative_volume_L2_difference": 0.13995047490457357,
+      "refined_volume_L2_m_power2_5": 0.00044357263347713575
+    },
+    {
+      "time_s": 0.41250000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 6.247636086517229e-05,
+      "relative_volume_L2_difference": 0.14057939621943336,
+      "refined_volume_L2_m_power2_5": 0.00044442046662123666
+    },
+    {
+      "time_s": 0.41500000000000004,
+      "absolute_volume_L2_difference_m_power2_5": 6.286577554508828e-05,
+      "relative_volume_L2_difference": 0.14119188548849956,
+      "refined_volume_L2_m_power2_5": 0.00044525062702848356
+    },
+    {
+      "time_s": 0.4175,
+      "absolute_volume_L2_difference_m_power2_5": 6.324814182224111e-05,
+      "relative_volume_L2_difference": 0.14179173853737448,
+      "refined_volume_L2_m_power2_5": 0.00044606365980603106
+    },
+    {
+      "time_s": 0.42,
+      "absolute_volume_L2_difference_m_power2_5": 6.362488705074903e-05,
+      "relative_volume_L2_difference": 0.14238212648414608,
+      "refined_volume_L2_m_power2_5": 0.00044686007030407364
+    },
+    {
+      "time_s": 0.4225,
+      "absolute_volume_L2_difference_m_power2_5": 6.39971145666604e-05,
+      "relative_volume_L2_difference": 0.14296550720878592,
+      "refined_volume_L2_m_power2_5": 0.00044764024425275823
+    },
+    {
+      "time_s": 0.425,
+      "absolute_volume_L2_difference_m_power2_5": 6.436557079545268e-05,
+      "relative_volume_L2_difference": 0.14354357118054298,
+      "refined_volume_L2_m_power2_5": 0.000448404413141543
+    },
+    {
+      "time_s": 0.4275,
+      "absolute_volume_L2_difference_m_power2_5": 6.4730676014282e-05,
+      "relative_volume_L2_difference": 0.14411731290116736,
+      "refined_volume_L2_m_power2_5": 0.00044915267091243186
+    },
+    {
+      "time_s": 0.43,
+      "absolute_volume_L2_difference_m_power2_5": 6.509258501177381e-05,
+      "relative_volume_L2_difference": 0.14468720967377088,
+      "refined_volume_L2_m_power2_5": 0.0004498848596122584
+    },
+    {
+      "time_s": 0.4325,
+      "absolute_volume_L2_difference_m_power2_5": 6.545125247035267e-05,
+      "relative_volume_L2_difference": 0.14525325013398843,
+      "refined_volume_L2_m_power2_5": 0.00045060094978926357
+    },
+    {
+      "time_s": 0.435,
+      "absolute_volume_L2_difference_m_power2_5": 6.580647214607549e-05,
+      "relative_volume_L2_difference": 0.14581499068999207,
+      "refined_volume_L2_m_power2_5": 0.00045130114424231203
+    },
+    {
+      "time_s": 0.4375,
+      "absolute_volume_L2_difference_m_power2_5": 6.615790485889317e-05,
+      "relative_volume_L2_difference": 0.14637175082402118,
+      "refined_volume_L2_m_power2_5": 0.0004519854718307841
+    },
+    {
+      "time_s": 0.44,
+      "absolute_volume_L2_difference_m_power2_5": 6.650513000126938e-05,
+      "relative_volume_L2_difference": 0.1469226965616014,
+      "refined_volume_L2_m_power2_5": 0.0004526538891381242
+    },
+    {
+      "time_s": 0.4425,
+      "absolute_volume_L2_difference_m_power2_5": 6.684769236400401e-05,
+      "relative_volume_L2_difference": 0.1474668558156848,
+      "refined_volume_L2_m_power2_5": 0.00045330655484751976
+    },
+    {
+      "time_s": 0.445,
+      "absolute_volume_L2_difference_m_power2_5": 6.718512839688427e-05,
+      "relative_volume_L2_difference": 0.1480032123158846,
+      "refined_volume_L2_m_power2_5": 0.0004539437174747967
+    },
+    {
+      "time_s": 0.4475,
+      "absolute_volume_L2_difference_m_power2_5": 6.751699009482997e-05,
+      "relative_volume_L2_difference": 0.14853081335270005,
+      "refined_volume_L2_m_power2_5": 0.00045456554482405396
+    },
+    {
+      "time_s": 0.45,
+      "absolute_volume_L2_difference_m_power2_5": 6.784286942048898e-05,
+      "relative_volume_L2_difference": 0.14904880214559424,
+      "refined_volume_L2_m_power2_5": 0.0004551721881952364
+    },
+    {
+      "time_s": 0.4525,
+      "absolute_volume_L2_difference_m_power2_5": 6.81624130110167e-05,
+      "relative_volume_L2_difference": 0.14955642067676467,
+      "refined_volume_L2_m_power2_5": 0.0004557638695989903
+    },
+    {
+      "time_s": 0.455,
+      "absolute_volume_L2_difference_m_power2_5": 6.84753261805281e-05,
+      "relative_volume_L2_difference": 0.1500530342683626,
+      "refined_volume_L2_m_power2_5": 0.0004563408298566178
+    },
+    {
+      "time_s": 0.4575,
+      "absolute_volume_L2_difference_m_power2_5": 6.878137448733287e-05,
+      "relative_volume_L2_difference": 0.15053815330240589,
+      "refined_volume_L2_m_power2_5": 0.00045690326989173725
+    },
+    {
+      "time_s": 0.46,
+      "absolute_volume_L2_difference_m_power2_5": 6.908038681279333e-05,
+      "relative_volume_L2_difference": 0.15101143352935806,
+      "refined_volume_L2_m_power2_5": 0.0004574513677427176
+    },
+    {
+      "time_s": 0.4625,
+      "absolute_volume_L2_difference_m_power2_5": 6.93722557561393e-05,
+      "relative_volume_L2_difference": 0.15147266758758943,
+      "refined_volume_L2_m_power2_5": 0.0004579853042861652
+    },
+    {
+      "time_s": 0.465,
+      "absolute_volume_L2_difference_m_power2_5": 6.965693152229039e-05,
+      "relative_volume_L2_difference": 0.15192177362993656,
+      "refined_volume_L2_m_power2_5": 0.0004585052547633259
+    },
+    {
+      "time_s": 0.4675,
+      "absolute_volume_L2_difference_m_power2_5": 6.993441126730835e-05,
+      "relative_volume_L2_difference": 0.1523587764180307,
+      "refined_volume_L2_m_power2_5": 0.00045901137375524404
+    },
+    {
+      "time_s": 0.47000000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 7.020472926719303e-05,
+      "relative_volume_L2_difference": 0.15278378580380603,
+      "refined_volume_L2_m_power2_5": 0.0004595037941875907
+    },
+    {
+      "time_s": 0.47250000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 7.046795030213648e-05,
+      "relative_volume_L2_difference": 0.1531969796604253,
+      "refined_volume_L2_m_power2_5": 0.00045998263450320584
+    },
+    {
+      "time_s": 0.47500000000000003,
+      "absolute_volume_L2_difference_m_power2_5": 7.072416292194382e-05,
+      "relative_volume_L2_difference": 0.15359858743788857,
+      "refined_volume_L2_m_power2_5": 0.0004604480034723165
+    },
+    {
+      "time_s": 0.47750000000000004,
+      "absolute_volume_L2_difference_m_power2_5": 7.097347021221343e-05,
+      "relative_volume_L2_difference": 0.1539888710517496,
+      "refined_volume_L2_m_power2_5": 0.00046089999704174747
+    },
+    {
+      "time_s": 0.48,
+      "absolute_volume_L2_difference_m_power2_5": 7.12159758439265e-05,
+      "relative_volume_L2_difference": 0.15436814234396196,
+      "refined_volume_L2_m_power2_5": 0.000461338555757467
+    },
+    {
+      "time_s": 0.4825,
+      "absolute_volume_L2_difference_m_power2_5": 7.14517508397059e-05,
+      "relative_volume_L2_difference": 0.1547368935240747,
+      "refined_volume_L2_m_power2_5": 0.0004617628621876728
+    },
+    {
+      "time_s": 0.485,
+      "absolute_volume_L2_difference_m_power2_5": 7.167482886872794e-05,
+      "relative_volume_L2_difference": 0.15513475111102026,
+      "refined_volume_L2_m_power2_5": 0.0004620165910952778
+    },
+    {
+      "time_s": 0.4875,
+      "absolute_volume_L2_difference_m_power2_5": 7.186293539288165e-05,
+      "relative_volume_L2_difference": 0.1556681978502629,
+      "refined_volume_L2_m_power2_5": 0.00046164172506195865
+    },
+    {
+      "time_s": 0.49,
+      "absolute_volume_L2_difference_m_power2_5": 7.197240204966055e-05,
+      "relative_volume_L2_difference": 0.1564048803572867,
+      "refined_volume_L2_m_power2_5": 0.0004601672395723773
+    },
+    {
+      "time_s": 0.4925,
+      "absolute_volume_L2_difference_m_power2_5": 7.192886633709463e-05,
+      "relative_volume_L2_difference": 0.1572761267312133,
+      "refined_volume_L2_m_power2_5": 0.00045734128778502975
+    },
+    {
+      "time_s": 0.495,
+      "absolute_volume_L2_difference_m_power2_5": 7.162278720528204e-05,
+      "relative_volume_L2_difference": 0.1581274145628054,
+      "refined_volume_L2_m_power2_5": 0.000452943516488311
+    },
+    {
+      "time_s": 0.4975,
+      "absolute_volume_L2_difference_m_power2_5": 7.093209131643033e-05,
+      "relative_volume_L2_difference": 0.15878564709457982,
+      "refined_volume_L2_m_power2_5": 0.00044671601378542744
+    },
+    {
+      "time_s": 0.5,
+      "absolute_volume_L2_difference_m_power2_5": 6.975419771706413e-05,
+      "relative_volume_L2_difference": 0.15906361757774012,
+      "refined_volume_L2_m_power2_5": 0.0004385301854647731
+    },
+    {
+      "time_s": 0.5025000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 6.802331790206301e-05,
+      "relative_volume_L2_difference": 0.1587652123786698,
+      "refined_volume_L2_m_power2_5": 0.00042845228424361043
+    },
+    {
+      "time_s": 0.505,
+      "absolute_volume_L2_difference_m_power2_5": 6.571587490159664e-05,
+      "relative_volume_L2_difference": 0.15771926719028428,
+      "refined_volume_L2_m_power2_5": 0.00041666358253054843
+    },
+    {
+      "time_s": 0.5075000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 6.285308365551968e-05,
+      "relative_volume_L2_difference": 0.15581278927944414,
+      "refined_volume_L2_m_power2_5": 0.0004033884763002036
+    },
+    {
+      "time_s": 0.51,
+      "absolute_volume_L2_difference_m_power2_5": 5.9501338606878686e-05,
+      "relative_volume_L2_difference": 0.15300498513503197,
+      "refined_volume_L2_m_power2_5": 0.0003888849670771628
+    },
+    {
+      "time_s": 0.5125,
+      "absolute_volume_L2_difference_m_power2_5": 5.576544082385646e-05,
+      "relative_volume_L2_difference": 0.14932570818359356,
+      "refined_volume_L2_m_power2_5": 0.0003734483599789378
+    },
+    {
+      "time_s": 0.515,
+      "absolute_volume_L2_difference_m_power2_5": 5.1773140537603e-05,
+      "relative_volume_L2_difference": 0.1448643000883609,
+      "refined_volume_L2_m_power2_5": 0.00035739060973630937
+    },
+    {
+      "time_s": 0.5175,
+      "absolute_volume_L2_difference_m_power2_5": 4.765672821731083e-05,
+      "relative_volume_L2_difference": 0.13975292991940025,
+      "refined_volume_L2_m_power2_5": 0.0003410070060412752
+    },
+    {
+      "time_s": 0.52,
+      "absolute_volume_L2_difference_m_power2_5": 4.353875447816597e-05,
+      "relative_volume_L2_difference": 0.13415039790771516,
+      "refined_volume_L2_m_power2_5": 0.00032455181018633416
+    },
+    {
+      "time_s": 0.5225,
+      "absolute_volume_L2_difference_m_power2_5": 3.952461912577405e-05,
+      "relative_volume_L2_difference": 0.12823137414155983,
+      "refined_volume_L2_m_power2_5": 0.0003082289290773817
+    },
+    {
+      "time_s": 0.525,
+      "absolute_volume_L2_difference_m_power2_5": 3.5700178669365375e-05,
+      "relative_volume_L2_difference": 0.12218021398076807,
+      "refined_volume_L2_m_power2_5": 0.00029219279870458244
+    },
+    {
+      "time_s": 0.5275,
+      "absolute_volume_L2_difference_m_power2_5": 3.213166297266139e-05,
+      "relative_volume_L2_difference": 0.11618638178919995,
+      "refined_volume_L2_m_power2_5": 0.00027655274635334393
+    },
+    {
+      "time_s": 0.53,
+      "absolute_volume_L2_difference_m_power2_5": 2.886737339398155e-05,
+      "relative_volume_L2_difference": 0.11044248952914545,
+      "refined_volume_L2_m_power2_5": 0.00026137923472255244
+    },
+    {
+      "time_s": 0.5325,
+      "absolute_volume_L2_difference_m_power2_5": 2.5940969571178626e-05,
+      "relative_volume_L2_difference": 0.1051474495977246,
+      "refined_volume_L2_m_power2_5": 0.0002467104021107897
+    },
+    {
+      "time_s": 0.535,
+      "absolute_volume_L2_difference_m_power2_5": 2.3374958087463823e-05,
+      "relative_volume_L2_difference": 0.10051238474476287,
+      "refined_volume_L2_m_power2_5": 0.0002325579892151724
+    },
+    {
+      "time_s": 0.5375,
+      "absolute_volume_L2_difference_m_power2_5": 2.1182937195494497e-05,
+      "relative_volume_L2_difference": 0.09676420479871085,
+      "refined_volume_L2_m_power2_5": 0.00021891294657522685
+    },
+    {
+      "time_s": 0.54,
+      "absolute_volume_L2_difference_m_power2_5": 1.9370075397623772e-05,
+      "relative_volume_L2_difference": 0.09414394523376952,
+      "refined_volume_L2_m_power2_5": 0.0002057495609465462
+    },
+    {
+      "time_s": 0.5425,
+      "absolute_volume_L2_difference_m_power2_5": 1.793211861369289e-05,
+      "relative_volume_L2_difference": 0.09289891233978487,
+      "refined_volume_L2_m_power2_5": 0.00019302829454132678
+    },
+    {
+      "time_s": 0.545,
+      "absolute_volume_L2_difference_m_power2_5": 1.6853750573376644e-05,
+      "relative_volume_L2_difference": 0.09326989235092588,
+      "refined_volume_L2_m_power2_5": 0.00018069872440685131
+    },
+    {
+      "time_s": 0.5475,
+      "absolute_volume_L2_difference_m_power2_5": 1.6107786071446765e-05,
+      "relative_volume_L2_difference": 0.09547972675380657,
+      "refined_volume_L2_m_power2_5": 0.00016870373030057484
+    },
+    {
+      "time_s": 0.55,
+      "absolute_volume_L2_difference_m_power2_5": 1.565648470585615e-05,
+      "relative_volume_L2_difference": 0.09973202506357648,
+      "refined_volume_L2_m_power2_5": 0.00015698552892990555
+    },
+    {
+      "time_s": 0.5525,
+      "absolute_volume_L2_difference_m_power2_5": 1.54547770628682e-05,
+      "relative_volume_L2_difference": 0.1062232765688053,
+      "refined_volume_L2_m_power2_5": 0.00014549331899828459
+    },
+    {
+      "time_s": 0.555,
+      "absolute_volume_L2_difference_m_power2_5": 1.545403112365917e-05,
+      "relative_volume_L2_difference": 0.11516254726467151,
+      "refined_volume_L2_m_power2_5": 0.0001341932033523195
+    },
+    {
+      "time_s": 0.5575,
+      "absolute_volume_L2_difference_m_power2_5": 1.5604851585523024e-05,
+      "relative_volume_L2_difference": 0.1267849640847732,
+      "refined_volume_L2_m_power2_5": 0.00012308124782911192
+    },
+    {
+      "time_s": 0.56,
+      "absolute_volume_L2_difference_m_power2_5": 1.5858393529720735e-05,
+      "relative_volume_L2_difference": 0.14133818422685923,
+      "refined_volume_L2_m_power2_5": 0.00011220176356777535
+    },
+    {
+      "time_s": 0.5625,
+      "absolute_volume_L2_difference_m_power2_5": 1.6166496695467444e-05,
+      "relative_volume_L2_difference": 0.15900175775839576,
+      "refined_volume_L2_m_power2_5": 0.00010167495582050448
+    },
+    {
+      "time_s": 0.5650000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 1.6480275048503706e-05,
+      "relative_volume_L2_difference": 0.17964699053634625,
+      "refined_volume_L2_m_power2_5": 9.173699486588065e-05
+    },
+    {
+      "time_s": 0.5675,
+      "absolute_volume_L2_difference_m_power2_5": 1.6745978584626292e-05,
+      "relative_volume_L2_difference": 0.20227539486516288,
+      "refined_volume_L2_m_power2_5": 8.278801579296972e-05
+    },
+    {
+      "time_s": 0.5700000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 1.6897291499485924e-05,
+      "relative_volume_L2_difference": 0.2240426677234252,
+      "refined_volume_L2_m_power2_5": 7.541997098671038e-05
+    },
+    {
+      "time_s": 0.5725,
+      "absolute_volume_L2_difference_m_power2_5": 1.684766230045942e-05,
+      "relative_volume_L2_difference": 0.2394822438633334,
+      "refined_volume_L2_m_power2_5": 7.035036096485702e-05
+    },
+    {
+      "time_s": 0.5750000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 1.6495060033969217e-05,
+      "relative_volume_L2_difference": 0.24199026223883857,
+      "refined_volume_L2_m_power2_5": 6.816414793455197e-05
+    },
+    {
+      "time_s": 0.5775,
+      "absolute_volume_L2_difference_m_power2_5": 1.575387040011445e-05,
+      "relative_volume_L2_difference": 0.22860893757541872,
+      "refined_volume_L2_m_power2_5": 6.891187443149376e-05
+    },
+    {
+      "time_s": 0.58,
+      "absolute_volume_L2_difference_m_power2_5": 1.4613507416541197e-05,
+      "relative_volume_L2_difference": 0.20324942139962424,
+      "refined_volume_L2_m_power2_5": 7.189938016014551e-05
+    },
+    {
+      "time_s": 0.5825,
+      "absolute_volume_L2_difference_m_power2_5": 1.3200197578375385e-05,
+      "relative_volume_L2_difference": 0.17387944154075313,
+      "refined_volume_L2_m_power2_5": 7.591580385471608e-05
+    },
+    {
+      "time_s": 0.585,
+      "absolute_volume_L2_difference_m_power2_5": 1.1805031171377851e-05,
+      "relative_volume_L2_difference": 0.1481740049081985,
+      "refined_volume_L2_m_power2_5": 7.96700553426472e-05
+    },
+    {
+      "time_s": 0.5875,
+      "absolute_volume_L2_difference_m_power2_5": 1.082761884417554e-05,
+      "relative_volume_L2_difference": 0.13186663187970654,
+      "refined_volume_L2_m_power2_5": 8.211037689999454e-05
+    },
+    {
+      "time_s": 0.59,
+      "absolute_volume_L2_difference_m_power2_5": 1.0578471191025899e-05,
+      "relative_volume_L2_difference": 0.12813443503236868,
+      "refined_volume_L2_m_power2_5": 8.255759810665741e-05
+    },
+    {
+      "time_s": 0.5925,
+      "absolute_volume_L2_difference_m_power2_5": 1.1045801068776571e-05,
+      "relative_volume_L2_difference": 0.13684812046835293,
+      "refined_volume_L2_m_power2_5": 8.071576745791688e-05
+    },
+    {
+      "time_s": 0.595,
+      "absolute_volume_L2_difference_m_power2_5": 1.1931505352367284e-05,
+      "relative_volume_L2_difference": 0.15572301355627763,
+      "refined_volume_L2_m_power2_5": 7.66200517180159e-05
+    },
+    {
+      "time_s": 0.5975,
+      "absolute_volume_L2_difference_m_power2_5": 1.289727237155381e-05,
+      "relative_volume_L2_difference": 0.18277091548001667,
+      "refined_volume_L2_m_power2_5": 7.056523373908438e-05
+    },
+    {
+      "time_s": 0.6,
+      "absolute_volume_L2_difference_m_power2_5": 1.3698703374188605e-05,
+      "relative_volume_L2_difference": 0.2172611128237529,
+      "refined_volume_L2_m_power2_5": 6.305179604461154e-05
+    },
+    {
+      "time_s": 0.6025,
+      "absolute_volume_L2_difference_m_power2_5": 1.4179102364022595e-05,
+      "relative_volume_L2_difference": 0.258854008295673,
+      "refined_volume_L2_m_power2_5": 5.477644506020814e-05
+    },
+    {
+      "time_s": 0.605,
+      "absolute_volume_L2_difference_m_power2_5": 1.4230671759821554e-05,
+      "relative_volume_L2_difference": 0.30489418579753125,
+      "refined_volume_L2_m_power2_5": 4.6674132937620555e-05
+    },
+    {
+      "time_s": 0.6075,
+      "absolute_volume_L2_difference_m_power2_5": 1.377685314052057e-05,
+      "relative_volume_L2_difference": 0.34475892692555915,
+      "refined_volume_L2_m_power2_5": 3.996083078508737e-05
+    },
+    {
+      "time_s": 0.61,
+      "absolute_volume_L2_difference_m_power2_5": 1.2784837255655658e-05,
+      "relative_volume_L2_difference": 0.35568477437528984,
+      "refined_volume_L2_m_power2_5": 3.5944291622013965e-05
+    },
+    {
+      "time_s": 0.6125,
+      "absolute_volume_L2_difference_m_power2_5": 1.129746067127031e-05,
+      "relative_volume_L2_difference": 0.32040172670323963,
+      "refined_volume_L2_m_power2_5": 3.526029896129171e-05
+    },
+    {
+      "time_s": 0.615,
+      "absolute_volume_L2_difference_m_power2_5": 9.471786477696878e-06,
+      "relative_volume_L2_difference": 0.2550443996364489,
+      "refined_volume_L2_m_power2_5": 3.7137794404418854e-05
+    },
+    {
+      "time_s": 0.6175,
+      "absolute_volume_L2_difference_m_power2_5": 7.631626934205524e-06,
+      "relative_volume_L2_difference": 0.19100806328498426,
+      "refined_volume_L2_m_power2_5": 3.995447523500161e-05
+    },
+    {
+      "time_s": 0.62,
+      "absolute_volume_L2_difference_m_power2_5": 6.339385155137757e-06,
+      "relative_volume_L2_difference": 0.1499546408596045,
+      "refined_volume_L2_m_power2_5": 4.2275351524952306e-05
+    },
+    {
+      "time_s": 0.6225,
+      "absolute_volume_L2_difference_m_power2_5": 6.2316066845623425e-06,
+      "relative_volume_L2_difference": 0.14419604715116313,
+      "refined_volume_L2_m_power2_5": 4.32162102060235e-05
+    },
+    {
+      "time_s": 0.625,
+      "absolute_volume_L2_difference_m_power2_5": 7.284013274298303e-06,
+      "relative_volume_L2_difference": 0.17189413754257377,
+      "refined_volume_L2_m_power2_5": 4.237499532230551e-05
+    },
+    {
+      "time_s": 0.6275000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 8.831887314882854e-06,
+      "relative_volume_L2_difference": 0.22241936739301238,
+      "refined_volume_L2_m_power2_5": 3.970826559935769e-05
+    },
+    {
+      "time_s": 0.63,
+      "absolute_volume_L2_difference_m_power2_5": 1.032160426014194e-05,
+      "relative_volume_L2_difference": 0.29113103410485314,
+      "refined_volume_L2_m_power2_5": 3.545346614069503e-05
+    },
+    {
+      "time_s": 0.6325000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 1.1443611857453755e-05,
+      "relative_volume_L2_difference": 0.380027639571093,
+      "refined_volume_L2_m_power2_5": 3.011257778610327e-05
+    },
+    {
+      "time_s": 0.635,
+      "absolute_volume_L2_difference_m_power2_5": 1.2029426335804838e-05,
+      "relative_volume_L2_difference": 0.49056599487397207,
+      "refined_volume_L2_m_power2_5": 2.452152505779622e-05
+    },
+    {
+      "time_s": 0.6375000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 1.1998800447569215e-05,
+      "relative_volume_L2_difference": 0.5994451877568617,
+      "refined_volume_L2_m_power2_5": 2.0016509753742482e-05
+    },
+    {
+      "time_s": 0.64,
+      "absolute_volume_L2_difference_m_power2_5": 1.135021930161675e-05,
+      "relative_volume_L2_difference": 0.6203353303558745,
+      "refined_volume_L2_m_power2_5": 1.8296909342734595e-05
+    },
+    {
+      "time_s": 0.6425,
+      "absolute_volume_L2_difference_m_power2_5": 1.0168354601501921e-05,
+      "relative_volume_L2_difference": 0.5106482589706199,
+      "refined_volume_L2_m_power2_5": 1.991263932241656e-05
+    },
+    {
+      "time_s": 0.645,
+      "absolute_volume_L2_difference_m_power2_5": 8.638041412874074e-06,
+      "relative_volume_L2_difference": 0.3698972454197556,
+      "refined_volume_L2_m_power2_5": 2.3352543226083537e-05
+    },
+    {
+      "time_s": 0.6475,
+      "absolute_volume_L2_difference_m_power2_5": 7.070509867557293e-06,
+      "relative_volume_L2_difference": 0.26335166512954244,
+      "refined_volume_L2_m_power2_5": 2.6848168452169522e-05
+    },
+    {
+      "time_s": 0.65,
+      "absolute_volume_L2_difference_m_power2_5": 5.9347252819044845e-06,
+      "relative_volume_L2_difference": 0.20222039190511784,
+      "refined_volume_L2_m_power2_5": 2.9347808230383945e-05
+    },
+    {
+      "time_s": 0.6525,
+      "absolute_volume_L2_difference_m_power2_5": 5.713782571377313e-06,
+      "relative_volume_L2_difference": 0.1882457196499697,
+      "refined_volume_L2_m_power2_5": 3.035278880179432e-05
+    },
+    {
+      "time_s": 0.655,
+      "absolute_volume_L2_difference_m_power2_5": 6.400636455365378e-06,
+      "relative_volume_L2_difference": 0.21546872579195214,
+      "refined_volume_L2_m_power2_5": 2.9705640258649752e-05
+    },
+    {
+      "time_s": 0.6575,
+      "absolute_volume_L2_difference_m_power2_5": 7.484859105636073e-06,
+      "relative_volume_L2_difference": 0.2723460982697145,
+      "refined_volume_L2_m_power2_5": 2.7482894571243456e-05
+    },
+    {
+      "time_s": 0.66,
+      "absolute_volume_L2_difference_m_power2_5": 8.498144520143092e-06,
+      "relative_volume_L2_difference": 0.35488895547610233,
+      "refined_volume_L2_m_power2_5": 2.394592558887154e-05
+    },
+    {
+      "time_s": 0.6625,
+      "absolute_volume_L2_difference_m_power2_5": 9.172871088448524e-06,
+      "relative_volume_L2_difference": 0.46957395656860795,
+      "refined_volume_L2_m_power2_5": 1.953445449888e-05
+    },
+    {
+      "time_s": 0.665,
+      "absolute_volume_L2_difference_m_power2_5": 9.382060614209655e-06,
+      "relative_volume_L2_difference": 0.6282368528019685,
+      "refined_volume_L2_m_power2_5": 1.4933954562463481e-05
+    },
+    {
+      "time_s": 0.6675,
+      "absolute_volume_L2_difference_m_power2_5": 9.095127987964594e-06,
+      "relative_volume_L2_difference": 0.8048400805648361,
+      "refined_volume_L2_m_power2_5": 1.1300540576435557e-05
+    },
+    {
+      "time_s": 0.67,
+      "absolute_volume_L2_difference_m_power2_5": 8.362317999311708e-06,
+      "relative_volume_L2_difference": 0.8137036079529034,
+      "refined_volume_L2_m_power2_5": 1.0276859924892595e-05
+    },
+    {
+      "time_s": 0.6725,
+      "absolute_volume_L2_difference_m_power2_5": 7.3142684271964705e-06,
+      "relative_volume_L2_difference": 0.6053725339025127,
+      "refined_volume_L2_m_power2_5": 1.2082260125092392e-05
+    },
+    {
+      "time_s": 0.675,
+      "absolute_volume_L2_difference_m_power2_5": 6.174943016081727e-06,
+      "relative_volume_L2_difference": 0.41391008661891665,
+      "refined_volume_L2_m_power2_5": 1.4918561339064304e-05
+    },
+    {
+      "time_s": 0.6775,
+      "absolute_volume_L2_difference_m_power2_5": 5.2798904406736674e-06,
+      "relative_volume_L2_difference": 0.3033526442475209,
+      "refined_volume_L2_m_power2_5": 1.740512417081664e-05
+    },
+    {
+      "time_s": 0.68,
+      "absolute_volume_L2_difference_m_power2_5": 5.00083059013747e-06,
+      "relative_volume_L2_difference": 0.26409593735335435,
+      "refined_volume_L2_m_power2_5": 1.8935658913398854e-05
+    },
+    {
+      "time_s": 0.6825,
+      "absolute_volume_L2_difference_m_power2_5": 5.433804822679082e-06,
+      "relative_volume_L2_difference": 0.2815527545571507,
+      "refined_volume_L2_m_power2_5": 1.9299419859080465e-05
+    },
+    {
+      "time_s": 0.685,
+      "absolute_volume_L2_difference_m_power2_5": 6.276931795654622e-06,
+      "relative_volume_L2_difference": 0.3390795181886274,
+      "refined_volume_L2_m_power2_5": 1.8511680767939548e-05
+    },
+    {
+      "time_s": 0.6875,
+      "absolute_volume_L2_difference_m_power2_5": 7.164186935972447e-06,
+      "relative_volume_L2_difference": 0.4274761727369887,
+      "refined_volume_L2_m_power2_5": 1.6759266113249133e-05
+    },
+    {
+      "time_s": 0.6900000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 7.857750932649333e-06,
+      "relative_volume_L2_difference": 0.5457382729576552,
+      "refined_volume_L2_m_power2_5": 1.4398387142730285e-05
+    },
+    {
+      "time_s": 0.6925,
+      "absolute_volume_L2_difference_m_power2_5": 8.235972561865914e-06,
+      "relative_volume_L2_difference": 0.6864197701934612,
+      "refined_volume_L2_m_power2_5": 1.1998448936784965e-05
+    },
+    {
+      "time_s": 0.6950000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 8.25923959924189e-06,
+      "relative_volume_L2_difference": 0.7955450936758844,
+      "refined_volume_L2_m_power2_5": 1.0381862278955633e-05
+    },
+    {
+      "time_s": 0.6975,
+      "absolute_volume_L2_difference_m_power2_5": 7.952912099371682e-06,
+      "relative_volume_L2_difference": 0.7719300386990053,
+      "refined_volume_L2_m_power2_5": 1.0302633270724058e-05
+    },
+    {
+      "time_s": 0.7000000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 7.400738543742092e-06,
+      "relative_volume_L2_difference": 0.6358843844658204,
+      "refined_volume_L2_m_power2_5": 1.1638497067291784e-05
+    },
+    {
+      "time_s": 0.7025,
+      "absolute_volume_L2_difference_m_power2_5": 6.7410964772194785e-06,
+      "relative_volume_L2_difference": 0.49809910089380804,
+      "refined_volume_L2_m_power2_5": 1.3533645142348175e-05
+    },
+    {
+      "time_s": 0.705,
+      "absolute_volume_L2_difference_m_power2_5": 6.15531774475731e-06,
+      "relative_volume_L2_difference": 0.40391958064132294,
+      "refined_volume_L2_m_power2_5": 1.5238968447591003e-05
+    },
+    {
+      "time_s": 0.7075,
+      "absolute_volume_L2_difference_m_power2_5": 5.824513590135904e-06,
+      "relative_volume_L2_difference": 0.3567658627565643,
+      "refined_volume_L2_m_power2_5": 1.6325871385598918e-05
+    },
+    {
+      "time_s": 0.71,
+      "absolute_volume_L2_difference_m_power2_5": 5.840431778844905e-06,
+      "relative_volume_L2_difference": 0.3518959892238258,
+      "refined_volume_L2_m_power2_5": 1.6597039914342584e-05
+    },
+    {
+      "time_s": 0.7125,
+      "absolute_volume_L2_difference_m_power2_5": 6.140718724040227e-06,
+      "relative_volume_L2_difference": 0.38349894266027973,
+      "refined_volume_L2_m_power2_5": 1.6012348512470207e-05
+    },
+    {
+      "time_s": 0.715,
+      "absolute_volume_L2_difference_m_power2_5": 6.559926318375108e-06,
+      "relative_volume_L2_difference": 0.4477278477727176,
+      "refined_volume_L2_m_power2_5": 1.4651593263649657e-05
+    },
+    {
+      "time_s": 0.7175,
+      "absolute_volume_L2_difference_m_power2_5": 6.930304026168309e-06,
+      "relative_volume_L2_difference": 0.5457469060904305,
+      "refined_volume_L2_m_power2_5": 1.269875092066936e-05
+    },
+    {
+      "time_s": 0.72,
+      "absolute_volume_L2_difference_m_power2_5": 7.134829740800323e-06,
+      "relative_volume_L2_difference": 0.6829657725812337,
+      "refined_volume_L2_m_power2_5": 1.0446833541649685e-05
+    },
+    {
+      "time_s": 0.7225,
+      "absolute_volume_L2_difference_m_power2_5": 7.115800276922977e-06,
+      "relative_volume_L2_difference": 0.8537147126361462,
+      "refined_volume_L2_m_power2_5": 8.335103251237672e-06
+    },
+    {
+      "time_s": 0.725,
+      "absolute_volume_L2_difference_m_power2_5": 6.869793754395517e-06,
+      "relative_volume_L2_difference": 0.983759863157585,
+      "refined_volume_L2_m_power2_5": 6.983201908995823e-06
+    },
+    {
+      "time_s": 0.7275,
+      "absolute_volume_L2_difference_m_power2_5": 6.442041522322187e-06,
+      "relative_volume_L2_difference": 0.9337140666341971,
+      "refined_volume_L2_m_power2_5": 6.899372894256714e-06
+    },
+    {
+      "time_s": 0.73,
+      "absolute_volume_L2_difference_m_power2_5": 5.921549564320094e-06,
+      "relative_volume_L2_difference": 0.7564984374359369,
+      "refined_volume_L2_m_power2_5": 7.827576728896487e-06
+    },
+    {
+      "time_s": 0.7325,
+      "absolute_volume_L2_difference_m_power2_5": 5.432191072936204e-06,
+      "relative_volume_L2_difference": 0.6005818598878702,
+      "refined_volume_L2_m_power2_5": 9.044880366433987e-06
+    },
+    {
+      "time_s": 0.735,
+      "absolute_volume_L2_difference_m_power2_5": 5.107018121787223e-06,
+      "relative_volume_L2_difference": 0.5088258352761456,
+      "refined_volume_L2_m_power2_5": 1.0036868743143881e-05
+    },
+    {
+      "time_s": 0.7375,
+      "absolute_volume_L2_difference_m_power2_5": 5.033932790717267e-06,
+      "relative_volume_L2_difference": 0.4765125138465565,
+      "refined_volume_L2_m_power2_5": 1.0564114570846844e-05
+    },
+    {
+      "time_s": 0.74,
+      "absolute_volume_L2_difference_m_power2_5": 5.2019872371838795e-06,
+      "relative_volume_L2_difference": 0.49247508167627085,
+      "refined_volume_L2_m_power2_5": 1.0562945072220756e-05
+    },
+    {
+      "time_s": 0.7425,
+      "absolute_volume_L2_difference_m_power2_5": 5.511884134325221e-06,
+      "relative_volume_L2_difference": 0.5462507753783101,
+      "refined_volume_L2_m_power2_5": 1.0090391415019821e-05
+    },
+    {
+      "time_s": 0.745,
+      "absolute_volume_L2_difference_m_power2_5": 5.840625019298363e-06,
+      "relative_volume_L2_difference": 0.6277864097417551,
+      "refined_volume_L2_m_power2_5": 9.303522549494102e-06
+    },
+    {
+      "time_s": 0.7475,
+      "absolute_volume_L2_difference_m_power2_5": 6.091937435230943e-06,
+      "relative_volume_L2_difference": 0.7208934385988299,
+      "refined_volume_L2_m_power2_5": 8.450538053268434e-06
+    },
+    {
+      "time_s": 0.75,
+      "absolute_volume_L2_difference_m_power2_5": 6.212507166804308e-06,
+      "relative_volume_L2_difference": 0.7924155930716711,
+      "refined_volume_L2_m_power2_5": 7.839960774525558e-06
+    },
+    {
+      "time_s": 0.7525000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 6.19100069113165e-06,
+      "relative_volume_L2_difference": 0.8011810001166036,
+      "refined_volume_L2_m_power2_5": 7.727343372135152e-06
+    },
+    {
+      "time_s": 0.755,
+      "absolute_volume_L2_difference_m_power2_5": 6.052284026727767e-06,
+      "relative_volume_L2_difference": 0.7432682482533176,
+      "refined_volume_L2_m_power2_5": 8.142799105101894e-06
+    },
+    {
+      "time_s": 0.7575000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 5.849393064215131e-06,
+      "relative_volume_L2_difference": 0.6592317151131561,
+      "refined_volume_L2_m_power2_5": 8.873045592491087e-06
+    },
+    {
+      "time_s": 0.76,
+      "absolute_volume_L2_difference_m_power2_5": 5.6511725409660395e-06,
+      "relative_volume_L2_difference": 0.5867200096792362,
+      "refined_volume_L2_m_power2_5": 9.631804690035327e-06
+    },
+    {
+      "time_s": 0.7625000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 5.52297711135544e-06,
+      "relative_volume_L2_difference": 0.5418553970527671,
+      "refined_volume_L2_m_power2_5": 1.0192714036615198e-05
+    },
+    {
+      "time_s": 0.765,
+      "absolute_volume_L2_difference_m_power2_5": 5.503068617751733e-06,
+      "relative_volume_L2_difference": 0.528097440062828,
+      "refined_volume_L2_m_power2_5": 1.042055537534329e-05
+    },
+    {
+      "time_s": 0.7675000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 5.586936592501903e-06,
+      "relative_volume_L2_difference": 0.5444081114218676,
+      "refined_volume_L2_m_power2_5": 1.0262405124549157e-05
+    },
+    {
+      "time_s": 0.77,
+      "absolute_volume_L2_difference_m_power2_5": 5.731897786442522e-06,
+      "relative_volume_L2_difference": 0.588815043331748,
+      "refined_volume_L2_m_power2_5": 9.734632039985224e-06
+    },
+    {
+      "time_s": 0.7725,
+      "absolute_volume_L2_difference_m_power2_5": 5.878164020029314e-06,
+      "relative_volume_L2_difference": 0.6594711854675355,
+      "refined_volume_L2_m_power2_5": 8.913450882409609e-06
+    },
+    {
+      "time_s": 0.775,
+      "absolute_volume_L2_difference_m_power2_5": 5.9709604306848676e-06,
+      "relative_volume_L2_difference": 0.7530446961633476,
+      "refined_volume_L2_m_power2_5": 7.929091674247274e-06
+    },
+    {
+      "time_s": 0.7775,
+      "absolute_volume_L2_difference_m_power2_5": 5.9742051873806665e-06,
+      "relative_volume_L2_difference": 0.8583348163675252,
+      "refined_volume_L2_m_power2_5": 6.960227027331264e-06
+    },
+    {
+      "time_s": 0.78,
+      "absolute_volume_L2_difference_m_power2_5": 5.875869752498558e-06,
+      "relative_volume_L2_difference": 0.9456207692255648,
+      "refined_volume_L2_m_power2_5": 6.213769772961649e-06
+    },
+    {
+      "time_s": 0.7825,
+      "absolute_volume_L2_difference_m_power2_5": 5.688159957800223e-06,
+      "relative_volume_L2_difference": 0.9711951335017598,
+      "refined_volume_L2_m_power2_5": 5.8568662069906425e-06
+    },
+    {
+      "time_s": 0.785,
+      "absolute_volume_L2_difference_m_power2_5": 5.444403977796282e-06,
+      "relative_volume_L2_difference": 0.9214279750177918,
+      "refined_volume_L2_m_power2_5": 5.9086593042621224e-06
+    },
+    {
+      "time_s": 0.7875,
+      "absolute_volume_L2_difference_m_power2_5": 5.1926091760223e-06,
+      "relative_volume_L2_difference": 0.8348035159576247,
+      "refined_volume_L2_m_power2_5": 6.220157290623919e-06
+    },
+    {
+      "time_s": 0.79,
+      "absolute_volume_L2_difference_m_power2_5": 4.984537975073661e-06,
+      "relative_volume_L2_difference": 0.756451207841016,
+      "refined_volume_L2_m_power2_5": 6.589371427272894e-06
+    },
+    {
+      "time_s": 0.7925,
+      "absolute_volume_L2_difference_m_power2_5": 4.860425627643403e-06,
+      "relative_volume_L2_difference": 0.7080075147824879,
+      "refined_volume_L2_m_power2_5": 6.86493508354443e-06
+    },
+    {
+      "time_s": 0.795,
+      "absolute_volume_L2_difference_m_power2_5": 4.834436487939575e-06,
+      "relative_volume_L2_difference": 0.6932994476305233,
+      "refined_volume_L2_m_power2_5": 6.973085734399673e-06
+    },
+    {
+      "time_s": 0.7975,
+      "absolute_volume_L2_difference_m_power2_5": 4.890199809679011e-06,
+      "relative_volume_L2_difference": 0.7077906361356584,
+      "refined_volume_L2_m_power2_5": 6.909104981069195e-06
+    },
+    {
+      "time_s": 0.8,
+      "absolute_volume_L2_difference_m_power2_5": 4.9904726833050284e-06,
+      "relative_volume_L2_difference": 0.7423172178050719,
+      "refined_volume_L2_m_power2_5": 6.722830298967277e-06
+    },
+    {
+      "time_s": 0.8025,
+      "absolute_volume_L2_difference_m_power2_5": 5.0937915285499014e-06,
+      "relative_volume_L2_difference": 0.7834216591964013,
+      "refined_volume_L2_m_power2_5": 6.501979449706412e-06
+    },
+    {
+      "time_s": 0.805,
+      "absolute_volume_L2_difference_m_power2_5": 5.168136363806372e-06,
+      "relative_volume_L2_difference": 0.8142367422735172,
+      "refined_volume_L2_m_power2_5": 6.347215859328416e-06
+    },
+    {
+      "time_s": 0.8075,
+      "absolute_volume_L2_difference_m_power2_5": 5.197648199044588e-06,
+      "relative_volume_L2_difference": 0.8204068861047398,
+      "refined_volume_L2_m_power2_5": 6.335451697294767e-06
+    },
+    {
+      "time_s": 0.81,
+      "absolute_volume_L2_difference_m_power2_5": 5.183449502884208e-06,
+      "relative_volume_L2_difference": 0.7993241754886183,
+      "refined_volume_L2_m_power2_5": 6.484790103734346e-06
+    },
+    {
+      "time_s": 0.8125,
+      "absolute_volume_L2_difference_m_power2_5": 5.140471441519796e-06,
+      "relative_volume_L2_difference": 0.7617828960062477,
+      "refined_volume_L2_m_power2_5": 6.7479480944891645e-06
+    },
+    {
+      "time_s": 0.8150000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 5.091444748516033e-06,
+      "relative_volume_L2_difference": 0.7232472208508431,
+      "refined_volume_L2_m_power2_5": 7.039701780708332e-06
+    },
+    {
+      "time_s": 0.8175,
+      "absolute_volume_L2_difference_m_power2_5": 5.059016790871274e-06,
+      "relative_volume_L2_difference": 0.6955795411713106,
+      "refined_volume_L2_m_power2_5": 7.273096017677891e-06
+    },
+    {
+      "time_s": 0.8200000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 5.057824433889487e-06,
+      "relative_volume_L2_difference": 0.685063515546668,
+      "refined_volume_L2_m_power2_5": 7.383000727828042e-06
+    },
+    {
+      "time_s": 0.8225,
+      "absolute_volume_L2_difference_m_power2_5": 5.089370377293961e-06,
+      "relative_volume_L2_difference": 0.6938159087655661,
+      "refined_volume_L2_m_power2_5": 7.335332489491259e-06
+    },
+    {
+      "time_s": 0.8250000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 5.141988219642565e-06,
+      "relative_volume_L2_difference": 0.7213714293540562,
+      "refined_volume_L2_m_power2_5": 7.128073015376973e-06
+    },
+    {
+      "time_s": 0.8275,
+      "absolute_volume_L2_difference_m_power2_5": 5.195638767701359e-06,
+      "relative_volume_L2_difference": 0.765349884935174,
+      "refined_volume_L2_m_power2_5": 6.788579798560283e-06
+    },
+    {
+      "time_s": 0.8300000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 5.22888228611547e-06,
+      "relative_volume_L2_difference": 0.8210258526081731,
+      "refined_volume_L2_m_power2_5": 6.36871819505409e-06
+    },
+    {
+      "time_s": 0.8325,
+      "absolute_volume_L2_difference_m_power2_5": 5.225126095616287e-06,
+      "relative_volume_L2_difference": 0.8800771839906949,
+      "refined_volume_L2_m_power2_5": 5.9371225509142765e-06
+    },
+    {
+      "time_s": 0.835,
+      "absolute_volume_L2_difference_m_power2_5": 5.1766017825681605e-06,
+      "relative_volume_L2_difference": 0.9299843000618997,
+      "refined_volume_L2_m_power2_5": 5.566332444777408e-06
+    },
+    {
+      "time_s": 0.8375,
+      "absolute_volume_L2_difference_m_power2_5": 5.085820573077703e-06,
+      "relative_volume_L2_difference": 0.9571649856298202,
+      "refined_volume_L2_m_power2_5": 5.313421039666639e-06
+    },
+    {
+      "time_s": 0.84,
+      "absolute_volume_L2_difference_m_power2_5": 4.964779974306017e-06,
+      "relative_volume_L2_difference": 0.9548345987485091,
+      "refined_volume_L2_m_power2_5": 5.199623035040098e-06
+    },
+    {
+      "time_s": 0.8425,
+      "absolute_volume_L2_difference_m_power2_5": 4.832214237254647e-06,
+      "relative_volume_L2_difference": 0.9287043708540489,
+      "refined_volume_L2_m_power2_5": 5.203178092949943e-06
+    },
+    {
+      "time_s": 0.845,
+      "absolute_volume_L2_difference_m_power2_5": 4.7091980970360395e-06,
+      "relative_volume_L2_difference": 0.8929602599390409,
+      "refined_volume_L2_m_power2_5": 5.273692803930064e-06
+    },
+    {
+      "time_s": 0.8475,
+      "absolute_volume_L2_difference_m_power2_5": 4.6138031359952474e-06,
+      "relative_volume_L2_difference": 0.8612363530400241,
+      "refined_volume_L2_m_power2_5": 5.3571857710247294e-06
+    },
+    {
+      "time_s": 0.85,
+      "absolute_volume_L2_difference_m_power2_5": 4.556270714100281e-06,
+      "relative_volume_L2_difference": 0.84137606121094,
+      "refined_volume_L2_m_power2_5": 5.415260695131646e-06
+    },
+    {
+      "time_s": 0.8525,
+      "absolute_volume_L2_difference_m_power2_5": 4.536634572250311e-06,
+      "relative_volume_L2_difference": 0.8350595516796421,
+      "refined_volume_L2_m_power2_5": 5.432707838770668e-06
+    },
+    {
+      "time_s": 0.855,
+      "absolute_volume_L2_difference_m_power2_5": 4.545960572624589e-06,
+      "relative_volume_L2_difference": 0.8393151340222429,
+      "refined_volume_L2_m_power2_5": 5.416273802712243e-06
+    },
+    {
+      "time_s": 0.8575,
+      "absolute_volume_L2_difference_m_power2_5": 4.57051991490327e-06,
+      "relative_volume_L2_difference": 0.8482723218101639,
+      "refined_volume_L2_m_power2_5": 5.388033768625205e-06
+    },
+    {
+      "time_s": 0.86,
+      "absolute_volume_L2_difference_m_power2_5": 4.596808012644686e-06,
+      "relative_volume_L2_difference": 0.8551625010498378,
+      "refined_volume_L2_m_power2_5": 5.375362000790993e-06
+    },
+    {
+      "time_s": 0.8625,
+      "absolute_volume_L2_difference_m_power2_5": 4.615422615796694e-06,
+      "relative_volume_L2_difference": 0.8547673883812097,
+      "refined_volume_L2_m_power2_5": 5.39962412994903e-06
+    },
+    {
+      "time_s": 0.865,
+      "absolute_volume_L2_difference_m_power2_5": 4.622856538472685e-06,
+      "relative_volume_L2_difference": 0.8455558594633371,
+      "refined_volume_L2_m_power2_5": 5.467239670489362e-06
+    },
+    {
+      "time_s": 0.8675,
+      "absolute_volume_L2_difference_m_power2_5": 4.6211988371313255e-06,
+      "relative_volume_L2_difference": 0.8301052886505225,
+      "refined_volume_L2_m_power2_5": 5.567003246833749e-06
+    },
+    {
+      "time_s": 0.87,
+      "absolute_volume_L2_difference_m_power2_5": 4.6162221066460095e-06,
+      "relative_volume_L2_difference": 0.8134954050059101,
+      "refined_volume_L2_m_power2_5": 5.674552158794889e-06
+    },
+    {
+      "time_s": 0.8725,
+      "absolute_volume_L2_difference_m_power2_5": 4.614564630039973e-06,
+      "relative_volume_L2_difference": 0.8010146748010281,
+      "refined_volume_L2_m_power2_5": 5.760898988756018e-06
+    },
+    {
+      "time_s": 0.875,
+      "absolute_volume_L2_difference_m_power2_5": 4.620882996874645e-06,
+      "relative_volume_L2_difference": 0.7965940244501153,
+      "refined_volume_L2_m_power2_5": 5.800800476835634e-06
+    },
+    {
+      "time_s": 0.8775000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 4.6358881608585155e-06,
+      "relative_volume_L2_difference": 0.8022677722974842,
+      "refined_volume_L2_m_power2_5": 5.778479855401083e-06
+    },
+    {
+      "time_s": 0.88,
+      "absolute_volume_L2_difference_m_power2_5": 4.655901724969336e-06,
+      "relative_volume_L2_difference": 0.8182207484322136,
+      "refined_volume_L2_m_power2_5": 5.6902758013536966e-06
+    },
+    {
+      "time_s": 0.8825000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 4.673981129204188e-06,
+      "relative_volume_L2_difference": 0.8429607663328872,
+      "refined_volume_L2_m_power2_5": 5.544719654673018e-06
+    },
+    {
+      "time_s": 0.885,
+      "absolute_volume_L2_difference_m_power2_5": 4.682065201651999e-06,
+      "relative_volume_L2_difference": 0.8734267492031601,
+      "refined_volume_L2_m_power2_5": 5.360569968716341e-06
+    },
+    {
+      "time_s": 0.8875000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 4.673323991669169e-06,
+      "relative_volume_L2_difference": 0.9051403875344964,
+      "refined_volume_L2_m_power2_5": 5.163092992015076e-06
+    },
+    {
+      "time_s": 0.89,
+      "absolute_volume_L2_difference_m_power2_5": 4.644015520128178e-06,
+      "relative_volume_L2_difference": 0.9327512477584137,
+      "refined_volume_L2_m_power2_5": 4.978836030816007e-06
+    },
+    {
+      "time_s": 0.8925000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 4.594455514636783e-06,
+      "relative_volume_L2_difference": 0.9513105432623922,
+      "refined_volume_L2_m_power2_5": 4.8296064278660395e-06
+    },
+    {
+      "time_s": 0.895,
+      "absolute_volume_L2_difference_m_power2_5": 4.528986295280187e-06,
+      "relative_volume_L2_difference": 0.9580500812868532,
+      "refined_volume_L2_m_power2_5": 4.727295977259196e-06
+    },
+    {
+      "time_s": 0.8975,
+      "absolute_volume_L2_difference_m_power2_5": 4.455020865859545e-06,
+      "relative_volume_L2_difference": 0.9536099376385067,
+      "refined_volume_L2_m_power2_5": 4.67174333028852e-06
+    },
+    {
+      "time_s": 0.9,
+      "absolute_volume_L2_difference_m_power2_5": 4.381380841606166e-06,
+      "relative_volume_L2_difference": 0.9416580148854203,
+      "refined_volume_L2_m_power2_5": 4.652836563111807e-06
+    },
+    {
+      "time_s": 0.9025,
+      "absolute_volume_L2_difference_m_power2_5": 4.316297349819303e-06,
+      "relative_volume_L2_difference": 0.9270845436011423,
+      "refined_volume_L2_m_power2_5": 4.655775333124629e-06
+    },
+    {
+      "time_s": 0.905,
+      "absolute_volume_L2_difference_m_power2_5": 4.265588780766178e-06,
+      "relative_volume_L2_difference": 0.9140221177340611,
+      "refined_volume_L2_m_power2_5": 4.666833217713525e-06
+    },
+    {
+      "time_s": 0.9075,
+      "absolute_volume_L2_difference_m_power2_5": 4.231561821622294e-06,
+      "relative_volume_L2_difference": 0.9046978830096931,
+      "refined_volume_L2_m_power2_5": 4.6773203531161084e-06
+    },
+    {
+      "time_s": 0.91,
+      "absolute_volume_L2_difference_m_power2_5": 4.212984625910723e-06,
+      "relative_volume_L2_difference": 0.8992762992139574,
+      "refined_volume_L2_m_power2_5": 4.684861181811667e-06
+    },
+    {
+      "time_s": 0.9125,
+      "absolute_volume_L2_difference_m_power2_5": 4.206078218810908e-06,
+      "relative_volume_L2_difference": 0.8963875167428711,
+      "refined_volume_L2_m_power2_5": 4.6922543434051655e-06
+    },
+    {
+      "time_s": 0.915,
+      "absolute_volume_L2_difference_m_power2_5": 4.206078255104365e-06,
+      "relative_volume_L2_difference": 0.8940086512832589,
+      "refined_volume_L2_m_power2_5": 4.704739992243885e-06
+    },
+    {
+      "time_s": 0.9175,
+      "absolute_volume_L2_difference_m_power2_5": 4.208762808590187e-06,
+      "relative_volume_L2_difference": 0.8904152482695157,
+      "refined_volume_L2_m_power2_5": 4.726741614959694e-06
+    },
+    {
+      "time_s": 0.92,
+      "absolute_volume_L2_difference_m_power2_5": 4.2114646583045445e-06,
+      "relative_volume_L2_difference": 0.8849069645847011,
+      "refined_volume_L2_m_power2_5": 4.759217439633377e-06
+    },
+    {
+      "time_s": 0.9225,
+      "absolute_volume_L2_difference_m_power2_5": 4.213354366092405e-06,
+      "relative_volume_L2_difference": 0.8780529843642999,
+      "refined_volume_L2_m_power2_5": 4.798519498390891e-06
+    },
+    {
+      "time_s": 0.925,
+      "absolute_volume_L2_difference_m_power2_5": 4.215043128216123e-06,
+      "relative_volume_L2_difference": 0.8714085066399052,
+      "refined_volume_L2_m_power2_5": 4.837046111093242e-06
+    },
+    {
+      "time_s": 0.9275,
+      "absolute_volume_L2_difference_m_power2_5": 4.217741124648249e-06,
+      "relative_volume_L2_difference": 0.8669112376256577,
+      "refined_volume_L2_m_power2_5": 4.865251413974077e-06
+    },
+    {
+      "time_s": 0.93,
+      "absolute_volume_L2_difference_m_power2_5": 4.222304249280177e-06,
+      "relative_volume_L2_difference": 0.866263380246315,
+      "refined_volume_L2_m_power2_5": 4.874157612526111e-06
+    },
+    {
+      "time_s": 0.9325,
+      "absolute_volume_L2_difference_m_power2_5": 4.2285038101304e-06,
+      "relative_volume_L2_difference": 0.8705001259555964,
+      "refined_volume_L2_m_power2_5": 4.857556804473217e-06
+    },
+    {
+      "time_s": 0.935,
+      "absolute_volume_L2_difference_m_power2_5": 4.234755732537663e-06,
+      "relative_volume_L2_difference": 0.8797841036381838,
+      "refined_volume_L2_m_power2_5": 4.81340332818656e-06
+    },
+    {
+      "time_s": 0.9375,
+      "absolute_volume_L2_difference_m_power2_5": 4.238373204226229e-06,
+      "relative_volume_L2_difference": 0.8933758462163555,
+      "refined_volume_L2_m_power2_5": 4.744221843669356e-06
+    },
+    {
+      "time_s": 0.9400000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 4.236225279582313e-06,
+      "relative_volume_L2_difference": 0.909731174325463,
+      "refined_volume_L2_m_power2_5": 4.656568224919126e-06
+    },
+    {
+      "time_s": 0.9425,
+      "absolute_volume_L2_difference_m_power2_5": 4.225566590492487e-06,
+      "relative_volume_L2_difference": 0.9267201125944405,
+      "refined_volume_L2_m_power2_5": 4.559700963716665e-06
+    },
+    {
+      "time_s": 0.9450000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 4.204783263070018e-06,
+      "relative_volume_L2_difference": 0.9419903786480123,
+      "refined_volume_L2_m_power2_5": 4.463722091413413e-06
+    },
+    {
+      "time_s": 0.9475,
+      "absolute_volume_L2_difference_m_power2_5": 4.173858878166336e-06,
+      "relative_volume_L2_difference": 0.9534646437740778,
+      "refined_volume_L2_m_power2_5": 4.377570689611566e-06
+    },
+    {
+      "time_s": 0.9500000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 4.134459176018145e-06,
+      "relative_volume_L2_difference": 0.9598587188633034,
+      "refined_volume_L2_m_power2_5": 4.307362213591506e-06
+    },
+    {
+      "time_s": 0.9525,
+      "absolute_volume_L2_difference_m_power2_5": 4.089631244765947e-06,
+      "relative_volume_L2_difference": 0.961011161241942,
+      "refined_volume_L2_m_power2_5": 4.255550205557239e-06
+    },
+    {
+      "time_s": 0.9550000000000001,
+      "absolute_volume_L2_difference_m_power2_5": 4.0431978009290115e-06,
+      "relative_volume_L2_difference": 0.9578429741978961,
+      "refined_volume_L2_m_power2_5": 4.2211488833175515e-06
+    },
+    {
+      "time_s": 0.9575,
+      "absolute_volume_L2_difference_m_power2_5": 3.998995152687309e-06,
+      "relative_volume_L2_difference": 0.9519476834350262,
+      "refined_volume_L2_m_power2_5": 4.2008560158025265e-06
+    },
+    {
+      "time_s": 0.96,
+      "absolute_volume_L2_difference_m_power2_5": 3.9601449344334566e-06,
+      "relative_volume_L2_difference": 0.9450119064996565,
+      "refined_volume_L2_m_power2_5": 4.190576761198612e-06
+    },
+    {
+      "time_s": 0.9625,
+      "absolute_volume_L2_difference_m_power2_5": 3.928546286844426e-06,
+      "relative_volume_L2_difference": 0.9383247306639356,
+      "refined_volume_L2_m_power2_5": 4.186766221183026e-06
+    },
+    {
+      "time_s": 0.965,
+      "absolute_volume_L2_difference_m_power2_5": 3.90471265073235e-06,
+      "relative_volume_L2_difference": 0.9325390780503223,
+      "refined_volume_L2_m_power2_5": 4.18718393967576e-06
+    },
+    {
+      "time_s": 0.9675,
+      "absolute_volume_L2_difference_m_power2_5": 3.887966701552995e-06,
+      "relative_volume_L2_difference": 0.9277073566279125,
+      "refined_volume_L2_m_power2_5": 4.190940897229935e-06
+    },
+    {
+      "time_s": 0.97,
+      "absolute_volume_L2_difference_m_power2_5": 3.8768902982338695e-06,
+      "relative_volume_L2_difference": 0.9235142436818194,
+      "refined_volume_L2_m_power2_5": 4.197975640069915e-06
+    },
+    {
+      "time_s": 0.9725,
+      "absolute_volume_L2_difference_m_power2_5": 3.869854604762778e-06,
+      "relative_volume_L2_difference": 0.9195866683235974,
+      "refined_volume_L2_m_power2_5": 4.2082543582515246e-06
+    },
+    {
+      "time_s": 0.975,
+      "absolute_volume_L2_difference_m_power2_5": 3.865455382791278e-06,
+      "relative_volume_L2_difference": 0.9157601082461473,
+      "refined_volume_L2_m_power2_5": 4.221034906395247e-06
+    },
+    {
+      "time_s": 0.9775,
+      "absolute_volume_L2_difference_m_power2_5": 3.862738895266766e-06,
+      "relative_volume_L2_difference": 0.9122129867788701,
+      "refined_volume_L2_m_power2_5": 4.234470404665631e-06
+    },
+    {
+      "time_s": 0.98,
+      "absolute_volume_L2_difference_m_power2_5": 3.861191159983503e-06,
+      "relative_volume_L2_difference": 0.9094401172341275,
+      "refined_volume_L2_m_power2_5": 4.24567938758465e-06
+    },
+    {
+      "time_s": 0.9825,
+      "absolute_volume_L2_difference_m_power2_5": 3.860543631066725e-06,
+      "relative_volume_L2_difference": 0.908099575322545,
+      "refined_volume_L2_m_power2_5": 4.25123382498611e-06
+    },
+    {
+      "time_s": 0.985,
+      "absolute_volume_L2_difference_m_power2_5": 3.860499686816641e-06,
+      "relative_volume_L2_difference": 0.9088054452648341,
+      "refined_volume_L2_m_power2_5": 4.2478835342933675e-06
+    },
+    {
+      "time_s": 0.9875,
+      "absolute_volume_L2_difference_m_power2_5": 3.860498772356681e-06,
+      "relative_volume_L2_difference": 0.9119386658541455,
+      "refined_volume_L2_m_power2_5": 4.233287738425739e-06
+    },
+    {
+      "time_s": 0.99,
+      "absolute_volume_L2_difference_m_power2_5": 3.859609516066521e-06,
+      "relative_volume_L2_difference": 0.9175222931488424,
+      "refined_volume_L2_m_power2_5": 4.206556663403499e-06
+    },
+    {
+      "time_s": 0.9925,
+      "absolute_volume_L2_difference_m_power2_5": 3.856590781094553e-06,
+      "relative_volume_L2_difference": 0.925178611721302,
+      "refined_volume_L2_m_power2_5": 4.1684824229986645e-06
+    },
+    {
+      "time_s": 0.995,
+      "absolute_volume_L2_difference_m_power2_5": 3.85009989804135e-06,
+      "relative_volume_L2_difference": 0.9341675106311987,
+      "refined_volume_L2_m_power2_5": 4.121423464449018e-06
+    },
+    {
+      "time_s": 0.9975,
+      "absolute_volume_L2_difference_m_power2_5": 3.8389809401235956e-06,
+      "relative_volume_L2_difference": 0.9434977767382159,
+      "refined_volume_L2_m_power2_5": 4.068881808492872e-06
+    },
+    {
+      "time_s": 1.0,
+      "absolute_volume_L2_difference_m_power2_5": 3.822545988277521e-06,
+      "relative_volume_L2_difference": 0.9520964891244652,
+      "refined_volume_L2_m_power2_5": 4.014872475575119e-06
+    }
+  ],
+  "scope": "same polyhedral geometry, source material/BC, interpolated same continuous fibers; isolate displacement discretization over complete passive cycle",
+  "limitations": [
+    "two levels quantify sensitivity; do not establish asymptotic mesh convergence",
+    "one geometry/waveform; fine-grid result retains temporal and spatial discretization error"
+  ]
+}

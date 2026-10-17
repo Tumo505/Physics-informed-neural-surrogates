@@ -152,7 +152,7 @@ dynamic-confirmation: dynamic-evaluate
 .PHONY: dynamic-reproduce
 # Clean checkouts include recorded metrics but omit weights. Retrain missing weights;
 # label the repeated benchmark explicitly and preserve published results in Git.
-dynamic-reproduce: dynamic-train dynamic-convergence
+dynamic-reproduce: dynamic-train dynamic-convergence dynamic-dt001
 	$(PY) scripts/evaluate_dynamic_study.py --repeat-benchmark
 	$(PY) scripts/run_dynamic_confirmation.py
 	$(PY) scripts/evaluate_dynamic_confirmation.py
@@ -167,3 +167,13 @@ dynamic-reproduce: dynamic-train dynamic-convergence
 .PHONY: dynamic-dt001
 dynamic-dt001: cardiac-trajectory
 	env OPENBLAS_NUM_THREADS=2 $(PY) scripts/train_dynamic_dt001_pilot.py
+	$(PY) scripts/plot_dynamic_dt001_pilot.py
+
+.PHONY: dynamic-inputs
+dynamic-inputs:
+	mkdir -p data/processed experiments/checkpoints experiments/logs .cache
+	@if [ ! -f data/processed/cardiac/cohort.npz ]; then $(FEM_RUN) scripts/generate_cardiac_cohort.py; fi
+	$(PY) scripts/prepare_dynamic_hierarchy.py
+dynamic-cohort: dynamic-inputs
+dynamic-convergence: cardiac-trajectory dynamic-inputs
+cardiac-trajectory: dynamic-inputs

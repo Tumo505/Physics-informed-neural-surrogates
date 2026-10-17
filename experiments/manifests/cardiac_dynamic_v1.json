@@ -1,8 +1,8 @@
 {
-  "complete": false,
+  "complete": true,
   "planned_accepted_trajectories": 47,
-  "completed_accepted_trajectories": 46,
-  "recorded_valid_steps": 9590,
+  "completed_accepted_trajectories": 47,
+  "recorded_valid_steps": 9800,
   "records": [
     {
       "case": {
@@ -1260,13 +1260,13 @@
         "dt": 0.0025,
         "refinement": 1
       },
-      "complete": false,
-      "completed_steps": 190,
-      "seconds": 1943.3218390829861,
-      "maximum_residual_l2_N": 9.846348683798092e-09,
-      "minimum_recorded_endpoint_detF": 0.4494530072394861,
-      "trajectory_sha256": null,
-      "geometry_sha256": null,
+      "complete": true,
+      "completed_steps": 400,
+      "seconds": 4068.0558568330016,
+      "maximum_residual_l2_N": 9.931210724246276e-09,
+      "minimum_recorded_endpoint_detF": 0.44724163651178067,
+      "trajectory_sha256": "2b16b6dbf24e2ca8c2052dfb033b7be86c90511d5224f6ee58479827bb79e416",
+      "geometry_sha256": "56e0d0d1bbdd1d722bed9a251ed568201cedd8da20257b4e25becbc23d7b458c",
       "source_sha256": {
         "scripts/generate_dynamic_study.py": "36f10934896048a2eea476fc257e3eac87ed00f1c6eb342dc762e07923ba4a17",
         "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c"

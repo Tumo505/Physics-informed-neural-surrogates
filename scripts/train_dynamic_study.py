@@ -89,6 +89,12 @@ try:
  for seed in cfg['seeds'][1:]:
   train(seed,0.,'warm',warm=True);initial=out/f'warm_seed{seed}.pt';train(seed,0.,'data',initial=initial);train(seed,lam,chosen,initial=initial)
  result={'complete':True,'config':cfg,'regime':args.regime,'selection':selection,'data_access':['train','validation'],'normalizer_sha256':hashlib.sha256((D/'normalizers.npz').read_bytes()).hexdigest(),'source_sha256':{str(f.relative_to(P)):hashlib.sha256(f.read_bytes()).hexdigest() for f in [Path(__file__),P/'src/lv_surrogate/models/dynamic_graph.py',P/'src/lv_surrogate/physics/cardiac_residual.py']},'checkpoints':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for label in ['data',chosen] for f in out.glob(f'{label}_seed*.pt') if 'latest' not in f.name}}
- (P/f'experiments/manifests/{name}.json').write_text(json.dumps(result,indent=2));print('DYNAMIC TRAINING COMPLETE',name,flush=True)
+ target_manifest=P/f'experiments/manifests/{name}.json'
+ if target_manifest.exists():
+  old=json.loads(target_manifest.read_text())
+  if old.get('complete') and old.get('checkpoints')==result['checkpoints']:
+   result['current_reproduction_source_sha256']=result['source_sha256'];result['source_sha256']=old['source_sha256']
+   if 'executed_source_revision' in old:result['executed_source_revision']=old['executed_source_revision']
+ target_manifest.write_text(json.dumps(result,indent=2));print('DYNAMIC TRAINING COMPLETE',name,flush=True)
 finally:
  if bridge:bridge.close()

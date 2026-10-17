@@ -4,9 +4,11 @@ All results are computational. Released-model inference uses unedited author equ
 
 **Full-cycle follow-up (2026-10-17).** This is a new passive numerical benchmark task. The earlier1ms acceleration-increment model remains a failed recursive pilot; the new model uses5ms steps and a different recurrent formulation. Stability improvements cannot be attributed to one change alone. No active electromechanical or clinical claim follows.
 
+**Numerical validation gate remains unmet.** Full-cycle mesh refinement changes displacement by 13.12%, exceeding the stated1% tolerance. The5ms temporal target also misses1%. All model improvements and calibration below refer to the coarse discrete reference; they exclude FE discretization uncertainty and do not establish continuum accuracy.
+
 **Protocol and split.** Thirty-two independent numerical geometry draws from one affine benchmark ellipsoid family. Eight training trajectories on four geometries, four validation trajectories on two geometries, twenty calibration trajectories on twenty geometries, and four primary test trajectories on four geometries. Four additional loading-shift trajectories share the four test geometries; four combined shape/loading-shift trajectories use two further geometries. All are200-step trajectories from zero histories over0.005–1s. No geometry spans training/validation/calibration/test roles. Calibration and primary test independently draw the same numerical shape and waveform-descriptor distribution. Load amplitude/timing perturbations are numerical sensitivity inputs, not empirical physiology.
 
-Reference collection: 46/47 planned accepted trajectories complete, including convergence variants. The44-trajectory cohort is separate from these convergence repeats. Every newly accepted step requires a positive SNES convergence reason, finite residual below1e-6N and positive endpoint element determinants. Failed10ms attempts and refined5ms retries are retained. The source legacy convergence flag could be negative/truthy; explicit positive-reason checks correct that issue. Earlier archived1ms states were independently checked to have finite small residuals.
+Reference collection: 47/47 planned accepted trajectories complete, including convergence variants. The44-trajectory cohort is separate from these convergence repeats. Every newly accepted step requires a positive SNES convergence reason, finite residual below1e-6N and positive endpoint element determinants. Failed10ms attempts and refined5ms retries are retained. The source legacy convergence flag could be negative/truthy; explicit positive-reason checks correct that issue. Earlier archived1ms states were independently checked to have finite small residuals.
 
 **Neural method and controls.** A64-node graph encoder (width32, two message rounds) conditions a64-state GRU. Each update receives the previous predicted displacement coefficients and current/previous prescribed pressure. A bounded tanh readout returns rank12 uncentered POD coefficients. The hidden state and displacement start at zero; all200 predictions are generated without true displacement/velocity/acceleration histories. Bounded coefficients do not mathematically guarantee positive Jacobians or mechanical equilibrium. Endpoint Jacobians are checked separately.
 
@@ -101,7 +103,7 @@ H1 criterion: lower mean force residual with at most10% displacement-RMSE degrad
 | limited/physics_1 | 90% | 18/20 | 8.5823 | [0.6830172859809177, 0.9876514728297052] |
 | limited/physics_1 | 95% | 20/20 | 9.0836 | [0.8315665290169147, 1.0] |
 
-Raw uncertainty/error rank associations and selective-risk values are in dynamic_confirmation_evaluation.json. Added confirmation increases the study to60 cohort trajectories across48 distinct numerical geometries, including20 calibration and20 independent primary/confirmation test geometries. All remain within ONE ellipsoid source family.
+Raw uncertainty/error Spearman correlations and selective-risk values are in dynamic_confirmation_evaluation.json. Full-label physics had weak uncertainty ranking in this execution despite its conservative calibrated coverage. Added confirmation increases the study to60 cohort trajectories across48 distinct numerical geometries, including20 calibration and20 independent primary/confirmation test geometries. All remain within ONE ellipsoid source family.
 
 ![Independent geometry confirmation and uncertainty](figures/dynamic_confirmation.png)
 
@@ -116,7 +118,35 @@ Actual routing test: g030_l0 rejected before NN execution and sent to an indepen
 
 The5ms model task misses the preregistered1% temporal tolerance;2.5ms is below that tolerance relative to1ms. Refinement reduces the discrepancy, but1ms is not continuum truth and unequal timestep ratios do not establish an asymptotic rate. The reported NN error remains relative to the5ms discrete target.
 
-**Reproduction.** After original solver/data setup, run `make dynamic-study`; use `make dynamic-benchmark` separately for the isolated full-cycle timings. Configs define every geometry, waveform, seed and split; large arrays/checkpoints/logs remain ignored. The existing report is the only results Markdown. No paper directory or manuscript is created.
+Spatial full-cycle comparison at2.5ms: 17625 to141000 tetrahedra, identical polyhedral domain/material/BC and the same interpolated continuous fiber fields. Space-time volume-L2 difference13.119%; volume/time component RMSE1263.707µm. Within1% tolerance:False. Two levels quantify spatial sensitivity; they do not establish asymptotic mesh convergence.
+
+These FE discrepancies are from one baseline geometry/waveform and use volume-weighted norms; model tables use uniform nodal norms on other geometries. They cannot be added as independent random variances or used to claim continuum coverage. Finer held-out reference trajectories would be required to calibrate error against a mesh-independent target.
+
+![Whole-cycle mesh and timestep sensitivity](figures/dynamic_convergence.png)
+
+**Matched original-timestep stability check.** A separate one-geometry/one-cycle, seed11 pilot uses the archived1ms pressure/reference trajectory. Train first600 frames, select on the next200, evaluate the already-inspected last199. This is a repeated temporal benchmark, not independent trajectory confirmation. Every999-step inference begins at zero and uses only prescribed pressure and its own predicted histories. A training-only15% relative field-RMSE gate excludes the trivial zero predictor; the initial version that selected zeros on low-motion validation is retained as a FAILED acceptance test, not a stability success.
+
+| Original1ms model | Whole-cycle RMSE(mm) | Late test-block RMSE(mm) | Training relative RMSE | Endpoint min detF | Stress-state min detF | Nontrivial/complete999 |
+|---|---:|---:|---:|---:|---:|---|
+| data | 0.690053 | 0.867479 | 4.114% | 0.48262 | 0.48251 | True |
+| physics_10 | 0.699836 | 0.720765 | 5.952% | 0.57489 | 0.57501 | True |
+
+The late reference displacement RMS is only about0.079mm; late prediction errors are much larger than that signal. The result demonstrates stable, nontrivial full-cycle rollout at the ORIGINAL1ms timestep, but does not establish accurate long-horizon extrapolation. Architecture, representation and training changed together; no single-factor causal attribution is made. No population CI or temporal conformal claim is supported by one cycle.
+
+![Original1ms full-cycle rollout and remaining forecast error](figures/dynamic_dt001_rollout.png)
+
+All-cell stress-state positivity audit: 80 complete ensemble trajectories across20 test geometries, all200 generalized-alpha states; minimum detF0.491746, passed:True. Endpoint positivity was checked separately. Positive determinants alone do not establish accurate mechanics.
+
+**Matched full-cycle runtime.** Preferredfull/physics_10, CPU float64, two threads, same held-out geometry/loading and200-step task. Five-member full displacement mean plus coordinate variance: median256.28ms resident, 248.22ms with warm input reads/pooling, 1553.25ms with all-element endpoint/stress-state J checks. Matched FE nonlinear solves total median197.07s (793.9× against NN with preprocessing). Two fresh FE cycles were timed; NN repeats30/20/10 for these three scopes. Full-process FE setup/generation/IO/audit wall is separate. No speedup applies to rejected requests; no Dalton,1ms or clinical speedup is inferred.
+
+| Frozen ensemble | Resident mean/variance(ms) | With input processing(ms) | With endpoint/stress-state checks(ms) |
+|---|---:|---:|---:|
+| full/physics_10 | 256.28 | 248.22 | 1553.25 |
+| full/data | 253.20 | 252.09 | 1563.36 |
+| limited/data | 257.53 | 254.07 | 1577.17 |
+| limited/physics_1 | 252.38 | 248.74 | 1562.92 |
+
+**Reproduction.** After original solver/data setup, use `make dynamic-study` in this cached workspace. A clean checkout contains recorded metrics but omits checkpoints: use `make dynamic-reproduce` to retrain missing weights and explicitly label the same-case replay as repeated benchmark reproduction. Use `make dynamic-benchmark` for recorded isolated timings; reproduction forces fresh timing queries. Configs define every geometry, waveform, seed and split; large arrays/checkpoints/logs remain ignored. The existing report is the only results Markdown. No paper directory or manuscript is created.
 
 
 **Executed extension studies (2026-10-16).** The experiments below are separate from the earlier pilots. Negative and failed outcomes are retained. The full research claim of robust autonomous prediction across shapes and trajectories is not established.
