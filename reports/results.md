@@ -150,7 +150,7 @@ Two1.25ms substeps across that interval accepted:True. This changes the discrete
 
 A separate history/load homotopy reproduced the previous native equilibrium, then attempted the EXACT failed2.5ms algebraic target with ten continuation stages and at most ten Newton iterations per stage. Target recovered:False; last fraction0.40, residual0.0325689N. Intermediate continuation equations are not physical timesteps or surrogate labels. The original accepted checkpoint remains unchanged.
 
-**Finer quadratic reference in progress:** 420/800 accepted steps. No full-cycle discrepancy is claimed until every step, output checksum and independent native norm check passes. Frozen model selection and held-out results remain unchanged.
+**Finer quadratic reference in progress:** 670/800 accepted steps. No full-cycle discrepancy is claimed until every step, output checksum and independent native norm check passes. Frozen model selection and held-out results remain unchanged.
 
 **Matched original-timestep stability check.** A separate one-geometry/one-cycle, seed11 pilot uses the archived1ms pressure/reference trajectory. Train first600 frames, select on the next200, evaluate the already-inspected last199. This is a repeated temporal benchmark, not independent trajectory confirmation. Every999-step inference begins at zero and uses only prescribed pressure and its own predicted histories. A training-only15% relative field-RMSE gate excludes the trivial zero predictor; the initial version that selected zeros on low-motion validation is retained as a FAILED acceptance test, not a stability success.
 
@@ -174,7 +174,9 @@ All-cell stress-state positivity audit: 80 complete ensemble trajectories across
 | limited/data | 257.53 | 254.07 | 1577.17 |
 | limited/physics_1 | 252.38 | 248.74 | 1562.92 |
 
-**Reproduction.** After original solver/data setup, use `make dynamic-study` in this cached workspace. A clean checkout contains recorded metrics but omits checkpoints: use `make dynamic-reproduce` to retrain missing weights and explicitly label the same-case replay as repeated benchmark reproduction. Use `make dynamic-benchmark` for recorded isolated timings; reproduction forces fresh timing queries. Configs define every geometry, waveform, seed and split; large arrays/checkpoints/logs remain ignored. The existing report is the only results Markdown. No paper directory or manuscript is created.
+Exact frozen-artifact bundle: `experiments/checkpoints/dynamic_frozen_bundle.tar.gz`, 17.86MB, 20 selected checkpoint files. Archived-member checksum roundtrip passed:True. Weights, train-only preprocessing, graph hierarchy, model source, attribution, configs and frozen evaluation are included; the FE corpus and environment are separate. Full archive/member SHA256 values are in experiments/manifests/dynamic_replay_bundle.json. The archive is local/ignored, not uploaded; `make dynamic-bundle` exports it.
+
+**Reproduction.** After original solver/data setup, use `make dynamic-study` in this cached workspace. A clean checkout contains recorded metrics but omits checkpoints: use the exact local bundle to retain the evaluated weights, or `make dynamic-reproduce` to retrain missing weights and explicitly label the same-case replay as repeated benchmark reproduction. Use `make dynamic-benchmark` for recorded isolated timings; reproduction forces fresh timing queries. Configs define every geometry, waveform, seed and split; large arrays/checkpoints/logs remain ignored. The existing report is the only results Markdown. No paper directory or manuscript is created.
 
 
 **Executed extension studies (2026-10-16).** The experiments below are separate from the earlier pilots. Negative and failed outcomes are retained. The full research claim of robust autonomous prediction across shapes and trajectories is not established.

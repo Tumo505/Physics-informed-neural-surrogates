@@ -179,7 +179,9 @@ dynamic-cohort: dynamic-inputs
 dynamic-convergence: cardiac-trajectory dynamic-inputs
 cardiac-trajectory: dynamic-inputs
 
-.PHONY: dynamic-reference-capacity dynamic-quadratic-reference
+.PHONY: dynamic-reference-capacity dynamic-quadratic-reference dynamic-bundle
+dynamic-bundle:
+	$(PY) scripts/export_dynamic_bundle.py
 QUADRATIC_CONFIG ?= configs/physics/dynamic_quadratic_reference_dt00125.json
 dynamic-reference-capacity:
 	$(PY) scripts/probe_dynamic_refinement.py
