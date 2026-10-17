@@ -157,5 +157,8 @@
   "reference_config_sha256": "d17c08e61e0b7704a2d390340a5bdf98e6d38a83ccddd3e2a921e1d6639c765a",
   "start_step": 210,
   "checkpoint_sha256": "2f72860ce17a5ff39894fa11ff331ad2ec34e811d491e14d5e7148488f618254",
-  "source_sha256": "e2ed0809862cb815b643f309e98106960919b6443910386c6788982a6fecae64"
+  "source_sha256": "e2ed0809862cb815b643f309e98106960919b6443910386c6788982a6fecae64",
+  "failure": "\n\n*** -------------------------------------------------------------------------\n*** DOLFIN encountered an error. If you are not able to resolve this issue\n*** using the information listed below, you can ask for help at\n***\n***     fenics-support@googlegroups.com\n***\n*** Remember to include the error message listed below and, if possible,\n*** include a *minimal* running example to reproduce the error.\n***\n*** -------------------------------------------------------------------------\n*** Error:   Unable to successfully call PETSc function 'SNESSolve'.\n*** Reason:  PETSc error code is: 101 (Unhandled Python Exception).\n*** Where:   This error was encountered inside /Users/runner/miniforge3/conda-bld/bld/rattler-build_fenics-libdolfin_1792146198/work/dolfin/nls/PETScSNESSolver.cpp.\n*** Process: 0\n*** \n*** DOLFIN version: 2019.1.0\n*** Git changeset:  \n*** -------------------------------------------------------------------------\n",
+  "all_requested_steps_accepted": false,
+  "wall_seconds": 1804.760099416948
 }

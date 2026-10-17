@@ -1,0 +1,12 @@
+{
+  "reference": "cardiac_quadratic_reference_refined_v1",
+  "timestep_divisor": 2,
+  "steps_after_checkpoint": 14,
+  "absolute_tolerance_N": 1e-8,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 20,
+  "wall_budget_seconds": 1800,
+  "mumps_memory_limit_MB": 20000,
+  "output": "experiments/metrics/dynamic_quadratic_refined_substep_probe.json",
+  "scope": "Bounded local timestep diagnostic after the strict1.25ms stopping probe exhausted its1800s solve budget at0.26875s. From immutable210-step refined direct checkpoint at0.2625s, attempt fourteen0.625ms steps through0.27125s. Keep geometry, Q6, passive law, strict absolute stopping, physical acceptance and continuous pressure model fixed. This changes time discretization and inherits the coarse-time history; it neither recovers the rejected1.25ms equation nor establishes a full-cycle fine-time reference. Preserve original failures; do not overwrite references or retrain. Wall guard checked at nonlinear iteration boundaries."
+}

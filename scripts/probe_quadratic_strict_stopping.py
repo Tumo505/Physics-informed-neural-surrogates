@@ -1,4 +1,5 @@
 """Bounded continuation from rejected-reference checkpoint; no data replacement."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -9,11 +10,14 @@ import numpy as np
 
 P = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(P/'src'))
-from lv_surrogate.physics.reference_fem import setup, residual, df
+from lv_surrogate.physics.reference_fem import setup, residual, df, pressure_function, default_parameters_benchmark1
 from lv_surrogate.physics.quadratic_solver import make_quadratic_problem
 from lv_surrogate.physics.quadratic import QuadraticKinematics
 
-protocol_path = P/'configs/physics/dynamic_quadratic_strict_probe.json'
+ap = argparse.ArgumentParser()
+ap.add_argument('--protocol', default='configs/physics/dynamic_quadratic_strict_probe.json')
+args = ap.parse_args()
+protocol_path = P/args.protocol
 protocol = json.loads(protocol_path.read_text())
 root = P/'data/processed'/protocol['reference']
 assert (root/'failure.json').exists()
@@ -25,12 +29,23 @@ result = dict(complete=False, engineering_only=True, protocol=protocol, records=
     reference_config_sha256=m['config_sha256'], start_step=start_step,
     checkpoint_sha256=hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest(),
     source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
-output = P/'experiments/metrics/dynamic_quadratic_strict_stopping_probe.json'
+output = P/protocol.get('output', 'experiments/metrics/dynamic_quadratic_strict_stopping_probe.json')
+divisor = int(protocol.get('timestep_divisor', 1)); assert divisor >= 1
+dt = cfg['dt_s']/divisor
+times = float(inputs['time'][start_step-1])+dt*np.arange(1, protocol['steps_after_checkpoint']+1)
+if divisor == 1:
+    pressures = inputs['pressure'][start_step:start_step+len(times)]
+else:
+    par = default_parameters_benchmark1()
+    for key in ['t_sys_pre', 't_dias_pre', 'gamma']:
+        par[key] *= cfg['timing_scale']
+    pressures = cfg['amplitude']*pressure_function((0, cfg['duration_s']), parameters=par, t_eval=times-.4*dt)
+result.update(dt_s=dt, full_cycle=False, changed_time_discretization=divisor!=1)
 def persist():
     output.write_text(json.dumps(result, indent=2, allow_nan=False))
 persist()
 df.PETScOptions.set('mat_mumps_icntl_23', protocol['mumps_memory_limit_MB'])
-geo, material, base = setup(dt=cfg['dt_s'], geometry_scales=cfg['geometry_scales'],
+geo, material, base = setup(dt=dt, geometry_scales=cfg['geometry_scales'],
                             refinement_level=cfg['refinement_level'])
 parameters = dict(base.parameters); parameters['function_space'] = 'P_2'
 df.parameters['form_compiler']['quadrature_degree'] = cfg['quadrature_degree']
@@ -50,15 +65,19 @@ def monitor(snes, iteration, norm):
     history.append(dict(iteration=int(iteration), residual_N=float(norm) if np.isfinite(norm) else None))
     print('STRICT PROBE', iteration, norm, flush=True)
     if time.perf_counter()-started > protocol['wall_budget_seconds']:
+        result['budget_exhausted'] = True
+        persist()
         raise RuntimeError('Declared engineering wall budget exceeded')
 problem.solver._snes.setMonitor(monitor)
 try:
-    for i in range(start_step, start_step+protocol['steps_after_checkpoint']):
+    for offset, (time_s, pressure) in enumerate(zip(times, pressures)):
+        i = start_step+offset
+        result['last_attempt_time_s'] = float(time_s)
         old = problem.u_old.vector().get_local().copy()
         velocity = problem.v_old.vector().get_local()
         acceleration = problem.a_old.vector().get_local()
-        dt = cfg['dt_s']; best = old; best_R = float('inf')
-        problem.parameters['p'].assign(float(inputs['pressure'][i]))
+        best = old; best_R = float('inf')
+        problem.parameters['p'].assign(float(pressure))
         for guess in [old, old+dt*velocity, old+dt*velocity+.5*dt**2*acceleration]:
             problem.u.vector().set_local(guess); problem.u.vector().apply('insert')
             R = float(residual(problem).norm('l2'))
@@ -72,7 +91,7 @@ try:
         endpoint, _ = kin.audit(u); stress, _ = kin.audit(.4*old+.6*u)
         accepted = bool(snes.getConvergedReason()>0 and np.isfinite(R) and R<1e-6
                         and np.isfinite(u).all() and min(endpoint, stress)>0)
-        result['records'].append(dict(step=i, time_s=float(inputs['time'][i]), accepted=accepted,
+        result['records'].append(dict(step=i, time_s=float(time_s), accepted=accepted,
             SNES_reason=int(snes.getConvergedReason()), residual_N=R if np.isfinite(R) else None,
             KSP_reason=int(snes.getKSP().getConvergedReason()),
             minimum_endpoint_sampled_detF=endpoint, minimum_stress_sampled_detF=stress,
@@ -87,6 +106,9 @@ except Exception as error:
     result['failure'] = str(error)
     result['all_requested_steps_accepted'] = False
 finally:
+    result['finished'] = True
+    result['last_iteration_history'] = list(history)
+    assert hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest() == result['checkpoint_sha256']
     result['wall_seconds'] = time.perf_counter()-started
     persist()
 print('STRICT PROBE RESULT', result['all_requested_steps_accepted'], flush=True)
