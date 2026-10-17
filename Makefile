@@ -202,6 +202,14 @@ quadratic-backend-verify:
 	env OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 VECLIB_MAXIMUM_THREADS=2 $(PY) scripts/verify_quadratic_backend.py
 	$(PY) scripts/write_reports.py
 .PHONY: dynamic-quadratic-mesh-gamg dynamic-quadratic-refined-solver-check
+.PHONY: dynamic-quadratic-quadrature
+.PHONY: dynamic-quadratic-validation-g004 dynamic-quadratic-validation-g005
+dynamic-quadratic-validation-g004:
+	$(PY) scripts/run_quadratic_geometry_control.py --case g004_l0
+dynamic-quadratic-validation-g005:
+	$(PY) scripts/run_quadratic_geometry_control.py --case g005_l1
+dynamic-quadratic-quadrature:
+	$(PY) scripts/run_quadratic_validation.py quadrature
 dynamic-quadratic-mesh-gamg:
 	$(PY) scripts/run_quadratic_validation.py mesh_gamg
 dynamic-quadratic-refined-solver-check:

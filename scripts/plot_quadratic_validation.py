@@ -27,6 +27,25 @@ if audit_path.exists():
     fig.savefig(P/'reports/figures/dynamic_quadratic_positivity.png', dpi=180)
     plt.close(fig)
 evidence = []
+geometry_cases = []
+for case in ['g004_l0', 'g005_l1']:
+    path = P/f'experiments/metrics/dynamic_quadratic_validation_{case}.json'
+    if path.exists():
+        result = json.loads(path.read_text())
+        if result['complete']:
+            geometry_cases.append((case, result))
+if geometry_cases:
+    fig, axes = plt.subplots(1, len(geometry_cases), figsize=(6.4*len(geometry_cases), 4.5), squeeze=False)
+    for ax, (case, result) in zip(axes[0], geometry_cases):
+        ax.plot([r['time_s'] for r in result['records']],
+            [1e3*np.sqrt(r['error_squared_integral_m5']/(3*result['physical_volume_m3'])) for r in result['records']])
+        ax.set(xlabel='Time (s)', ylabel='Volume component RMSE (mm)',
+            title=f'{case}: {result["relative_space_time_L2"]:.2%} full-cycle L2 difference')
+        ax.grid(alpha=.2)
+    fig.suptitle('P2 mesh sensitivity on fixed validation geometries\nMatched per-case loads, timestep and solver; two levels only')
+    fig.tight_layout()
+    fig.savefig(P/'reports/figures/dynamic_quadratic_geometry_controls.png', dpi=180)
+    plt.close(fig)
 order_path = P/'experiments/metrics/dynamic_quadratic_order_control.json'
 if order_path.exists():
     order = json.loads(order_path.read_text())
@@ -56,7 +75,7 @@ if solver_path.exists():
         fig.tight_layout()
         fig.savefig(P/'reports/figures/dynamic_quadratic_solver_equivalence.png', dpi=180)
         plt.close(fig)
-for factor in ['time', 'mesh', 'mesh_gamg']:
+for factor in ['time', 'mesh', 'mesh_gamg', 'quadrature']:
     f = P/f'experiments/metrics/dynamic_quadratic_controlled_{factor}.json'
     if f.exists():
         d = json.loads(f.read_text())
@@ -66,7 +85,7 @@ if not evidence:
     raise SystemExit(0 if audit_path.exists() else 'No completed validation evidence to plot')
 fig, axes = plt.subplots(1, len(evidence), figsize=(6.4*len(evidence), 4.4), squeeze=False)
 for ax, (factor, d) in zip(axes[0], evidence):
-    label = dict(time='timestep', mesh='mesh (MUMPS)', mesh_gamg='mesh (GMRES/GAMG)')[factor]
+    label = dict(time='timestep', mesh='mesh (MUMPS)', mesh_gamg='mesh (GMRES/GAMG)', quadrature='integration degree')[factor]
     records = d['records']
     ax.plot([r['time_s'] for r in records],
             [1e3*np.sqrt(r['error_squared_integral_m5']/(3*d['physical_volume_m3'])) for r in records])

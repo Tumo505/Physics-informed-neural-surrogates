@@ -1,0 +1,14 @@
+{
+  "name": "cardiac_quadratic_reference_quadrature8_v1",
+  "dt_s": 0.00125,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 0,
+  "geometry_scales": [1.0, 1.0],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 8,
+  "checkpoint_interval": 10,
+  "native_solver": "gamg",
+  "scope": "Prospective full-cycle integration-sensitivity control after P2 residual verification. Compare against completed coarse P2/GAMG/1.25ms/degree6 from rest. Only source volume/facet quadrature degree changes to8; same geometry, displacement space, passive law, loading, solver and physical acceptance criteria. Nonpolynomial HGO stress requires an integration check independent of mesh/timestep sensitivity. Apply the same declared1% space-time displacement sensitivity threshold. This is a one-case numerical control, not continuum truth or a neural model-selection result."
+}

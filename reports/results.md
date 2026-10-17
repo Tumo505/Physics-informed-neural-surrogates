@@ -156,9 +156,22 @@ A separate history/load homotopy reproduced the previous native equilibrium, the
 
 **Controlled P2 time sensitivity.** Only the time discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared 200 common endpoints through 1s. Space-time volume-L2 discrepancy 0.0459%; component volume/time RMSE 0.00491mm. Within the declared1% tolerance: True. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.
 
-**Controlled P2 mesh refinement in progress:** 170/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 mesh refinement in progress:** 190/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
-**Controlled P2 mesh (GMRES/GAMG) refinement in progress:** 40/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 mesh (GMRES/GAMG) refinement in progress:** 110/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+
+**Controlled P2 quadrature refinement in progress:** 140/800 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+
+**Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.
+
+| Validation input | Coarse/fine persisted steps | Full-cycle relative volume L2 difference | Within1% |
+|---|---|---:|---|
+| g004_l0 | 180/800; not started | pending | pending |
+| g005_l1 | 170/800; not started | pending | pending |
+
+Run `make dynamic-quadratic-validation-g004` and `make dynamic-quadratic-validation-g005` after native setup. A completed numerical control can still fail the sensitivity tolerance. The original frozen20-member model comparison remains separate.
+
+**Integration control.** Nonpolynomial HGO stress also requires a quadrature check independent of operator agreement. `make dynamic-quadratic-quadrature` compares full degree6 and degree8 trajectories at the same P2 mesh,1.25ms timestep, solver, loading and initial state. The same1% displacement-sensitivity criterion is applied; no native quadrature setting is lowered to make the check pass.
 
 **Refined P2 resource probe:** 639735 displacement DOFs; single1000Pa startup query accepted True, residual 8.95821e-12N, nonlinear solve 180.37s, sampled peak worker memory 10.68GB. This bounded engineering query does not establish full-cycle feasibility or convergence. The matched mesh-refinement trajectory uses fixed1.25ms steps and a20,000MB MUMPS allocation cap.
 

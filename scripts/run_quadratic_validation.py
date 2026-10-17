@@ -10,12 +10,17 @@ import time
 
 P = Path(__file__).resolve().parents[1]
 ap = argparse.ArgumentParser()
-ap.add_argument('factor', choices=['time', 'mesh', 'solver', 'mesh_gamg'])
+ap.add_argument('factor', choices=['time', 'mesh', 'solver', 'mesh_gamg', 'quadrature'])
+ap.add_argument('--baseline-config')
+ap.add_argument('--candidate-config')
+ap.add_argument('--output-stem')
 args = ap.parse_args()
-baseline = 'configs/physics/dynamic_quadratic_reference_'+('gamg' if args.factor == 'mesh_gamg' else 'dt00125')+'.json'
-candidate = 'configs/physics/dynamic_quadratic_reference_'+dict(time='dt001',mesh='refined',solver='gamg',mesh_gamg='refined_gamg')[args.factor]+'.json'
+baseline = 'configs/physics/dynamic_quadratic_reference_'+('gamg' if args.factor in ['mesh_gamg','quadrature'] else 'dt00125')+'.json'
+candidate = 'configs/physics/dynamic_quadratic_reference_'+dict(time='dt001',mesh='refined',solver='gamg',mesh_gamg='refined_gamg',quadrature='quadrature8')[args.factor]+'.json'
+baseline = args.baseline_config or baseline
+candidate = args.candidate_config or candidate
 name = json.loads((P/candidate).read_text())['name']
-stem = 'dynamic_quadratic_controlled_'+args.factor
+stem = args.output_stem or 'dynamic_quadratic_controlled_'+args.factor
 output = P/'experiments/metrics'/f'{stem}_pipeline.json'
 lock = (P/'experiments/logs'/f'{stem}.lock').open('w')
 fcntl.flock(lock, fcntl.LOCK_EX)

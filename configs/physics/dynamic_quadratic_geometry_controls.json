@@ -1,0 +1,12 @@
+{
+  "name": "quadratic_validation_geometry_controls_v1",
+  "source_cases": "configs/physics/dynamic_study.json",
+  "source_cases_sha256": "6e05500d6b3224a59913cf87860ba5966bc0373a98d7cd0389dd0eb445507646",
+  "case_ids": ["g004_l0", "g005_l1"],
+  "dt_s": 0.00125,
+  "quadrature_degree": 6,
+  "native_solver": "gamg",
+  "refinement_levels": [0, 1],
+  "relative_space_time_L2_tolerance": 0.01,
+  "scope": "Prospective800-step P2 convergence controls on the two existing validation geometries and their fixed different loading histories. Entire trajectories start from zero histories on both mesh levels; same passive law, P1 fibers, solver, pressure waveform and timestep. These are validation inputs, never calibration/test selection. Generate coarse reference first, then fine reference, independent native norms and whole-element positivity. Completed numerical sensitivity does not imply passing1%. Frozen neural models remain unchanged; geometry/template-specific convergence does not establish anatomical validity."
+}

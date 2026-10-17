@@ -72,9 +72,9 @@ def dynamic_rows(P):
   local=load('dynamic_quadratic_substep_probe');rows+=['',f'Two1.25ms substeps across that interval accepted:{local["all_two_substeps_accepted"]}. This changes the discrete time problem; it does not validate the rejected2.5ms root or complete the trajectory. It motivates a separate800-step1.25ms reference from rest, without patching the failed run or changing frozen neural models.']
  if (P/'experiments/metrics/dynamic_quadratic_continuation_probe.json').exists():
   h=load('dynamic_quadratic_continuation_probe');last=h['records'][-1];rows+=['',f'A separate history/load homotopy reproduced the previous native equilibrium, then attempted the EXACT failed2.5ms algebraic target with ten continuation stages and at most ten Newton iterations per stage. Target recovered:{h["original_failed_step_recovered"]}; last fraction{last["continuation_fraction"]:.2f}, residual{last["residual_l2_N"]:.6g}N. Intermediate continuation equations are not physical timesteps or surrogate labels. The original accepted checkpoint remains unchanged.']
- for factor, candidate in [('time','dt001'), ('mesh','refined'), ('mesh_gamg','refined_gamg')]:
+ for factor, candidate in [('time','dt001'), ('mesh','refined'), ('mesh_gamg','refined_gamg'), ('quadrature','quadrature8')]:
   label='mesh (GMRES/GAMG)' if factor=='mesh_gamg' else factor
-  dimension='time' if factor=='time' else 'mesh'
+  dimension='time' if factor=='time' else ('quadrature' if factor=='quadrature' else 'mesh')
   controlled=P/f'experiments/metrics/dynamic_quadratic_controlled_{factor}.json'
   if controlled.exists() and json.loads(controlled.read_text()).get('complete'):
    d=json.loads(controlled.read_text());rows+=['', f'**Controlled P2 {label} sensitivity.** Only the {dimension} discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared {d["common_endpoints"]} common endpoints through {d["end_time_s"]:g}s. Space-time volume-L2 discrepancy {d["relative_space_time_L2"]:.4%}; component volume/time RMSE {d["component_volume_time_RMSE_m"]*1000:.5f}mm. Within the declared1% tolerance: {d["passes_declared_one_percent_sensitivity"]}. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.']
@@ -92,6 +92,25 @@ def dynamic_rows(P):
      d=json.loads(progress.read_text());rows+=['',f'**Controlled P2 {label} refinement in progress:** {d["completed_steps"]}/{d["n_steps"]} accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.']
     elif (P/f'experiments/metrics/dynamic_quadratic_controlled_{factor}_pipeline.json').exists():
      state=load(f'dynamic_quadratic_controlled_{factor}_pipeline');rows+=['',f'**Controlled P2 {label} workflow:** last recorded phase {state.get("active_phase")}; no persisted trajectory checkpoint yet. A started calculation is not completed validation evidence.']
+ geometry_protocol=P/'configs/physics/dynamic_quadratic_geometry_controls.json'
+ if geometry_protocol.exists():
+  protocol=json.loads(geometry_protocol.read_text());rows+=['','**Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.', '', '| Validation input | Coarse/fine persisted steps | Full-cycle relative volume L2 difference | Within1% |','|---|---|---:|---|']
+  for case in protocol['case_ids']:
+   completed=P/f'experiments/metrics/dynamic_quadratic_validation_{case}.json'
+   if completed.exists() and json.loads(completed.read_text()).get('complete'):
+    d=json.loads(completed.read_text());rows.append(f'| {case} | 800/800 each | {d["relative_space_time_L2"]:.4%} | {d["passes_declared_one_percent_sensitivity"]} |')
+   else:
+    progress=[]
+    for level in protocol['refinement_levels']:
+     root=P/f'data/processed/cardiac_quadratic_{case}_r{level}_q{protocol["quadrature_degree"]}_v1';m=root/'manifest.json';f=root/'failure.json'
+     status=f'{json.loads(m.read_text())["completed_steps"]}/800' if m.exists() else 'not started'
+     if f.exists():status+='; rejected '+json.loads(f.read_text())['rejection_kind']
+     progress.append(status)
+    rows.append(f'| {case} | {"; ".join(progress)} | pending | pending |')
+  rows+=['','Run `make dynamic-quadratic-validation-g004` and `make dynamic-quadratic-validation-g005` after native setup. A completed numerical control can still fail the sensitivity tolerance. The original frozen20-member model comparison remains separate.']
+  if (P/'reports/figures/dynamic_quadratic_geometry_controls.png').exists():rows+=['','![Validation geometry mesh controls](figures/dynamic_quadratic_geometry_controls.png)']
+ if (P/'configs/physics/dynamic_quadratic_reference_quadrature8.json').exists():
+  rows+=['','**Integration control.** Nonpolynomial HGO stress also requires a quadrature check independent of operator agreement. `make dynamic-quadratic-quadrature` compares full degree6 and degree8 trajectories at the same P2 mesh,1.25ms timestep, solver, loading and initial state. The same1% displacement-sensitivity criterion is applied; no native quadrature setting is lowered to make the check pass.']
  capacity=P/'experiments/metrics/dynamic_refinement_capacity_p2_r1.json'
  if capacity.exists():
   d=json.loads(capacity.read_text());w=d['worker'];rows+=['',f'**Refined P2 resource probe:** {w["displacement_dofs"]} displacement DOFs; single1000Pa startup query accepted {w.get("solve_accepted",False)}, residual {fmt(w.get("residual_l2_N"))}N, nonlinear solve {w.get("nonlinear_seconds",0):.2f}s, sampled peak worker memory {d["sampled_peak_worker_RSS_bytes"]/1e9:.2f}GB. This bounded engineering query does not establish full-cycle feasibility or convergence. The matched mesh-refinement trajectory uses fixed1.25ms steps and a20,000MB MUMPS allocation cap.']
@@ -137,7 +156,7 @@ def dynamic_rows(P):
  elif (P/'configs/physics/dynamic_quadratic_reference_refined_gamg.json').exists():
   rows+=['','**Refined backend control.** A distinct GMRES/GAMG trajectory starts from rest at the same P2/1.25ms resolution as the direct refined reference. Both direct and iterative trajectories remain separate. Coarse/fine GAMG comparison changes only the mesh; the original direct mesh comparison remains recorded. After BOTH refined trajectories complete, `make dynamic-quadratic-refined-solver-check` verifies full-cycle agreement before any refined solver-equivalence claim. Coarse equivalence and early refined probes alone do not establish this result.']
  if (P/'reports/figures/dynamic_quadratic_solver_equivalence.png').exists():rows+=['','![Full-cycle native solver equivalence](figures/dynamic_quadratic_solver_equivalence.png)']
- for candidate in ['dt00125', 'dt001', 'refined', 'gamg', 'refined_gamg']:
+ for candidate in ['dt00125', 'dt001', 'refined', 'gamg', 'refined_gamg', 'quadrature8']:
   config=P/f'configs/physics/dynamic_quadratic_reference_{candidate}.json'
   if config.exists():
    cfg=json.loads(config.read_text());audit=P/f'experiments/metrics/{cfg["name"]}_bernstein.json'

@@ -49,14 +49,16 @@ def read(config):
 ca, ma, ia, ua, ga, Va = read(args.config_a)
 cb, mb, ib, ub, gb, Vb = read(args.config_b)
 for key in ['duration_s', 'geometry_scales', 'amplitude', 'timing_scale',
-            'displacement_degree', 'quadrature_degree']:
+            'displacement_degree']:
     assert ca[key] == cb[key], f'Uncontrolled change: {key}'
 mesh_changed = ca['refinement_level'] != cb['refinement_level']
 time_changed = ca['dt_s'] != cb['dt_s']
-assert mesh_changed != time_changed, 'Change exactly one discretization factor'
+quadrature_changed = ca['quadrature_degree'] != cb['quadrature_degree']
+assert sum([mesh_changed, time_changed, quadrature_changed]) == 1, 'Change exactly one discretization factor'
 assert ca.get('native_solver', 'mumps') == cb.get('native_solver', 'mumps'), 'Match solver backend for a one-factor discretization control'
 assert cb['refinement_level'] >= ca['refinement_level']
 assert cb['dt_s'] <= ca['dt_s']
+assert cb['quadrature_degree'] >= ca['quadrature_degree']
 ta = ia['time'][:ma['completed_steps']]
 tb = ib['time'][:mb['completed_steps']]
 indices = []
@@ -128,7 +130,7 @@ error_integral = float(np.trapezoid(errors, times))
 reference_integral = float(np.trapezoid(references, times))
 relative = float(np.sqrt(error_integral/reference_integral))
 result = dict(complete=full_cycle and not args.pilot, pilot=args.pilot,
-    comparison='mesh' if mesh_changed else 'timestep', config_a=ca, config_b=cb,
+    comparison='mesh' if mesh_changed else ('timestep' if time_changed else 'quadrature'), config_a=ca, config_b=cb,
     config_paths=[args.config_a, args.config_b],
     config_sha256=[ma['config_sha256'], mb['config_sha256']],
     output_sha256=[ma.get('output_sha256'), mb.get('output_sha256')],
