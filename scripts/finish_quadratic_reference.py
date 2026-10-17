@@ -8,7 +8,10 @@ import time
 P = Path(__file__).resolve().parents[1]
 metric = P/'experiments/metrics/dynamic_quadratic_comparison.json'
 while True:
-    data = json.loads(metric.read_text()) if metric.exists() else {}
+    try:
+        data = json.loads(metric.read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = {}
     if data.get('complete') and data.get('native_norm_verification', {}).get('passed'):
         break
     time.sleep(30)

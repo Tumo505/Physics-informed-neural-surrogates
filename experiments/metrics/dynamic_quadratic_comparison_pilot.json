@@ -1,16 +1,17 @@
 {
   "complete": true,
-  "source_sha256": "e9e656f0b3def81aa05e7dff2080a4db1572459caaafea030a9608db9717f5f6",
+  "source_sha256": "958dac809877e444a31fc60520c48502028c830ba47b13c678e842daa25f9d83",
   "reference_output_sha256": null,
   "reference_summary": {
-    "completed_steps": 90,
+    "completed_steps": 100,
     "dofs": 89679,
     "tetrahedra": 17625,
-    "minimum_endpoint_sampled_detF": 0.8189814867211803,
-    "minimum_stress_sampled_detF": 0.8244489369676862,
-    "maximum_residual_l2_N": 9.994710309320908e-09,
+    "minimum_endpoint_sampled_detF": 0.7815076954094221,
+    "minimum_stress_sampled_detF": 0.7815485243240736,
+    "maximum_residual_l2_N": 3.988768706438531e-08,
     "native_integral_checked_steps": [
-      0
+      0,
+      99
     ],
     "positivity_scope": "Source degree-6 quadrature points and all tetrahedral vertices, endpoint and generalized-alpha stress states; not a mathematical positivity guarantee between sample locations."
   },
@@ -212,7 +213,23 @@
         "relative_discrepancy": 1.4306535381483274e-13
       }
     ],
-    "source_sha256": "e9e656f0b3def81aa05e7dff2080a4db1572459caaafea030a9608db9717f5f6",
+    "source_sha256": "958dac809877e444a31fc60520c48502028c830ba47b13c678e842daa25f9d83",
     "scope": "Independent native interpolation to common P2 space, then exact degree-4 UFL integration."
+  },
+  "native_kinematics_verification": {
+    "passed": true,
+    "records": [
+      {
+        "step": 0,
+        "sampled_minimum_detF": 0.9998926987685267,
+        "relative_integral_discrepancy": 3.050785166733229e-15
+      },
+      {
+        "step": 9,
+        "sampled_minimum_detF": 0.9988588611676554,
+        "relative_integral_discrepancy": 4.576634772561234e-16
+      }
+    ],
+    "scope": "Actual nonlinear P2-field determinant integration versus native UFL at fixed frames."
   }
 }

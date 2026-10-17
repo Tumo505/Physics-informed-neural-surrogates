@@ -21,6 +21,7 @@ ap.add_argument('--max-steps', type=int)
 args = ap.parse_args()
 config_path = P / 'configs/physics/dynamic_quadratic_reference.json'
 cfg = json.loads(config_path.read_text())
+assert cfg['displacement_degree'] == 2
 config_hash = hashlib.sha256(config_path.read_bytes()).hexdigest()
 source_hash = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 out = P / 'data/processed' / cfg['name']
@@ -40,6 +41,7 @@ geo, material, base_problem = setup(dt=cfg['dt_s'], geometry_scales=cfg['geometr
                                     refinement_level=cfg['refinement_level'])
 parameters = dict(base_problem.parameters)
 parameters['function_space'] = 'P_2'
+df.parameters['form_compiler']['quadrature_degree'] = cfg['quadrature_degree']
 problem = LVProblem(geo, material, parameters=parameters,
                     solver_parameters={'linear_solver': 'mumps',
                                        'petsc': {'ksp_type': 'preonly', 'pc_type': 'none'}})
@@ -63,12 +65,21 @@ coefficients = np.lib.format.open_memmap(coeff_path, mode=mode, dtype=np.float64
                                         shape=(n, ndof))
 nodes = np.lib.format.open_memmap(node_path, mode=mode, dtype=np.float64,
                                 shape=(n, geo.mesh.num_vertices(), 3))
+if old:
+    prior_inputs = np.load(out/'inputs.npz')
+    np.testing.assert_array_equal(prior_inputs['cells'], geo.mesh.cells())
+    np.testing.assert_allclose(prior_inputs['dof_coordinates'],
+                               problem.u_space.tabulate_dof_coordinates(),
+                               rtol=0, atol=1e-14)
+    np.testing.assert_array_equal(prior_inputs['time'], times)
+    np.testing.assert_allclose(prior_inputs['pressure'], pressure, rtol=0, atol=1e-10)
 np.savez_compressed(out / 'inputs.npz', time=times, pressure=pressure,
                     coords=geo.mesh.coordinates(), cells=geo.mesh.cells(),
                     dof_coordinates=problem.u_space.tabulate_dof_coordinates(),
                     canonical_cell_dofs=kin.maps, qpoints=quadrature.get_points(),
                     qweights=quadrature.get_weights())
 records = old.get('steps', [])
+result = old
 start_step = len(records)
 segments = old.get('source_segments', [])
 if old and not segments:
@@ -142,7 +153,7 @@ for i in range(start_step, stop):
         np.savez_compressed(out / 'restart.npz', completed_steps=i + 1,
                             **{name: getattr(problem, name).vector().get_local()
                                for name in ['u', 'u_old', 'v_old', 'a_old']})
-        result = dict(complete=i + 1 == n, completed_steps=i + 1, n_steps=n,
+        result = dict(complete=False, completed_steps=i + 1, n_steps=n,
                       config=cfg, config_sha256=config_hash, source_sha256=source_hash,
                       source_segments=segments, native_integral_checked_steps=native_checks,
                       dofs=ndof, tetrahedra=geo.mesh.num_cells(), steps=records,
@@ -159,5 +170,6 @@ for i in range(start_step, stop):
 if stop == n:
     result['output_sha256'] = {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
                                for path in [coeff_path, node_path, out / 'inputs.npz']}
+    result['complete'] = True
     manifest.write_text(json.dumps(result, indent=2, allow_nan=False))
     print('QUADRATIC FULL CYCLE COMPLETE', flush=True)

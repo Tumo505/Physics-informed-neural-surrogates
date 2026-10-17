@@ -86,8 +86,11 @@ if args.native_verify:
     sys.exit(0)
 
 while True:
-    manifest = json.loads((root / 'manifest.json').read_text()) if (root / 'manifest.json').exists() else {}
-    if manifest.get('complete') or (args.pilot and manifest.get('completed_steps', 0) >= 10):
+    try:
+        manifest = json.loads((root / 'manifest.json').read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        manifest = {}
+    if (manifest.get('complete') and manifest.get('output_sha256')) or (args.pilot and manifest.get('completed_steps', 0) >= 10):
         break
     if not args.wait:
         raise RuntimeError('Full quadratic reference is not complete; no full-cycle result claimed')
