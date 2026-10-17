@@ -1,0 +1,30 @@
+{
+  "engineering_retry": true,
+  "complete": true,
+  "accepted": false,
+  "zero_based_step": 110,
+  "time_s": 0.2775,
+  "method_requested": "newtontr",
+  "method_effective": "newtontr",
+  "guess": "old",
+  "maximum_iterations": 30,
+  "SNES_reason": -4,
+  "iterations": 2,
+  "residual_l2_N": 0.2759829516965161,
+  "minimum_endpoint_sampled_detF": 0.5092194123287733,
+  "minimum_stress_sampled_detF": 0.5235948988224364,
+  "nonlinear_seconds": 6.169209750019945,
+  "iteration_history": [
+    {
+      "iteration": 0,
+      "residual_norm": 1.2628049239001227
+    },
+    {
+      "iteration": 1,
+      "residual_norm": 0.2759829516965161
+    }
+  ],
+  "checkpoint_sha256": "b72effc8c506ae685b5ffecdee9ddabb6134d4ecdb6a18e893e2cbf0b9d39c55",
+  "source_sha256": "b0b01e9b221e5123f2465deaea6738b94ea820aa92e7f2d3a2e9021dcd7cb425",
+  "scope": "Same frozen FE history/pressure, unchanged material, timestep and tolerances. A successful one-step retry is not full-cycle convergence."
+}

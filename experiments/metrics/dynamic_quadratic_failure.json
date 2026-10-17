@@ -1,0 +1,13 @@
+{
+  "complete_trajectory": false,
+  "accepted_steps": 110,
+  "failed_zero_based_step": 110,
+  "failed_time_s": 0.2775,
+  "SNES_reason": -5,
+  "reason_name_from_native_log": "DIVERGED_MAX_IT",
+  "maximum_Newton_iterations": 100,
+  "residual_l2_N": 0.2865413308008575,
+  "checkpoint_sha256": "b72effc8c506ae685b5ffecdee9ddabb6134d4ecdb6a18e893e2cbf0b9d39c55",
+  "log_sha256": "709c03cc946b728fcc4f64982a720788dfe73a8cf12365729f672cc80764786e",
+  "scope": "Failed P2/2.5ms attempt; no full-cycle quadratic result or convergence claimed."
+}
