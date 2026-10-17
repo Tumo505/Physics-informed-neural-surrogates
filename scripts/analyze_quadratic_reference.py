@@ -16,8 +16,10 @@ ap = argparse.ArgumentParser()
 ap.add_argument('--wait', action='store_true')
 ap.add_argument('--native-verify', action='store_true')
 ap.add_argument('--pilot', action='store_true')
+ap.add_argument('--config', default='configs/physics/dynamic_quadratic_reference.json')
 args = ap.parse_args()
-root = P / 'data/processed/cardiac_quadratic_reference_v1'
+reference_config = json.loads((P/args.config).read_text())
+root = P / 'data/processed' / reference_config['name']
 metric = P / ('experiments/metrics/dynamic_quadratic_comparison_pilot.json'
               if args.pilot else 'experiments/metrics/dynamic_quadratic_comparison.json')
 
@@ -44,13 +46,17 @@ if args.native_verify:
     np.testing.assert_allclose(fine_geo.mesh.coordinates(), saved_fine['coords'],
                                rtol=0, atol=1e-14)
     coefficients = np.load(root / 'displacement_coefficients.npy', mmap_mode='r')
+    common_times = np.load(P/'data/processed/cardiac_dynamic_v1/convergence_dt0.0025/trajectory.npz')['time']
+    common_indices = np.searchsorted(saved_inputs['time'], common_times)
+    np.testing.assert_allclose(saved_inputs['time'][common_indices], common_times,
+                               rtol=0, atol=1e-14)
     fine_fields = np.load(P / 'data/processed/cardiac_dynamic_v1/convergence_refined_dt00025/trajectory.npz')['u']
     coarse_fields = np.load(P / 'data/processed/cardiac_dynamic_v1/convergence_dt0.0025/trajectory.npz')['u']
     checks = []
     determinant_checks = []
     for i in ([0, 9] if args.pilot else [0, 99, 199, 399]):
-        quadratic.u.vector().set_local(coefficients[i]); quadratic.u.vector().apply('insert')
-        minimum, determinant_integral = kinematics.audit(coefficients[i])
+        quadratic.u.vector().set_local(coefficients[common_indices[i]]); quadratic.u.vector().apply('insert')
+        minimum, determinant_integral = kinematics.audit(coefficients[common_indices[i]])
         native_determinant = float(df.assemble(df.det(df.Identity(3)+df.grad(quadratic.u))*df.dx))
         np.testing.assert_allclose(determinant_integral, native_determinant,
                                    rtol=1e-10, atol=1e-13)
@@ -90,11 +96,13 @@ while True:
         manifest = json.loads((root / 'manifest.json').read_text())
     except (FileNotFoundError, json.JSONDecodeError):
         manifest = {}
-    if (manifest.get('complete') and manifest.get('output_sha256')) or (args.pilot and manifest.get('completed_steps', 0) >= 10):
+    needed_steps = int(round(.025/reference_config['dt_s']))
+    if (manifest.get('complete') and manifest.get('output_sha256')) or (args.pilot and manifest.get('completed_steps', 0) >= needed_steps):
         break
     if not args.wait:
         raise RuntimeError('Full quadratic reference is not complete; no full-cycle result claimed')
-    print('WAIT QUADRATIC REFERENCE', manifest.get('completed_steps', 0), '/400', flush=True)
+    print('WAIT QUADRATIC REFERENCE', manifest.get('completed_steps', 0),
+          '/', int(round(reference_config['duration_s']/reference_config['dt_s'])), flush=True)
     time.sleep(30)
 
 if manifest.get('complete'):
@@ -108,8 +116,9 @@ coarse_root = P / 'data/processed/cardiac_dynamic_v1/convergence_dt0.0025'
 fine_geo = dict(np.load(fine_root / 'geometry.npz'))
 fine = dict(np.load(fine_root / 'trajectory.npz'))
 coarse = dict(np.load(coarse_root / 'trajectory.npz'))
-np.testing.assert_array_equal(fine['time'], inputs['time'])
-np.testing.assert_array_equal(coarse['time'], inputs['time'])
+common_indices = np.searchsorted(inputs['time'], fine['time'])
+np.testing.assert_allclose(inputs['time'][common_indices], fine['time'], rtol=0, atol=1e-14)
+np.testing.assert_array_equal(coarse['time'], fine['time'])
 X = fine_geo['coords']; cells = fine_geo['cells']; nnode = len(X)
 maps = inputs['canonical_cell_dofs']
 distance, canonical_nodes = cKDTree(X).query(inputs['dof_coordinates'][maps[..., 0]])
@@ -172,9 +181,9 @@ affine_terms = [float(np.sum(affine*(matrix@affine))) for matrix in [M1, M2, B]]
 assert abs(affine_terms[0]+affine_terms[1]-2*affine_terms[2]) < 1e-12*sum(abs(x) for x in affine_terms)
 coeff = np.load(root / 'displacement_coefficients.npy', mmap_mode='r')
 comparisons = {key: [] for key in ['coarse_P1', 'refined_P1']}
-n_endpoints = 10 if args.pilot else len(coeff)
+n_endpoints = 10 if args.pilot else len(common_indices)
 for i in range(n_endpoints):
-    p2 = coeff[i][lookup]
+    p2 = coeff[common_indices[i]][lookup]
     p2norm = float(np.sum(p2*(M2@p2)))
     base = coarse['u'][i][inputs['cells']]
     lifted_values = np.concatenate((base, np.stack([(base[:, a]+base[:, b])/2
@@ -186,10 +195,12 @@ for i in range(n_endpoints):
         raw = p2norm+p1norm-2*cross
         assert raw >= -1e-12*max(p2norm+p1norm, 1e-30)
         difference = max(raw, 0.)
-        comparisons[key].append(dict(time_s=float(inputs['time'][i]),
+        comparisons[key].append(dict(time_s=float(fine['time'][i]),
             difference_volume_L2_squared=difference, P2_volume_L2_squared=p2norm,
             P1_volume_L2_squared=p1norm, relative_difference_vs_P2=np.sqrt(difference/max(p2norm, 1e-30))))
 result = dict(complete=False, source_sha256=ENTRY_SOURCE_SHA256,
+              reference_config=reference_config, reference_dataset=str(root.relative_to(P)),
+              reference_dt_s=reference_config['dt_s'], linear_reference_dt_s=.0025,
               reference_output_sha256=manifest.get('output_sha256'),
               reference_summary=dict(completed_steps=manifest['completed_steps'],
                 dofs=manifest['dofs'], tetrahedra=manifest['tetrahedra'],
@@ -202,6 +213,7 @@ result = dict(complete=False, source_sha256=ENTRY_SOURCE_SHA256,
               comparisons={}, scope=('Ten-step startup pilot only. ' if args.pilot else 'Full cycle. ')
                 + 'Discretization sensitivity on one passive '
                 'geometry/loading: P2 on 17625 tetrahedra versus P1 on 17625 and141000 tetrahedra. '
+                'Different timesteps change BOTH temporal and spatial discretization. '
                 'P2 is a comparison reference, not assumed continuum truth.',
               limitations=['Not a three-level asymptotic convergence study.',
                            'No claim of continuum-calibrated neural intervals.',
@@ -220,6 +232,7 @@ env.update(FI_PROVIDER='tcp', FI_TCP_IFACE='en0', OMP_NUM_THREADS='2', OPENBLAS_
            DIJITSO_CACHE_DIR=str(P/'.fenics-cache-activated'))
 subprocess.run([str(P/'.tools/bin/micromamba'), 'run', '-p', str(P/'.fenics'),
                 'python', str(Path(__file__).resolve()), '--native-verify']
+               + ['--config', args.config]
                + (['--pilot'] if args.pilot else []), cwd=P, env=env, check=True)
 print('QUADRATIC STARTUP NORM PILOT COMPLETE' if args.pilot
       else 'QUADRATIC FULL-CYCLE COMPARISON COMPLETE', flush=True)

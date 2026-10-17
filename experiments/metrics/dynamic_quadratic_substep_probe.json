@@ -1,0 +1,36 @@
+{
+  "complete": true,
+  "full_cycle": false,
+  "all_two_substeps_accepted": true,
+  "original_zero_based_failed_step": 110,
+  "original_dt_s": 0.0025,
+  "original_checkpoint_sha256": "b72effc8c506ae685b5ffecdee9ddabb6134d4ecdb6a18e893e2cbf0b9d39c55",
+  "records": [
+    {
+      "time_s": 0.27625,
+      "dt_s": 0.00125,
+      "pressure_Pa": 11257.800236414385,
+      "SNES_reason": 2,
+      "iterations": 4,
+      "residual_l2_N": 4.985610285311766e-12,
+      "minimum_endpoint_sampled_detF": 0.5246798792793659,
+      "minimum_stress_sampled_detF": 0.532374211158711,
+      "nonlinear_seconds": 31.802212374983355,
+      "accepted": true
+    },
+    {
+      "time_s": 0.2775,
+      "dt_s": 0.00125,
+      "pressure_Pa": 11331.096600683313,
+      "SNES_reason": 3,
+      "iterations": 5,
+      "residual_l2_N": 1.0280839112018965e-08,
+      "minimum_endpoint_sampled_detF": 0.5046580654147144,
+      "minimum_stress_sampled_detF": 0.5142005736383668,
+      "nonlinear_seconds": 11.852912792004645,
+      "accepted": true
+    }
+  ],
+  "source_sha256": "cb1d9b758d35ef34ebfc939abc91b251e6124cc411929710af05130c62d891ef",
+  "scope": "A local finer-timegrid diagnostic from the existing accepted state. Changes the time discretization; does not solve the rejected original 2.5ms nonlinear problem or establish full-cycle convergence."
+}

@@ -20,14 +20,14 @@ evaluation = json.loads((P/'experiments/metrics/dynamic_final_evaluation.json').
 base = P/'data/processed/cardiac_dynamic_v1/convergence_dt0.005'
 trajectory = dict(np.load(base/'trajectory.npz'))
 geometry = dict(np.load(base/'geometry.npz'))
-qroot = P/'data/processed/cardiac_quadratic_reference_v1'
+qroot = P/comparison['reference_dataset']
 qinputs = dict(np.load(qroot/'inputs.npz'))
 np.testing.assert_array_equal(geometry['cells'], qinputs['cells'])
 np.testing.assert_allclose(geometry['coords'], qinputs['coords'], rtol=0, atol=1e-14)
 indices = np.searchsorted(qinputs['time'], trajectory['time'])
 np.testing.assert_allclose(qinputs['time'][indices], trajectory['time'], rtol=0, atol=1e-14)
 quadratic = np.load(qroot/'displacement_vertices.npy', mmap_mode='r')[indices]
-truths = {'P1_dt005': trajectory['u'], 'P2_dt0025': quadratic}
+truths = {'P1_dt005': trajectory['u'], 'P2_changed_reference': quadratic}
 top = torch.tensor(np.load(P/'data/processed/cardiac_geometry_ml/topology.npy'))
 labels = np.load(P/'data/processed/cardiac_geometry_ml/cluster_labels.npy')
 counts = np.bincount(labels, minlength=64)
@@ -63,11 +63,13 @@ for key in evaluation['models']:
 result = dict(complete=True, source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     frozen_checkpoint_sha256=freeze['checkpoint_sha256'], n_cases=1, n_common_endpoints=200,
     reference_change_component_rmse_m=float(np.sqrt(np.mean((trajectory['u']-quadratic)**2))),
-    models=records, preferred_from_original_validation=evaluation['preferred_from_validation_only'],
+    models=records, quadratic_reference_dt_s=comparison['reference_dt_s'],
+    preferred_from_original_validation=evaluation['preferred_from_validation_only'],
     scope='One known baseline numerical geometry/waveform, fixed models, no selection/refitting. '
           'Combined element-order AND timestep reference change; not an independent population test. '
           'Original conformal radii target coarse P1/5ms labels; their containment here does not '
-          'establish coverage against P2/2.5ms or continuum truth. No cases are added to the20-test cohort.')
+          'establish coverage against the changed P2 reference or continuum truth. '
+          'No cases are added to the20-test cohort.')
 (P/'experiments/metrics/dynamic_reference_sensitivity.json').write_text(json.dumps(result, indent=2,
                                                                                   allow_nan=False))
 print('FROZEN REFERENCE SENSITIVITY COMPLETE', flush=True)

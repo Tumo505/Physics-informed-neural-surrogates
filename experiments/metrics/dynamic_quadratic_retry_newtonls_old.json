@@ -1,0 +1,146 @@
+{
+  "engineering_retry": true,
+  "complete": true,
+  "accepted": false,
+  "zero_based_step": 110,
+  "time_s": 0.2775,
+  "method_requested": "newtonls",
+  "method_effective": "newtonls",
+  "guess": "old",
+  "maximum_iterations": 30,
+  "SNES_reason": -5,
+  "iterations": 30,
+  "residual_l2_N": 0.2865420340568939,
+  "minimum_endpoint_sampled_detF": 0.5037071667800933,
+  "minimum_stress_sampled_detF": 0.5217238400237584,
+  "nonlinear_seconds": 87.603743707994,
+  "iteration_history": [
+    {
+      "iteration": 0,
+      "residual_norm": 1.2628049239001227
+    },
+    {
+      "iteration": 1,
+      "residual_norm": 0.29648124165673695
+    },
+    {
+      "iteration": 2,
+      "residual_norm": 0.2904023277165837
+    },
+    {
+      "iteration": 3,
+      "residual_norm": 0.2893638821462596
+    },
+    {
+      "iteration": 4,
+      "residual_norm": 0.2866694556845833
+    },
+    {
+      "iteration": 5,
+      "residual_norm": 0.28655520196689394
+    },
+    {
+      "iteration": 6,
+      "residual_norm": 0.2865432261123394
+    },
+    {
+      "iteration": 7,
+      "residual_norm": 0.2865425359780938
+    },
+    {
+      "iteration": 8,
+      "residual_norm": 0.2865421445558519
+    },
+    {
+      "iteration": 9,
+      "residual_norm": 0.28654210659210116
+    },
+    {
+      "iteration": 10,
+      "residual_norm": 0.2865420937871413
+    },
+    {
+      "iteration": 11,
+      "residual_norm": 0.2865420936367982
+    },
+    {
+      "iteration": 12,
+      "residual_norm": 0.28654209357126675
+    },
+    {
+      "iteration": 13,
+      "residual_norm": 0.28654209300917277
+    },
+    {
+      "iteration": 14,
+      "residual_norm": 0.2865420920324013
+    },
+    {
+      "iteration": 15,
+      "residual_norm": 0.28654208946201587
+    },
+    {
+      "iteration": 16,
+      "residual_norm": 0.2865420853495156
+    },
+    {
+      "iteration": 17,
+      "residual_norm": 0.2865420836324101
+    },
+    {
+      "iteration": 18,
+      "residual_norm": 0.28654208292080346
+    },
+    {
+      "iteration": 19,
+      "residual_norm": 0.286542079554212
+    },
+    {
+      "iteration": 20,
+      "residual_norm": 0.2865420778884089
+    },
+    {
+      "iteration": 21,
+      "residual_norm": 0.28654207159063727
+    },
+    {
+      "iteration": 22,
+      "residual_norm": 0.286542065997367
+    },
+    {
+      "iteration": 23,
+      "residual_norm": 0.28654206311357344
+    },
+    {
+      "iteration": 24,
+      "residual_norm": 0.2865420597321192
+    },
+    {
+      "iteration": 25,
+      "residual_norm": 0.2865420581109422
+    },
+    {
+      "iteration": 26,
+      "residual_norm": 0.2865420517119149
+    },
+    {
+      "iteration": 27,
+      "residual_norm": 0.28654204686583296
+    },
+    {
+      "iteration": 28,
+      "residual_norm": 0.28654203827904523
+    },
+    {
+      "iteration": 29,
+      "residual_norm": 0.2865420372570925
+    },
+    {
+      "iteration": 30,
+      "residual_norm": 0.2865420340568939
+    }
+  ],
+  "checkpoint_sha256": "b72effc8c506ae685b5ffecdee9ddabb6134d4ecdb6a18e893e2cbf0b9d39c55",
+  "source_sha256": "b0b01e9b221e5123f2465deaea6738b94ea820aa92e7f2d3a2e9021dcd7cb425",
+  "scope": "Same frozen FE history/pressure, unchanged material, timestep and tolerances. A successful one-step retry is not full-cycle convergence."
+}

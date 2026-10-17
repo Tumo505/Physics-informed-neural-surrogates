@@ -29,7 +29,8 @@ for ax in axes:
     ax.legend(fontsize=8)
 aggregate = '; '.join(f'{key}: {100*r["relative_spacetime_volume_L2_difference_vs_P2"]:.2f}%'
                       for key, r in q['comparisons'].items())
-fig.suptitle('Full cycle, same 2.5 ms timestep; quadratic comparison is not continuum truth\n'
+fig.suptitle(f'Full cycle: linear 2.5 ms, quadratic {q["reference_dt_s"]*1000:g} ms; '
+             'quadratic comparison is not continuum truth\n'
              + 'Space-time volume-L2: ' + aggregate, fontsize=10)
 fig.savefig(P/'reports/figures/dynamic_quadratic_reference.png', dpi=180)
 print('QUADRATIC COMPARISON FIGURE COMPLETE', flush=True)

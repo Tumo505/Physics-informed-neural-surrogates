@@ -1,0 +1,13 @@
+{
+  "name": "cardiac_quadratic_reference_dt00125_v1",
+  "dt_s": 0.00125,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 0,
+  "geometry_scales": [1.0, 1.0],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 6,
+  "checkpoint_interval": 10,
+  "scope": "New full-cycle passive P2 reference from rest after the failed P2/2.5ms attempt. Fixed 1.25ms steps on the same polyhedral domain and P1 fiber fields. Comparison against P1/2.5ms changes both element order and timestep; it does not isolate p-convergence or establish continuum truth. Frozen neural models remain unchanged."
+}

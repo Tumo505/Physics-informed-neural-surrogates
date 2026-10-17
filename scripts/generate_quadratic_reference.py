@@ -18,8 +18,9 @@ from FIAT.quadrature_schemes import create_quadrature
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--max-steps', type=int)
+ap.add_argument('--config', default='configs/physics/dynamic_quadratic_reference.json')
 args = ap.parse_args()
-config_path = P / 'configs/physics/dynamic_quadratic_reference.json'
+config_path = P / args.config
 cfg = json.loads(config_path.read_text())
 assert cfg['displacement_degree'] == 2
 config_hash = hashlib.sha256(config_path.read_bytes()).hexdigest()
@@ -136,7 +137,7 @@ for i in range(start_step, stop):
     stress_min, _ = kin.audit(.4 * uold + .6 * current)
     if min(endpoint_min, stress_min) <= 0:
         raise RuntimeError(f'Nonpositive sampled P2 Jacobian at step {i}')
-    if i in [0, 99, 199, 399]:
+    if i in [0, n//4-1, n//2-1, n-1]:
         native = float(df.assemble(df.det(df.Identity(3) + df.grad(problem.u)) * df.dx))
         np.testing.assert_allclose(integral, native, rtol=1e-10, atol=1e-13)
         native_checks.append(i)
