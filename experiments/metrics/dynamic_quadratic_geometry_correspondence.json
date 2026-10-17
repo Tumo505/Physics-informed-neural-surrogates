@@ -1,0 +1,89 @@
+{
+  "complete": true,
+  "coordinates_only": true,
+  "tolerance_m": 1e-12,
+  "records": [
+    {
+      "case": "g004_l0",
+      "refinement_level": 0,
+      "baseline": "cardiac_quadratic_reference_gamg_v1",
+      "candidate": "cardiac_quadratic_g004_l0_r0_q6_v1",
+      "baseline_dofs": 89679,
+      "candidate_dofs": 89679,
+      "maximum_canonical_vertex_distance_m": 1.3985787785349405e-17,
+      "canonical_vertices_bijectively_match": true,
+      "tetrahedral_connectivity_matches_after_vertex_permutation": true,
+      "maximum_canonical_DOF_distance_m": 2.7863784897804254e-17,
+      "unmatched_component_DOFs": 0,
+      "component_DOF_mapping_bijective": true,
+      "all_component_DOFs_match": true,
+      "candidate_to_baseline_DOF_permutation_sha256": "7e3a3784d028cc6ecba07cbea739830776e9c15cec84972d3b6a35e1ec8adfa3",
+      "input_sha256": {
+        "cardiac_quadratic_reference_gamg_v1": "f76e4e91651c729c00b2b08019ce0dc172a6ebf953ba634e1e4c1c9871b5aa51",
+        "cardiac_quadratic_g004_l0_r0_q6_v1": "29b9a308da2f752e892acf62c22c0f62d8312befdb90e53525ca73a15cb30bf5"
+      }
+    },
+    {
+      "case": "g005_l1",
+      "refinement_level": 0,
+      "baseline": "cardiac_quadratic_reference_gamg_v1",
+      "candidate": "cardiac_quadratic_g005_l1_r0_q6_v1",
+      "baseline_dofs": 89679,
+      "candidate_dofs": 89679,
+      "maximum_canonical_vertex_distance_m": 1.3985787785349405e-17,
+      "canonical_vertices_bijectively_match": true,
+      "tetrahedral_connectivity_matches_after_vertex_permutation": true,
+      "maximum_canonical_DOF_distance_m": 2.775578737305794e-17,
+      "unmatched_component_DOFs": 0,
+      "component_DOF_mapping_bijective": true,
+      "all_component_DOFs_match": true,
+      "candidate_to_baseline_DOF_permutation_sha256": "7e3a3784d028cc6ecba07cbea739830776e9c15cec84972d3b6a35e1ec8adfa3",
+      "input_sha256": {
+        "cardiac_quadratic_reference_gamg_v1": "f76e4e91651c729c00b2b08019ce0dc172a6ebf953ba634e1e4c1c9871b5aa51",
+        "cardiac_quadratic_g005_l1_r0_q6_v1": "27c2563d218b6dc8b859298b74399d0e33abea991e10593f09e67ef5c8a5634f"
+      }
+    },
+    {
+      "case": "g004_l0",
+      "refinement_level": 1,
+      "baseline": "cardiac_quadratic_reference_refined_v1",
+      "candidate": "cardiac_quadratic_g004_l0_r1_q6_v1",
+      "baseline_dofs": 639735,
+      "candidate_dofs": 639735,
+      "maximum_canonical_vertex_distance_m": 2.7863784897804254e-17,
+      "canonical_vertices_bijectively_match": true,
+      "tetrahedral_connectivity_matches_after_vertex_permutation": false,
+      "maximum_canonical_DOF_distance_m": 2.8025315438821013e-17,
+      "unmatched_component_DOFs": 0,
+      "component_DOF_mapping_bijective": true,
+      "all_component_DOFs_match": true,
+      "candidate_to_baseline_DOF_permutation_sha256": "11aa068930d6fb57b0b87b96bf1eefb8261dc5e1f8be52b632ebd33e8781ae58",
+      "input_sha256": {
+        "cardiac_quadratic_reference_refined_v1": "aa54b9698c646e2a8bc84dcb4c681b831c54f35c33673abf734a4300619fc5ac",
+        "cardiac_quadratic_g004_l0_r1_q6_v1": "fe2a1e7fe82eace606840b1a1b65e056f0773171a8d92e226a9c30fae129e068"
+      }
+    },
+    {
+      "case": "g005_l1",
+      "refinement_level": 1,
+      "baseline": "cardiac_quadratic_reference_refined_v1",
+      "candidate": "cardiac_quadratic_g005_l1_r1_q6_v1",
+      "baseline_dofs": 639735,
+      "candidate_dofs": 639735,
+      "maximum_canonical_vertex_distance_m": 2.775578737305794e-17,
+      "canonical_vertices_bijectively_match": true,
+      "tetrahedral_connectivity_matches_after_vertex_permutation": false,
+      "maximum_canonical_DOF_distance_m": 2.8185920280518337e-17,
+      "unmatched_component_DOFs": 0,
+      "component_DOF_mapping_bijective": true,
+      "all_component_DOFs_match": true,
+      "candidate_to_baseline_DOF_permutation_sha256": "1e185df59beba6a2aef9ab58502facd1fae0fefa239c0fa84488950e04e08acf",
+      "input_sha256": {
+        "cardiac_quadratic_reference_refined_v1": "aa54b9698c646e2a8bc84dcb4c681b831c54f35c33673abf734a4300619fc5ac",
+        "cardiac_quadratic_g005_l1_r1_q6_v1": "b02c710ee52233d5e59d57f95733001b1e4040e1691334f3292f682c7a1478f9"
+      }
+    }
+  ],
+  "executed_source_sha256": "3d265596ccdfb12ff6f93fbb99ebabb9b7b626c6aabe8553f18135fd24f2df70",
+  "scope": "Input-only check on two validation geometries at two mesh levels; no displacement arrays, labels, calibration/test outcomes or model weights read. Undo the exact affine geometry scaling, then compare coordinates and physical vector components. Reordering is required even when DOF sets match. Matching coordinate/component DOF sets permit shared coefficient representation only after explicit permutation; different element connectivity requires case-specific mechanics and graph operators. Nonmatching DOF sets would require interpolation or another representation. Does not establish mechanics accuracy, numerical convergence or population correspondence."
+}

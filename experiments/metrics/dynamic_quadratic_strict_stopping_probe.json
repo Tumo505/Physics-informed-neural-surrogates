@@ -11,7 +11,148 @@
     "mumps_memory_limit_MB": 20000,
     "scope": "Bounded engineering probe after direct solver reports relative convergence at0.270s but fails the unchanged physical force threshold. Start at immutable persisted210-step checkpoint, tighten nonlinear stopping, preserve dt/mesh/quadrature/physics/pressure. No reference overwrite, model training or relaxed acceptance. Successful recovery is not full-cycle convergence. Wall guard checked at nonlinear iteration boundaries."
   },
-  "records": [],
+  "records": [
+    {
+      "step": 210,
+      "time_s": 0.26375,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.8620644783799926e-11,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.562936311164106,
+      "minimum_stress_sampled_detF": 0.5745209251770516,
+      "nonlinear_seconds": 218.19273024995346,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.2762297614318557
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.010540124356470967
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.0004988218563760641
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.6304823283421754e-06
+        },
+        {
+          "iteration": 4,
+          "residual_N": 1.8620644783799926e-11
+        }
+      ]
+    },
+    {
+      "step": 211,
+      "time_s": 0.265,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.5695287307077534e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.526574587617429,
+      "minimum_stress_sampled_detF": 0.5427013923151388,
+      "nonlinear_seconds": 200.52426770806778,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.20791570139758378
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.004731970140923089
+        },
+        {
+          "iteration": 2,
+          "residual_N": 8.110809022999662e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 4.1208977359065384e-08
+        },
+        {
+          "iteration": 4,
+          "residual_N": 2.5695287307077534e-12
+        }
+      ]
+    },
+    {
+      "step": 212,
+      "time_s": 0.26625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.5069568422954344e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.46706818605722333,
+      "minimum_stress_sampled_detF": 0.508520722801548,
+      "nonlinear_seconds": 245.75233454199042,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.17389254053565445
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.007910143783022384
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.0008850505372546742
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.5546904620028885e-05
+        },
+        {
+          "iteration": 4,
+          "residual_N": 2.2470941098254536e-08
+        },
+        {
+          "iteration": 5,
+          "residual_N": 2.5069568422954344e-12
+        }
+      ]
+    },
+    {
+      "step": 213,
+      "time_s": 0.2675,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 3.704062947018202e-12,
+      "KSP_reason": 4,
+      "minimum_endpoint_sampled_detF": 0.4618744843183077,
+      "minimum_stress_sampled_detF": 0.4575993707126612,
+      "nonlinear_seconds": 250.32891354092862,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.1922234382030273
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.04664445729777198
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.009536683075109641
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.0003938343096378675
+        },
+        {
+          "iteration": 4,
+          "residual_N": 6.280211184153839e-07
+        },
+        {
+          "iteration": 5,
+          "residual_N": 3.704062947018202e-12
+        }
+      ]
+    }
+  ],
   "protocol_sha256": "861315b0b266c4ce56ca0bb6dc7c923a76d7f37f9450644358e13ef9c02c5925",
   "reference_config_sha256": "d17c08e61e0b7704a2d390340a5bdf98e6d38a83ccddd3e2a921e1d6639c765a",
   "start_step": 210,

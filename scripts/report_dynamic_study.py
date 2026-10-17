@@ -116,6 +116,10 @@ def dynamic_rows(P):
      if f.exists():status+='; rejected '+json.loads(f.read_text())['rejection_kind']
      progress.append(status)
     rows.append(f'| {case} | {"; ".join(progress)} | pending | pending |')
+  correspondence=P/'experiments/metrics/dynamic_quadratic_geometry_correspondence.json'
+  if correspondence.exists():
+   alignment=json.loads(correspondence.read_text());checks=alignment['records']
+   rows+=['',f'**P2 correspondence audit (inputs only).** All{len(checks)} geometry/mesh-level pairs have bijectively matching displacement coordinates and physical components after undoing the exact affine scale (tolerance{alignment["tolerance_m"]:g}m). Coarse connectivity matches after vertex permutation; refined connectivity differs on both validation geometries. Shared displacement-coefficient representation therefore requires explicit per-case DOF permutation; mechanics/graph operators must retain each case\'s own elements. No displacement labels or calibration/test outcomes were read. This checks these inputs, not arbitrary future geometries or numerical convergence.']
   for case in protocol['case_ids']:
    verification=P/f'experiments/metrics/cardiac_quadratic_{case}_r0_q{protocol["quadrature_degree"]}_v1_verification.json'
    if verification.exists():
