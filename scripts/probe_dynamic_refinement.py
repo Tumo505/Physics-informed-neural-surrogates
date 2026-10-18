@@ -18,11 +18,16 @@ ap.add_argument('--degree', type=int, choices=[1, 2], default=1)
 ap.add_argument('--refinement', type=int, choices=[0, 1, 2], default=2)
 ap.add_argument('--solver', choices=['mumps','gamg'], default='mumps')
 ap.add_argument('--dt', type=float, default=.0025)
+ap.add_argument('--history-reference')
+ap.add_argument('--history-step', type=int)
 args = ap.parse_args()
 assert args.dt > 0 and (args.solver == 'mumps' or args.degree == 2)
+assert (args.history_reference is None) == (args.history_step is None)
 tag = '' if (args.degree, args.refinement) == (1, 2) else f'_p{args.degree}_r{args.refinement}'
 if args.solver != 'mumps':
     tag += '_'+args.solver
+if args.history_reference:
+    tag += f'_loaded_{args.history_step}'
 stem = 'dynamic_refinement_capacity' + tag
 progress = P / f'experiments/logs/{stem}_progress.json'
 output = P / f'experiments/metrics/{stem}.json'
@@ -50,11 +55,63 @@ if args.worker:
         if args.solver == 'gamg':
             problem.solver._solver.parameters['absolute_tolerance'] = 1e-8
             problem.solver._solver.parameters['relative_tolerance'] = 0.
+    history_description = {}
+    pressure = 1000.
+    if args.history_reference:
+        source_root = P/'data/processed'/args.history_reference
+        source_manifest = json.loads((source_root/'manifest.json').read_text())
+        cfg = source_manifest['config']; step = args.history_step
+        assert 0 <= step < source_manifest['completed_steps']
+        assert cfg['geometry_scales'] == [1.,1.] and cfg['dt_s'] == args.dt and cfg['quadrature_degree'] == 6
+        values = np.load(source_root/'displacement_coefficients.npy', mmap_mode='r')
+        inputs = np.load(source_root/'inputs.npz')
+        sg, sm, sb = setup(refinement_level=cfg['refinement_level'],dt=args.dt,geometry_scales=[1,1])
+        sp = dict(sb.parameters); sp['function_space'] = 'P_2'
+        source = make_quadratic_problem(sg,sm,sp,'gamg')
+        np.testing.assert_allclose(source.u_space.tabulate_dof_coordinates(),inputs['dof_coordinates'],atol=1e-14,rtol=0)
+        old = np.zeros(values.shape[1]); velocity = old.copy(); acceleration = old.copy()
+        beta, gamma = float(source._beta), float(source._gamma)
+        prefix_hash = hashlib.sha256()
+        for i in range(step):
+            current = np.array(values[i],copy=True); prefix_hash.update(current.tobytes())
+            new_a = (current-(old+args.dt*velocity+(.5-beta)*args.dt**2*acceleration))/(beta*args.dt**2)
+            velocity = velocity+(1-gamma)*args.dt*acceleration+gamma*args.dt*new_a
+            acceleration = new_a; old = current
+        for name,value in [('u_old',old),('v_old',velocity),('a_old',acceleration),('u',values[step])]:
+            f = getattr(source,name); f.vector().set_local(value); f.vector().apply('insert')
+        pressure = float(inputs['pressure'][step]); source.parameters['p'].assign(pressure)
+        source_R = float(residual(source).norm('l2'))
+        assert np.isfinite(source_R) and source_R<1e-6
+        for name in ['u_old','v_old','a_old']:
+            getattr(problem,name).assign(df.interpolate(getattr(source,name),problem.u_space))
+        manufactured = df.Expression(('x[0]*x[0]+x[1]','x[1]*x[2]','x[2]*x[2]-x[0]'),degree=2)
+        transferred = df.interpolate(df.interpolate(manufactured,source.u_space),problem.u_space)
+        exact = df.interpolate(manufactured,problem.u_space)
+        transfer_error = float(np.max(abs(transferred.vector().get_local()-exact.vector().get_local())))
+        assert transfer_error<1e-10
+        history_description = dict(source_reference=args.history_reference,source_step=step,
+            source_time_s=float(inputs['time'][step]),source_native_residual_N=source_R,
+            source_config_sha256=source_manifest['config_sha256'],
+            source_history_prefix_sha256=prefix_hash.hexdigest(),
+            source_current_field_sha256=hashlib.sha256(np.ascontiguousarray(values[step]).tobytes()).hexdigest(),
+            manufactured_transfer_maximum_error=transfer_error)
+        problem.parameters['p'].assign(pressure)
+        previous = problem.u_old.vector().get_local()
+        v = problem.v_old.vector().get_local(); a = problem.a_old.vector().get_local()
+        best = previous; best_R = float('inf')
+        for guess in [previous,previous+args.dt*v,previous+args.dt*v+.5*args.dt**2*a]:
+            problem.u.vector().set_local(guess); problem.u.vector().apply('insert')
+            R = float(residual(problem).norm('l2'))
+            if np.isfinite(R) and R<best_R:
+                best = guess; best_R = R
+        problem.u.vector().set_local(best); problem.u.vector().apply('insert')
+        del source, sg, sm, sb, transferred, exact
     description = dict(tetrahedra=geo.mesh.num_cells(), vertices=geo.mesh.num_vertices(),
+                       pressure_Pa=pressure, history_probe=history_description,
                        displacement_dofs=problem.u_space.dim())
     record(phase='solving', **description)
     problem.solver._solver.parameters['line_search'] = 'bt'
-    problem.parameters['p'].assign(1000.)
+    problem.parameters['p'].assign(pressure)
     solve_start = time.perf_counter()
     iterations, _ = problem.solver.solve()
     seconds = time.perf_counter() - solve_start
@@ -81,6 +138,8 @@ env.update(FI_PROVIDER='tcp', FI_TCP_IFACE='en0', OMP_NUM_THREADS='2',
 cmd = [str(P / '.tools/bin/micromamba'), 'run', '-p', str(P / '.fenics'),
        'python', str(Path(__file__).resolve()), '--worker', '--degree', str(args.degree),
        '--refinement', str(args.refinement), '--solver', args.solver, '--dt', str(args.dt)]
+if args.history_reference:
+    cmd += ['--history-reference',args.history_reference,'--history-step',str(args.history_step)]
 start = time.perf_counter()
 peak_rss = 0
 stopped = None
@@ -132,7 +191,8 @@ result = dict(engineering_only=True, complete=True, worker=worker,
               sampled_peak_worker_RSS_bytes=peak_rss, RSS_sample_interval_s=2,
               declared_limits=dict(wall_seconds=args.timeout, RSS_GiB=args.max_rss_gib,
                                    MUMPS_MB_per_process=20000),
-              scope=f'One 1000 Pa startup query from zero histories at dt={args.dt:g}s using {args.solver}; '
+              scope=(f'One loaded-state query using interpolated accepted histories from {args.history_reference}, step{args.history_step}; '
+                     if args.history_reference else 'One1000Pa startup query from zero histories; ')+f'dt={args.dt:g}s using {args.solver}; '
                     'same benchmark mechanics; resource feasibility only. '
                     'Does not establish full-cycle convergence, stability or accuracy.')
 output.write_text(json.dumps(result, indent=2, allow_nan=False))

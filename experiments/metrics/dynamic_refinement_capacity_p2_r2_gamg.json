@@ -1,0 +1,33 @@
+{
+  "engineering_only": true,
+  "complete": true,
+  "worker": {
+    "pid": 39159,
+    "phase": "finished",
+    "tetrahedra": 1128000,
+    "vertices": 213245,
+    "displacement_dofs": 4812987,
+    "nonlinear_seconds": 431.0767122079851,
+    "setup_and_solve_seconds": 488.3995852919761,
+    "iterations": 134,
+    "snes_reason": 2,
+    "residual_l2_N": 2.279130076953965e-09,
+    "solve_accepted": true
+  },
+  "executed_source_sha256": "a0167686ed6f9b750e1771a794c65504dafb7c8cb99bffdb6ababcabb332fcf5",
+  "displacement_degree": 2,
+  "refinement_level": 2,
+  "native_solver": "gamg",
+  "dt_s": 0.000625,
+  "process_exit_code": 0,
+  "stop_reason": null,
+  "measured_wall_seconds": 490.0121818750631,
+  "sampled_peak_worker_RSS_bytes": 12034260992,
+  "RSS_sample_interval_s": 2,
+  "declared_limits": {
+    "wall_seconds": 900.0,
+    "RSS_GiB": 24.0,
+    "MUMPS_MB_per_process": 20000
+  },
+  "scope": "One 1000 Pa startup query from zero histories at dt=0.000625s using gamg; same benchmark mechanics; resource feasibility only. Does not establish full-cycle convergence, stability or accuracy."
+}

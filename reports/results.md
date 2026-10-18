@@ -166,7 +166,7 @@ A separate history/load homotopy reproduced the previous native equilibrium, the
 
 **Controlled P2 quadrature degree8/10 sensitivity.** Only the quadrature discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared 800 common endpoints through 1s. Space-time volume-L2 discrepancy 0.2271%; component volume/time RMSE 0.02426mm. Within the declared1% tolerance: True. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.
 
-**Controlled P2 quadrature degree6/8 at0.625ms refinement in progress:** 710/1600 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 quadrature degree6/8 at0.625ms refinement in progress:** 1010/1600 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
 **Refined iterative solver failure retained.** Native GAMG/SNES stopped at0.270s after215 accepted states (210 persisted). Native log reports linear-solve divergence: True; SNES reason-3. The underlying Krylov/preconditioner cause was not recorded and remains unresolved. Across210 common persisted states through0.2625s, direct/iterative maximum relative coefficient discrepancy was1.06e-09, with maximum absolute discrepancy1.19e-13m. This is partial solver agreement, not full-cycle equivalence or a successful mesh-convergence check. Rejected iterative data are preserved and have not been restarted; the direct control status is reported separately.
 
@@ -219,7 +219,9 @@ Run `make dynamic-quadratic-validation-g004` and `make dynamic-quadratic-validat
 
 **Refined P2 resource probe:** 639735 displacement DOFs; single1000Pa startup query accepted True, residual 8.95821e-12N, nonlinear solve 180.37s, sampled peak worker memory 10.68GB. This bounded engineering query does not establish full-cycle feasibility or convergence. The matched mesh-refinement trajectory uses fixed1.25ms steps and a20,000MB MUMPS allocation cap.
 
-**Third P2 mesh capacity probe running.** After the retained12.38% validation mesh discrepancy, assess one1000Pa startup query with GMRES/GAMG at0.625ms, bounded to900s and24GiB sampled worker RSS. No full third-mesh trajectory is launched. A timeout or resource rejection would bound this attempt, not prove that all solver approaches are impossible.
+**Third P2 mesh bounded capacity result.** Tetrahedra 1128000, displacement DOFs 4812987; one1000Pa startup solve accepted True. Stop reason None; measured wall 490.0s, sampled worker peak RSS 11.21GiB. Declared budget900s/24GiB, GMRES/GAMG, dt0.625ms. This resource probe does not establish loaded-state robustness or a feasible complete trajectory, let alone mesh convergence.
+
+**Third P2 mesh loaded-state probe running.** Startup feasibility does not establish loaded-state robustness. Assess one0.270s query with native-verified accepted histories interpolated from the still-running refined half-step reference, three production predictor candidates, strict absolute stopping and a manufactured quadratic transfer check. Bound to1800s/24GiB. No full third-mesh trajectory is launched.
 
 **Controlled polynomial-order sensitivity at fixed1ms.** P1 and P2 share the same17625-tetrahedron polyhedral domain, continuous P1 fiber fields, passive law, pressure waveform and zero initial histories. All1000 times and pressures match; the original999 P1 frames remain immutable and a separately verified native continuation supplies the exact1s endpoint. Only displacement degree changes. Space-time volume-L2 difference 24.1773%; volume/time component RMSE 2.59026mm. Within1%: False.
 
