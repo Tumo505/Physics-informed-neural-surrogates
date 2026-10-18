@@ -1,0 +1,28 @@
+{
+  "complete": false,
+  "engineering_only": true,
+  "protocol": {
+    "reference": "cardiac_quadratic_reference_halfstep_refined_gamg_v1",
+    "timestep_divisor": 1,
+    "steps_after_checkpoint": 2,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 20,
+    "wall_budget_seconds": 1800,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "mumps",
+    "output": "experiments/metrics/dynamic_quadratic_halfstep_recovery_mumps.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_halfstep_recovery_mumps_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_halfstep_recovery_mumps_fields.npy",
+    "scope": "Prospective bounded two-step algebraic recovery from immutable450-step refined0.625ms checkpoint, through0.2825s. Original GAMG failure was KSP iteration exhaustion at1000 iterations before any Newton update. Preserve dt/mesh/Q6/pressure/passive law/histories, strict nonlinear stopping and unchanged physical acceptance. Compare direct MUMPS against restarted GMRES/GAMG with3000 linear iterations and restart200, each with1800s solve budget. Save every accepted field separately. Both accepted solutions require same-root agreement at1e-6 relative and1nm absolute before using this as backend qualification. No reference overwrite, full-cycle convergence or continuum claim."
+  },
+  "records": [],
+  "protocol_sha256": "0d2ede10074427e42368f785e5640d0669c878ef0b2bbc2b1fca70e978adcfb8",
+  "reference_config_sha256": "c39148048523cce37d86f444020120722616c7891923d3531bcb8dc0a2760851",
+  "start_step": 450,
+  "checkpoint_sha256": "317b18ec544dde437a61db163e822d9bec9f35ddd846e773a84f77d565ad44da",
+  "source_sha256": "39e82ebad9b0f3453ec4aca8a0e80c95d1aa9d5c88e5121a27b57d715e6b209f",
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false
+}

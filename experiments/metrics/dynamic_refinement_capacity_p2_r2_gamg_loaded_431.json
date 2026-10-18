@@ -1,0 +1,38 @@
+{
+  "engineering_only": true,
+  "complete": true,
+  "worker": {
+    "pid": 40706,
+    "phase": "solving",
+    "tetrahedra": 1128000,
+    "vertices": 213245,
+    "pressure_Pa": 10891.20552163691,
+    "history_probe": {
+      "source_reference": "cardiac_quadratic_reference_halfstep_refined_gamg_v1",
+      "source_step": 431,
+      "source_time_s": 0.27,
+      "source_native_residual_N": 6.77292456245502e-09,
+      "source_config_sha256": "c39148048523cce37d86f444020120722616c7891923d3531bcb8dc0a2760851",
+      "source_history_prefix_sha256": "a42036a33f15e7beb74c2da016a6e9b4481515450b521042573a4cf92d3605ec",
+      "source_current_field_sha256": "068aa8963ce6d0087f0d361b71fe0396159d17af6a8c85de9c8881276efb5438",
+      "manufactured_transfer_maximum_error": 9.71445146547012e-17
+    },
+    "displacement_dofs": 4812987
+  },
+  "executed_source_sha256": "8b0ddea1818887cd8fee035cc207326b4edc8815823e3981494a84256b8aaa78",
+  "displacement_degree": 2,
+  "refinement_level": 2,
+  "native_solver": "gamg",
+  "dt_s": 0.000625,
+  "process_exit_code": 143,
+  "stop_reason": "predeclared_capacity_probe_timeout",
+  "measured_wall_seconds": 1801.4680808749981,
+  "sampled_peak_worker_RSS_bytes": 15050227712,
+  "RSS_sample_interval_s": 2,
+  "declared_limits": {
+    "wall_seconds": 1800.0,
+    "RSS_GiB": 24.0,
+    "MUMPS_MB_per_process": 20000
+  },
+  "scope": "One loaded-state query using interpolated accepted histories from cardiac_quadratic_reference_halfstep_refined_gamg_v1, step431; dt=0.000625s using gamg; same benchmark mechanics; resource feasibility only. Does not establish full-cycle convergence, stability or accuracy."
+}

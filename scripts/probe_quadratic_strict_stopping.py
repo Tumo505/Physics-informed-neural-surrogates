@@ -54,7 +54,10 @@ geo, material, base = setup(dt=dt, geometry_scales=cfg['geometry_scales'],
                             refinement_level=cfg['refinement_level'])
 parameters = dict(base.parameters); parameters['function_space'] = 'P_2'
 df.parameters['form_compiler']['quadrature_degree'] = cfg['quadrature_degree']
-problem = make_quadratic_problem(geo, material, parameters, 'mumps')
+method = protocol.get('native_solver','mumps')
+problem = make_quadratic_problem(geo, material, parameters, method,
+    linear_maximum_iterations=protocol.get('linear_maximum_iterations',1000),
+    gmres_restart=protocol.get('gmres_restart',100))
 settings = problem.solver._solver.parameters
 settings['absolute_tolerance'] = protocol['absolute_tolerance_N']
 settings['relative_tolerance'] = protocol['relative_tolerance']
@@ -104,6 +107,8 @@ try:
         result['records'].append(dict(step=i, time_s=float(time_s), accepted=accepted,
             SNES_reason=int(snes.getConvergedReason()), residual_N=R if np.isfinite(R) else None,
             KSP_reason=int(snes.getKSP().getConvergedReason()),
+            effective_KSP=snes.getKSP().getType(), effective_PC=snes.getKSP().getPC().getType(),
+            last_linear_iterations=int(snes.getKSP().getIterationNumber()),
             minimum_endpoint_sampled_detF=endpoint, minimum_stress_sampled_detF=stress,
             nonlinear_seconds=time.perf_counter()-tick, iteration_history=list(history)))
         persist()

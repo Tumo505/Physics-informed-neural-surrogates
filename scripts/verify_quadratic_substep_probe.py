@@ -1,4 +1,5 @@
 """Independent native and whole-element verification of the saved local probe."""
+import argparse
 import hashlib
 import itertools
 import json
@@ -16,7 +17,11 @@ from lv_surrogate.physics.reference_fem import setup, residual, df
 from lv_surrogate.physics.quadratic_solver import make_quadratic_problem
 from lv_surrogate.physics.quadratic import QuadraticKinematics
 
-protocol_path = P/'configs/physics/dynamic_quadratic_refined_substep_extended_probe.json'
+ap = argparse.ArgumentParser()
+ap.add_argument('--protocol', default='configs/physics/dynamic_quadratic_refined_substep_extended_probe.json')
+ap.add_argument('--output')
+args = ap.parse_args()
+protocol_path = P/args.protocol
 protocol = json.loads(protocol_path.read_text())
 probe = json.loads((P/protocol['output']).read_text())
 assert probe['finished'] and probe['all_requested_steps_accepted']
@@ -84,11 +89,15 @@ for i,current in enumerate(u):
     records.append(record); problem._update_fields()
     print('VERIFIED LOCAL PROBE',i+1,'/',len(u),flush=True)
 passed = all(r['endpoint_unresolved_elements']==r['stress_unresolved_elements']==0 for r in records)
-result = dict(complete=True,passed=passed,full_cycle=False,records=records,
+result = dict(complete=True,passed=passed,full_cycle=False,records=records,dt_s=dt,
+    changed_time_discretization=probe.get('changed_time_discretization'),
     protocol_sha256=probe['protocol_sha256'], original_checkpoint_sha256=probe['checkpoint_sha256'],
     fields_sha256=hashlib.sha256((P/protocol['fields']).read_bytes()).hexdigest(),
     inputs_sha256=hashlib.sha256((root/'inputs.npz').read_bytes()).hexdigest(),
     executed_source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-    scope='Fourteen local changed-grid steps with inherited nonzero histories, not a full-cycle reference or recovered1.25ms root. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities checked at four fixed frames. Independent canonical quadrature and UFL displacement norms checked at four frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim.')
-(P/'experiments/metrics/dynamic_quadratic_refined_substep_extended_verification.json').write_text(json.dumps(result,indent=2,allow_nan=False))
+    scope=f'{len(u)} local probe steps with inherited nonzero histories, not a full-cycle reference. The recorded protocol specifies whether time discretization changed. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities and independent canonical-quadrature/UFL displacement norms checked at {len(fixed)} fixed frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim.')
+default_output = ('experiments/metrics/dynamic_quadratic_refined_substep_extended_verification.json'
+    if args.protocol == 'configs/physics/dynamic_quadratic_refined_substep_extended_probe.json'
+    else str(Path(protocol['output']).with_name(Path(protocol['output']).stem+'_verification.json')))
+(P/(args.output or default_output)).write_text(json.dumps(result,indent=2,allow_nan=False))
 print('LOCAL VERIFICATION PASSED',passed,flush=True)

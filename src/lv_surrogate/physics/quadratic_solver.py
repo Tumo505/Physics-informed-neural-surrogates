@@ -2,7 +2,8 @@
 from .reference_fem import LVProblem, df
 
 
-def make_quadratic_problem(geo, material, parameters, method='mumps'):
+def make_quadratic_problem(geo, material, parameters, method='mumps',
+                           linear_maximum_iterations=1000, gmres_restart=100):
     if method == 'mumps':
         return LVProblem(geo, material, parameters=parameters,
             solver_parameters={'linear_solver': 'mumps',
@@ -12,10 +13,10 @@ def make_quadratic_problem(geo, material, parameters, method='mumps'):
     from petsc4py import PETSc
     problem = LVProblem(geo, material, parameters=parameters, solver_parameters={
         'linear_solver': 'gmres', 'preconditioner': 'petsc_amg',
-        'petsc': {'ksp_type': 'gmres', 'pc_type': 'gamg', 'ksp_gmres_restart': 100,
+        'petsc': {'ksp_type': 'gmres', 'pc_type': 'gamg', 'ksp_gmres_restart': int(gmres_restart),
                   'ksp_norm_type': 'unpreconditioned'},
         'krylov_solver': {'absolute_tolerance': 1e-12, 'relative_tolerance': 1e-10,
-            'maximum_iterations': 1000, 'monitor_convergence': False}})
+            'maximum_iterations': int(linear_maximum_iterations), 'monitor_convergence': False}})
     expressions = [('1','0','0'), ('0','1','0'), ('0','0','1'),
         ('0','-x[2]','x[1]'), ('x[2]','0','-x[0]'), ('-x[1]','x[0]','0')]
     modes = [df.interpolate(df.Expression(e, degree=1), problem.u_space).vector().copy()

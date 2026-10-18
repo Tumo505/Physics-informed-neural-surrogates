@@ -166,7 +166,7 @@ A separate history/load homotopy reproduced the previous native equilibrium, the
 
 **Controlled P2 quadrature degree8/10 sensitivity.** Only the quadrature discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared 800 common endpoints through 1s. Space-time volume-L2 discrepancy 0.2271%; component volume/time RMSE 0.02426mm. Within the declared1% tolerance: True. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.
 
-**Controlled P2 quadrature degree6/8 at0.625ms refinement in progress:** 1010/1600 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 quadrature degree6/8 at0.625ms refinement in progress:** 1380/1600 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
 **Refined iterative solver failure retained.** Native GAMG/SNES stopped at0.270s after215 accepted states (210 persisted). Native log reports linear-solve divergence: True; SNES reason-3. The underlying Krylov/preconditioner cause was not recorded and remains unresolved. Across210 common persisted states through0.2625s, direct/iterative maximum relative coefficient discrepancy was1.06e-09, with maximum absolute discrepancy1.19e-13m. This is partial solver agreement, not full-cycle equivalence or a successful mesh-convergence check. Rejected iterative data are preserved and have not been restarted; the direct control status is reported separately.
 
@@ -194,7 +194,15 @@ Half-step coarse reference: 1600/1600 persisted steps; full cycle complete True.
 
 **Completed coarse half-step reference audit.** All1600 from-rest states accepted; maximum native residual 9.87e-09N. All output hashes verified. Whole-element endpoint/stress Bernstein lower bounds 0.235580/0.235912, no unresolved element states at the declared float64 margin. Four independent physical L2 norm checks have maximum relative discrepancy 5.06e-15. This validates the completed coarse computation; matched full-cycle mesh and integration qualification remain separate.
 
-Half-step mesh workflow phase: generation; complete False. The queued worker acquires the existing coarse workflow lock, requires completed baseline hash/positivity/norm verification and three passed backend probes, then starts the separate refined reference. No duplicate coarse job is launched. Failure if recorded: none.
+Half-step mesh workflow phase: generation; complete False. The queued worker acquires the existing coarse workflow lock, requires completed baseline hash/positivity/norm verification and three passed backend probes, then starts the separate refined reference. No duplicate coarse job is launched. Failure if recorded: generation failed with return code 1; see preserved log.
+
+**Refined half-step reference rejected.** At0.2825s after451 accepted states (450 persisted), native GAMG failed before any Newton update: SNES-3, KSP-3, last linear iteration count1000. The1000-iteration Krylov cap was exhausted; the failed force norm8614.66N is not accepted data. The earlier successful local interval did not establish full-cycle robustness. Original reference remains stopped.
+
+**Prospective paired exact-equation recovery probes.** From the same immutable450-step checkpoint, attempt two0.625ms steps through0.2825s using direct MUMPS or GMRES/GAMG with3000 linear iterations and restart200. Each has a1800s solve budget, strict1e-8N absolute nonlinear stopping and unchanged physical acceptance. Save each accepted state separately. Compare recovered coefficients at preregistered1e-6 relative/1nm absolute tolerances, and independently audit mechanics/positivity/norms before using results. No full trajectory is overwritten or automatically accepted.
+
+mumps recovery: finished False, accepted 0/2, all requested accepted False, budget exhausted False.
+
+gamg recovery: finished False, accepted 0/2, all requested accepted False, budget exhausted False.
 
 **Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.
 
@@ -221,7 +229,7 @@ Run `make dynamic-quadratic-validation-g004` and `make dynamic-quadratic-validat
 
 **Third P2 mesh bounded capacity result.** Tetrahedra 1128000, displacement DOFs 4812987; one1000Pa startup solve accepted True. Stop reason None; measured wall 490.0s, sampled worker peak RSS 11.21GiB. Declared budget900s/24GiB, GMRES/GAMG, dt0.625ms. This resource probe does not establish loaded-state robustness or a feasible complete trajectory, let alone mesh convergence.
 
-**Third P2 mesh loaded-state probe running.** Startup feasibility does not establish loaded-state robustness. Assess one0.270s query with native-verified accepted histories interpolated from the still-running refined half-step reference, three production predictor candidates, strict absolute stopping and a manufactured quadratic transfer check. Bound to1800s/24GiB. No full third-mesh trajectory is launched.
+**Third P2 mesh loaded-state capacity result.** One query near0.270s uses interpolated accepted histories from the separate from-rest half-step reference; source histories must first reproduce its native force, and a manufactured quadratic transfer is checked. Accepted force solve False, stop reason predeclared_capacity_probe_timeout, wall 1801.5s, sampled worker peak RSS 14.02GiB. Declared budget1800s/24GiB. This is one changed-space algebraic query with inherited histories, not a third-mesh trajectory, positivity audit or convergence result.
 
 **Controlled polynomial-order sensitivity at fixed1ms.** P1 and P2 share the same17625-tetrahedron polyhedral domain, continuous P1 fiber fields, passive law, pressure waveform and zero initial histories. All1000 times and pressures match; the original999 P1 frames remain immutable and a separately verified native continuation supplies the exact1s endpoint. Only displacement degree changes. Space-time volume-L2 difference 24.1773%; volume/time component RMSE 2.59026mm. Within1%: False.
 
