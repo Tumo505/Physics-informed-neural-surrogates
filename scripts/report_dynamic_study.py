@@ -193,8 +193,16 @@ def dynamic_rows(P):
    root=P/f'data/processed/cardiac_quadratic_reference_halfstep_ew_{tag}_v1'
    if (root/'manifest.json').exists():
     v=json.loads((root/'manifest.json').read_text());rows+=['',f'Inexact-Newton {tag} candidate: {v["completed_steps"]}/{v["n_steps"]} persisted accepted states; complete {v["complete"]}.']
+   audit=P/f'experiments/metrics/{root.name}_verification.json'
+   if audit.exists():
+    a=json.loads(audit.read_text());rows+=['',f'Independent full-cycle {tag} audit passed {a["passed"]}: maximum native force {a["maximum_native_residual_N"]:.6g}N; minimum endpoint/stress Bernstein bounds {a["minimum_endpoint_Bernstein_bound"]:.6g}/{a["minimum_stress_Bernstein_bound"]:.6g}; maximum independent norm relative error {max(r["independent_relative_error"] for r in a["norm_checks"]):.3g}. Hashes checked; numerical convergence still requires separate controls.']
    if (root/'failure.json').exists():
     v=json.loads((root/'failure.json').read_text());rows+=['',f'Inexact-Newton {tag} rejected at {v["failed_time_s"]}s with native force {v["residual_l2_N"]}N and SNES {v["SNES_reason"]}; retain accepted prefix only.']
+  equivalence=P/'experiments/metrics/dynamic_quadratic_ew_coarse_solver_equivalence.json'
+  if equivalence.exists():
+   a=json.loads(equivalence.read_text());rows+=['',f'**Coarse recursive solver-policy control.** Compare all {a["n_steps"]} states against the prior strict GMRES/GAMG/direct-fallback protocol, with identical space, timestep, quadrature, forcing and geometry. Both complete references independently passed native/hash/whole-element/norm audits. Existing1e-6 frame-relative/1nm absolute coefficient criteria passed {a["passed"]}; maximum frame-relative difference {a["maximum_relative_coefficient_difference"]:.6g}, maximum absolute difference {a["maximum_absolute_coefficient_difference_m"]:.6g}m. This checks accumulated solver agreement on one case, not continuum accuracy or an isolated speedup.']
+   if 'worst_relative_frame' in a:
+    worst=a['worst_relative_frame'];rows+=['',f'The original combined solver-agreement criterion is retained unchanged. Relative tolerance failures: {a["relative_criterion_failed_frames"]} frames; absolute tolerance failures: {a["absolute_criterion_failed_frames"]}. Worst relative discrepancy occurs at {worst["time_s"]}s, with maximum absolute DOF difference {worst["maximum_absolute_coefficient_difference_m"]:.6g}m in that frame. Global coefficient relative difference is {a["global_relative_coefficient_difference"]:.6g}. Small startup displacements make frame-relative differences sensitive to the fixed absolute force stopping tolerance; this is an interpretation, not a replacement pass criterion.']
   comparison=P/'experiments/metrics/dynamic_quadratic_controlled_robust_mesh.json'
   if comparison.exists() and json.loads(comparison.read_text()).get('complete'):
    v=json.loads(comparison.read_text());rows+=['',f'Robust-policy full-cycle mesh sensitivity {v["relative_space_time_L2"]:.4%}; within1% {v["passes_declared_one_percent_sensitivity"]}. Inherited-prefix provenance and separately unresolved Q6 integration uncertainty remain material limitations.']

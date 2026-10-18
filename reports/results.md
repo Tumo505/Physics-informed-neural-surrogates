@@ -238,9 +238,15 @@ Independent local recovery audit passed True; full cycle remains unvalidated.
 
 **Fixed inexact-Newton full-cycle follow-up.** Both mesh levels use the separately fixed P2/Q6/0.625ms protocol with native EW version2(initial0.01/max0.1), GMRES/GAMG restart200/cap3000, strict1e-8N absolute/zero-relative stopping and100 Newton ceiling. No direct fallback is used. A two-step native coarse startup check precedes full runs. The fine candidate inherits452 accepted earlier states plus the two independently audited EW states through0.28375s; its manifest retains the full inheritance chain, source hashes and accepted prefix hash. Coarse starts from rest. Save each subsequent nonlinear iterate explicitly as UNACCEPTED. Full-cycle native force, hashes, whole-element positivity and independent norms must pass before mesh comparison; inherited-prefix solve times cannot establish matched runtime. Q6 integration sensitivity remains unresolved. Frozen neural checkpoints remain unchanged.
 
-Inexact-Newton coarse candidate: 10/1600 persisted accepted states; complete False.
+Inexact-Newton coarse candidate: 1600/1600 persisted accepted states; complete True.
 
-Inexact-Newton refined candidate: 454/1600 persisted accepted states; complete False.
+Independent full-cycle coarse audit passed True: maximum native force 9.98118e-09N; minimum endpoint/stress Bernstein bounds 0.23558/0.235912; maximum independent norm relative error 2.62e-15. Hashes checked; numerical convergence still requires separate controls.
+
+Inexact-Newton refined candidate: 620/1600 persisted accepted states; complete False.
+
+**Coarse recursive solver-policy control.** Compare all 1600 states against the prior strict GMRES/GAMG/direct-fallback protocol, with identical space, timestep, quadrature, forcing and geometry. Both complete references independently passed native/hash/whole-element/norm audits. Existing1e-6 frame-relative/1nm absolute coefficient criteria passed False; maximum frame-relative difference 2.56828e-05, maximum absolute difference 7.78933e-10m. This checks accumulated solver agreement on one case, not continuum accuracy or an isolated speedup.
+
+The original combined solver-agreement criterion is retained unchanged. Relative tolerance failures: 11 frames; absolute tolerance failures: 0. Worst relative discrepancy occurs at 0.000625s, with maximum absolute DOF difference 6.83352e-12m in that frame. Global coefficient relative difference is 3.32849e-09. Small startup displacements make frame-relative differences sensitive to the fixed absolute force stopping tolerance; this is an interpretation, not a replacement pass criterion.
 
 **Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.
 
