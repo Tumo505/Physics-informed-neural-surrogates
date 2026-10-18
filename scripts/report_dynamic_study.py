@@ -158,6 +158,13 @@ def dynamic_rows(P):
   else:
    v=json.loads(inexact_progress.read_text());rows+=['',f'Inexact loaded probe phase: {v.get("phase")}.']
  robust_config=P/'configs/physics/dynamic_quadratic_reference_halfstep_robust_refined.json'
+ for resume_path in sorted((P/'experiments/logs').glob('dynamic_refinement_capacity_p2_r2_gamg_loaded_431_ew_resume_*_progress.json')):
+  resumed=json.loads(resume_path.read_text()); result_path=P/'experiments/metrics'/resume_path.name.replace('_progress.json','.json')
+  rows+=['','**Checkpointed third-mesh corrective continuation.** Resume the timed-out inexact-Newton query from its saved unaccepted iterate and fixed histories, with a separate1800s/24GiB budget. Before solving, require independently reassembled force to match the recorded residual within1e-7 relative/1e-10N absolute; hash all three input records. Final strict force acceptance remains unchanged. This preserves progress without accepting the timed-out state or claiming a trajectory result.']
+  if result_path.exists():
+   v=json.loads(result_path.read_text());rows+=['',f'Resumed loaded query: accepted {v["worker"].get("solve_accepted",False)}, stop {v.get("stop_reason")}, wall {v["measured_wall_seconds"]:.1f}s.']
+  else:
+   rows+=['',f'Resumed loaded query phase: {resumed.get("phase")}.']
  if robust_config.exists():
   rows+=['','**Separate robust continuation protocol.** Both mesh levels use fixed P2/Q6/0.625ms, strict1e-8N absolute/zero-relative stopping,100 Newton iterations, GMRES/GAMG primary and MUMPS fallback on solver failure/nonfinite force/failed force acceptance. Each fallback preserves the same histories, forcing, predictor and equations, resets backend options, verifies the direct solver type and records the initial failure. The new fine candidate inherits450 accepted original states plus the two independently audited direct states through0.2825s; these inherited states are provenance-hashed and are not re-executed under the new policy. Original rejected reference remains intact. A fresh matching coarse run precedes fine continuation and full-cycle audits. No continuum or full-cycle validation claim follows from seeding.']
   interleaving=P/'experiments/metrics/quadratic_fallback_interleaving.json'

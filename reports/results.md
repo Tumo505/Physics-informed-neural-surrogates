@@ -212,13 +212,17 @@ Independent local direct-repair audit passed True; full-cycle validated False.
 
 **Corrective third-mesh algorithm.** Use native PETSc Eisenstat–Walker inexact Newton (version2, initial linear rtol0.01, maximum0.1), GMRES restart200/cap3000, with the same final strict nonlinear and physical force acceptance. Record linear and nonlinear residuals and save unaccepted iterates plus fixed histories. Queue behind the direct repair to avoid overlapping large allocations; retain1800s/24GiB resource limits. This algorithm targets expensive early linear solves while retaining final equilibrium acceptance; convergence is not guaranteed.
 
-Inexact loaded probe phase: solving.
+Inexact loaded probe: accepted force solve False, stop predeclared_capacity_probe_timeout, wall 1801.5s; no full-cycle result.
+
+**Checkpointed third-mesh corrective continuation.** Resume the timed-out inexact-Newton query from its saved unaccepted iterate and fixed histories, with a separate1800s/24GiB budget. Before solving, require independently reassembled force to match the recorded residual within1e-7 relative/1e-10N absolute; hash all three input records. Final strict force acceptance remains unchanged. This preserves progress without accepting the timed-out state or claiming a trajectory result.
+
+Resumed loaded query phase: initializing.
 
 **Separate robust continuation protocol.** Both mesh levels use fixed P2/Q6/0.625ms, strict1e-8N absolute/zero-relative stopping,100 Newton iterations, GMRES/GAMG primary and MUMPS fallback on solver failure/nonfinite force/failed force acceptance. Each fallback preserves the same histories, forcing, predictor and equations, resets backend options, verifies the direct solver type and records the initial failure. The new fine candidate inherits450 accepted original states plus the two independently audited direct states through0.2825s; these inherited states are provenance-hashed and are not re-executed under the new policy. Original rejected reference remains intact. A fresh matching coarse run precedes fine continuation and full-cycle audits. No continuum or full-cycle validation claim follows from seeding.
 
 Native backend-switch integration check passed True: four alternating iterative/direct solves across two coarse startup steps match accepted reference coefficients within1.5e-09 relative. The test caught an initial runtime option that disabled LU; restoring the configured direct backend by clearing conflicting options fixed it. That failed test log is retained. This checks switching only, not full-cycle robustness. The exact in-flight coarse generator source is archived by SHA256 for reproducibility.
 
-Robust coarse candidate: 210/1600 persisted accepted states; complete False.
+Robust coarse candidate: 900/1600 persisted accepted states; complete False.
 
 Robust refined candidate: 452/1600 persisted accepted states; complete False.
 

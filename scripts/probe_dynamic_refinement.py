@@ -24,6 +24,7 @@ ap.add_argument('--inexact-newton', action='store_true')
 ap.add_argument('--linear-iterations', type=int, default=1000)
 ap.add_argument('--gmres-restart', type=int, default=100)
 ap.add_argument('--wait-for-probe')
+ap.add_argument('--resume-loaded-probe', help='Prior timed-out EW probe stem; replay its saved fixed histories and unaccepted iterate')
 args = ap.parse_args()
 assert args.dt > 0 and (args.solver == 'mumps' or args.degree == 2)
 assert (args.history_reference is None) == (args.history_step is None)
@@ -34,6 +35,10 @@ if args.history_reference:
     tag += f'_loaded_{args.history_step}'
 if args.inexact_newton:
     tag += '_ew'
+if args.resume_loaded_probe:
+    assert args.inexact_newton and args.history_reference and args.degree == 2
+    assert Path(args.resume_loaded_probe).name == args.resume_loaded_probe
+    tag += '_resume_' + hashlib.sha256(args.resume_loaded_probe.encode()).hexdigest()[:8]
 stem = 'dynamic_refinement_capacity' + tag
 progress = P / f'experiments/logs/{stem}_progress.json'
 output = P / f'experiments/metrics/{stem}.json'
@@ -64,7 +69,39 @@ if args.worker:
             problem.solver._solver.parameters['relative_tolerance'] = 0.
     history_description = {}
     pressure = 1000.
-    if args.history_reference:
+    if args.resume_loaded_probe:
+        prior_path = P/f'experiments/metrics/{args.resume_loaded_probe}.json'
+        prior = json.loads(prior_path.read_text())
+        assert prior['stop_reason'] == 'predeclared_capacity_probe_timeout'
+        for key, expected in [('displacement_degree',args.degree),('refinement_level',args.refinement),
+                              ('native_solver',args.solver),('dt_s',args.dt),('inexact_newton',True),
+                              ('linear_maximum_iterations',args.linear_iterations),('gmres_restart',args.gmres_restart)]:
+            assert prior[key] == expected, key
+        history_description = prior['worker']['history_probe'].copy()
+        assert history_description['source_reference'] == args.history_reference
+        assert history_description['source_step'] == args.history_step
+        hp = P/f'experiments/logs/{args.resume_loaded_probe}_fixed_histories.npz'
+        ip = P/f'experiments/logs/{args.resume_loaded_probe}_UNACCEPTED_iterate.npy'
+        provenance = {str(p.relative_to(P)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [prior_path,hp,ip]}
+        with np.load(hp) as saved:
+            assert float(saved['dt_s']) == args.dt
+            pressure = float(saved['pressure_Pa'])
+            assert pressure == prior['worker']['pressure_Pa']
+            for name in ['u_old','v_old','a_old']:
+                value = saved[name]
+                assert value.shape == (problem.u_space.dim(),) and np.isfinite(value).all()
+                getattr(problem,name).vector().set_local(value)
+                getattr(problem,name).vector().apply('insert')
+        iterate = np.load(ip)
+        assert iterate.shape == (problem.u_space.dim(),) and np.isfinite(iterate).all()
+        problem.u.vector().set_local(iterate); problem.u.vector().apply('insert')
+        problem.parameters['p'].assign(pressure)
+        replay_R = float(residual(problem).norm('l2'))
+        expected_R = prior['worker']['nonlinear_history'][-1]['residual_N']
+        np.testing.assert_allclose(replay_R,expected_R,rtol=1e-7,atol=1e-10)
+        history_description['resume'] = dict(input_sha256=provenance,replayed_residual_N=replay_R,
+            recorded_residual_N=expected_R,scope='Unaccepted initial guess only; fixed mechanics and final force criterion retained')
+    elif args.history_reference:
         source_root = P/'data/processed'/args.history_reference
         source_manifest = json.loads((source_root/'manifest.json').read_text())
         cfg = source_manifest['config']; step = args.history_step
@@ -184,6 +221,8 @@ if args.history_reference:
 cmd += ['--linear-iterations',str(args.linear_iterations),'--gmres-restart',str(args.gmres_restart)]
 if args.inexact_newton:
     cmd += ['--inexact-newton']
+if args.resume_loaded_probe:
+    cmd += ['--resume-loaded-probe',args.resume_loaded_probe]
 start = time.perf_counter()
 peak_rss = 0
 stopped = None
