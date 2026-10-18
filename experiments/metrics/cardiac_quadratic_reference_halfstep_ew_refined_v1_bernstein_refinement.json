@@ -1,0 +1,91 @@
+{
+  "complete": true,
+  "passed": true,
+  "reference_name": "cardiac_quadratic_reference_halfstep_ew_refined_v1",
+  "config_sha256": "530bceec1ab3763bc895702e35848746c508ab605cfb10c9bf0b9afa5a961d52",
+  "output_sha256": {
+    "displacement_coefficients.npy": "f2d0a2c2efdba093b8ec83fa7dc9e2343532bdc04c50e3415b8a68b21fe91302",
+    "displacement_vertices.npy": "00e5b2e20988901423f43deda77de995c46c9c2aa8da326cb1a628738f54777e",
+    "inputs.npz": "e00752400d2e06c1cb85568d5d615f4703c361bfe54b611ffb59f8ab8b3e8f2b"
+  },
+  "original_audit_sha256": "d77040e651f2728653f85bdd43cfa50af20fb1b6a4f4c3b1e92f22f348dc30c8",
+  "executed_source_sha256": "26acb1a9b154c694f0f4986d311810bf35d6330169360bb50059237b2b12948d",
+  "positive_margin": 1e-09,
+  "max_depth": 12,
+  "records": [
+    {
+      "step": 448,
+      "time_s": 0.280625,
+      "state": "endpoint",
+      "original_unresolved_elements": 2,
+      "elements": [
+        {
+          "element": 132728,
+          "classification": "positive_bound",
+          "lower_bound": 0.18057911528753012,
+          "leaf_tetrahedra": 2,
+          "maximum_depth": 1
+        },
+        {
+          "element": 138480,
+          "classification": "positive_bound",
+          "lower_bound": 0.10214486670812038,
+          "leaf_tetrahedra": 3,
+          "maximum_depth": 2
+        }
+      ],
+      "minimum_positive_lower_bound": 0.10214486670812038
+    },
+    {
+      "step": 449,
+      "time_s": 0.28125,
+      "state": "endpoint",
+      "original_unresolved_elements": 2,
+      "elements": [
+        {
+          "element": 132728,
+          "classification": "positive_bound",
+          "lower_bound": 0.1559669491897565,
+          "leaf_tetrahedra": 2,
+          "maximum_depth": 1
+        },
+        {
+          "element": 138480,
+          "classification": "positive_bound",
+          "lower_bound": 0.017884589016320562,
+          "leaf_tetrahedra": 3,
+          "maximum_depth": 2
+        }
+      ],
+      "minimum_positive_lower_bound": 0.017884589016320562
+    },
+    {
+      "step": 449,
+      "time_s": 0.28125,
+      "state": "stress",
+      "original_unresolved_elements": 2,
+      "elements": [
+        {
+          "element": 132728,
+          "classification": "positive_bound",
+          "lower_bound": 0.1476874801678395,
+          "leaf_tetrahedra": 2,
+          "maximum_depth": 1
+        },
+        {
+          "element": 138480,
+          "classification": "positive_bound",
+          "lower_bound": 0.05934548756038466,
+          "leaf_tetrahedra": 3,
+          "maximum_depth": 2
+        }
+      ],
+      "minimum_positive_lower_bound": 0.05934548756038466
+    }
+  ],
+  "merged_minimum_lower_bound": {
+    "endpoint": 0.017884589016320562,
+    "stress": 0.012334885627309876
+  },
+  "scope": "Supplement to the retained original inconclusive bound. Longest-rest-edge midpoint bisection partitions each unresolved tetrahedron; affine F is restricted to child vertices and the same cubic Bernstein criterion/margin is applied on every leaf. A nonpositive directly evaluated determinant is an inversion witness. Float64 algebra, not interval arithmetic; no relaxation of the physical positivity requirement."
+}

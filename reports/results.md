@@ -242,7 +242,11 @@ Inexact-Newton coarse candidate: 1600/1600 persisted accepted states; complete T
 
 Independent full-cycle coarse audit passed True: maximum native force 9.98118e-09N; minimum endpoint/stress Bernstein bounds 0.23558/0.235912; maximum independent norm relative error 2.62e-15. Hashes checked; numerical convergence still requires separate controls.
 
-Inexact-Newton refined candidate: 620/1600 persisted accepted states; complete False.
+Inexact-Newton refined candidate: 1600/1600 persisted accepted states; complete True.
+
+Independent full-cycle refined audit passed True: maximum native force 9.95601e-09N; minimum endpoint/stress Bernstein bounds 0.0178846/0.0123349; maximum independent norm relative error 4.65e-15. Hashes checked; numerical convergence still requires separate controls.
+
+**Whole-element bound resolution (refined).** The original cubic bound was inconclusive for 6 element states near0.281s; a negative Bernstein coefficient alone does not establish inversion. Deterministic longest-rest-edge bisection restricts the same affine deformation gradient to child tetrahedra and applies the unchanged1e-9 margin on all leaves. Supplemental positivity audit passed True; the original audit is preserved and linked by SHA256. This is a float64 sufficient bound, not interval arithmetic or a changed physical acceptance criterion.
 
 **Coarse recursive solver-policy control.** Compare all 1600 states against the prior strict GMRES/GAMG/direct-fallback protocol, with identical space, timestep, quadrature, forcing and geometry. Both complete references independently passed native/hash/whole-element/norm audits. Existing1e-6 frame-relative/1nm absolute coefficient criteria passed False; maximum frame-relative difference 2.56828e-05, maximum absolute difference 7.78933e-10m. This checks accumulated solver agreement on one case, not continuum accuracy or an isolated speedup.
 

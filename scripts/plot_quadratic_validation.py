@@ -113,6 +113,18 @@ if loaded_path.exists() and resumed_path.exists():
     ax.grid(alpha=.2);ax.legend(fontsize=8)
     fig.text(.5,.01,'Engineering feasibility only; this is not a third-mesh trajectory or convergence study.',ha='center',fontsize=9)
     fig.tight_layout(rect=(0,.04,1,1));fig.savefig(P/'reports/figures/dynamic_quadratic_loaded_recovery.png',dpi=180);plt.close(fig)
+ew_mesh=P/'experiments/metrics/dynamic_quadratic_controlled_ew_mesh.json'
+if ew_mesh.exists():
+    d=json.loads(ew_mesh.read_text())
+    if d['complete']:
+        fig,ax=plt.subplots(figsize=(9,4.8))
+        ax.plot([r['time_s'] for r in d['records']],
+            [1e3*np.sqrt(r['error_squared_integral_m5']/(3*d['physical_volume_m3'])) for r in d['records']])
+        ax.set(xlabel='Time (s)',ylabel='Volume component RMSE (mm)',
+            title=f'Full-cycle P2 mesh sensitivity with inexact Newton\nRelative space-time L2 difference {d["relative_space_time_L2"]:.2%}; within 1%: {d["passes_declared_one_percent_sensitivity"]}')
+        ax.grid(alpha=.2)
+        fig.text(.5,.01,'17,625 versus 141,000 tetrahedra; Q6 and 0.625 ms fixed. Finer mesh is not continuum truth.',ha='center',fontsize=9)
+        fig.tight_layout(rect=(0,.04,1,1));fig.savefig(P/'reports/figures/dynamic_quadratic_ew_mesh.png',dpi=180);plt.close(fig)
 for factor in ['time', 'mesh', 'mesh_gamg', 'quadrature', 'quadrature10', 'halfstep_mesh', 'halfstep_quadrature', 'robust_mesh']:
     f = P/f'experiments/metrics/dynamic_quadratic_controlled_{factor}.json'
     if f.exists():

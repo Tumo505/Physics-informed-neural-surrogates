@@ -1,0 +1,47 @@
+{
+  "complete": true,
+  "reference_name": "cardiac_quadratic_reference_halfstep_ew_refined_v1",
+  "passed": true,
+  "config_sha256": "530bceec1ab3763bc895702e35848746c508ab605cfb10c9bf0b9afa5a961d52",
+  "output_sha256": {
+    "displacement_coefficients.npy": "f2d0a2c2efdba093b8ec83fa7dc9e2343532bdc04c50e3415b8a68b21fe91302",
+    "displacement_vertices.npy": "00e5b2e20988901423f43deda77de995c46c9c2aa8da326cb1a628738f54777e",
+    "inputs.npz": "e00752400d2e06c1cb85568d5d615f4703c361bfe54b611ffb59f8ab8b3e8f2b"
+  },
+  "verifier_sha256": "5b68a7c219c909d99c4fbf9ba25decb6144d5fdd46ad300b5aaba81e979ec3a0",
+  "accepted_steps": 1600,
+  "maximum_native_residual_N": 9.956007297740964e-09,
+  "minimum_endpoint_Bernstein_bound": 0.017884589016320562,
+  "minimum_stress_Bernstein_bound": 0.012334885627309876,
+  "positivity_refinement": {
+    "path": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_refined_v1_bernstein_refinement.json",
+    "sha256": "e0a41e677c5ac7f08be391625f6ef74aac908c51548826d6ebdca5cb73b0d911"
+  },
+  "norm_checks": [
+    {
+      "step": 0,
+      "time_s": 0.000625,
+      "physical_L2_squared_m5": 8.515013089622896e-20,
+      "independent_relative_error": 1.4136281442819612e-16
+    },
+    {
+      "step": 533,
+      "time_s": 0.33375,
+      "physical_L2_squared_m5": 2.161184489991984e-07,
+      "independent_relative_error": 4.6541682559836085e-15
+    },
+    {
+      "step": 1066,
+      "time_s": 0.666875,
+      "physical_L2_squared_m5": 4.240835425922278e-10,
+      "independent_relative_error": 2.9257700292854543e-15
+    },
+    {
+      "step": 1599,
+      "time_s": 1.0,
+      "physical_L2_squared_m5": 1.3573490204450207e-11,
+      "independent_relative_error": 3.689780623575453e-15
+    }
+  ],
+  "scope": "Native convergence records, immutable hashes, whole-element float64 sufficient positivity audit and independent canonical P2 quadrature versus UFL norms. Does not establish mesh/time/quadrature convergence or continuum accuracy."
+}

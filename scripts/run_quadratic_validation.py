@@ -16,6 +16,7 @@ ap.add_argument('--candidate-config')
 ap.add_argument('--output-stem')
 ap.add_argument('--wait-for-workflow', help='Wait for this existing workflow lock, then require its successful audited completion')
 ap.add_argument('--require-krylov-probe', help='Require a completed three-state same-root backend probe')
+ap.add_argument('--reuse-positivity-audit',action='store_true',help='Reuse a complete positivity audit only when its config, frame count and output hashes match')
 args = ap.parse_args()
 baseline = 'configs/physics/dynamic_quadratic_reference_'+('gamg' if args.factor in ['mesh_gamg','quadrature'] else 'dt00125')+'.json'
 candidate = 'configs/physics/dynamic_quadratic_reference_'+dict(time='dt001',mesh='refined',solver='gamg',mesh_gamg='refined_gamg',quadrature='quadrature8',reference='halfstep_gamg')[args.factor]+'.json'
@@ -101,7 +102,20 @@ try:
     elif args.factor != 'reference':
         run('norms', native+['scripts/compare_quadratic_references.py', '--config-a', baseline,
             '--config-b', candidate, '--output', f'experiments/metrics/{stem}.json'])
-    run('positivity', modern+['scripts/audit_quadratic_positivity.py', '--config', candidate])
+    audit_path=P/'experiments/metrics'/f'{name}_bernstein.json'
+    current_manifest=json.loads((P/'data/processed'/name/'manifest.json').read_text())
+    reused=False
+    if args.reuse_positivity_audit and audit_path.exists():
+        audit=json.loads(audit_path.read_text())
+        reused=bool(audit['complete'] and audit['checked_steps']==current_manifest['n_steps']
+            and audit['config_sha256']==current_manifest['config_sha256']
+            and audit['output_sha256']==current_manifest['output_sha256'])
+    if reused:
+        state['reused_positivity_audit_sha256']=hashlib.sha256(audit_path.read_bytes()).hexdigest();persist()
+    else:
+        run('positivity', modern+['scripts/audit_quadratic_positivity.py', '--config', candidate])
+    if not json.loads(audit_path.read_text())['whole_element_positivity_sufficient_condition_passed']:
+        run('positivity_resolution',modern+['scripts/resolve_quadratic_positivity.py','--config',candidate])
     run('reference_verification', native+['scripts/verify_completed_quadratic_reference.py', '--config', candidate])
     run('figures', modern+['scripts/plot_quadratic_validation.py'])
     state['complete'] = True  # Workflow completed; sensitivity tolerance may FAIL.

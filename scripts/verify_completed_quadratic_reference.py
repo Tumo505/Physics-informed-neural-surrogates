@@ -33,7 +33,21 @@ assert all(s['SNES_reason'] > 0 and np.isfinite(s['residual_l2_N'])
 b = json.loads((P / 'experiments/metrics' / (cfg['name'] + '_bernstein.json')).read_text())
 assert b['complete'] and b['checked_steps'] == m['n_steps']
 assert b['output_sha256'] == m['output_sha256']
-assert b['whole_element_positivity_sufficient_condition_passed']
+positivity_refinement = None
+endpoint_bound=b['minimum_endpoint_lower_bound'];stress_bound=b['minimum_stress_lower_bound']
+if not b['whole_element_positivity_sufficient_condition_passed']:
+    rp=P/'experiments/metrics'/(cfg['name']+'_bernstein_refinement.json')
+    refinement=json.loads(rp.read_text())
+    assert refinement['complete'] and refinement['passed']
+    assert refinement['original_audit_sha256']==hashlib.sha256((P/'experiments/metrics'/(cfg['name']+'_bernstein.json')).read_bytes()).hexdigest()
+    assert refinement['output_sha256']==m['output_sha256'] and refinement['config_sha256']==m['config_sha256']
+    assert refinement['positive_margin']==b['positive_margin']
+    for state in ['endpoint','stress']:
+        assert sum(r['original_unresolved_elements'] for r in refinement['records'] if r['state']==state)==b['unresolved_'+state+'_element_states']
+    assert all(e['classification']=='positive_bound' and e['lower_bound']>b['positive_margin'] for r in refinement['records'] for e in r['elements'])
+    endpoint_bound=refinement['merged_minimum_lower_bound']['endpoint']
+    stress_bound=refinement['merged_minimum_lower_bound']['stress']
+    positivity_refinement=dict(path=str(rp.relative_to(P)),sha256=hashlib.sha256(rp.read_bytes()).hexdigest())
 geo, _, _ = setup(dt=cfg['dt_s'], refinement_level=cfg['refinement_level'],
                   geometry_scales=cfg['geometry_scales'])
 V = df.VectorFunctionSpace(geo.mesh, 'CG', 2)
@@ -62,8 +76,8 @@ result = dict(complete=True, reference_name=cfg['name'], passed=True,
               config_sha256=m['config_sha256'], output_sha256=m['output_sha256'],
               verifier_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               accepted_steps=len(steps), maximum_native_residual_N=max(s['residual_l2_N'] for s in steps),
-              minimum_endpoint_Bernstein_bound=b['minimum_endpoint_lower_bound'],
-              minimum_stress_Bernstein_bound=b['minimum_stress_lower_bound'], norm_checks=checks,
+              minimum_endpoint_Bernstein_bound=endpoint_bound,
+              minimum_stress_Bernstein_bound=stress_bound, positivity_refinement=positivity_refinement,norm_checks=checks,
               scope='Native convergence records, immutable hashes, whole-element float64 sufficient positivity audit and independent canonical P2 quadrature versus UFL norms. Does not establish mesh/time/quadrature convergence or continuum accuracy.')
 (P / 'experiments/manifests' / (cfg['name'] + '.json')).write_text(json.dumps(m, indent=2, allow_nan=False))
 (P / 'experiments/metrics' / (cfg['name'] + '_verification.json')).write_text(json.dumps(result, indent=2, allow_nan=False))
