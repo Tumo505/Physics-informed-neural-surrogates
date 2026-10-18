@@ -20,6 +20,10 @@ ap.add_argument('--solver', choices=['mumps','gamg'], default='mumps')
 ap.add_argument('--dt', type=float, default=.0025)
 ap.add_argument('--history-reference')
 ap.add_argument('--history-step', type=int)
+ap.add_argument('--inexact-newton', action='store_true')
+ap.add_argument('--linear-iterations', type=int, default=1000)
+ap.add_argument('--gmres-restart', type=int, default=100)
+ap.add_argument('--wait-for-probe')
 args = ap.parse_args()
 assert args.dt > 0 and (args.solver == 'mumps' or args.degree == 2)
 assert (args.history_reference is None) == (args.history_step is None)
@@ -28,6 +32,8 @@ if args.solver != 'mumps':
     tag += '_'+args.solver
 if args.history_reference:
     tag += f'_loaded_{args.history_step}'
+if args.inexact_newton:
+    tag += '_ew'
 stem = 'dynamic_refinement_capacity' + tag
 progress = P / f'experiments/logs/{stem}_progress.json'
 output = P / f'experiments/metrics/{stem}.json'
@@ -51,7 +57,8 @@ if args.worker:
         parameters = dict(problem.parameters)
         parameters['function_space'] = 'P_2'
         from lv_surrogate.physics.quadratic_solver import make_quadratic_problem
-        problem = make_quadratic_problem(geo, material, parameters, args.solver)
+        problem = make_quadratic_problem(geo, material, parameters, args.solver,
+            linear_maximum_iterations=args.linear_iterations,gmres_restart=args.gmres_restart)
         if args.solver == 'gamg':
             problem.solver._solver.parameters['absolute_tolerance'] = 1e-8
             problem.solver._solver.parameters['relative_tolerance'] = 0.
@@ -112,15 +119,44 @@ if args.worker:
     record(phase='solving', **description)
     problem.solver._solver.parameters['line_search'] = 'bt'
     problem.parameters['p'].assign(pressure)
+    nonlinear_history = []; linear_history = []
+    if args.inexact_newton:
+        snes = problem.solver._snes
+        snes.setUseEW(True,version=2,rtol_0=.01,rtol_max=.1)
+        history_path = P/f'experiments/logs/{stem}_fixed_histories.npz'
+        np.savez_compressed(history_path,pressure_Pa=pressure,dt_s=args.dt,
+            **{n:getattr(problem,n).vector().get_local() for n in ['u_old','v_old','a_old']})
+        def nonlinear_monitor(snes,iteration,norm):
+            nonlinear_history.append(dict(iteration=int(iteration),residual_N=float(norm) if np.isfinite(norm) else None,
+                KSP_rtol=float(snes.getKSP().getTolerances()[0])))
+            path = P/f'experiments/logs/{stem}_UNACCEPTED_iterate.npy'
+            temporary = path.with_suffix('.pending.npy')
+            np.save(temporary,snes.getSolution().getArray(readonly=True))
+            temporary.replace(path)
+            record(phase='solving',**description,nonlinear_history=nonlinear_history,
+                   linear_history=linear_history,EW_effective=bool(snes.getUseEW()))
+            print('LOADED INEXACT NEWTON',iteration,norm,flush=True)
+        def linear_monitor(ksp,iteration,norm):
+            if iteration%25 == 0:
+                linear_history.append(dict(nonlinear_iteration=len(nonlinear_history)-1,
+                    linear_iteration=int(iteration),reported_residual=float(norm) if np.isfinite(norm) else None,
+                    KSP_rtol=float(ksp.getTolerances()[0])))
+                record(phase='solving',**description,nonlinear_history=nonlinear_history,
+                       linear_history=linear_history,EW_effective=bool(snes.getUseEW()))
+        snes.setMonitor(nonlinear_monitor); snes.getKSP().setMonitor(linear_monitor)
     solve_start = time.perf_counter()
     iterations, _ = problem.solver.solve()
     seconds = time.perf_counter() - solve_start
     reason = int(problem.solver._snes.getConvergedReason())
     force = float(residual(problem).norm('l2'))
+    if args.inexact_newton:
+        assert problem.solver._snes.getUseEW(), 'Requested inexact-Newton method was not effective'
     record(phase='finished', **description, nonlinear_seconds=seconds,
            setup_and_solve_seconds=time.perf_counter() - start,
            iterations=int(iterations), snes_reason=reason, residual_l2_N=force,
-           solve_accepted=bool(reason > 0 and np.isfinite(force) and force < 1e-6))
+           solve_accepted=bool(reason > 0 and np.isfinite(force) and force < 1e-6),
+           nonlinear_history=nonlinear_history,linear_history=linear_history,
+           EW_effective=bool(problem.solver._snes.getUseEW()))
     sys.exit(0 if reason > 0 and np.isfinite(force) and force < 1e-6 else 2)
 
 progress.parent.mkdir(parents=True, exist_ok=True)
@@ -128,6 +164,11 @@ lock = (progress.parent/f'{stem}.lock').open('w')
 fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
 if output.exists():
     raise RuntimeError('Preserve existing capacity result; use a separately named protocol for another probe')
+if args.wait_for_probe:
+    progress.write_text(json.dumps(dict(phase='waiting_for_prior_probe',prerequisite=args.wait_for_probe)))
+    prerequisite = (progress.parent/f'{args.wait_for_probe}.lock').open('w')
+    fcntl.flock(prerequisite,fcntl.LOCK_EX)
+    fcntl.flock(prerequisite,fcntl.LOCK_UN); prerequisite.close()
 if progress.exists():
     progress.unlink()
 env = os.environ.copy()
@@ -140,6 +181,9 @@ cmd = [str(P / '.tools/bin/micromamba'), 'run', '-p', str(P / '.fenics'),
        '--refinement', str(args.refinement), '--solver', args.solver, '--dt', str(args.dt)]
 if args.history_reference:
     cmd += ['--history-reference',args.history_reference,'--history-step',str(args.history_step)]
+cmd += ['--linear-iterations',str(args.linear_iterations),'--gmres-restart',str(args.gmres_restart)]
+if args.inexact_newton:
+    cmd += ['--inexact-newton']
 start = time.perf_counter()
 peak_rss = 0
 stopped = None
@@ -186,6 +230,8 @@ result = dict(engineering_only=True, complete=True, worker=worker,
               executed_source_sha256=source_hash, displacement_degree=args.degree,
               refinement_level=args.refinement,
               native_solver=args.solver, dt_s=args.dt,
+              inexact_newton=args.inexact_newton, linear_maximum_iterations=args.linear_iterations,
+              gmres_restart=args.gmres_restart,
               process_exit_code=child.returncode, stop_reason=stopped,
               measured_wall_seconds=time.perf_counter() - start,
               sampled_peak_worker_RSS_bytes=peak_rss, RSS_sample_interval_s=2,

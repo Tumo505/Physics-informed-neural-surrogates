@@ -31,6 +31,11 @@ root = P/'data/processed'/protocol['reference']
 m = json.loads((root/'manifest.json').read_text()); cfg = m['config']
 assert hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest() == probe['checkpoint_sha256']
 saved = np.load(root/'restart.npz'); data = np.load(root/'inputs.npz')
+if 'resume_probe_protocol' in protocol:
+    previous_protocol = json.loads((P/protocol['resume_probe_protocol']).read_text())
+    resumed_path = P/previous_protocol['checkpoint']
+    assert hashlib.sha256(resumed_path.read_bytes()).hexdigest() == probe['resumed_checkpoint_sha256']
+    saved = np.load(resumed_path)
 u = np.load(P/protocol['fields'], mmap_mode='r')
 assert len(u) == len(probe['records']) == protocol['steps_after_checkpoint']
 dt = probe['dt_s']

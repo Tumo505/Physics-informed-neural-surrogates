@@ -166,7 +166,7 @@ A separate history/load homotopy reproduced the previous native equilibrium, the
 
 **Controlled P2 quadrature degree8/10 sensitivity.** Only the quadrature discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared 800 common endpoints through 1s. Space-time volume-L2 discrepancy 0.2271%; component volume/time RMSE 0.02426mm. Within the declared1% tolerance: True. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.
 
-**Controlled P2 quadrature degree6/8 at0.625ms refinement in progress:** 1380/1600 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
+**Controlled P2 quadrature degree6/8 at0.625ms sensitivity.** Only the quadrature discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared 1600 common endpoints through 1s. Space-time volume-L2 discrepancy 1.5715%; component volume/time RMSE 0.16803mm. Within the declared1% tolerance: False. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.
 
 **Refined iterative solver failure retained.** Native GAMG/SNES stopped at0.270s after215 accepted states (210 persisted). Native log reports linear-solve divergence: True; SNES reason-3. The underlying Krylov/preconditioner cause was not recorded and remains unresolved. Across210 common persisted states through0.2625s, direct/iterative maximum relative coefficient discrepancy was1.06e-09, with maximum absolute discrepancy1.19e-13m. This is partial solver agreement, not full-cycle equivalence or a successful mesh-convergence check. Rejected iterative data are preserved and have not been restarted; the direct control status is reported separately.
 
@@ -200,9 +200,17 @@ Half-step mesh workflow phase: generation; complete False. The queued worker acq
 
 **Prospective paired exact-equation recovery probes.** From the same immutable450-step checkpoint, attempt two0.625ms steps through0.2825s using direct MUMPS or GMRES/GAMG with3000 linear iterations and restart200. Each has a1800s solve budget, strict1e-8N absolute nonlinear stopping and unchanged physical acceptance. Save each accepted state separately. Compare recovered coefficients at preregistered1e-6 relative/1nm absolute tolerances, and independently audit mechanics/positivity/norms before using results. No full trajectory is overwritten or automatically accepted.
 
-mumps recovery: finished False, accepted 0/2, all requested accepted False, budget exhausted False.
+mumps recovery: finished True, accepted 1/2, all requested accepted False, budget exhausted False.
 
-gamg recovery: finished False, accepted 0/2, all requested accepted False, budget exhausted False.
+gamg recovery: finished True, accepted 1/2, all requested accepted False, budget exhausted False.
+
+**Corrective direct solve.** Resume the saved accepted MUMPS history at0.281875s, avoiding its repeated solve; attempt the identical0.2825s algebraic target with the source100-Newton ceiling rather than the exploratory20-iteration cap, a3600s solve budget and strict unchanged force acceptance. The previous attempt was still reducing residual at20 iterations. Save every subsequent nonlinear iterate separately as UNACCEPTED, and preserve accepted history checkpoints. An audit worker waits for completion and automatically checks native forces, whole-element positivity and independent norms if the solve succeeds. This is local corrective work, not a full-cycle validation claim.
+
+Direct repair: finished False, accepted 0/1, budget exhausted False.
+
+**Corrective third-mesh algorithm.** Use native PETSc Eisenstat–Walker inexact Newton (version2, initial linear rtol0.01, maximum0.1), GMRES restart200/cap3000, with the same final strict nonlinear and physical force acceptance. Record linear and nonlinear residuals and save unaccepted iterates plus fixed histories. Queue behind the direct repair to avoid overlapping large allocations; retain1800s/24GiB resource limits. This algorithm targets expensive early linear solves while retaining final equilibrium acceptance; convergence is not guaranteed.
+
+Inexact loaded probe phase: waiting_for_prior_probe.
 
 **Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.
 

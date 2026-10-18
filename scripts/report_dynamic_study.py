@@ -143,6 +143,20 @@ def dynamic_rows(P):
    recovery=P/f'experiments/metrics/dynamic_quadratic_halfstep_recovery_{method}.json'
    if recovery.exists():
     v=json.loads(recovery.read_text());rows+=['',f'{method} recovery: finished {v.get("finished",False)}, accepted {sum(r["accepted"] for r in v["records"])}/2, all requested accepted {v.get("all_requested_steps_accepted",False)}, budget exhausted {v.get("budget_exhausted",False)}.']
+ direct_repair=P/'experiments/metrics/dynamic_quadratic_halfstep_direct_repair.json'
+ if direct_repair.exists():
+  d=json.loads(direct_repair.read_text());rows+=['','**Corrective direct solve.** Resume the saved accepted MUMPS history at0.281875s, avoiding its repeated solve; attempt the identical0.2825s algebraic target with the source100-Newton ceiling rather than the exploratory20-iteration cap, a3600s solve budget and strict unchanged force acceptance. The previous attempt was still reducing residual at20 iterations. Save every subsequent nonlinear iterate separately as UNACCEPTED, and preserve accepted history checkpoints. An audit worker waits for completion and automatically checks native forces, whole-element positivity and independent norms if the solve succeeds. This is local corrective work, not a full-cycle validation claim.', '',f'Direct repair: finished {d.get("finished",False)}, accepted {sum(r["accepted"] for r in d["records"])}/1, budget exhausted {d.get("budget_exhausted",False)}.']
+  verification=P/'experiments/metrics/dynamic_quadratic_halfstep_direct_repair_verification.json'
+  if verification.exists():
+   v=json.loads(verification.read_text());rows+=['',f'Independent local direct-repair audit passed {v["passed"]}; full-cycle validated False.']
+ inexact_progress=P/'experiments/logs/dynamic_refinement_capacity_p2_r2_gamg_loaded_431_ew_progress.json'
+ inexact_result=P/'experiments/metrics/dynamic_refinement_capacity_p2_r2_gamg_loaded_431_ew.json'
+ if inexact_progress.exists() or inexact_result.exists():
+  rows+=['','**Corrective third-mesh algorithm.** Use native PETSc Eisenstat–Walker inexact Newton (version2, initial linear rtol0.01, maximum0.1), GMRES restart200/cap3000, with the same final strict nonlinear and physical force acceptance. Record linear and nonlinear residuals and save unaccepted iterates plus fixed histories. Queue behind the direct repair to avoid overlapping large allocations; retain1800s/24GiB resource limits. This algorithm targets expensive early linear solves while retaining final equilibrium acceptance; convergence is not guaranteed.']
+  if inexact_result.exists():
+   v=json.loads(inexact_result.read_text());rows+=['',f'Inexact loaded probe: accepted force solve {v["worker"].get("solve_accepted",False)}, stop {v.get("stop_reason")}, wall {v["measured_wall_seconds"]:.1f}s; no full-cycle result.']
+  else:
+   v=json.loads(inexact_progress.read_text());rows+=['',f'Inexact loaded probe phase: {v.get("phase")}.']
  completed_geometry_mesh=P/'experiments/metrics/dynamic_quadratic_validation_g004_l0.json'
  if completed_geometry_mesh.exists():
   d=json.loads(completed_geometry_mesh.read_text());rows[8:8]=['',f'**Additional-geometry P2 mesh result.** The completed g004_l0 validation control changes full-cycle displacement by {d["relative_space_time_L2"]:.3%} between17625 and141000 tetrahedra at fixed P2/1.25ms/Q6, exceeding1%. Component volume/time RMSE is{d["component_volume_time_RMSE_m"]*1000:.3f}mm. Both native trajectories and whole-element positivity audits pass; numerical sensitivity does not. These two levels do not establish an asymptotic rate or continuum truth.']

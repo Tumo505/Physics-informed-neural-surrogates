@@ -1,0 +1,32 @@
+{
+  "complete": false,
+  "engineering_only": true,
+  "protocol": {
+    "reference": "cardiac_quadratic_reference_halfstep_refined_gamg_v1",
+    "timestep_divisor": 1,
+    "steps_after_checkpoint": 1,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 3600,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "mumps",
+    "output": "experiments/metrics/dynamic_quadratic_halfstep_direct_repair.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_halfstep_direct_repair_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_halfstep_direct_repair_fields.npy",
+    "scope": "Corrective direct solve at exactly0.2825s, same refined mesh/Q6/dt0.625ms/history/forcing. Resume the separately saved accepted MUMPS state at0.281875s, avoiding its14-Newton recomputation. Restore the source production100-Newton ceiling with3600s solve budget rather than the exploratory20-iteration cap; strict1e-8N absolute stopping and original physical acceptance unchanged. Save every nonlinear iterate as explicitly UNACCEPTED separately from accepted histories; preserve all previous failures. Success must pass independent native forces, whole-element positivity and norms before entering any follow-up trajectory. No full-cycle or continuum claim.",
+    "resume_probe_protocol": "configs/physics/dynamic_quadratic_halfstep_recovery_mumps.json",
+    "iterate_checkpoint": "experiments/logs/dynamic_quadratic_halfstep_direct_repair_iterate.npz"
+  },
+  "records": [],
+  "protocol_sha256": "43409703c0c658df131b84fcd48088901acd7957d66bc13a0bafe5083c6af855",
+  "reference_config_sha256": "c39148048523cce37d86f444020120722616c7891923d3531bcb8dc0a2760851",
+  "start_step": 451,
+  "checkpoint_sha256": "317b18ec544dde437a61db163e822d9bec9f35ddd846e773a84f77d565ad44da",
+  "source_sha256": "8ab109cc8fac77638bdc9dfab6e284b6c0fc96ec3a47c135cc5e54cfd880be21",
+  "resumed_checkpoint_sha256": "a4801a518796da7c3a9eed924fc7d13dc35bc4577edcd2895db5c5417f2227a8",
+  "resumed_accepted_probe_steps": 1,
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false
+}

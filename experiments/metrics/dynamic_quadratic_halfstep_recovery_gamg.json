@@ -18,7 +18,104 @@
     "linear_maximum_iterations": 3000,
     "gmres_restart": 200
   },
-  "records": [],
+  "records": [
+    {
+      "step": 450,
+      "time_s": 0.281875,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 4.602162331901352e-12,
+      "KSP_reason": 3,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "last_linear_iterations": 54,
+      "minimum_endpoint_sampled_detF": 0.30741106674863644,
+      "minimum_stress_sampled_detF": 0.30310772205416314,
+      "nonlinear_seconds": 347.38383149995934,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.719131665861117
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.22387093645409062
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.20103125496085097
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.10594329758718808
+        },
+        {
+          "iteration": 4,
+          "residual_N": 0.08920285958028877
+        },
+        {
+          "iteration": 5,
+          "residual_N": 0.07798425750130955
+        },
+        {
+          "iteration": 6,
+          "residual_N": 0.068876258494209
+        },
+        {
+          "iteration": 7,
+          "residual_N": 0.06115393281823762
+        },
+        {
+          "iteration": 8,
+          "residual_N": 0.05447871549422606
+        },
+        {
+          "iteration": 9,
+          "residual_N": 0.04864464474872481
+        },
+        {
+          "iteration": 10,
+          "residual_N": 0.047192732096304146
+        },
+        {
+          "iteration": 11,
+          "residual_N": 0.006102503415739774
+        },
+        {
+          "iteration": 12,
+          "residual_N": 0.00016451290361486394
+        },
+        {
+          "iteration": 13,
+          "residual_N": 3.8639648986653497e-07
+        },
+        {
+          "iteration": 14,
+          "residual_N": 4.602162331901352e-12
+        }
+      ]
+    },
+    {
+      "step": 451,
+      "time_s": 0.2825,
+      "accepted": false,
+      "SNES_reason": -3,
+      "residual_N": 8614.655906917467,
+      "KSP_reason": -5,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "last_linear_iterations": 400,
+      "minimum_endpoint_sampled_detF": 0.30741106674863644,
+      "minimum_stress_sampled_detF": 0.30741106674863644,
+      "nonlinear_seconds": 51.405727082979865,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 8614.655906917467
+        }
+      ]
+    }
+  ],
   "protocol_sha256": "4adfcab430b3d0ce61293d2cdd99f1c9570a9f7e5de3b8d9a8c46f011702fb8f",
   "reference_config_sha256": "c39148048523cce37d86f444020120722616c7891923d3531bcb8dc0a2760851",
   "start_step": 450,
@@ -26,5 +123,17 @@
   "source_sha256": "39e82ebad9b0f3453ec4aca8a0e80c95d1aa9d5c88e5121a27b57d715e6b209f",
   "dt_s": 0.000625,
   "full_cycle": false,
-  "changed_time_discretization": false
+  "changed_time_discretization": false,
+  "last_attempt_time_s": 0.2825,
+  "probe_checkpoint_sha256": "38e59255ffe5ca274a7c92860f3cd191e874dd25ebd8a6eed4e42e5edae27fe3",
+  "failure": "Physical acceptance criteria failed in strict probe",
+  "all_requested_steps_accepted": false,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 8614.655906917467
+    }
+  ],
+  "wall_seconds": 403.10641712497454
 }

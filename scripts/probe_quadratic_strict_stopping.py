@@ -25,11 +25,27 @@ assert (root/'failure.json').exists()
 m = json.loads((root/'manifest.json').read_text()); cfg = m['config']
 saved = dict(np.load(root/'restart.npz')); inputs = np.load(root/'inputs.npz')
 start_step = int(saved['completed_steps']); assert start_step == m['completed_steps']
+resume_description = {}
+if 'resume_probe_protocol' in protocol:
+    previous_protocol = json.loads((P/protocol['resume_probe_protocol']).read_text())
+    previous_result = json.loads((P/previous_protocol['output']).read_text())
+    previous_checkpoint = P/previous_protocol['checkpoint']
+    assert previous_protocol['reference'] == protocol['reference']
+    assert previous_protocol.get('timestep_divisor',1) == protocol.get('timestep_divisor',1) == 1
+    assert hashlib.sha256(previous_checkpoint.read_bytes()).hexdigest() == previous_result['probe_checkpoint_sha256']
+    assert previous_result['checkpoint_sha256'] == hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest()
+    saved = dict(np.load(previous_checkpoint))
+    accepted_count = int(saved['completed_probe_steps'])
+    assert all(r['accepted'] for r in previous_result['records'][:accepted_count])
+    start_step = previous_result['start_step']+accepted_count
+    resume_description = dict(resumed_checkpoint_sha256=previous_result['probe_checkpoint_sha256'],
+                              resumed_accepted_probe_steps=accepted_count)
 result = dict(complete=False, engineering_only=True, protocol=protocol, records=[],
     protocol_sha256=hashlib.sha256(protocol_path.read_bytes()).hexdigest(),
     reference_config_sha256=m['config_sha256'], start_step=start_step,
     checkpoint_sha256=hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest(),
     source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
+result.update(resume_description)
 output = P/protocol.get('output', 'experiments/metrics/dynamic_quadratic_strict_stopping_probe.json')
 lock = (P/'experiments/logs'/f'{output.stem}.lock').open('w')
 fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -77,6 +93,16 @@ history = []
 def monitor(snes, iteration, norm):
     history.append(dict(iteration=int(iteration), residual_N=float(norm) if np.isfinite(norm) else None))
     print('STRICT PROBE', iteration, norm, flush=True)
+    if 'iterate_checkpoint' in protocol:
+        iterate_path = P/protocol['iterate_checkpoint']
+        temporary = iterate_path.with_suffix('.pending.npz')
+        np.savez_compressed(temporary, accepted=False,
+            protocol_sha256=result['protocol_sha256'],
+            original_checkpoint_sha256=result['checkpoint_sha256'],
+            time_s=result['last_attempt_time_s'], step=i,
+            u=snes.getSolution().getArray(readonly=True).copy(),
+            **{name:getattr(problem,name).vector().get_local() for name in ['u_old','v_old','a_old']})
+        temporary.replace(iterate_path)
     if time.perf_counter()-started > protocol['wall_budget_seconds']:
         result['budget_exhausted'] = True
         persist()

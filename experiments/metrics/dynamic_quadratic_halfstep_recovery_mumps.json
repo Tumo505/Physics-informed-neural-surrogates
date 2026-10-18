@@ -16,7 +16,184 @@
     "fields": "experiments/logs/dynamic_quadratic_halfstep_recovery_mumps_fields.npy",
     "scope": "Prospective bounded two-step algebraic recovery from immutable450-step refined0.625ms checkpoint, through0.2825s. Original GAMG failure was KSP iteration exhaustion at1000 iterations before any Newton update. Preserve dt/mesh/Q6/pressure/passive law/histories, strict nonlinear stopping and unchanged physical acceptance. Compare direct MUMPS against restarted GMRES/GAMG with3000 linear iterations and restart200, each with1800s solve budget. Save every accepted field separately. Both accepted solutions require same-root agreement at1e-6 relative and1nm absolute before using this as backend qualification. No reference overwrite, full-cycle convergence or continuum claim."
   },
-  "records": [],
+  "records": [
+    {
+      "step": 450,
+      "time_s": 0.281875,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 4.501743415511018e-12,
+      "KSP_reason": 4,
+      "effective_KSP": "preonly",
+      "effective_PC": "lu",
+      "last_linear_iterations": 1,
+      "minimum_endpoint_sampled_detF": 0.3074110667486098,
+      "minimum_stress_sampled_detF": 0.30310772205417696,
+      "nonlinear_seconds": 693.5740582910366,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.719131665861117
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.22387093648753156
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.2010312549900143
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.10594329775030202
+        },
+        {
+          "iteration": 4,
+          "residual_N": 0.0892028596850944
+        },
+        {
+          "iteration": 5,
+          "residual_N": 0.07798425758912834
+        },
+        {
+          "iteration": 6,
+          "residual_N": 0.06887625857054033
+        },
+        {
+          "iteration": 7,
+          "residual_N": 0.06115393288562732
+        },
+        {
+          "iteration": 8,
+          "residual_N": 0.05447871555423817
+        },
+        {
+          "iteration": 9,
+          "residual_N": 0.0486446448024205
+        },
+        {
+          "iteration": 10,
+          "residual_N": 0.047192732035143715
+        },
+        {
+          "iteration": 11,
+          "residual_N": 0.006102503393490216
+        },
+        {
+          "iteration": 12,
+          "residual_N": 0.00016451290363790928
+        },
+        {
+          "iteration": 13,
+          "residual_N": 3.8639649465503753e-07
+        },
+        {
+          "iteration": 14,
+          "residual_N": 4.501743415511018e-12
+        }
+      ]
+    },
+    {
+      "step": 451,
+      "time_s": 0.2825,
+      "accepted": false,
+      "SNES_reason": -5,
+      "residual_N": 1.5021860509544458,
+      "KSP_reason": 4,
+      "effective_KSP": "preonly",
+      "effective_PC": "lu",
+      "last_linear_iterations": 1,
+      "minimum_endpoint_sampled_detF": 0.23208927250921,
+      "minimum_stress_sampled_detF": 0.30596559348283475,
+      "nonlinear_seconds": 930.2573759589577,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 8614.655906917984
+        },
+        {
+          "iteration": 1,
+          "residual_N": 8613.357731379605
+        },
+        {
+          "iteration": 2,
+          "residual_N": 8567.961503866585
+        },
+        {
+          "iteration": 3,
+          "residual_N": 7753.26287549144
+        },
+        {
+          "iteration": 4,
+          "residual_N": 7016.449377895682
+        },
+        {
+          "iteration": 5,
+          "residual_N": 6349.737401675563
+        },
+        {
+          "iteration": 6,
+          "residual_N": 5746.448805733621
+        },
+        {
+          "iteration": 7,
+          "residual_N": 5689.284016182654
+        },
+        {
+          "iteration": 8,
+          "residual_N": 2151.0731454832053
+        },
+        {
+          "iteration": 9,
+          "residual_N": 1946.2212291734184
+        },
+        {
+          "iteration": 10,
+          "residual_N": 1761.0488024582978
+        },
+        {
+          "iteration": 11,
+          "residual_N": 655.6256537970164
+        },
+        {
+          "iteration": 12,
+          "residual_N": 245.13411927855702
+        },
+        {
+          "iteration": 13,
+          "residual_N": 221.8088139551896
+        },
+        {
+          "iteration": 14,
+          "residual_N": 81.77405883233638
+        },
+        {
+          "iteration": 15,
+          "residual_N": 81.40431495947877
+        },
+        {
+          "iteration": 16,
+          "residual_N": 27.96025943389674
+        },
+        {
+          "iteration": 17,
+          "residual_N": 9.968895627588637
+        },
+        {
+          "iteration": 18,
+          "residual_N": 9.697450288344335
+        },
+        {
+          "iteration": 19,
+          "residual_N": 3.928261630203446
+        },
+        {
+          "iteration": 20,
+          "residual_N": 1.5021860509544458
+        }
+      ]
+    }
+  ],
   "protocol_sha256": "0d2ede10074427e42368f785e5640d0669c878ef0b2bbc2b1fca70e978adcfb8",
   "reference_config_sha256": "c39148048523cce37d86f444020120722616c7891923d3531bcb8dc0a2760851",
   "start_step": 450,
@@ -24,5 +201,97 @@
   "source_sha256": "39e82ebad9b0f3453ec4aca8a0e80c95d1aa9d5c88e5121a27b57d715e6b209f",
   "dt_s": 0.000625,
   "full_cycle": false,
-  "changed_time_discretization": false
+  "changed_time_discretization": false,
+  "last_attempt_time_s": 0.2825,
+  "probe_checkpoint_sha256": "a4801a518796da7c3a9eed924fc7d13dc35bc4577edcd2895db5c5417f2227a8",
+  "failure": "Physical acceptance criteria failed in strict probe",
+  "all_requested_steps_accepted": false,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 8614.655906917984
+    },
+    {
+      "iteration": 1,
+      "residual_N": 8613.357731379605
+    },
+    {
+      "iteration": 2,
+      "residual_N": 8567.961503866585
+    },
+    {
+      "iteration": 3,
+      "residual_N": 7753.26287549144
+    },
+    {
+      "iteration": 4,
+      "residual_N": 7016.449377895682
+    },
+    {
+      "iteration": 5,
+      "residual_N": 6349.737401675563
+    },
+    {
+      "iteration": 6,
+      "residual_N": 5746.448805733621
+    },
+    {
+      "iteration": 7,
+      "residual_N": 5689.284016182654
+    },
+    {
+      "iteration": 8,
+      "residual_N": 2151.0731454832053
+    },
+    {
+      "iteration": 9,
+      "residual_N": 1946.2212291734184
+    },
+    {
+      "iteration": 10,
+      "residual_N": 1761.0488024582978
+    },
+    {
+      "iteration": 11,
+      "residual_N": 655.6256537970164
+    },
+    {
+      "iteration": 12,
+      "residual_N": 245.13411927855702
+    },
+    {
+      "iteration": 13,
+      "residual_N": 221.8088139551896
+    },
+    {
+      "iteration": 14,
+      "residual_N": 81.77405883233638
+    },
+    {
+      "iteration": 15,
+      "residual_N": 81.40431495947877
+    },
+    {
+      "iteration": 16,
+      "residual_N": 27.96025943389674
+    },
+    {
+      "iteration": 17,
+      "residual_N": 9.968895627588637
+    },
+    {
+      "iteration": 18,
+      "residual_N": 9.697450288344335
+    },
+    {
+      "iteration": 19,
+      "residual_N": 3.928261630203446
+    },
+    {
+      "iteration": 20,
+      "residual_N": 1.5021860509544458
+    }
+  ],
+  "wall_seconds": 1627.8658930000383
 }
