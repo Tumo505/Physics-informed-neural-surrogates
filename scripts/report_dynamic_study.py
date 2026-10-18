@@ -204,6 +204,15 @@ def dynamic_rows(P):
   mesh=P/'experiments/metrics/dynamic_quadratic_controlled_ew_mesh.json'
   if mesh.exists() and json.loads(mesh.read_text()).get('complete'):
    a=json.loads(mesh.read_text());rows+=['',f'**Completed inexact-Newton full-cycle mesh control.** Fixed P2/Q6/0.625ms with matched solver settings:17625 versus141000 tetrahedra,1600 states per level. Relative volume/time L2 difference {a["relative_space_time_L2"]:.4%}; component volume/time RMSE {1000*a["component_volume_time_RMSE_m"]:.6g}mm. Within the original1% sensitivity tolerance: {a["passes_declared_one_percent_sensitivity"]}. The fine prefix contains explicitly inherited accepted states; this cannot support a fresh matched-runtime claim. Two spatial levels and unresolved integration sensitivity do not establish continuum accuracy.']
+ third_config=P/'configs/physics/dynamic_quadratic_reference_halfstep_ew_third.json'
+ if third_config.exists():
+  rows+=['','**Bounded third-mesh follow-up.** The retained11.87% two-level discrepancy motivates a from-rest third uniform mesh:1,128,000 tetrahedra, expected4,812,987 P2 displacement DOFs and1600 fixed0.625ms steps. All material/forcing/Q6/EW/nonlinear settings match the fine reference. No inherited trajectory prefix is used. The earlier independently verified one-query loaded probe demonstrates limited feasibility only. The generation, comparison and audit workflow is capped at72 hours total,30GiB sampled descendant RSS and100GiB free disk reserve, sampled every2s. Only this workflow process group is terminated if a bound is reached; accepted checkpoints are preserved. This is a resource budget, not a completion-time prediction. No assumed convergence rate or neural retraining follows from launching it.']
+  p=P/'experiments/metrics/dynamic_quadratic_controlled_ew_third_mesh_pipeline.json'
+  if p.exists():
+   a=json.loads(p.read_text());rows+=['',f'Third-mesh workflow phase {a.get("active_phase")}; complete {a["complete"]}; recorded failure {a.get("failure","none")}.']
+  root=P/'data/processed/cardiac_quadratic_reference_halfstep_ew_third_v1'
+  if (root/'manifest.json').exists():
+   a=json.loads((root/'manifest.json').read_text());rows+=['',f'Third-mesh persisted accepted states {a["completed_steps"]}/{a["n_steps"]}; complete {a["complete"]}.']
   equivalence=P/'experiments/metrics/dynamic_quadratic_ew_coarse_solver_equivalence.json'
   if equivalence.exists():
    a=json.loads(equivalence.read_text());rows+=['',f'**Coarse recursive solver-policy control.** Compare all {a["n_steps"]} states against the prior strict GMRES/GAMG/direct-fallback protocol, with identical space, timestep, quadrature, forcing and geometry. Both complete references independently passed native/hash/whole-element/norm audits. Existing1e-6 frame-relative/1nm absolute coefficient criteria passed {a["passed"]}; maximum frame-relative difference {a["maximum_relative_coefficient_difference"]:.6g}, maximum absolute difference {a["maximum_absolute_coefficient_difference_m"]:.6g}m. This checks accumulated solver agreement on one case, not continuum accuracy or an isolated speedup.']

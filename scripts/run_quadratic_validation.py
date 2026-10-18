@@ -4,6 +4,8 @@ import fcntl
 import hashlib
 import json
 import os
+import signal
+import shutil
 from pathlib import Path
 import subprocess
 import time
@@ -17,6 +19,9 @@ ap.add_argument('--output-stem')
 ap.add_argument('--wait-for-workflow', help='Wait for this existing workflow lock, then require its successful audited completion')
 ap.add_argument('--require-krylov-probe', help='Require a completed three-state same-root backend probe')
 ap.add_argument('--reuse-positivity-audit',action='store_true',help='Reuse a complete positivity audit only when its config, frame count and output hashes match')
+ap.add_argument('--max-wall-hours',type=float)
+ap.add_argument('--max-rss-gib',type=float)
+ap.add_argument('--min-free-disk-gib',type=float)
 args = ap.parse_args()
 baseline = 'configs/physics/dynamic_quadratic_reference_'+('gamg' if args.factor in ['mesh_gamg','quadrature'] else 'dt00125')+'.json'
 candidate = 'configs/physics/dynamic_quadratic_reference_'+dict(time='dt001',mesh='refined',solver='gamg',mesh_gamg='refined_gamg',quadrature='quadrature8',reference='halfstep_gamg')[args.factor]+'.json'
@@ -40,6 +45,10 @@ state = dict(complete=False, factor=args.factor, reference=name, phases=[],
     config_sha256={c: hashlib.sha256((P/c).read_bytes()).hexdigest() for c in [baseline, candidate]},
     runner_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     scope='Controlled numerical refinement only. Does not refit models or calibrate uncertainty.')
+workflow_start=time.perf_counter()
+state['resource_limits']=dict(wall_hours=args.max_wall_hours,total_descendant_RSS_GiB=args.max_rss_gib,
+    minimum_free_disk_GiB=args.min_free_disk_gib,sampling_interval_s=2)
+assert all(v is None or v>0 for v in [args.max_wall_hours,args.max_rss_gib,args.min_free_disk_gib])
 
 
 def persist():
@@ -50,13 +59,43 @@ def run(label, command):
     state['active_phase'] = label
     persist()
     start = time.perf_counter()
+    peak_rss=0;stop_reason=None
     with (P/'experiments/logs'/f'{stem}_{label}.log').open('a') as log:
-        completed = subprocess.run(command, cwd=P, env=env, stdout=log, stderr=subprocess.STDOUT)
-    state['phases'].append(dict(phase=label, return_code=completed.returncode,
-                               measured_wall_seconds=time.perf_counter()-start))
+        if any(v is not None for v in [args.max_wall_hours,args.max_rss_gib,args.min_free_disk_gib]):
+            child=subprocess.Popen(command,cwd=P,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+            while child.poll() is None:
+                rows=subprocess.check_output(['ps','-axo','pid=,ppid=,rss='],text=True)
+                processes=[tuple(map(int,line.split())) for line in rows.splitlines() if line.strip()]
+                descendants={child.pid}
+                while True:
+                    found={pid for pid,parent,rss in processes if parent in descendants}
+                    if found<=descendants:break
+                    descendants.update(found)
+                rss=sum(rss*1024 for pid,parent,rss in processes if pid in descendants)
+                peak_rss=max(peak_rss,rss)
+                if args.max_wall_hours and time.perf_counter()-workflow_start>args.max_wall_hours*3600:stop_reason='predeclared_workflow_wall_limit'
+                if args.max_rss_gib and rss>args.max_rss_gib*2**30:stop_reason='predeclared_descendant_RSS_limit'
+                if args.min_free_disk_gib and shutil.disk_usage(P).free<args.min_free_disk_gib*2**30:stop_reason='predeclared_free_disk_reserve'
+                if stop_reason:
+                    try:os.killpg(child.pid,signal.SIGTERM)
+                    except ProcessLookupError:pass
+                    try:child.wait(timeout=10)
+                    except subprocess.TimeoutExpired:
+                        try:os.killpg(child.pid,signal.SIGKILL)
+                        except ProcessLookupError:pass
+                        child.wait()
+                    break
+                time.sleep(2)
+            returncode=child.wait()
+        else:
+            returncode=subprocess.run(command,cwd=P,env=env,stdout=log,stderr=subprocess.STDOUT).returncode
+    state['phases'].append(dict(phase=label, return_code=returncode,
+                               measured_wall_seconds=time.perf_counter()-start,
+                               sampled_peak_descendant_RSS_bytes=peak_rss if args.max_rss_gib else None,
+                               stop_reason=stop_reason))
     persist()
-    if completed.returncode:
-        raise RuntimeError(f'{label} failed with return code {completed.returncode}; see preserved log')
+    if returncode or stop_reason:
+        raise RuntimeError(f'{label} stopped: {stop_reason or "process_failure"}, return code {returncode}; see preserved log')
 
 
 persist()
