@@ -49,7 +49,12 @@ geo, material, base_problem = setup(dt=cfg['dt_s'], geometry_scales=cfg['geometr
 parameters = dict(base_problem.parameters)
 parameters['function_space'] = 'P_2'
 df.parameters['form_compiler']['quadrature_degree'] = cfg['quadrature_degree']
-problem = make_quadratic_problem(geo, material, parameters, cfg.get('native_solver', 'mumps'))
+problem = make_quadratic_problem(geo, material, parameters, cfg.get('native_solver', 'mumps'),
+    linear_maximum_iterations=cfg.get('linear_maximum_iterations',1000),
+    gmres_restart=cfg.get('gmres_restart',100))
+if cfg.get('inexact_newton',False):
+    assert cfg.get('native_solver') == 'gamg'
+    problem.solver._snes.setUseEW(True,version=2,rtol_0=.01,rtol_max=.1)
 for key, native_key in [('nonlinear_absolute_tolerance_N','absolute_tolerance'),
                         ('nonlinear_relative_tolerance','relative_tolerance')]:
     if key in cfg:
@@ -150,6 +155,19 @@ for i in range(start_step, stop):
     uold = problem.u_old.vector().get_local().copy()
     vold = problem.v_old.vector().get_local()
     aold = problem.a_old.vector().get_local()
+    if cfg.get('save_nonlinear_checkpoint',False):
+        def save_iterate(snes,iteration,norm):
+            target=out/'UNACCEPTED_nonlinear_iterate.npz'
+            pending=target.with_suffix('.pending.npz')
+            np.savez_compressed(pending,accepted=False,step=i,time_s=float(times[i]),
+                pressure_Pa=float(pressure[i]),config_sha256=config_hash,
+                residual_N=float(norm),nonlinear_iteration=int(iteration),
+                u=snes.getSolution().getArray(readonly=True).copy(),
+                **{name:getattr(problem,name).vector().get_local() for name in ['u_old','v_old','a_old']})
+            pending.replace(target)
+            print('NEWTON',i,iteration,norm,flush=True)
+        problem.solver._snes.cancelMonitor()
+        problem.solver._snes.setMonitor(save_iterate)
     problem.parameters['p'].assign(float(pressure[i]))
     best = uold
     best_residual = float('inf')
@@ -171,6 +189,8 @@ for i in range(start_step, stop):
         if not cfg.get('allow_direct_fallback'):
             reject(i, int(problem.solver._snes.getConvergedReason()), None, 'native_solver_exception')
         initial_exception = str(error); iterations = 0
+    if cfg.get('inexact_newton',False):
+        assert problem.solver._snes.getUseEW(), 'Requested inexact Newton was not effective'
     solve_seconds = time.perf_counter() - tick
     reason = int(problem.solver._snes.getConvergedReason())
     initial_reason = reason
@@ -230,6 +250,8 @@ for i in range(start_step, stop):
     nodes[i] = problem.u.compute_vertex_values(geo.mesh).reshape(3, -1).T
     problem._update_fields()
     records.append(dict(step=i, time_s=float(times[i]), iterations=int(iterations),
+                        EW_effective=bool(problem.solver._snes.getUseEW()),
+                        nonlinear_iterations=int(problem.solver._snes.getIterationNumber()),
                         direct_fallback_used=fallback_used, initial_SNES_reason=initial_reason,
                         initial_solver_failure=initial_solver_failure,
                         SNES_reason=reason, residual_l2_N=R,

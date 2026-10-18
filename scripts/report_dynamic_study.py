@@ -186,6 +186,15 @@ def dynamic_rows(P):
    audit=P/'experiments/metrics/dynamic_quadratic_robust_refined_ew_recovery_verification.json'
    if audit.exists():
     a=json.loads(audit.read_text());rows+=['',f'Independent local recovery audit passed {a["passed"]}; full cycle remains unvalidated.']
+ ew_config=P/'configs/physics/dynamic_quadratic_reference_halfstep_ew_refined.json'
+ if ew_config.exists():
+  rows+=['','**Fixed inexact-Newton full-cycle follow-up.** Both mesh levels use the separately fixed P2/Q6/0.625ms protocol with native EW version2(initial0.01/max0.1), GMRES/GAMG restart200/cap3000, strict1e-8N absolute/zero-relative stopping and100 Newton ceiling. No direct fallback is used. A two-step native coarse startup check precedes full runs. The fine candidate inherits452 accepted earlier states plus the two independently audited EW states through0.28375s; its manifest retains the full inheritance chain, source hashes and accepted prefix hash. Coarse starts from rest. Save each subsequent nonlinear iterate explicitly as UNACCEPTED. Full-cycle native force, hashes, whole-element positivity and independent norms must pass before mesh comparison; inherited-prefix solve times cannot establish matched runtime. Q6 integration sensitivity remains unresolved. Frozen neural checkpoints remain unchanged.']
+  for tag in ['coarse','refined']:
+   root=P/f'data/processed/cardiac_quadratic_reference_halfstep_ew_{tag}_v1'
+   if (root/'manifest.json').exists():
+    v=json.loads((root/'manifest.json').read_text());rows+=['',f'Inexact-Newton {tag} candidate: {v["completed_steps"]}/{v["n_steps"]} persisted accepted states; complete {v["complete"]}.']
+   if (root/'failure.json').exists():
+    v=json.loads((root/'failure.json').read_text());rows+=['',f'Inexact-Newton {tag} rejected at {v["failed_time_s"]}s with native force {v["residual_l2_N"]}N and SNES {v["SNES_reason"]}; retain accepted prefix only.']
   comparison=P/'experiments/metrics/dynamic_quadratic_controlled_robust_mesh.json'
   if comparison.exists() and json.loads(comparison.read_text()).get('complete'):
    v=json.loads(comparison.read_text());rows+=['',f'Robust-policy full-cycle mesh sensitivity {v["relative_space_time_L2"]:.4%}; within1% {v["passes_declared_one_percent_sensitivity"]}. Inherited-prefix provenance and separately unresolved Q6 integration uncertainty remain material limitations.']

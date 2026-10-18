@@ -1,0 +1,34 @@
+{
+  "complete": true,
+  "passed": true,
+  "full_cycle": false,
+  "records": [
+    {
+      "time_s": 0.283125,
+      "native_residual_N": 2.7671633202106387e-09,
+      "endpoint_minimum_Bernstein_bound": 0.3035276352506973,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.30412633797312244,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 6.246197496839472e-15
+    },
+    {
+      "time_s": 0.28375,
+      "native_residual_N": 1.732128185992191e-11,
+      "endpoint_minimum_Bernstein_bound": 0.30202353516295444,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.302619723408601,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 6.053519765238063e-15
+    }
+  ],
+  "dt_s": 0.000625,
+  "accepted_prefix_only": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "6d1c3ef44bab0885c3433da445de3fc7585f03b2c46192bdb90df0e54f61b6ef",
+  "original_checkpoint_sha256": "618af829dbbba266124e59c209e645f44b635744500e7a5dd772b3c0469aaf10",
+  "fields_sha256": "0ef3cc5455a7f0f24a7bb281f1bebcc7454bffe27c0495142e6d3d3db96721c4",
+  "inputs_sha256": "e00752400d2e06c1cb85568d5d615f4703c361bfe54b611ffb59f8ab8b3e8f2b",
+  "executed_source_sha256": "4f74ae42c4ea8d34493d275fba568e27cfc5c29a2f2f480f868c3722e9fd8d75",
+  "scope": "2 local probe steps with inherited nonzero histories, not a full-cycle reference. The recorded protocol specifies whether time discretization changed. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities and independent canonical-quadrature/UFL displacement norms checked at 2 fixed frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim."
+}

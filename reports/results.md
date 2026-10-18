@@ -232,7 +232,15 @@ Robust refined candidate: 452/1600 persisted accepted states; complete False.
 
 **Separate fine-mesh inexact-Newton recovery.** From the unchanged accepted452-state checkpoint, try0.283125/0.28375s using native Eisenstat–Walker version2(initial linear rtol0.01/max0.1), GMRES/GAMG restart200/cap3000, strict1e-8N absolute/zero-relative stopping,100 Newton ceiling and1800s solve budget. Preserve iterates and accepted histories. Success on the third-mesh loaded query motivates this solver-only attempt but does not imply success here. Independent native force, whole-element positivity and norm audits are required before any accepted probe state enters a future trajectory.
 
-Recovery finished False; accepted 0/2.
+Recovery finished True; accepted 2/2.
+
+Independent local recovery audit passed True; full cycle remains unvalidated.
+
+**Fixed inexact-Newton full-cycle follow-up.** Both mesh levels use the separately fixed P2/Q6/0.625ms protocol with native EW version2(initial0.01/max0.1), GMRES/GAMG restart200/cap3000, strict1e-8N absolute/zero-relative stopping and100 Newton ceiling. No direct fallback is used. A two-step native coarse startup check precedes full runs. The fine candidate inherits452 accepted earlier states plus the two independently audited EW states through0.28375s; its manifest retains the full inheritance chain, source hashes and accepted prefix hash. Coarse starts from rest. Save each subsequent nonlinear iterate explicitly as UNACCEPTED. Full-cycle native force, hashes, whole-element positivity and independent norms must pass before mesh comparison; inherited-prefix solve times cannot establish matched runtime. Q6 integration sensitivity remains unresolved. Frozen neural checkpoints remain unchanged.
+
+Inexact-Newton coarse candidate: 10/1600 persisted accepted states; complete False.
+
+Inexact-Newton refined candidate: 454/1600 persisted accepted states; complete False.
 
 **Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.
 

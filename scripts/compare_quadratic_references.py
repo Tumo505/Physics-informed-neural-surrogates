@@ -57,6 +57,7 @@ quadrature_changed = ca['quadrature_degree'] != cb['quadrature_degree']
 assert sum([mesh_changed, time_changed, quadrature_changed]) == 1, 'Change exactly one discretization factor'
 assert ca.get('native_solver', 'mumps') == cb.get('native_solver', 'mumps'), 'Match solver backend for a one-factor discretization control'
 for key,default in [('allow_direct_fallback',False),('maximum_newton_iterations',100),
+                    ('inexact_newton',False),('linear_maximum_iterations',1000),('gmres_restart',100),
                     ('nonlinear_absolute_tolerance_N',1e-8),('nonlinear_relative_tolerance',1e-8)]:
     assert ca.get(key,default)==cb.get(key,default), f'Match nonlinear solver policy: {key}'
 assert cb['refinement_level'] >= ca['refinement_level']
