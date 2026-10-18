@@ -1,0 +1,151 @@
+{
+  "engineering_only": true,
+  "complete": true,
+  "worker": {
+    "pid": 47397,
+    "phase": "finished",
+    "tetrahedra": 1128000,
+    "vertices": 213245,
+    "pressure_Pa": 10891.20552163691,
+    "history_probe": {
+      "source_reference": "cardiac_quadratic_reference_halfstep_refined_gamg_v1",
+      "source_step": 431,
+      "source_time_s": 0.27,
+      "source_native_residual_N": 6.77292456245502e-09,
+      "source_config_sha256": "c39148048523cce37d86f444020120722616c7891923d3531bcb8dc0a2760851",
+      "source_history_prefix_sha256": "a42036a33f15e7beb74c2da016a6e9b4481515450b521042573a4cf92d3605ec",
+      "source_current_field_sha256": "068aa8963ce6d0087f0d361b71fe0396159d17af6a8c85de9c8881276efb5438",
+      "manufactured_transfer_maximum_error": 9.71445146547012e-17,
+      "resume": {
+        "input_sha256": {
+          "experiments/metrics/dynamic_refinement_capacity_p2_r2_gamg_loaded_431_ew.json": "88eda3f3185fd813be7d5294c223f31865b63d3e8323ad46417e09831d789345",
+          "experiments/logs/dynamic_refinement_capacity_p2_r2_gamg_loaded_431_ew_fixed_histories.npz": "d3e3fad745207bb0b96ce7703e998143235998055f50b06cc62816f20cf4c472",
+          "experiments/logs/dynamic_refinement_capacity_p2_r2_gamg_loaded_431_ew_UNACCEPTED_iterate.npy": "c9e1b67c8219e567e9576468670d8601d38a59dc791093d41a6bdeb8b327b0ff"
+        },
+        "replayed_residual_N": 0.0003512603395465593,
+        "recorded_residual_N": 0.0003512603395465593,
+        "scope": "Unaccepted initial guess only; fixed mechanics and final force criterion retained"
+      }
+    },
+    "displacement_dofs": 4812987,
+    "nonlinear_seconds": 868.7903805000242,
+    "setup_and_solve_seconds": 932.7845058749663,
+    "iterations": 121,
+    "snes_reason": 2,
+    "residual_l2_N": 2.223970191992169e-10,
+    "solve_accepted": true,
+    "nonlinear_history": [
+      {
+        "iteration": 0,
+        "residual_N": 0.0003512603395465593,
+        "KSP_rtol": 1e-10
+      },
+      {
+        "iteration": 1,
+        "residual_N": 0.0003195096907131401,
+        "KSP_rtol": 0.01
+      },
+      {
+        "iteration": 2,
+        "residual_N": 0.00030564121505776716,
+        "KSP_rtol": 0.1
+      },
+      {
+        "iteration": 3,
+        "residual_N": 3.06096331366783e-05,
+        "KSP_rtol": 0.1
+      },
+      {
+        "iteration": 4,
+        "residual_N": 3.4456830082846396e-06,
+        "KSP_rtol": 0.024155253306398186
+      },
+      {
+        "iteration": 5,
+        "residual_N": 8.700766181966527e-08,
+        "KSP_rtol": 0.029185072949907537
+      },
+      {
+        "iteration": 6,
+        "residual_N": 2.223970191992169e-10,
+        "KSP_rtol": 0.002599191376023137
+      }
+    ],
+    "linear_history": [
+      {
+        "nonlinear_iteration": 0,
+        "linear_iteration": 0,
+        "reported_residual": 0.0003512603395465593,
+        "KSP_rtol": 0.01
+      },
+      {
+        "nonlinear_iteration": 0,
+        "linear_iteration": 25,
+        "reported_residual": 4.995653041204255e-06,
+        "KSP_rtol": 0.01
+      },
+      {
+        "nonlinear_iteration": 1,
+        "linear_iteration": 0,
+        "reported_residual": 0.0003195096907131401,
+        "KSP_rtol": 0.1
+      },
+      {
+        "nonlinear_iteration": 2,
+        "linear_iteration": 0,
+        "reported_residual": 0.00030564121505776716,
+        "KSP_rtol": 0.1
+      },
+      {
+        "nonlinear_iteration": 3,
+        "linear_iteration": 0,
+        "reported_residual": 3.06096331366783e-05,
+        "KSP_rtol": 0.024155253306398186
+      },
+      {
+        "nonlinear_iteration": 3,
+        "linear_iteration": 25,
+        "reported_residual": 8.182071137593789e-07,
+        "KSP_rtol": 0.024155253306398186
+      },
+      {
+        "nonlinear_iteration": 4,
+        "linear_iteration": 0,
+        "reported_residual": 3.4456830082846396e-06,
+        "KSP_rtol": 0.029185072949907537
+      },
+      {
+        "nonlinear_iteration": 5,
+        "linear_iteration": 0,
+        "reported_residual": 8.700766181966527e-08,
+        "KSP_rtol": 0.002599191376023137
+      },
+      {
+        "nonlinear_iteration": 5,
+        "linear_iteration": 25,
+        "reported_residual": 1.6802831490952971e-09,
+        "KSP_rtol": 0.002599191376023137
+      }
+    ],
+    "EW_effective": true
+  },
+  "executed_source_sha256": "e54b33424214b849fbe783d50cc187341a4cb7b28757f12e6987f824691eed73",
+  "displacement_degree": 2,
+  "refinement_level": 2,
+  "native_solver": "gamg",
+  "dt_s": 0.000625,
+  "inexact_newton": true,
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "process_exit_code": 0,
+  "stop_reason": null,
+  "measured_wall_seconds": 933.9793924579863,
+  "sampled_peak_worker_RSS_bytes": 10985111552,
+  "RSS_sample_interval_s": 2,
+  "declared_limits": {
+    "wall_seconds": 1800.0,
+    "RSS_GiB": 24.0,
+    "MUMPS_MB_per_process": 20000
+  },
+  "scope": "One loaded-state query using interpolated accepted histories from cardiac_quadratic_reference_halfstep_refined_gamg_v1, step431; dt=0.000625s using gamg; same benchmark mechanics; resource feasibility only. Does not establish full-cycle convergence, stability or accuracy."
+}

@@ -1,0 +1,27 @@
+{
+  "complete": true,
+  "passed": true,
+  "full_cycle": false,
+  "engineering_only": true,
+  "input_sha256": {
+    "experiments/metrics/dynamic_refinement_capacity_p2_r2_gamg_loaded_431_ew_resume_b37d3ea8.json": "7d5be0435883c44c0c904c4a975d1e6f390bce75f91af80ccffc612ea63eaf12",
+    "experiments/logs/dynamic_refinement_capacity_p2_r2_gamg_loaded_431_ew_resume_b37d3ea8_fixed_histories.npz": "d3e3fad745207bb0b96ce7703e998143235998055f50b06cc62816f20cf4c472",
+    "experiments/logs/dynamic_refinement_capacity_p2_r2_gamg_loaded_431_ew_resume_b37d3ea8_UNACCEPTED_iterate.npy": "bff0816801adabb9d890e269ec3e5228710ddb846f76fe0893de0f1af8966446"
+  },
+  "executed_source_sha256": "35c0183e7a899d194deca61bc103b1c6098139a172b86b13c1e00598386e1b93",
+  "native_residual_N": 2.223970191992169e-10,
+  "minimum_Bernstein_bound": {
+    "endpoint": 0.1278194448010781,
+    "stress": 0.2748259617225599
+  },
+  "unresolved_elements": {
+    "endpoint": 0,
+    "stress": 0
+  },
+  "displacement_dofs": 4812987,
+  "tetrahedra": 1128000,
+  "canonical_map_maximum_error": 9.963557756620389e-14,
+  "physical_L2_squared_m5": 1.330665243078778e-07,
+  "independent_norm_relative_error": 1.869861180714858e-14,
+  "scope": "One loaded algebraic query with inherited interpolated histories. Independently reassembled native force, every-element endpoint/stress cubic Bernstein bounds with 1e-9 float64 margin, polynomial identities and independent canonical P2/UFL norm. Not interval arithmetic, a trajectory or numerical convergence evidence."
+}

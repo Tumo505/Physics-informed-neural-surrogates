@@ -163,6 +163,9 @@ def dynamic_rows(P):
   rows+=['','**Checkpointed third-mesh corrective continuation.** Resume the timed-out inexact-Newton query from its saved unaccepted iterate and fixed histories, with a separate1800s/24GiB budget. Before solving, require independently reassembled force to match the recorded residual within1e-7 relative/1e-10N absolute; hash all three input records. Final strict force acceptance remains unchanged. This preserves progress without accepting the timed-out state or claiming a trajectory result.']
   if result_path.exists():
    v=json.loads(result_path.read_text());rows+=['',f'Resumed loaded query: accepted {v["worker"].get("solve_accepted",False)}, stop {v.get("stop_reason")}, wall {v["measured_wall_seconds"]:.1f}s.']
+   audit_path=result_path.with_name(result_path.stem+'_verification.json')
+   if audit_path.exists():
+    a=json.loads(audit_path.read_text());rows+=['',f'Independent loaded-query audit passed {a["passed"]}: native force {a["native_residual_N"]:.6g}N; endpoint/stress whole-element bounds {a["minimum_Bernstein_bound"]["endpoint"]:.6g}/{a["minimum_Bernstein_bound"]["stress"]:.6g}; canonical/native norm relative difference {a["independent_norm_relative_error"]:.3g}. All {a["tetrahedra"]} elements checked in chunks. This verifies only the inherited-history query; full third-mesh trajectories and mesh convergence remain unestablished.']
   else:
    rows+=['',f'Resumed loaded query phase: {resumed.get("phase")}.']
  if robust_config.exists():

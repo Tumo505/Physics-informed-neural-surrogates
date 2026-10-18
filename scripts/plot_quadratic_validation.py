@@ -96,6 +96,23 @@ if solver_path.exists():
         fig.tight_layout()
         fig.savefig(P/'reports/figures/dynamic_quadratic_solver_equivalence.png', dpi=180)
         plt.close(fig)
+loaded_stem='dynamic_refinement_capacity_p2_r2_gamg_loaded_431_ew'
+loaded_path=P/f'experiments/metrics/{loaded_stem}.json'
+resumed_path=P/f'experiments/metrics/{loaded_stem}_resume_b37d3ea8.json'
+if loaded_path.exists() and resumed_path.exists():
+    initial=json.loads(loaded_path.read_text())['worker']['nonlinear_history']
+    resumed=json.loads(resumed_path.read_text())['worker']['nonlinear_history']
+    offset=initial[-1]['iteration']
+    fig,ax=plt.subplots(figsize=(8,4.8))
+    ax.semilogy([r['iteration'] for r in initial],[r['residual_N'] for r in initial],'o-',label='Initial 30-minute budget')
+    ax.semilogy([offset+r['iteration'] for r in resumed],[r['residual_N'] for r in resumed],'s-',label='Saved-iterate continuation')
+    ax.axvline(offset,color='gray',linestyle=':',label='Timeout and exact residual replay')
+    ax.axhline(1e-8,color='black',linestyle='--',label='Strict nonlinear absolute tolerance')
+    ax.set(xlabel='Cumulative monitored Newton updates',ylabel='Native force residual (N)',
+           title='Third P2 mesh: recovery of one loaded algebraic query\n1,128,000 tetrahedra; inherited interpolated histories at 0.270 s')
+    ax.grid(alpha=.2);ax.legend(fontsize=8)
+    fig.text(.5,.01,'Engineering feasibility only; this is not a third-mesh trajectory or convergence study.',ha='center',fontsize=9)
+    fig.tight_layout(rect=(0,.04,1,1));fig.savefig(P/'reports/figures/dynamic_quadratic_loaded_recovery.png',dpi=180);plt.close(fig)
 for factor in ['time', 'mesh', 'mesh_gamg', 'quadrature', 'quadrature10', 'halfstep_mesh', 'halfstep_quadrature', 'robust_mesh']:
     f = P/f'experiments/metrics/dynamic_quadratic_controlled_{factor}.json'
     if f.exists():
