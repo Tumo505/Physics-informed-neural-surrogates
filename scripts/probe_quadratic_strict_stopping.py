@@ -90,8 +90,12 @@ if 'fields' in protocol:
         shape=(protocol['steps_after_checkpoint'], problem.u_space.dim()))
 started = time.perf_counter()
 history = []
+if protocol.get('inexact_newton',False):
+    assert method == 'gamg'
+    problem.solver._snes.setUseEW(True,version=2,rtol_0=.01,rtol_max=.1)
 def monitor(snes, iteration, norm):
-    history.append(dict(iteration=int(iteration), residual_N=float(norm) if np.isfinite(norm) else None))
+    history.append(dict(iteration=int(iteration), residual_N=float(norm) if np.isfinite(norm) else None,
+        KSP_rtol=float(snes.getKSP().getTolerances()[0])))
     print('STRICT PROBE', iteration, norm, flush=True)
     if 'iterate_checkpoint' in protocol:
         iterate_path = P/protocol['iterate_checkpoint']
@@ -126,6 +130,8 @@ try:
         history.clear(); tick = time.perf_counter()
         problem.solver.solve()
         snes = problem.solver._snes
+        if protocol.get('inexact_newton',False):
+            assert snes.getUseEW(), 'Requested inexact Newton was not effective'
         R = float(residual(problem).norm('l2')); u = problem.u.vector().get_local()
         endpoint, _ = kin.audit(u); stress, _ = kin.audit(.4*old+.6*u)
         accepted = bool(snes.getConvergedReason()>0 and np.isfinite(R) and R<1e-6
@@ -134,6 +140,7 @@ try:
             SNES_reason=int(snes.getConvergedReason()), residual_N=R if np.isfinite(R) else None,
             KSP_reason=int(snes.getKSP().getConvergedReason()),
             effective_KSP=snes.getKSP().getType(), effective_PC=snes.getKSP().getPC().getType(),
+            EW_effective=bool(snes.getUseEW()),
             last_linear_iterations=int(snes.getKSP().getIterationNumber()),
             minimum_endpoint_sampled_detF=endpoint, minimum_stress_sampled_detF=stress,
             nonlinear_seconds=time.perf_counter()-tick, iteration_history=list(history)))

@@ -1,0 +1,19 @@
+{
+  "reference": "cardiac_quadratic_reference_halfstep_robust_refined_v1",
+  "timestep_divisor": 1,
+  "steps_after_checkpoint": 2,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 1800,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "output": "experiments/metrics/dynamic_quadratic_robust_refined_ew_recovery.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_robust_refined_ew_recovery_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_robust_refined_ew_recovery_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_robust_refined_ew_recovery_iterate.npz",
+  "scope": "Separate bounded exact-grid recovery from the accepted452-state checkpoint at0.2825s. Try the next two targets0.283125/0.28375 using native Eisenstat-Walker version2(initial0.01/max0.1), GMRES/GAMG restart200/cap3000, strict unchanged nonlinear acceptance. This method recovered a different loaded third-mesh query; no robustness transfer is assumed. Preserve the rejected production attempt. All accepted local steps require independent force/whole-element/norm audit. No full-cycle or continuum claim."
+}

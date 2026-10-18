@@ -177,6 +177,15 @@ def dynamic_rows(P):
    p=P/f'data/processed/cardiac_quadratic_reference_halfstep_robust_{tag}_v1/manifest.json'
    if p.exists():
     v=json.loads(p.read_text());rows+=['',f'Robust {tag} candidate: {v["completed_steps"]}/{v["n_steps"]} persisted accepted states; complete {v["complete"]}.']
+  failure=P/'experiments/metrics/cardiac_quadratic_reference_halfstep_robust_refined_v1_failure.json'
+  if failure.exists():
+   v=json.loads(failure.read_text());rows+=['',f'**Robust refined continuation rejected.** At {v["failed_time_s"]}s the iterative solve failed and direct MUMPS exhausted {v["nonlinear_iterations"]} Newton updates with force {v["residual_l2_N"]:.6g}N (SNES {v["SNES_reason"]}). The accepted prefix remains452 states; no new step or full cycle was validated. This is nonlinear failure despite a functioning direct linear solver, so simply increasing Krylov limits does not resolve this attempt.']
+  recovery=P/'experiments/metrics/dynamic_quadratic_robust_refined_ew_recovery.json'
+  if recovery.exists():
+   v=json.loads(recovery.read_text());rows+=['','**Separate fine-mesh inexact-Newton recovery.** From the unchanged accepted452-state checkpoint, try0.283125/0.28375s using native Eisenstat–Walker version2(initial linear rtol0.01/max0.1), GMRES/GAMG restart200/cap3000, strict1e-8N absolute/zero-relative stopping,100 Newton ceiling and1800s solve budget. Preserve iterates and accepted histories. Success on the third-mesh loaded query motivates this solver-only attempt but does not imply success here. Independent native force, whole-element positivity and norm audits are required before any accepted probe state enters a future trajectory.', '',f'Recovery finished {v.get("finished",False)}; accepted {sum(r["accepted"] for r in v["records"])}/2.']
+   audit=P/'experiments/metrics/dynamic_quadratic_robust_refined_ew_recovery_verification.json'
+   if audit.exists():
+    a=json.loads(audit.read_text());rows+=['',f'Independent local recovery audit passed {a["passed"]}; full cycle remains unvalidated.']
   comparison=P/'experiments/metrics/dynamic_quadratic_controlled_robust_mesh.json'
   if comparison.exists() and json.loads(comparison.read_text()).get('complete'):
    v=json.loads(comparison.read_text());rows+=['',f'Robust-policy full-cycle mesh sensitivity {v["relative_space_time_L2"]:.4%}; within1% {v["passes_declared_one_percent_sensitivity"]}. Inherited-prefix provenance and separately unresolved Q6 integration uncertainty remain material limitations.']

@@ -228,6 +228,12 @@ Robust coarse candidate: 1600/1600 persisted accepted states; complete True.
 
 Robust refined candidate: 452/1600 persisted accepted states; complete False.
 
+**Robust refined continuation rejected.** At 0.283125s the iterative solve failed and direct MUMPS exhausted 100 Newton updates with force 53939.1N (SNES -5). The accepted prefix remains452 states; no new step or full cycle was validated. This is nonlinear failure despite a functioning direct linear solver, so simply increasing Krylov limits does not resolve this attempt.
+
+**Separate fine-mesh inexact-Newton recovery.** From the unchanged accepted452-state checkpoint, try0.283125/0.28375s using native Eisenstat–Walker version2(initial linear rtol0.01/max0.1), GMRES/GAMG restart200/cap3000, strict1e-8N absolute/zero-relative stopping,100 Newton ceiling and1800s solve budget. Preserve iterates and accepted histories. Success on the third-mesh loaded query motivates this solver-only attempt but does not imply success here. Independent native force, whole-element positivity and norm audits are required before any accepted probe state enters a future trajectory.
+
+Recovery finished False; accepted 0/2.
+
 **Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.
 
 | Validation input | Coarse/fine persisted steps | Full-cycle relative volume L2 difference | Within1% |

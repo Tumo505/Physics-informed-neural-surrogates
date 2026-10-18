@@ -1,0 +1,42 @@
+{
+  "complete_trajectory": false,
+  "reference_name": "cardiac_quadratic_reference_halfstep_robust_refined_v1",
+  "accepted_steps_before_failure": 452,
+  "persisted_checkpoint_steps": 452,
+  "failed_zero_based_step": 452,
+  "failed_time_s": 0.283125,
+  "SNES_reason": -5,
+  "residual_l2_N": 53939.08407037603,
+  "rejection_kind": "nonconvergence_or_invalid_force_or_field",
+  "config": {
+    "name": "cardiac_quadratic_reference_halfstep_robust_refined_v1",
+    "dt_s": 0.000625,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 1,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "native_solver": "gamg",
+    "scope": "Prospective0.625ms P2/Q6 reference with GMRES/GAMG primary and direct MUMPS fallback on nonconvergence, nonfinite force or force acceptance failure. Both use strict1e-8N absolute/zero-relative stopping and at most100 Newton iterations; same equations/history/predictors/physical acceptance. Coarse runs from rest; refined continues explicitly inherited accepted original450-state prefix plus two independently audited direct states through0.2825s. Preserve original rejected attempts; copied accepted prefixes are provenance-recorded, not re-executed. Full-cycle positivity/norm audits and matched mesh comparison required. Q6 integration uncertainty remains unresolved; no neural retraining or continuum claim.",
+    "nonlinear_absolute_tolerance_N": 1e-08,
+    "nonlinear_relative_tolerance": 0.0,
+    "allow_direct_fallback": true,
+    "maximum_newton_iterations": 100,
+    "mumps_memory_limit_MB": 20000
+  },
+  "config_sha256": "5fd15ec3e303598b32f3e4f49758a38ebf13d81ea97ed0d6139a4c9798f7544a",
+  "source_sha256": "503a76a637aca3d71e78e639a90e3730bd92c62689792f86e3d1e13e31d0797d",
+  "KSP_reason": 4,
+  "last_linear_iterations": 1,
+  "total_linear_iterations": 100,
+  "nonlinear_iterations": 100,
+  "effective_KSP": "preonly",
+  "effective_PC": "lu",
+  "scope": "Rejected reference attempt; no full-cycle result."
+}
