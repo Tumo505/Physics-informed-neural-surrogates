@@ -10,6 +10,8 @@ All results are computational. Released-model inference uses unedited author equ
 
 **Controlled reference diagnosis.** P2 timestep sensitivity between1.25ms and1ms is 0.0459%, passing the1% test on one baseline case. In a separate fixed1ms, same-mesh P1/P2 comparison, changing displacement degree changes full-cycle volume-L2 displacement by 24.177%. Thus a large polynomial-order sensitivity remains after matching timesteps. P2 mesh convergence and finer-reference population uncertainty remain unvalidated.
 
+**Additional-geometry P2 mesh result.** The completed g004_l0 validation control changes full-cycle displacement by 12.376% between17625 and141000 tetrahedra at fixed P2/1.25ms/Q6, exceeding1%. Component volume/time RMSE is1.313mm. Both native trajectories and whole-element positivity audits pass; numerical sensitivity does not. These two levels do not establish an asymptotic rate or continuum truth.
+
 **Protocol and split.** Thirty-two independent numerical geometry draws from one affine benchmark ellipsoid family. Eight training trajectories on four geometries, four validation trajectories on two geometries, twenty calibration trajectories on twenty geometries, and four primary test trajectories on four geometries. Four additional loading-shift trajectories share the four test geometries; four combined shape/loading-shift trajectories use two further geometries. All are200-step trajectories from zero histories over0.005–1s. No geometry spans training/validation/calibration/test roles. Calibration and primary test independently draw the same numerical shape and waveform-descriptor distribution. Load amplitude/timing perturbations are numerical sensitivity inputs, not empirical physiology.
 
 Reference collection: 47/47 planned accepted trajectories complete, including convergence variants. The44-trajectory cohort is separate from these convergence repeats. Every newly accepted step requires a positive SNES convergence reason, finite residual below1e-6N and positive endpoint element determinants. Failed10ms attempts and refined5ms retries are retained. The source legacy convergence flag could be negative/truthy; explicit positive-reason checks correct that issue. Earlier archived1ms states were independently checked to have finite small residuals.
@@ -164,7 +166,7 @@ A separate history/load homotopy reproduced the previous native equilibrium, the
 
 **Controlled P2 quadrature degree8/10 sensitivity.** Only the quadrature discretization changes; passive mechanics, initial conditions, geometry and loading remain fixed. Compared 800 common endpoints through 1s. Space-time volume-L2 discrepancy 0.2271%; component volume/time RMSE 0.02426mm. Within the declared1% tolerance: True. Exact consistent-mass norms passed independent native interpolation/UFL checks at four fixed frames. Time integration uses a trapezoid including the exactly zero initial fields. This is two-level sensitivity on one case, not an asymptotic convergence rate or continuum certification.
 
-**Controlled P2 quadrature degree6/8 at0.625ms workflow:** last recorded phase generation; no persisted trajectory checkpoint yet. A started calculation is not completed validation evidence.
+**Controlled P2 quadrature degree6/8 at0.625ms refinement in progress:** 710/1600 accepted native steps. Full-cycle comparison and its independent norm checks remain pending. Frozen neural models and calibration remain unchanged.
 
 **Refined iterative solver failure retained.** Native GAMG/SNES stopped at0.270s after215 accepted states (210 persisted). Native log reports linear-solve divergence: True; SNES reason-3. The underlying Krylov/preconditioner cause was not recorded and remains unresolved. Across210 common persisted states through0.2625s, direct/iterative maximum relative coefficient discrepancy was1.06e-09, with maximum absolute discrepancy1.19e-13m. This is partial solver agreement, not full-cycle equivalence or a successful mesh-convergence check. Rejected iterative data are preserved and have not been restarted; the direct control status is reported separately.
 
@@ -198,7 +200,7 @@ Half-step mesh workflow phase: generation; complete False. The queued worker acq
 
 | Validation input | Coarse/fine persisted steps | Full-cycle relative volume L2 difference | Within1% |
 |---|---|---:|---|
-| g004_l0 | 800/800; 620/800 | pending | pending |
+| g004_l0 | 800/800 each | 12.3758% | False |
 | g005_l1 | 800/800; 210/800; rejected nonconvergence_or_invalid_force_or_field | pending | pending |
 
 **P2 correspondence audit (inputs only).** All4 geometry/mesh-level pairs have bijectively matching displacement coordinates and physical components after undoing the exact affine scale (tolerance1e-12m). Coarse connectivity matches after vertex permutation; refined connectivity differs on both validation geometries. Shared displacement-coefficient representation therefore requires explicit per-case DOF permutation; mechanics/graph operators must retain each case's own elements. No displacement labels or calibration/test outcomes were read. This checks these inputs, not arbitrary future geometries or numerical convergence.
@@ -207,11 +209,17 @@ Half-step mesh workflow phase: generation; complete False. The queued worker acq
 
 **Completed coarse P2 validation reference g005_l1.** All800 native steps converged; maximum residual 1.17e-08N. Output hashes verified. Minimum whole-element Bernstein bounds at endpoint/stress states: 0.365006/0.367751, using the float64 sufficient-condition audit described below. Independent canonical P2 quadrature and native UFL displacement norms agree at four fixed frames (largest relative discrepancy 5.09e-15). This verifies the completed calculation; its refined-mesh sensitivity test remains separate.
 
+**Completed refined g004_l0 audit.** All800 native states accepted; maximum force residual 9.72e-09N. Output hashes verified; endpoint/stress whole-element Bernstein bounds 0.048463/0.048516, no unresolved states at the float64 margin. Independent displacement-norm checks agree within1.46e-14 relative. Accepted calculations do not imply the1% mesh-sensitivity criterion passed.
+
 Run `make dynamic-quadratic-validation-g004` and `make dynamic-quadratic-validation-g005` after native setup. A completed numerical control can still fail the sensitivity tolerance. The original frozen20-member model comparison remains separate.
+
+![Validation geometry mesh controls](figures/dynamic_quadratic_geometry_controls.png)
 
 **Integration control.** Nonpolynomial HGO stress also requires a quadrature check independent of operator agreement. `make dynamic-quadratic-quadrature` compares full degree6 and degree8 trajectories at the same P2 mesh,1.25ms timestep, solver, loading and initial state. The same1% displacement-sensitivity criterion is applied; no native quadrature setting is lowered to make the check pass.
 
 **Refined P2 resource probe:** 639735 displacement DOFs; single1000Pa startup query accepted True, residual 8.95821e-12N, nonlinear solve 180.37s, sampled peak worker memory 10.68GB. This bounded engineering query does not establish full-cycle feasibility or convergence. The matched mesh-refinement trajectory uses fixed1.25ms steps and a20,000MB MUMPS allocation cap.
+
+**Third P2 mesh capacity probe running.** After the retained12.38% validation mesh discrepancy, assess one1000Pa startup query with GMRES/GAMG at0.625ms, bounded to900s and24GiB sampled worker RSS. No full third-mesh trajectory is launched. A timeout or resource rejection would bound this attempt, not prove that all solver approaches are impossible.
 
 **Controlled polynomial-order sensitivity at fixed1ms.** P1 and P2 share the same17625-tetrahedron polyhedral domain, continuous P1 fiber fields, passive law, pressure waveform and zero initial histories. All1000 times and pressures match; the original999 P1 frames remain immutable and a separately verified native continuation supplies the exact1s endpoint. Only displacement degree changes. Space-time volume-L2 difference 24.1773%; volume/time component RMSE 2.59026mm. Within1%: False.
 
