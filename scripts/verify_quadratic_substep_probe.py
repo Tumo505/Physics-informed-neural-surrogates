@@ -13,18 +13,21 @@ from FIAT.reference_element import UFCTetrahedron
 
 P = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(P/'src'))
-from lv_surrogate.physics.reference_fem import setup, residual, df
+from lv_surrogate.physics.reference_fem import setup, residual, df, pressure_function, default_parameters_benchmark1
 from lv_surrogate.physics.quadratic_solver import make_quadratic_problem
 from lv_surrogate.physics.quadratic import QuadraticKinematics
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--protocol', default='configs/physics/dynamic_quadratic_refined_substep_extended_probe.json')
 ap.add_argument('--output')
+ap.add_argument('--accepted-prefix', action='store_true')
 args = ap.parse_args()
 protocol_path = P/args.protocol
 protocol = json.loads(protocol_path.read_text())
 probe = json.loads((P/protocol['output']).read_text())
-assert probe['finished'] and probe['all_requested_steps_accepted']
+assert probe['finished']
+if not args.accepted_prefix:
+    assert probe['all_requested_steps_accepted']
 assert hashlib.sha256(protocol_path.read_bytes()).hexdigest() == probe['protocol_sha256']
 assert hashlib.sha256((P/protocol['checkpoint']).read_bytes()).hexdigest() == probe['probe_checkpoint_sha256']
 root = P/'data/processed'/protocol['reference']
@@ -38,6 +41,15 @@ if 'resume_probe_protocol' in protocol:
     saved = np.load(resumed_path)
 u = np.load(P/protocol['fields'], mmap_mode='r')
 assert len(u) == len(probe['records']) == protocol['steps_after_checkpoint']
+if args.accepted_prefix:
+    count = 0
+    for r in probe['records']:
+        if not r['accepted']:
+            break
+        count += 1
+    assert count>0
+    u = u[:count]
+    probe = dict(probe,records=probe['records'][:count])
 dt = probe['dt_s']
 geo, material, base = setup(dt=dt, refinement_level=cfg['refinement_level'], geometry_scales=cfg['geometry_scales'])
 parameters = dict(base.parameters); parameters['function_space'] = 'P_2'
@@ -62,16 +74,19 @@ q = create_quadrature(UFCTetrahedron(),4)
 bary = np.c_[1-q.get_points().sum(1),q.get_points()]
 shape = np.concatenate((bary*(2*bary-1),np.stack([4*bary[:,i]*bary[:,j] for i,j in kin.edges],axis=1)),axis=1)
 records = []; fixed = {0, len(u)//3, 2*len(u)//3, len(u)-1}
-for i,current in enumerate(u):
-    old = problem.u_old.vector().get_local().copy()
-    problem.u.vector().set_local(current); problem.u.vector().apply('insert')
-    # Exactly the same prescribed pressure recorded by the executing probe's grid.
-    from lv_surrogate.physics.reference_fem import pressure_function, default_parameters_benchmark1
+times = np.array([r['time_s'] for r in probe['records']])
+if not probe.get('changed_time_discretization'):
+    indices = probe['start_step']+np.arange(len(u))
+    np.testing.assert_allclose(times,data['time'][indices],atol=1e-12,rtol=0)
+    pressures = data['pressure'][indices]
+else:
     par = default_parameters_benchmark1()
     for key in ['t_sys_pre','t_dias_pre','gamma']:
         par[key] *= cfg['timing_scale']
-    times = np.array([r['time_s'] for r in probe['records']])
-    pressures = cfg['amplitude']*pressure_function((0,cfg['duration_s']),parameters=par,t_eval=times-.4*dt)
+    pressures = np.atleast_1d(cfg['amplitude']*pressure_function((0,cfg['duration_s']),parameters=par,t_eval=times-.4*dt))
+for i,current in enumerate(u):
+    old = problem.u_old.vector().get_local().copy()
+    problem.u.vector().set_local(current); problem.u.vector().apply('insert')
     problem.parameters['p'].assign(float(pressures[i]))
     R = float(residual(problem).norm('l2')); assert np.isfinite(R) and R<1e-6
     record = dict(time_s=float(times[i]),native_residual_N=R)
@@ -95,6 +110,7 @@ for i,current in enumerate(u):
     print('VERIFIED LOCAL PROBE',i+1,'/',len(u),flush=True)
 passed = all(r['endpoint_unresolved_elements']==r['stress_unresolved_elements']==0 for r in records)
 result = dict(complete=True,passed=passed,full_cycle=False,records=records,dt_s=dt,
+    accepted_prefix_only=args.accepted_prefix,
     changed_time_discretization=probe.get('changed_time_discretization'),
     protocol_sha256=probe['protocol_sha256'], original_checkpoint_sha256=probe['checkpoint_sha256'],
     fields_sha256=hashlib.sha256((P/protocol['fields']).read_bytes()).hexdigest(),

@@ -206,11 +206,21 @@ gamg recovery: finished True, accepted 1/2, all requested accepted False, budget
 
 **Corrective direct solve.** Resume the saved accepted MUMPS history at0.281875s, avoiding its repeated solve; attempt the identical0.2825s algebraic target with the source100-Newton ceiling rather than the exploratory20-iteration cap, a3600s solve budget and strict unchanged force acceptance. The previous attempt was still reducing residual at20 iterations. Save every subsequent nonlinear iterate separately as UNACCEPTED, and preserve accepted history checkpoints. An audit worker waits for completion and automatically checks native forces, whole-element positivity and independent norms if the solve succeeds. This is local corrective work, not a full-cycle validation claim.
 
-Direct repair: finished False, accepted 0/1, budget exhausted False.
+Direct repair: finished True, accepted 1/1, budget exhausted False.
+
+Independent local direct-repair audit passed True; full-cycle validated False.
 
 **Corrective third-mesh algorithm.** Use native PETSc Eisenstat–Walker inexact Newton (version2, initial linear rtol0.01, maximum0.1), GMRES restart200/cap3000, with the same final strict nonlinear and physical force acceptance. Record linear and nonlinear residuals and save unaccepted iterates plus fixed histories. Queue behind the direct repair to avoid overlapping large allocations; retain1800s/24GiB resource limits. This algorithm targets expensive early linear solves while retaining final equilibrium acceptance; convergence is not guaranteed.
 
-Inexact loaded probe phase: waiting_for_prior_probe.
+Inexact loaded probe phase: solving.
+
+**Separate robust continuation protocol.** Both mesh levels use fixed P2/Q6/0.625ms, strict1e-8N absolute/zero-relative stopping,100 Newton iterations, GMRES/GAMG primary and MUMPS fallback on solver failure/nonfinite force/failed force acceptance. Each fallback preserves the same histories, forcing, predictor and equations, resets backend options, verifies the direct solver type and records the initial failure. The new fine candidate inherits450 accepted original states plus the two independently audited direct states through0.2825s; these inherited states are provenance-hashed and are not re-executed under the new policy. Original rejected reference remains intact. A fresh matching coarse run precedes fine continuation and full-cycle audits. No continuum or full-cycle validation claim follows from seeding.
+
+Native backend-switch integration check passed True: four alternating iterative/direct solves across two coarse startup steps match accepted reference coefficients within1.5e-09 relative. The test caught an initial runtime option that disabled LU; restoring the configured direct backend by clearing conflicting options fixed it. That failed test log is retained. This checks switching only, not full-cycle robustness. The exact in-flight coarse generator source is archived by SHA256 for reproducibility.
+
+Robust coarse candidate: 210/1600 persisted accepted states; complete False.
+
+Robust refined candidate: 452/1600 persisted accepted states; complete False.
 
 **Independent geometry/loading numerical controls.** Two existing validation geometries and their distinct fixed pressure histories are prescribed before generating higher-order labels. Each uses P2/1.25ms/GAMG from rest on both mesh levels, preserving its own continuous P1 fibers and domain. These are numerical-validation cases; calibration/test outcomes do not select the references or models. Geometry-dependent P2 DOF/component correspondence and refined connectivity must be verified during future cohort preprocessing.
 
@@ -233,7 +243,7 @@ Run `make dynamic-quadratic-validation-g004` and `make dynamic-quadratic-validat
 
 **Integration control.** Nonpolynomial HGO stress also requires a quadrature check independent of operator agreement. `make dynamic-quadratic-quadrature` compares full degree6 and degree8 trajectories at the same P2 mesh,1.25ms timestep, solver, loading and initial state. The same1% displacement-sensitivity criterion is applied; no native quadrature setting is lowered to make the check pass.
 
-**Refined P2 resource probe:** 639735 displacement DOFs; single1000Pa startup query accepted True, residual 8.95821e-12N, nonlinear solve 180.37s, sampled peak worker memory 10.68GB. This bounded engineering query does not establish full-cycle feasibility or convergence. The matched mesh-refinement trajectory uses fixed1.25ms steps and a20,000MB MUMPS allocation cap.
+**Refined P2 resource probe:** 639735 displacement DOFs; single1000Pa startup query accepted True, residual 8.95821e-12N, nonlinear solve 180.37s, sampled peak worker memory 10.68GB. This bounded engineering query does not establish full-cycle feasibility or convergence. The matched mesh-refinement trajectory uses fixed1.25ms steps and requests a20,000MB MUMPS allocation cap; capacity probes independently enforce sampled-RSS limits.
 
 **Third P2 mesh bounded capacity result.** Tetrahedra 1128000, displacement DOFs 4812987; one1000Pa startup solve accepted True. Stop reason None; measured wall 490.0s, sampled worker peak RSS 11.21GiB. Declared budget900s/24GiB, GMRES/GAMG, dt0.625ms. This resource probe does not establish loaded-state robustness or a feasible complete trajectory, let alone mesh convergence.
 

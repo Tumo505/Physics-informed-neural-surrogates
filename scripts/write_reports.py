@@ -47,6 +47,6 @@ from report_dynamic_study import dynamic_rows
 from report_research_extension import extension_rows
 rows=rows[:3]+dynamic_rows(P)+extension_rows(P)+rows[3:]
 (P/'reports/results.md').write_text('\n'.join(rows)+'\n')
-patterns=['experiments/checkpoints/**/*.pt','scripts/*.py','src/**/*.py','configs/**/*.yaml','configs/**/*.json','*lock*']
+patterns=['experiments/manifests/source_snapshots/*.py','experiments/checkpoints/**/*.pt','scripts/*.py','src/**/*.py','configs/**/*.yaml','configs/**/*.json','*lock*']
 manifest={'sha256':{str(p.relative_to(P)):hashlib.sha256(p.read_bytes()).hexdigest() for pattern in patterns for p in P.glob(pattern) if p.is_file()},'note':'Working notes and paper directory intentionally ignored; no manuscript generated.'}
 (P/'experiments/manifests/artifacts.json').write_text(json.dumps(manifest,indent=2));print('consolidated report written')

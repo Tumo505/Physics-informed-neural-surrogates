@@ -1,0 +1,22 @@
+{
+  "name": "cardiac_quadratic_reference_halfstep_robust_refined_v1",
+  "dt_s": 0.000625,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 1,
+  "geometry_scales": [
+    1.0,
+    1.0
+  ],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 6,
+  "checkpoint_interval": 10,
+  "native_solver": "gamg",
+  "scope": "Prospective0.625ms P2/Q6 reference with GMRES/GAMG primary and direct MUMPS fallback on nonconvergence, nonfinite force or force acceptance failure. Both use strict1e-8N absolute/zero-relative stopping and at most100 Newton iterations; same equations/history/predictors/physical acceptance. Coarse runs from rest; refined continues explicitly inherited accepted original450-state prefix plus two independently audited direct states through0.2825s. Preserve original rejected attempts; copied accepted prefixes are provenance-recorded, not re-executed. Full-cycle positivity/norm audits and matched mesh comparison required. Q6 integration uncertainty remains unresolved; no neural retraining or continuum claim.",
+  "nonlinear_absolute_tolerance_N": 1e-08,
+  "nonlinear_relative_tolerance": 0.0,
+  "allow_direct_fallback": true,
+  "maximum_newton_iterations": 100,
+  "mumps_memory_limit_MB": 20000
+}

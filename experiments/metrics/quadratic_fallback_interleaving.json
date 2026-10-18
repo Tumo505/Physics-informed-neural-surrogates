@@ -1,0 +1,54 @@
+{
+  "complete": true,
+  "passed": true,
+  "engineering_only": true,
+  "records": [
+    {
+      "step": 0,
+      "method": "gamg",
+      "accepted": true,
+      "residual_N": 6.546363984790677e-13,
+      "relative_coefficient_difference": 0.0,
+      "maximum_absolute_difference_m": 0.0,
+      "KSP": "gmres",
+      "PC": "gamg"
+    },
+    {
+      "step": 0,
+      "method": "mumps",
+      "accepted": true,
+      "residual_N": 5.6632065916721117e-14,
+      "relative_coefficient_difference": 1.4997813527496325e-09,
+      "maximum_absolute_difference_m": 1.083892714292181e-15,
+      "KSP": "preonly",
+      "PC": "lu"
+    },
+    {
+      "step": 1,
+      "method": "gamg",
+      "accepted": true,
+      "residual_N": 9.204089039494626e-13,
+      "relative_coefficient_difference": 0.0,
+      "maximum_absolute_difference_m": 0.0,
+      "KSP": "gmres",
+      "PC": "gamg"
+    },
+    {
+      "step": 1,
+      "method": "mumps",
+      "accepted": true,
+      "residual_N": 6.14166781464389e-14,
+      "relative_coefficient_difference": 1.0869185535612567e-09,
+      "maximum_absolute_difference_m": 2.8588022126135903e-15,
+      "KSP": "preonly",
+      "PC": "lu"
+    }
+  ],
+  "executed_source_sha256": "ec39a09150cd61c8e09ec91037978f7bbf319f0a58e9a9e2e7bf7f8675a3bbc3",
+  "reference_output_sha256": {
+    "displacement_coefficients.npy": "d2d9627b8c6a53c6305ba16f7b3e1355efca22a96b6668ea1ab8633a2f955ed4",
+    "displacement_vertices.npy": "1082ec82c7ac4f6d1036624d752e982f11cb9fc3aa03d212fbb3fc2b44f5235a",
+    "inputs.npz": "d5e2dfd90a39a8fe4f5e411378cd83ab8c53809057b8a43c4e37d6a014265ea6"
+  },
+  "scope": "Two coarse startup timesteps with separate recursively updated histories, alternating native iterative/direct solves in one process. Verify restored backend options and agreement with the accepted reference. Integration test of backend interleaving only, not loaded-state robustness or full-cycle fallback equivalence."
+}

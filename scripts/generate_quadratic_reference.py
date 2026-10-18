@@ -57,6 +57,8 @@ for key, native_key in [('nonlinear_absolute_tolerance_N','absolute_tolerance'),
         assert float(problem.solver._solver.parameters[native_key]) == float(cfg[key])
 del base_problem
 problem.solver._solver.parameters['line_search'] = 'bt'
+problem.solver._solver.parameters['maximum_iterations'] = cfg.get('maximum_newton_iterations',100)
+direct_fallback = None
 dt = cfg['dt_s']
 n = int(round(cfg['duration_s'] / dt))
 times = np.arange(1, n + 1) * dt
@@ -124,9 +126,9 @@ np.testing.assert_allclose(integral, native_integral, rtol=1e-11, atol=1e-14)
 problem.u.vector().set_local(saved_u); problem.u.vector().apply('insert')
 start = time.perf_counter()
 stop = min(n, args.max_steps) if args.max_steps else n
-def reject(step, reason, force, kind):
+def reject(step, reason, force, kind, active_snes=None):
     durable = json.loads(manifest.read_text()).get('completed_steps', 0) if manifest.exists() else 0
-    snes = problem.solver._snes
+    snes = active_snes if active_snes is not None else problem.solver._snes
     ksp = snes.getKSP()
     failure = dict(complete_trajectory=False, reference_name=cfg['name'],
         accepted_steps_before_failure=step, persisted_checkpoint_steps=durable,
@@ -158,20 +160,61 @@ for i in range(start_step, stop):
             best = guess; best_residual = r
     problem.u.vector().set_local(best); problem.u.vector().apply('insert')
     tick = time.perf_counter()
+    initial_exception = None
+    if cfg.get('allow_direct_fallback'):
+        df.PETScOptions.clear()
+        for key,value in [('ksp_type','gmres'),('pc_type','gamg'),('ksp_gmres_restart',100),('ksp_norm_type','unpreconditioned')]:
+            df.PETScOptions.set(key,value)
     try:
         iterations, _ = problem.solver.solve()
-    except RuntimeError:
-        reject(i, int(problem.solver._snes.getConvergedReason()), None, 'native_solver_exception')
+    except RuntimeError as error:
+        if not cfg.get('allow_direct_fallback'):
+            reject(i, int(problem.solver._snes.getConvergedReason()), None, 'native_solver_exception')
+        initial_exception = str(error); iterations = 0
     solve_seconds = time.perf_counter() - tick
     reason = int(problem.solver._snes.getConvergedReason())
+    initial_reason = reason
     if cfg.get('native_solver') == 'gamg':
         ksp = problem.solver._snes.getKSP()
         if (ksp.getType(), ksp.getPC().getType()) != ('gmres', 'gamg'):
             reject(i, reason, None, 'requested_iterative_solver_not_effective')
     R = float(residual(problem).norm('l2'))
+    fallback_used = False
+    initial_solver_failure = None
+    if cfg.get('allow_direct_fallback') and (initial_exception or reason<=0 or not np.isfinite(R) or R>1e-6):
+        initial_solver_failure = dict(SNES_reason=reason,KSP_reason=int(problem.solver._snes.getKSP().getConvergedReason()),
+            last_linear_iterations=int(problem.solver._snes.getKSP().getIterationNumber()),
+            residual_l2_N=R if np.isfinite(R) else None,exception=initial_exception)
+        if direct_fallback is None:
+            df.PETScOptions.set('mat_mumps_icntl_23', cfg.get('mumps_memory_limit_MB',20000))
+            direct_fallback = make_quadratic_problem(geo,material,parameters,'mumps')
+            np.testing.assert_allclose(direct_fallback.u_space.tabulate_dof_coordinates(),problem.u_space.tabulate_dof_coordinates(),atol=1e-14,rtol=0)
+            for key in ['absolute_tolerance','relative_tolerance','maximum_iterations','line_search']:
+                direct_fallback.solver._solver.parameters[key] = problem.solver._solver.parameters[key]
+        for name in ['u_old','v_old','a_old']:
+            getattr(direct_fallback,name).assign(getattr(problem,name))
+        direct_fallback.parameters['p'].assign(float(pressure[i]))
+        direct_fallback.u.vector().set_local(best); direct_fallback.u.vector().apply('insert')
+        print('DIRECT FALLBACK',i,float(times[i]),'initial SNES',reason,flush=True)
+        # Let the configured native mumps linear_solver select LU; explicitly
+        # setting pc_type=none here overrides it and disables the factorization.
+        df.PETScOptions.clear()
+        df.PETScOptions.set('mat_mumps_icntl_23',cfg.get('mumps_memory_limit_MB',20000))
+        try:
+            iterations,_ = direct_fallback.solver.solve()
+        except RuntimeError:
+            reject(i,int(direct_fallback.solver._snes.getConvergedReason()),None,'direct_fallback_exception',direct_fallback.solver._snes)
+        reason = int(direct_fallback.solver._snes.getConvergedReason())
+        direct_ksp = direct_fallback.solver._snes.getKSP()
+        if direct_ksp.getPC().getType()!='lu' or direct_ksp.getPC().getFactorSolverType()!='mumps':
+            reject(i,reason,None,'requested_direct_backend_not_effective',direct_fallback.solver._snes)
+        R = float(residual(direct_fallback).norm('l2'))
+        problem.u.assign(direct_fallback.u)
+        solve_seconds = time.perf_counter()-tick
+        fallback_used = True
     current = problem.u.vector().get_local().copy()
     if reason <= 0 or not np.isfinite(current).all() or not np.isfinite(R) or R > 1e-6:
-        reject(i, reason, R, 'nonconvergence_or_invalid_force_or_field')
+        reject(i, reason, R, 'nonconvergence_or_invalid_force_or_field',direct_fallback.solver._snes if fallback_used else None)
     try:
         endpoint_min, integral = kin.audit(current)
         stress_min, _ = kin.audit(.4 * uold + .6 * current)
@@ -187,6 +230,8 @@ for i in range(start_step, stop):
     nodes[i] = problem.u.compute_vertex_values(geo.mesh).reshape(3, -1).T
     problem._update_fields()
     records.append(dict(step=i, time_s=float(times[i]), iterations=int(iterations),
+                        direct_fallback_used=fallback_used, initial_SNES_reason=initial_reason,
+                        initial_solver_failure=initial_solver_failure,
                         SNES_reason=reason, residual_l2_N=R,
                         minimum_endpoint_sampled_detF=endpoint_min,
                         minimum_stress_sampled_detF=stress_min,
