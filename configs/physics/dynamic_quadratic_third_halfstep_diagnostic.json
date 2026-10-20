@@ -1,0 +1,21 @@
+{
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "timestep_divisor": 2,
+  "steps_after_checkpoint": 2,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 3600,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "resume_probe_protocol": "configs/physics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json",
+  "required_audit": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_verification_resolved.json",
+  "output": "experiments/metrics/dynamic_quadratic_third_halfstep_diagnostic.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_third_halfstep_diagnostic_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_third_halfstep_diagnostic_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_halfstep_diagnostic_iterate.npz",
+  "scope": "A separately fixed changed-timegrid diagnostic, not recovery of the rejected original algebraic target. From the independently qualified third-mesh state at0.2725s, attempt0.2728125/0.273125s atdt0.3125ms with consistently recomputed generalized-alpha pressure stages and unchanged carried displacement/velocity/acceleration histories. Original100-Newton, trust-region and fine-field initialization failures remain retained. Native backtracking/EW/GMRES/GAMG restart200/cap3000, strict1e-8N final-force acceptance,100 Newton ceiling and3600s total local solve budget remain fixed. Preserve unaccepted iterates and accepted-history checkpoints. Independent force, positivity, norms and histories gate any local success. Inherited coarse-time history prevents a from-rest finer-timestep/full-cycle or temporal-convergence claim; no model training/calibration is authorized by success alone."
+}

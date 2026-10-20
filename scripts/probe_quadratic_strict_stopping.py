@@ -34,7 +34,10 @@ if 'resume_probe_protocol' in protocol:
     previous_result = json.loads((P/previous_protocol['output']).read_text())
     previous_checkpoint = P/previous_protocol['checkpoint']
     assert previous_protocol['reference'] == protocol['reference']
-    assert previous_protocol.get('timestep_divisor',1) == protocol.get('timestep_divisor',1) == 1
+    # An audited original-grid state can initialize a separately declared finer
+    # local grid. Resuming an already changed-grid probe needs separate indexing.
+    assert previous_protocol.get('timestep_divisor',1) == 1
+    assert protocol.get('timestep_divisor',1) >= 1
     assert hashlib.sha256(previous_checkpoint.read_bytes()).hexdigest() == previous_result['probe_checkpoint_sha256']
     assert previous_result['checkpoint_sha256'] == hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest()
     saved = dict(np.load(previous_checkpoint))

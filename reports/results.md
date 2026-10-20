@@ -274,7 +274,13 @@ Actual SNES newtontr; native reason -4, final physical force 1.57896e+13N, solve
 
 **Separately bounded spatial initialization.** After trust-region rejection, try the identical0.273125s target with the completed fine-mesh field interpolated natively onto the third mesh as an initial guess only. Check source output hashes, physical settings, DOF coordinates/cells and exact time/pressure. Require at least10-fold reduction of the initial native residual before solving. Keep the verified third-mesh histories, governing equations, material, pressure, mesh, Q6,0.625ms, backtracking, EW/GMRES/GAMG and strict1e-8N final force acceptance unchanged. Bound to3600s and100 Newton updates; independent native/whole-element/norm/history audit gates success. This does not replace a third-mesh solution with fine-mesh labels or establish root uniqueness, full-cycle stability or convergence.
 
-Spatial-initialization recovery finished False; accepted 0/1; recorded failure none.
+Spatial-initialization recovery finished True; accepted 0/1; recorded failure Prolongation did not meet predeclared initialization improvement gate.
+
+Initial predictor force 19588014493422.227N; prolonged initial force NoneN; improvement factor 0.
+
+**Bounded changed-timegrid diagnostic.** The prolonged fine-field initialization produced a nonfinite residual and failed its predeclared admission gate, so no nonlinear solve was launched for that guess. Separately, from the independently qualified third-mesh state at0.2725s, attempt two0.3125ms steps through0.273125s with consistently recomputed pressure stages. Retain native backtracking/EW/GMRES/GAMG and strict1e-8N final-force acceptance,100 Newton ceiling and3600s total local budget. Carry the verified displacement/velocity/acceleration histories; preserve all original failures. Independent force/positivity/norm/history audits gate local acceptance. This changes the algebraic time-discrete targets and inherits a coarser-time prefix; it cannot repair or validate the original full-cycle reference, establish temporal convergence or justify neural retraining.
+
+Changed-grid diagnostic finished False; accepted 0/2; recorded failure none.
 
 **Coarse recursive solver-policy control.** Compare all 1600 states against the prior strict GMRES/GAMG/direct-fallback protocol, with identical space, timestep, quadrature, forcing and geometry. Both complete references independently passed native/hash/whole-element/norm audits. Existing1e-6 frame-relative/1nm absolute coefficient criteria passed False; maximum frame-relative difference 2.56828e-05, maximum absolute difference 7.78933e-10m. This checks accumulated solver agreement on one case, not continuum accuracy or an isolated speedup.
 
