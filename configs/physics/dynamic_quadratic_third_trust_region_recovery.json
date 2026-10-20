@@ -1,0 +1,22 @@
+{
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "timestep_divisor": 1,
+  "steps_after_checkpoint": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 3600,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "nonlinear_method": "newtontr",
+  "resume_probe_protocol": "configs/physics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json",
+  "required_audit": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_verification_resolved.json",
+  "output": "experiments/metrics/dynamic_quadratic_third_trust_region_recovery.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_third_trust_region_recovery_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_third_trust_region_recovery_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_trust_region_recovery_iterate.npz",
+  "scope": "One exact-grid corrective target0.273125s on the third mesh, using the six recovered native-accepted states only after independent audit. Preserve the original failed100-Newton backtracking attempt. Change globalization to native newtontr with native default trust-region settings, keeping EW/GMRES/GAMG, physical equations, histories, pressure, Q6,0.625ms and strict final acceptance fixed. Effective SNES type is checked. Bound to3600s solve budget and100 Newton ceiling; preserve iterates separately as UNACCEPTED. Any success requires independent native force, whole-element positivity and norm/history checks. No full-cycle, mesh-convergence or continuum claim."
+}

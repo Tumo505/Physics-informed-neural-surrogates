@@ -213,6 +213,24 @@ def dynamic_rows(P):
   root=P/'data/processed/cardiac_quadratic_reference_halfstep_ew_third_v1'
   if (root/'manifest.json').exists():
    a=json.loads((root/'manifest.json').read_text());rows+=['',f'Third-mesh persisted accepted states {a["completed_steps"]}/{a["n_steps"]}; complete {a["complete"]}.']
+  failure=root/'failure.json'
+  if failure.exists():
+   a=json.loads(failure.read_text());rows+=['',f'**Third-mesh reference rejected.** At {a["failed_time_s"]}s, native inexact Newton exhausted {a["nonlinear_iterations"]} updates with residual {a["residual_l2_N"]:.6g}N (SNES {a["SNES_reason"]}). It had accepted {a["accepted_steps_before_failure"]} states, with {a["persisted_checkpoint_steps"]} in the durable checkpoint. This is nonlinear failure before resource-budget exhaustion, not a successful third-mesh trajectory. No third-level full-cycle sensitivity, numerical-convergence pass, finer-reference calibration or fresh neural comparison is available. Increasing iterations alone is not justified by this failed attempt.']
+  tail=P/'experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json'
+  if tail.exists():
+   a=json.loads(tail.read_text());rows+=['','**Accepted-tail recovery check.** Preserve the original failed reference. Recover only the six coefficient rows counted as native-accepted after checkpoint430 and before failed step436; do not fabricate their lost individual SNES records or accept the failed iterate. Independently reconstruct generalized-alpha histories and compare with the fixed histories saved alongside the failed iterate. Independent native forces, whole-element bounds and norm/history checks gate any reuse.', '',f'Maximum history reconstruction relative discrepancy {max(r["relative_L2_difference"] for r in a["independent_history_reconstruction"].values()):.3g}.']
+   audit=tail.with_name(tail.stem+'_verification.json')
+   if audit.exists():
+    b=json.loads(audit.read_text());rows+=['',f'Independent accepted-tail audit passed {b["passed"]}; this is six local states, not a full-cycle qualification.']
+   resolved=tail.with_name(tail.stem+'_verification_resolved.json')
+   if resolved.exists():
+    b=json.loads(resolved.read_text());rows+=['',f'Supplemental same-margin subdivision resolved the initially inconclusive whole-element bounds. The combined native/positivity/norm/history audit passed {b["passed"]}, preserving the original parent-bound failure and linking both audits by SHA256. These six local states are qualified for a recovery initial history only, not a full-cycle or mesh-convergence claim.']
+  trust=P/'configs/physics/dynamic_quadratic_third_trust_region_recovery.json'
+  if trust.exists():
+   rows+=['','**Separate bounded trust-region correction.** Only after the accepted-tail audit passes, attempt the identical0.273125s target using native newtontr globalization with default trust-region settings. Retain EW/GMRES/GAMG, Q6,0.625ms, histories, forcing, strict1e-8N absolute/zero-relative stopping and100-Newton ceiling. A3600s solve budget and unaccepted-iterate snapshots bound this attempt. Check the actual SNES type; any success still requires independent native/whole-element/norm/history audit. Original failed data remain unchanged.']
+   metric=P/'experiments/metrics/dynamic_quadratic_third_trust_region_recovery.json'
+   if metric.exists():
+    b=json.loads(metric.read_text());rows+=['',f'Trust-region correction finished {b.get("finished",False)}; accepted {sum(r["accepted"] for r in b["records"])}/1; recorded failure {b.get("failure","none")}.']
   equivalence=P/'experiments/metrics/dynamic_quadratic_ew_coarse_solver_equivalence.json'
   if equivalence.exists():
    a=json.loads(equivalence.read_text());rows+=['',f'**Coarse recursive solver-policy control.** Compare all {a["n_steps"]} states against the prior strict GMRES/GAMG/direct-fallback protocol, with identical space, timestep, quadrature, forcing and geometry. Both complete references independently passed native/hash/whole-element/norm audits. Existing1e-6 frame-relative/1nm absolute coefficient criteria passed {a["passed"]}; maximum frame-relative difference {a["maximum_relative_coefficient_difference"]:.6g}, maximum absolute difference {a["maximum_absolute_coefficient_difference_m"]:.6g}m. This checks accumulated solver agreement on one case, not continuum accuracy or an isolated speedup.']

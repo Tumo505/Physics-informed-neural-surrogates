@@ -1,0 +1,79 @@
+{
+  "complete": true,
+  "finished": true,
+  "engineering_only": true,
+  "full_cycle": false,
+  "all_requested_steps_accepted": true,
+  "acceptance_provenance": "Native failure accepted_steps_before_failure; independent audit required, no fabricated per-step SNES records",
+  "protocol": {
+    "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+    "timestep_divisor": 1,
+    "steps_after_checkpoint": 6,
+    "output": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json",
+    "checkpoint": "experiments/logs/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_restart.npz",
+    "fields": "experiments/logs/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_fields.npy",
+    "scope": "Recover only the native-accepted coefficient rows after the durable checkpoint and before the explicitly failed step. Native failure metadata establishes acceptance count; individual lost SNES records are not reconstructed. Independently reassemble all forces, whole-element positivity and norms before any reuse. Never use the failed iterate as an accepted field. Histories independently reconstructed with pinned generalized-alpha constants and checked against the fixed histories stored with the failed iterate."
+  },
+  "protocol_sha256": "ab3c3f9ce2baefabccb3941076a149dba9c07c282a14f40a253701f4caee3472",
+  "reference_config_sha256": "5725147217290e5bf505a8d9fe7973e4606670f190b0abba8b0ddafc06d95b48",
+  "checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "probe_checkpoint_sha256": "c73b00f474eca3e85356fd6d08097795ffe3ba62e7d242d4226249e1fcd409fc",
+  "source_sha256": "5558ebec551d27477c8016f0c378225162f6b7c03274891ae06780f456203392",
+  "failed_iterate_snapshot_sha256": "feab407749fdf46e6df3a0af8ef5ed39a36c45bc350cd4ded630cbd55b14e14e",
+  "native_failure_sha256": "bfb2776172023856a1ff6fb2f66dff47b0faac27b175d7b8c89bc12ad0bd5266",
+  "start_step": 430,
+  "dt_s": 0.000625,
+  "changed_time_discretization": false,
+  "independent_history_reconstruction": {
+    "u_old": {
+      "maximum_absolute_difference": 0.0,
+      "relative_L2_difference": 0.0
+    },
+    "v_old": {
+      "maximum_absolute_difference": 2.3130802828674746e-14,
+      "relative_L2_difference": 1.4812346775630657e-16
+    },
+    "a_old": {
+      "maximum_absolute_difference": 1.233582125337307e-10,
+      "relative_L2_difference": 7.970696038307831e-15
+    }
+  },
+  "records": [
+    {
+      "step": 430,
+      "time_s": 0.26937500000000003,
+      "accepted": true,
+      "native_acceptance_count_provenance": true
+    },
+    {
+      "step": 431,
+      "time_s": 0.27,
+      "accepted": true,
+      "native_acceptance_count_provenance": true
+    },
+    {
+      "step": 432,
+      "time_s": 0.270625,
+      "accepted": true,
+      "native_acceptance_count_provenance": true
+    },
+    {
+      "step": 433,
+      "time_s": 0.27125,
+      "accepted": true,
+      "native_acceptance_count_provenance": true
+    },
+    {
+      "step": 434,
+      "time_s": 0.27187500000000003,
+      "accepted": true,
+      "native_acceptance_count_provenance": true
+    },
+    {
+      "step": 435,
+      "time_s": 0.2725,
+      "accepted": true,
+      "native_acceptance_count_provenance": true
+    }
+  ]
+}

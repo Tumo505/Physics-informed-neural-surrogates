@@ -1,0 +1,74 @@
+{
+  "complete": true,
+  "passed": false,
+  "full_cycle": false,
+  "records": [
+    {
+      "time_s": 0.26937500000000003,
+      "native_residual_N": 2.4843356948673948e-09,
+      "endpoint_minimum_Bernstein_bound": -1.2209343743998995,
+      "endpoint_unresolved_elements": 14,
+      "stress_minimum_Bernstein_bound": -1.1992500682686578,
+      "stress_unresolved_elements": 12,
+      "independent_L2_norm_relative_error": 4.485579446350396e-14
+    },
+    {
+      "time_s": 0.27,
+      "native_residual_N": 2.182366676327172e-10,
+      "endpoint_minimum_Bernstein_bound": -0.9037234714069247,
+      "endpoint_unresolved_elements": 10,
+      "stress_minimum_Bernstein_bound": -1.0494918680396463,
+      "stress_unresolved_elements": 10
+    },
+    {
+      "time_s": 0.270625,
+      "native_residual_N": 1.0330680566730935e-11,
+      "endpoint_minimum_Bernstein_bound": -0.21524096401811488,
+      "endpoint_unresolved_elements": 12,
+      "stress_minimum_Bernstein_bound": -0.48139627671279667,
+      "stress_unresolved_elements": 12,
+      "independent_L2_norm_relative_error": 1.8291451749952175e-14
+    },
+    {
+      "time_s": 0.27125,
+      "native_residual_N": 2.640741083682828e-09,
+      "endpoint_minimum_Bernstein_bound": -0.440162587461002,
+      "endpoint_unresolved_elements": 13,
+      "stress_minimum_Bernstein_bound": -0.3285708309595454,
+      "stress_unresolved_elements": 11
+    },
+    {
+      "time_s": 0.27187500000000003,
+      "native_residual_N": 6.523851788942577e-10,
+      "endpoint_minimum_Bernstein_bound": -0.3489677696377268,
+      "endpoint_unresolved_elements": 17,
+      "stress_minimum_Bernstein_bound": -0.377351362532623,
+      "stress_unresolved_elements": 16,
+      "independent_L2_norm_relative_error": 3.085531576692301e-15
+    },
+    {
+      "time_s": 0.2725,
+      "native_residual_N": 4.457428688091745e-09,
+      "endpoint_minimum_Bernstein_bound": -0.24348314979041333,
+      "endpoint_unresolved_elements": 17,
+      "stress_minimum_Bernstein_bound": -0.23795116260777116,
+      "stress_unresolved_elements": 15,
+      "independent_L2_norm_relative_error": 4.01405059674308e-14
+    }
+  ],
+  "dt_s": 0.000625,
+  "final_checkpoint_history_relative_errors": {
+    "u": 0.0,
+    "u_old": 0.0,
+    "v_old": 0.0,
+    "a_old": 0.0
+  },
+  "accepted_prefix_only": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "ab3c3f9ce2baefabccb3941076a149dba9c07c282a14f40a253701f4caee3472",
+  "original_checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "fields_sha256": "b815ec8a77d48558470ac4a1f952f139233c01f65c7d0c0459dc1981704fd9e0",
+  "inputs_sha256": "932f5f3048514d2714d4922dd10ae6d0a1aef1117fc55f923d5ef66daefc62e3",
+  "executed_source_sha256": "53acd764f7e8a8f3af3d2cdddef24daea19a51fa387b9e1796e85154505e84eb",
+  "scope": "6 local probe steps with inherited nonzero histories, not a full-cycle reference. The recorded protocol specifies whether time discretization changed. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities and independent canonical-quadrature/UFL displacement norms checked at 4 fixed frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim."
+}

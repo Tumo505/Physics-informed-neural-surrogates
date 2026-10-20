@@ -252,7 +252,23 @@ Independent full-cycle refined audit passed True: maximum native force 9.95601e-
 
 **Bounded third-mesh follow-up.** The retained11.87% two-level discrepancy motivates a from-rest third uniform mesh:1,128,000 tetrahedra, expected4,812,987 P2 displacement DOFs and1600 fixed0.625ms steps. All material/forcing/Q6/EW/nonlinear settings match the fine reference. No inherited trajectory prefix is used. The earlier independently verified one-query loaded probe demonstrates limited feasibility only. The generation, comparison and audit workflow is capped at72 hours total,30GiB sampled descendant RSS and100GiB free disk reserve, sampled every2s. Only this workflow process group is terminated if a bound is reached; accepted checkpoints are preserved. This is a resource budget, not a completion-time prediction. No assumed convergence rate or neural retraining follows from launching it.
 
-Third-mesh workflow phase startup; complete False; recorded failure none.
+Third-mesh workflow phase generation; complete False; recorded failure generation stopped: process_failure, return code 1; see preserved log.
+
+Third-mesh persisted accepted states 430/1600; complete False.
+
+**Third-mesh reference rejected.** At 0.273125s, native inexact Newton exhausted 100 updates with residual 3.14235e+11N (SNES -5). It had accepted 436 states, with 430 in the durable checkpoint. This is nonlinear failure before resource-budget exhaustion, not a successful third-mesh trajectory. No third-level full-cycle sensitivity, numerical-convergence pass, finer-reference calibration or fresh neural comparison is available. Increasing iterations alone is not justified by this failed attempt.
+
+**Accepted-tail recovery check.** Preserve the original failed reference. Recover only the six coefficient rows counted as native-accepted after checkpoint430 and before failed step436; do not fabricate their lost individual SNES records or accept the failed iterate. Independently reconstruct generalized-alpha histories and compare with the fixed histories saved alongside the failed iterate. Independent native forces, whole-element bounds and norm/history checks gate any reuse.
+
+Maximum history reconstruction relative discrepancy 7.97e-15.
+
+Independent accepted-tail audit passed False; this is six local states, not a full-cycle qualification.
+
+Supplemental same-margin subdivision resolved the initially inconclusive whole-element bounds. The combined native/positivity/norm/history audit passed True, preserving the original parent-bound failure and linking both audits by SHA256. These six local states are qualified for a recovery initial history only, not a full-cycle or mesh-convergence claim.
+
+**Separate bounded trust-region correction.** Only after the accepted-tail audit passes, attempt the identical0.273125s target using native newtontr globalization with default trust-region settings. Retain EW/GMRES/GAMG, Q6,0.625ms, histories, forcing, strict1e-8N absolute/zero-relative stopping and100-Newton ceiling. A3600s solve budget and unaccepted-iterate snapshots bound this attempt. Check the actual SNES type; any success still requires independent native/whole-element/norm/history audit. Original failed data remain unchanged.
+
+Trust-region correction finished False; accepted 0/1; recorded failure none.
 
 **Coarse recursive solver-policy control.** Compare all 1600 states against the prior strict GMRES/GAMG/direct-fallback protocol, with identical space, timestep, quadrature, forcing and geometry. Both complete references independently passed native/hash/whole-element/norm audits. Existing1e-6 frame-relative/1nm absolute coefficient criteria passed False; maximum frame-relative difference 2.56828e-05, maximum absolute difference 7.78933e-10m. This checks accumulated solver agreement on one case, not continuum accuracy or an isolated speedup.
 

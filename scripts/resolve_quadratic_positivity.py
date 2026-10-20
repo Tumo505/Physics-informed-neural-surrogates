@@ -3,13 +3,36 @@ from pathlib import Path
 import argparse,hashlib,itertools,json,math
 import numpy as np
 P=Path(__file__).resolve().parents[1]
-ap=argparse.ArgumentParser();ap.add_argument('--config',required=True);ap.add_argument('--max-depth',type=int,default=12);args=ap.parse_args()
+ap=argparse.ArgumentParser();ap.add_argument('--config',required=True);ap.add_argument('--max-depth',type=int,default=12);ap.add_argument('--probe-protocol');args=ap.parse_args()
 cp=P/args.config;cfg=json.loads(cp.read_text());root=P/'data/processed'/cfg['name']
-mp=root/'manifest.json';m=json.loads(mp.read_text());bp=P/f'experiments/metrics/{cfg["name"]}_bernstein.json';audit=json.loads(bp.read_text())
-assert m['complete'] and audit['complete'] and audit['output_sha256']==m['output_sha256']
+mp=root/'manifest.json';m=json.loads(mp.read_text());bp=P/f'experiments/metrics/{cfg["name"]}_bernstein.json'
+audit=json.loads(bp.read_text()) if not args.probe_protocol else None
+initial_old=None;target_stem=cfg['name'];proof_hashes=None
+if args.probe_protocol:
+ protocol=json.loads((P/args.probe_protocol).read_text());assert protocol['reference']==cfg['name']
+ bp=(P/protocol['output']).with_name(Path(protocol['output']).stem+'_verification.json')
+ native_audit=json.loads(bp.read_text());assert native_audit['complete']
+ fields=P/protocol['fields'];inputs=root/'inputs.npz'
+ assert hashlib.sha256(fields.read_bytes()).hexdigest()==native_audit['fields_sha256']
+ assert hashlib.sha256(inputs.read_bytes()).hexdigest()==native_audit['inputs_sha256']
+ initial_old=np.load(root/'restart.npz')['u_old']
+ assert hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest()==native_audit['original_checkpoint_sha256']
+ assert not protocol.get('resume_probe_protocol') and protocol.get('timestep_divisor',1)==1
+ audit=dict(complete=True,positive_margin=1e-9,records=[])
+ for i,r in enumerate(native_audit['records']):
+  row=dict(step=i,time_s=r['time_s'])
+  for state in ['endpoint','stress']:
+   row[state+'_unresolved_elements']=r[state+'_unresolved_elements']
+   row[state+'_minimum_Bernstein_lower_bound']=r[state+'_minimum_Bernstein_bound']
+  audit['records'].append(row)
+ proof_hashes=dict(fields_sha256=native_audit['fields_sha256'],inputs_sha256=native_audit['inputs_sha256'])
+ target_stem=Path(protocol['output']).stem
+else:
+ assert m['complete'] and audit['complete'] and audit['output_sha256']==m['output_sha256']
 assert m['config_sha256']==hashlib.sha256(cp.read_bytes()).hexdigest()
-for name,digest in m['output_sha256'].items():assert hashlib.sha256((root/name).read_bytes()).hexdigest()==digest
-u=np.load(root/'displacement_coefficients.npy',mmap_mode='r');data=np.load(root/'inputs.npz');X=data['coords'][data['cells']]
+if not args.probe_protocol:
+ for name,digest in m['output_sha256'].items():assert hashlib.sha256((root/name).read_bytes()).hexdigest()==digest
+u=np.load(fields if args.probe_protocol else root/'displacement_coefficients.npy',mmap_mode='r');data=np.load(root/'inputs.npz');X=data['coords'][data['cells']]
 inv=np.linalg.inv((X[:,1:]-X[:,:1]).transpose(0,2,1));gl=np.concatenate((-inv.sum(1,keepdims=True),inv),axis=1)
 edges=list(itertools.combinations(range(4),2));grads=np.stack([np.concatenate(((4*b[None,:,None]-1)*gl,np.stack([4*(b[i]*gl[:,j]+b[j]*gl[:,i]) for i,j in edges],axis=1)),axis=1) for b in np.eye(4)],axis=1)
 multi=np.array([a for a in itertools.product(range(4),repeat=4) if sum(a)==3]);lattice=multi/3
@@ -36,7 +59,7 @@ for record in audit['records']:
  step=record['step']
  for state in ['endpoint','stress']:
   if not record[state+'_unresolved_elements']:continue
-  field=u[step] if state=='endpoint' else .4*(u[step-1] if step else np.zeros(u.shape[1]))+.6*u[step]
+  field=u[step] if state=='endpoint' else .4*(u[step-1] if step else (initial_old if initial_old is not None else np.zeros(u.shape[1])))+.6*u[step]
   F=np.eye(3)+np.einsum('eki,evkj->evij',field[data['canonical_cell_dofs']],grads)
   coeff=np.linalg.det(np.einsum('qv,evij->eqij',lattice,F))@transform.T;lower=coeff.min(axis=1);indices=np.flatnonzero(lower<=margin)
   assert len(indices)==record[state+'_unresolved_elements']
@@ -50,5 +73,5 @@ for state in ['endpoint','stress']:
  values=[r[state+'_minimum_Bernstein_lower_bound'] for r in audit['records'] if not r[state+'_unresolved_elements']]
  values += [r['minimum_positive_lower_bound'] for r in records if r['state']==state]
  merged[state]=min(values)
-out=dict(complete=True,passed=passed,reference_name=cfg['name'],config_sha256=m['config_sha256'],output_sha256=m['output_sha256'],original_audit_sha256=hashlib.sha256(bp.read_bytes()).hexdigest(),executed_source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),positive_margin=margin,max_depth=args.max_depth,records=records,merged_minimum_lower_bound=merged if passed else None,scope='Supplement to the retained original inconclusive bound. Longest-rest-edge midpoint bisection partitions each unresolved tetrahedron; affine F is restricted to child vertices and the same cubic Bernstein criterion/margin is applied on every leaf. A nonpositive directly evaluated determinant is an inversion witness. Float64 algebra, not interval arithmetic; no relaxation of the physical positivity requirement.')
-(P/f'experiments/metrics/{cfg["name"]}_bernstein_refinement.json').write_text(json.dumps(out,indent=2,allow_nan=False));print('REFINED POSITIVITY PASSED',passed,flush=True)
+out=dict(complete=True,passed=passed,reference_name=cfg['name'],config_sha256=m['config_sha256'],output_sha256=proof_hashes if args.probe_protocol else m['output_sha256'],original_audit_sha256=hashlib.sha256(bp.read_bytes()).hexdigest(),executed_source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),positive_margin=margin,max_depth=args.max_depth,records=records,merged_minimum_lower_bound=merged if passed else None,scope='Supplement to the retained original inconclusive bound. Longest-rest-edge midpoint bisection partitions each unresolved tetrahedron; affine F is restricted to child vertices and the same cubic Bernstein criterion/margin is applied on every leaf. A nonpositive directly evaluated determinant is an inversion witness. Float64 algebra, not interval arithmetic; no relaxation of the physical positivity requirement.')
+(P/f'experiments/metrics/{target_stem}_bernstein_refinement.json').write_text(json.dumps(out,indent=2,allow_nan=False));print('REFINED POSITIVITY PASSED',passed,flush=True)

@@ -1,0 +1,114 @@
+{
+  "complete": false,
+  "pilot": true,
+  "comparison": "mesh",
+  "config_a": {
+    "name": "cardiac_quadratic_reference_halfstep_ew_refined_v1",
+    "dt_s": 0.000625,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 1,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "native_solver": "gamg",
+    "scope": "Prospective P2/Q6/0.625ms GMRES/GAMG with native Eisenstat-Walker version2(initial linear rtol0.01/max0.1), restart200/cap3000, strict1e-8N absolute/zero-relative stopping and100 Newton ceiling. No direct fallback. Both mesh levels use identical fixed solver settings. Coarse starts from rest; refined inherits452 accepted states plus two independently audited EW recovery states through0.28375s, with complete provenance; inherited states are not re-executed. Each nonlinear iterate is saved separately as UNACCEPTED. Native convergence, full-cycle whole-element positivity and independent norm checks gate any matched mesh result. Q6 integration uncertainty remains unresolved. No neural retraining or continuum claim.",
+    "nonlinear_absolute_tolerance_N": 1e-08,
+    "nonlinear_relative_tolerance": 0.0,
+    "allow_direct_fallback": false,
+    "maximum_newton_iterations": 100,
+    "mumps_memory_limit_MB": 20000,
+    "inexact_newton": true,
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "save_nonlinear_checkpoint": true
+  },
+  "config_b": {
+    "name": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+    "dt_s": 0.000625,
+    "duration_s": 1.0,
+    "displacement_degree": 2,
+    "refinement_level": 2,
+    "geometry_scales": [
+      1.0,
+      1.0
+    ],
+    "amplitude": 1.0,
+    "timing_scale": 1.0,
+    "quadrature_degree": 6,
+    "checkpoint_interval": 10,
+    "native_solver": "gamg",
+    "scope": "Third uniform P2 mesh from rest:1128000 tetrahedra and expected4812987 displacement DOFs. Match the accepted baseline/fine EW Q6/0.625ms material, forcing, histories, nonlinear tolerance and linear policy; no inherited trajectory prefix. Native EW version2(initial0.01/max0.1), GMRES/GAMG restart200/cap3000, strict1e-8N absolute/zero-relative stopping and100 Newton ceiling. Existing loaded-state capacity probe motivates feasibility only, not full-cycle robustness. The complete generation/comparison/audit workflow is bounded to72 hours,30GiB sampled total child RSS and100GiB free-disk reserve. Retain any resource/numerical rejection. This tests fine-to-third sensitivity; no assumed asymptotic rate or continuum truth. Q6 integration uncertainty remains separate and unresolved. No neural training/calibration or test-based selection.",
+    "nonlinear_absolute_tolerance_N": 1e-08,
+    "nonlinear_relative_tolerance": 0.0,
+    "allow_direct_fallback": false,
+    "maximum_newton_iterations": 100,
+    "mumps_memory_limit_MB": 20000,
+    "inexact_newton": true,
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "save_nonlinear_checkpoint": true
+  },
+  "config_paths": [
+    "configs/physics/dynamic_quadratic_reference_halfstep_ew_refined.json",
+    "configs/physics/dynamic_quadratic_reference_halfstep_ew_third.json"
+  ],
+  "config_sha256": [
+    "530bceec1ab3763bc895702e35848746c508ab605cfb10c9bf0b9afa5a961d52",
+    "5725147217290e5bf505a8d9fe7973e4606670f190b0abba8b0ddafc06d95b48"
+  ],
+  "output_sha256": [
+    {
+      "displacement_coefficients.npy": "f2d0a2c2efdba093b8ec83fa7dc9e2343532bdc04c50e3415b8a68b21fe91302",
+      "displacement_vertices.npy": "00e5b2e20988901423f43deda77de995c46c9c2aa8da326cb1a628738f54777e",
+      "inputs.npz": "e00752400d2e06c1cb85568d5d615f4703c361bfe54b611ffb59f8ab8b3e8f2b"
+    },
+    null
+  ],
+  "executed_source_sha256": "d82c2b20f4c6580ebe5cd1e99ddbb476f6f536dcfdd267f0c23f90e94c0a1c36",
+  "common_endpoints": 2,
+  "end_time_s": 0.00125,
+  "physical_volume_m3": 0.00017769451479942636,
+  "relative_space_time_L2": 0.2786413163478328,
+  "component_volume_time_RMSE_m": 9.711358777033726e-09,
+  "tolerance_relative_L2": 0.01,
+  "passes_declared_one_percent_sensitivity": false,
+  "integration": "Trapezoid in time including exactly zero initial fields; exact degree-4 consistent-mass spatial integration at common endpoints.",
+  "manufactured_transfer_max_abs_error": 9.71445146547012e-17,
+  "independent_native_checks": [
+    {
+      "time_s": 0.000625,
+      "mass_norm_squared": 2.0011794096713494e-20,
+      "independent_UFL_norm_squared": 2.0011794096714736e-20,
+      "relative_discrepancy": 6.210470991411103e-14
+    },
+    {
+      "time_s": 0.00125,
+      "mass_norm_squared": 1.610778914385393e-19,
+      "independent_UFL_norm_squared": 1.6107789143853764e-19,
+      "relative_discrepancy": 1.03124926841237e-14
+    }
+  ],
+  "records": [
+    {
+      "time_s": 0.000625,
+      "a_step": 0,
+      "b_step": 0,
+      "error_squared_integral_m5": 2.0011794096713494e-20,
+      "reference_squared_integral_m5": 1.4028913731619541e-19
+    },
+    {
+      "time_s": 0.00125,
+      "a_step": 1,
+      "b_step": 1,
+      "error_squared_integral_m5": 1.610778914385393e-19,
+      "reference_squared_integral_m5": 2.3095676947451897e-18
+    }
+  ],
+  "scope": "Controlled two-level sensitivity in one factor with frozen mechanics and initial/loading conditions. Finer discretization is not assumed continuum truth. Two levels do not establish an asymptotic convergence rate. Partial pilot checks never pass the full-cycle criterion."
+}

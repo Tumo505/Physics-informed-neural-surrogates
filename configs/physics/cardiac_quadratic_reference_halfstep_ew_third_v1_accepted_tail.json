@@ -1,0 +1,9 @@
+{
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "timestep_divisor": 1,
+  "steps_after_checkpoint": 6,
+  "output": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json",
+  "checkpoint": "experiments/logs/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_restart.npz",
+  "fields": "experiments/logs/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_fields.npy",
+  "scope": "Recover only the native-accepted coefficient rows after the durable checkpoint and before the explicitly failed step. Native failure metadata establishes acceptance count; individual lost SNES records are not reconstructed. Independently reassemble all forces, whole-element positivity and norms before any reuse. Never use the failed iterate as an accepted field. Histories independently reconstructed with pinned generalized-alpha constants and checked against the fixed histories stored with the failed iterate."
+}

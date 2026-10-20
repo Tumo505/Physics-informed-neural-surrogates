@@ -20,6 +20,9 @@ ap.add_argument('--protocol', default='configs/physics/dynamic_quadratic_strict_
 args = ap.parse_args()
 protocol_path = P/args.protocol
 protocol = json.loads(protocol_path.read_text())
+if 'required_audit' in protocol:
+    audit=json.loads((P/protocol['required_audit']).read_text())
+    assert audit['complete'] and audit['passed'], 'Recovery histories must pass independent audit before use'
 root = P/'data/processed'/protocol['reference']
 assert (root/'failure.json').exists()
 m = json.loads((root/'manifest.json').read_text()); cfg = m['config']
@@ -79,6 +82,8 @@ settings['absolute_tolerance'] = protocol['absolute_tolerance_N']
 settings['relative_tolerance'] = protocol['relative_tolerance']
 settings['maximum_iterations'] = protocol['maximum_newton_iterations']
 settings['line_search'] = 'bt'
+if 'nonlinear_method' in protocol:
+    settings['method']=protocol['nonlinear_method']
 np.testing.assert_allclose(problem.u_space.tabulate_dof_coordinates(), inputs['dof_coordinates'], rtol=0, atol=1e-14)
 for name in ['u', 'u_old', 'v_old', 'a_old']:
     field = getattr(problem, name); field.vector().set_local(saved[name]); field.vector().apply('insert')
@@ -130,16 +135,20 @@ try:
         history.clear(); tick = time.perf_counter()
         problem.solver.solve()
         snes = problem.solver._snes
+        if 'nonlinear_method' in protocol:
+            assert snes.getType()==protocol['nonlinear_method'], 'Requested nonlinear method was not effective'
         if protocol.get('inexact_newton',False):
             assert snes.getUseEW(), 'Requested inexact Newton was not effective'
         R = float(residual(problem).norm('l2')); u = problem.u.vector().get_local()
         endpoint, _ = kin.audit(u); stress, _ = kin.audit(.4*old+.6*u)
-        accepted = bool(snes.getConvergedReason()>0 and np.isfinite(R) and R<1e-6
+        accepted = bool(snes.getConvergedReason()>0 and np.isfinite(R)
+                        and R<min(1e-6,protocol['absolute_tolerance_N'])
                         and np.isfinite(u).all() and min(endpoint, stress)>0)
         result['records'].append(dict(step=i, time_s=float(time_s), accepted=accepted,
             SNES_reason=int(snes.getConvergedReason()), residual_N=R if np.isfinite(R) else None,
             KSP_reason=int(snes.getKSP().getConvergedReason()),
             effective_KSP=snes.getKSP().getType(), effective_PC=snes.getKSP().getPC().getType(),
+            effective_SNES=snes.getType(),
             EW_effective=bool(snes.getUseEW()),
             last_linear_iterations=int(snes.getKSP().getIterationNumber()),
             minimum_endpoint_sampled_detF=endpoint, minimum_stress_sampled_detF=stress,

@@ -109,7 +109,14 @@ for i,current in enumerate(u):
     records.append(record); problem._update_fields()
     print('VERIFIED LOCAL PROBE',i+1,'/',len(u),flush=True)
 passed = all(r['endpoint_unresolved_elements']==r['stress_unresolved_elements']==0 for r in records)
+final_checkpoint=np.load(P/protocol['checkpoint'])
+history_checks={}
+for name in ['u','u_old','v_old','a_old']:
+    actual=getattr(problem,name).vector().get_local();expected=final_checkpoint[name]
+    np.testing.assert_allclose(actual,expected,rtol=1e-7,atol=1e-10)
+    history_checks[name]=float(np.linalg.norm(actual-expected)/max(np.linalg.norm(expected),1e-30))
 result = dict(complete=True,passed=passed,full_cycle=False,records=records,dt_s=dt,
+    final_checkpoint_history_relative_errors=history_checks,
     accepted_prefix_only=args.accepted_prefix,
     changed_time_discretization=probe.get('changed_time_discretization'),
     protocol_sha256=probe['protocol_sha256'], original_checkpoint_sha256=probe['checkpoint_sha256'],
