@@ -1,0 +1,23 @@
+{
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "timestep_divisor": 1,
+  "steps_after_checkpoint": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 3600,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "resume_probe_protocol": "configs/physics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json",
+  "required_audit": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_verification_resolved.json",
+  "output": "experiments/metrics/dynamic_quadratic_third_prolongation_recovery.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_third_prolongation_recovery_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_third_prolongation_recovery_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_prolongation_recovery_iterate.npz",
+  "scope": "One separately fixed exact-grid0.273125s third-mesh correction, after both100-Newton backtracking and trust-region failures. Use the completed hash-verified fine-mesh field at the identical time/pressure solely as a native P2 interpolated initial guess. Geometry, material, Q6,0.625ms and the independently qualified third-mesh histories remain unchanged. Require at least10-fold initial native-residual reduction before spending a solve. Retain original backtracking globalization, EW/GMRES/GAMG restart200/cap3000, strict1e-8N final-force acceptance,100 Newton ceiling and3600s budget. Snapshot unaccepted iterates. Native/whole-element/norm/history verification gates any success. Source fields are a solver initialization, not target labels or accepted replacements; root uniqueness and full-cycle convergence are not established.",
+  "initial_guess_reference": "cardiac_quadratic_reference_halfstep_ew_refined_v1",
+  "minimum_initial_residual_improvement_factor": 10
+}

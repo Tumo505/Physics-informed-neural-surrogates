@@ -87,6 +87,23 @@ if 'nonlinear_method' in protocol:
 np.testing.assert_allclose(problem.u_space.tabulate_dof_coordinates(), inputs['dof_coordinates'], rtol=0, atol=1e-14)
 for name in ['u', 'u_old', 'v_old', 'a_old']:
     field = getattr(problem, name); field.vector().set_local(saved[name]); field.vector().apply('insert')
+guess_source=None
+if 'initial_guess_reference' in protocol:
+    source_root=P/'data/processed'/protocol['initial_guess_reference']
+    source_manifest=json.loads((source_root/'manifest.json').read_text());sc=source_manifest['config']
+    assert source_manifest['complete'] and not (source_root/'failure.json').exists()
+    for name,digest in source_manifest['output_sha256'].items():
+        assert hashlib.sha256((source_root/name).read_bytes()).hexdigest()==digest
+    for key in ['dt_s','duration_s','displacement_degree','geometry_scales','amplitude','timing_scale','quadrature_degree']:
+        assert sc[key]==cfg[key], key
+    source_inputs=np.load(source_root/'inputs.npz')
+    source_geo,_,source_base=setup(dt=dt,geometry_scales=sc['geometry_scales'],refinement_level=sc['refinement_level'])
+    source_space=df.VectorFunctionSpace(source_geo.mesh,'CG',2)
+    np.testing.assert_allclose(source_space.tabulate_dof_coordinates(),source_inputs['dof_coordinates'],atol=1e-14,rtol=0)
+    np.testing.assert_array_equal(source_geo.mesh.cells(),source_inputs['cells'])
+    source_fields=np.load(source_root/'displacement_coefficients.npy',mmap_mode='r')
+    guess_source=(source_space,source_inputs,source_fields)
+    result['initial_guess_reference_output_sha256']=source_manifest['output_sha256'];persist()
 kin = QuadraticKinematics(problem.u_space, inputs['qpoints'], inputs['qweights'])
 checkpoint_path = P/protocol['checkpoint'] if 'checkpoint' in protocol else None
 fields = None
@@ -131,6 +148,20 @@ try:
             R = float(residual(problem).norm('l2'))
             if np.isfinite(R) and R < best_R:
                 best = guess; best_R = R
+        if guess_source is not None:
+            source_space,source_inputs,source_fields=guess_source
+            np.testing.assert_allclose(source_inputs['time'][i],time_s,atol=1e-12,rtol=0)
+            np.testing.assert_allclose(source_inputs['pressure'][i],pressure,atol=1e-10,rtol=0)
+            source_field=df.Function(source_space);source_field.vector().set_local(source_fields[i]);source_field.vector().apply('insert')
+            prolonged=df.interpolate(source_field,problem.u_space)
+            problem.u.assign(prolonged);R=float(residual(problem).norm('l2'))
+            improvement=best_R/max(R,1e-300) if np.isfinite(R) else 0.
+            result['initial_guess_check']=dict(original_predictor_residual_N=best_R if np.isfinite(best_R) else None,
+                prolonged_residual_N=R if np.isfinite(R) else None,improvement_factor=improvement,
+                source_reference=protocol['initial_guess_reference'],source_step=i,initialization_only=True)
+            persist()
+            assert np.isfinite(R) and improvement>=protocol.get('minimum_initial_residual_improvement_factor',1), 'Prolongation did not meet predeclared initialization improvement gate'
+            best=prolonged.vector().get_local();best_R=R
         problem.u.vector().set_local(best); problem.u.vector().apply('insert')
         history.clear(); tick = time.perf_counter()
         problem.solver.solve()

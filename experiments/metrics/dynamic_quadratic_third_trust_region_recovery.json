@@ -1,0 +1,83 @@
+{
+  "complete": false,
+  "engineering_only": true,
+  "protocol": {
+    "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+    "timestep_divisor": 1,
+    "steps_after_checkpoint": 1,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 3600,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "gamg",
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "inexact_newton": true,
+    "nonlinear_method": "newtontr",
+    "resume_probe_protocol": "configs/physics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json",
+    "required_audit": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_verification_resolved.json",
+    "output": "experiments/metrics/dynamic_quadratic_third_trust_region_recovery.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_third_trust_region_recovery_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_third_trust_region_recovery_fields.npy",
+    "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_trust_region_recovery_iterate.npz",
+    "scope": "One exact-grid corrective target0.273125s on the third mesh, using the six recovered native-accepted states only after independent audit. Preserve the original failed100-Newton backtracking attempt. Change globalization to native newtontr with native default trust-region settings, keeping EW/GMRES/GAMG, physical equations, histories, pressure, Q6,0.625ms and strict final acceptance fixed. Effective SNES type is checked. Bound to3600s solve budget and100 Newton ceiling; preserve iterates separately as UNACCEPTED. Any success requires independent native force, whole-element positivity and norm/history checks. No full-cycle, mesh-convergence or continuum claim."
+  },
+  "records": [
+    {
+      "step": 436,
+      "time_s": 0.273125,
+      "accepted": false,
+      "SNES_reason": -4,
+      "residual_N": 15789638682154.938,
+      "KSP_reason": 2,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "effective_SNES": "newtontr",
+      "EW_effective": true,
+      "last_linear_iterations": 1,
+      "minimum_endpoint_sampled_detF": 0.08274027236742482,
+      "minimum_stress_sampled_detF": 0.08273160987859231,
+      "nonlinear_seconds": 375.4339902079664,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 19588014493422.227,
+          "KSP_rtol": 1e-10
+        },
+        {
+          "iteration": 1,
+          "residual_N": 15789638682154.938,
+          "KSP_rtol": 0.01
+        }
+      ]
+    }
+  ],
+  "protocol_sha256": "9acc89c7ff0c080c1cdf70b4d955bced6278bab21e2b0ce89d32ce8ea23b40cb",
+  "reference_config_sha256": "5725147217290e5bf505a8d9fe7973e4606670f190b0abba8b0ddafc06d95b48",
+  "start_step": 436,
+  "checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "source_sha256": "1dddb26c1f13e9d23fba04a891ed33f85e277ae40cd4efc6440dedc56f39e1d2",
+  "resumed_checkpoint_sha256": "c73b00f474eca3e85356fd6d08097795ffe3ba62e7d242d4226249e1fcd409fc",
+  "resumed_accepted_probe_steps": 6,
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "last_attempt_time_s": 0.273125,
+  "failure": "Physical acceptance criteria failed in strict probe",
+  "all_requested_steps_accepted": false,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 19588014493422.227,
+      "KSP_rtol": 1e-10
+    },
+    {
+      "iteration": 1,
+      "residual_N": 15789638682154.938,
+      "KSP_rtol": 0.01
+    }
+  ],
+  "wall_seconds": 389.43997370800935
+}

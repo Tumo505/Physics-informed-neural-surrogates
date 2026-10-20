@@ -231,6 +231,16 @@ def dynamic_rows(P):
    metric=P/'experiments/metrics/dynamic_quadratic_third_trust_region_recovery.json'
    if metric.exists():
     b=json.loads(metric.read_text());rows+=['',f'Trust-region correction finished {b.get("finished",False)}; accepted {sum(r["accepted"] for r in b["records"])}/1; recorded failure {b.get("failure","none")}.']
+    if b.get('finished') and b['records']:
+     r=b['records'][-1];rows+=['',f'Actual SNES {r.get("effective_SNES")}; native reason {r["SNES_reason"]}, final physical force {r["residual_N"]:.6g}N, solve {r["nonlinear_seconds"]:.1f}s. The native log reports a nonfinite residual evaluation; the returned finite iterate still fails equilibrium. No state was accepted.']
+  prolong=P/'configs/physics/dynamic_quadratic_third_prolongation_recovery.json'
+  if prolong.exists():
+   rows+=['','**Separately bounded spatial initialization.** After trust-region rejection, try the identical0.273125s target with the completed fine-mesh field interpolated natively onto the third mesh as an initial guess only. Check source output hashes, physical settings, DOF coordinates/cells and exact time/pressure. Require at least10-fold reduction of the initial native residual before solving. Keep the verified third-mesh histories, governing equations, material, pressure, mesh, Q6,0.625ms, backtracking, EW/GMRES/GAMG and strict1e-8N final force acceptance unchanged. Bound to3600s and100 Newton updates; independent native/whole-element/norm/history audit gates success. This does not replace a third-mesh solution with fine-mesh labels or establish root uniqueness, full-cycle stability or convergence.']
+   metric=P/'experiments/metrics/dynamic_quadratic_third_prolongation_recovery.json'
+   if metric.exists():
+    b=json.loads(metric.read_text());rows+=['',f'Spatial-initialization recovery finished {b.get("finished",False)}; accepted {sum(r["accepted"] for r in b["records"])}/1; recorded failure {b.get("failure","none")}.']
+    if b.get('initial_guess_check'):
+     r=b['initial_guess_check'];rows+=['',f'Initial predictor force {r["original_predictor_residual_N"]}N; prolonged initial force {r["prolonged_residual_N"]}N; improvement factor {r["improvement_factor"]:.6g}.']
   equivalence=P/'experiments/metrics/dynamic_quadratic_ew_coarse_solver_equivalence.json'
   if equivalence.exists():
    a=json.loads(equivalence.read_text());rows+=['',f'**Coarse recursive solver-policy control.** Compare all {a["n_steps"]} states against the prior strict GMRES/GAMG/direct-fallback protocol, with identical space, timestep, quadrature, forcing and geometry. Both complete references independently passed native/hash/whole-element/norm audits. Existing1e-6 frame-relative/1nm absolute coefficient criteria passed {a["passed"]}; maximum frame-relative difference {a["maximum_relative_coefficient_difference"]:.6g}, maximum absolute difference {a["maximum_absolute_coefficient_difference_m"]:.6g}m. This checks accumulated solver agreement on one case, not continuum accuracy or an isolated speedup.']

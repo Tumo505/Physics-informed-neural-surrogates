@@ -268,7 +268,13 @@ Supplemental same-margin subdivision resolved the initially inconclusive whole-e
 
 **Separate bounded trust-region correction.** Only after the accepted-tail audit passes, attempt the identical0.273125s target using native newtontr globalization with default trust-region settings. Retain EW/GMRES/GAMG, Q6,0.625ms, histories, forcing, strict1e-8N absolute/zero-relative stopping and100-Newton ceiling. A3600s solve budget and unaccepted-iterate snapshots bound this attempt. Check the actual SNES type; any success still requires independent native/whole-element/norm/history audit. Original failed data remain unchanged.
 
-Trust-region correction finished False; accepted 0/1; recorded failure none.
+Trust-region correction finished True; accepted 0/1; recorded failure Physical acceptance criteria failed in strict probe.
+
+Actual SNES newtontr; native reason -4, final physical force 1.57896e+13N, solve 375.4s. The native log reports a nonfinite residual evaluation; the returned finite iterate still fails equilibrium. No state was accepted.
+
+**Separately bounded spatial initialization.** After trust-region rejection, try the identical0.273125s target with the completed fine-mesh field interpolated natively onto the third mesh as an initial guess only. Check source output hashes, physical settings, DOF coordinates/cells and exact time/pressure. Require at least10-fold reduction of the initial native residual before solving. Keep the verified third-mesh histories, governing equations, material, pressure, mesh, Q6,0.625ms, backtracking, EW/GMRES/GAMG and strict1e-8N final force acceptance unchanged. Bound to3600s and100 Newton updates; independent native/whole-element/norm/history audit gates success. This does not replace a third-mesh solution with fine-mesh labels or establish root uniqueness, full-cycle stability or convergence.
+
+Spatial-initialization recovery finished False; accepted 0/1; recorded failure none.
 
 **Coarse recursive solver-policy control.** Compare all 1600 states against the prior strict GMRES/GAMG/direct-fallback protocol, with identical space, timestep, quadrature, forcing and geometry. Both complete references independently passed native/hash/whole-element/norm audits. Existing1e-6 frame-relative/1nm absolute coefficient criteria passed False; maximum frame-relative difference 2.56828e-05, maximum absolute difference 7.78933e-10m. This checks accumulated solver agreement on one case, not continuum accuracy or an isolated speedup.
 
