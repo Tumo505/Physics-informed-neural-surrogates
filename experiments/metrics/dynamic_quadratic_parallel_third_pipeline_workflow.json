@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_parallel_third_pipeline.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_parallel_third_pipeline.json",
+    "max_phase_seconds": 259200.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 259200.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "seed",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 54.60987762501463,
+      "sampled_peak_RSS_bytes": 26274988032
+    },
+    {
+      "phase": "prefix_positivity",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 3636.4110078329686,
+      "sampled_peak_RSS_bytes": 17134862336
+    },
+    {
+      "phase": "solve",
+      "return_code": 1,
+      "stop_reason": null,
+      "wall_seconds": 947.3706882500555,
+      "sampled_peak_RSS_bytes": 21572091904
+    }
+  ],
+  "active_phase": "stopped",
+  "total_wall_seconds": 4638.39842566615,
+  "local_recovery_verified": false,
+  "failure": "solve: 1"
+}

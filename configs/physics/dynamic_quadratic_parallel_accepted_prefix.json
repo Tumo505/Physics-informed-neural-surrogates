@@ -1,0 +1,12 @@
+{
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_best_predictor_pilot.json",
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "output": "experiments/metrics/dynamic_quadratic_parallel_accepted_prefix.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_parallel_accepted_prefix_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_parallel_accepted_prefix_fields.npy",
+  "scope": "Retrospective independent audit of actual accepted step440 only from failed full-cycle MPI pipeline. Does not retry any solve or claim full-cycle completion."
+}

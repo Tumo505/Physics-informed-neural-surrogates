@@ -1,0 +1,39 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "passed": false,
+  "failure_step": 441,
+  "failure_time_s": 0.27625,
+  "native_divergence": "DIVERGED_LINE_SEARCH",
+  "newton_iterations": 19,
+  "initial_residual_N": 0.47987396207901173,
+  "last_logged_native_residual_N": 0.043365167766781614,
+  "accepted_steps": 441,
+  "requested_steps": 1600,
+  "accepted_end_time_s": 0.275625,
+  "solve_phase_seconds": 947.3706882500555,
+  "whole_inherited_prefix_passed": 440,
+  "process_tree_peak_RSS_bytes": 21572091904,
+  "workflow_sha256": "d82804c455c015a8c66e4f178f12e2fffb9ab5aa8f71256ec2756d2e713cdb9e",
+  "solve_log_sha256": "2a810be4364f334681160a10d3a496dc1589a734daff06acbe8c128de8c952eb",
+  "accepted_manifest_sha256": "74dbc18578c030ad3dad2f66b8402465fd3283bb123b80e893e068e08ef3ce7f",
+  "accepted_checkpoint_sha256": "c65b84aed8d92860a08202e52a11aa600d0f2e6ce32f9157977d942c61e5d38a",
+  "failed_iterate_saved": false,
+  "scope": "Nonlinear globalization failure, not wall-time/RSS/disk stop. Last logged monitor norm is not a new independently reassembled endpoint residual. MPI ranks aborted before a structured failure file/unaccepted iterate was persisted; original log and accepted checkpoint retained. No unaccepted iterate is a timestep or label. No blind retry authorized by this assessment.",
+  "remaining_gaps": [
+    "Qualify a separately declared robust nonlinear globalization/continuation protocol through consecutive loaded equations, with unchanged physical equations and acceptance. Faster assembly alone did not fix line-search stagnation.",
+    "Complete R2 cycle and independent native/hash/whole-element/norm/history audits.",
+    "Pass unchanged1% mesh/time/quadrature qualification across geometry/loading designs.",
+    "Qualified-reference full-P2 neural gradient/decoder checks, training/validation-only comparison, independent finer calibration and untouched frozen final evaluation."
+  ],
+  "accepted_step_independent_audit": "experiments/metrics/dynamic_quadratic_parallel_accepted_prefix_verification_resolved.json",
+  "accepted_step_independent_audit_sha256": "265b97cda7cf370a772df16dbc87010e7139ced798d42f6e07cab18b29a87d26",
+  "accepted_step_independent_force_N": 9.876718488137617e-09,
+  "accepted_step_independent_norm_relative_error": 1.6400441652805473e-14,
+  "accepted_step_history_errors": {
+    "u": 0.0,
+    "u_old": 0.0,
+    "v_old": 0.0,
+    "a_old": 0.0
+  }
+}

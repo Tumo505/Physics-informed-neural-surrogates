@@ -1,0 +1,24 @@
+{
+  "complete": true,
+  "finished": true,
+  "all_requested_steps_accepted": true,
+  "start_step": 440,
+  "changed_time_discretization": false,
+  "records": [
+    {
+      "step": 440,
+      "time_s": 0.275625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 9.876718488179201e-09
+    }
+  ],
+  "protocol_sha256": "bc0d3dc5cd15bc6ceab2a1515692ddbaa0048081f5d043010fa28effcffaf613",
+  "probe_checkpoint_sha256": "2de04e15a46f0876db2eee93444d5e9a5ff2373d3cb1fca1169870d419cd3f20",
+  "checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "resumed_checkpoint_sha256": "ff928a2f009474ab3a885358ceccd05a1570fc4afed7d837a2166d47d02f877f",
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "stream_manifest_sha256": "74dbc18578c030ad3dad2f66b8402465fd3283bb123b80e893e068e08ef3ce7f",
+  "scope": "Retrospective independent audit of actual accepted step440 only from failed full-cycle MPI pipeline. Does not retry any solve or claim full-cycle completion."
+}

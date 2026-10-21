@@ -1,0 +1,41 @@
+{
+  "complete": true,
+  "passed": true,
+  "full_cycle": false,
+  "records": [
+    {
+      "time_s": 0.275625,
+      "native_residual_N": 9.876718488137617e-09,
+      "endpoint_minimum_Bernstein_bound": 0.008482496515255334,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.0007862763474261181,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 1.6400441652805473e-14,
+      "original_endpoint_unresolved_elements": 32,
+      "original_endpoint_minimum_Bernstein_bound": -0.5301711818054933,
+      "original_stress_unresolved_elements": 31,
+      "original_stress_minimum_Bernstein_bound": -0.5063589096423132
+    }
+  ],
+  "dt_s": 0.000625,
+  "final_checkpoint_history_relative_errors": {
+    "u": 0.0,
+    "u_old": 0.0,
+    "v_old": 0.0,
+    "a_old": 0.0
+  },
+  "accepted_prefix_only": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "bc0d3dc5cd15bc6ceab2a1515692ddbaa0048081f5d043010fa28effcffaf613",
+  "original_checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "fields_sha256": "3530f89073e50969328507c4793f91c275d2e30d56d88eefdf3496dcae001080",
+  "inputs_sha256": "932f5f3048514d2714d4922dd10ae6d0a1aef1117fc55f923d5ef66daefc62e3",
+  "executed_source_sha256": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+  "scope": "1 local probe steps with inherited nonzero histories, not a full-cycle reference. The recorded protocol specifies whether time discretization changed. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities and independent canonical-quadrature/UFL displacement norms checked at 1 fixed frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim. Original inconclusive parent bounds retained in the native audit; same-margin subdivision bounds composed here. No continuum, full-cycle or mesh-convergence claim.",
+  "supplemental_positivity": true,
+  "composed_audit_source_sha256": "37979b89d2a9367d230b8be8d4a5e7c1dcb623305c0aef3f6e5cce7bf03bd47a",
+  "audit_input_sha256": {
+    "experiments/metrics/dynamic_quadratic_parallel_accepted_prefix_verification.json": "1c0a70834a95a2713fdc8c268b66bf41e3d731fc3183a1b294589824279cb236",
+    "experiments/metrics/dynamic_quadratic_parallel_accepted_prefix_bernstein_refinement.json": "893f43a4b47106af0cd51c9bf261b32f16740dfc3d57c4cd8d2951b8a837c50e"
+  }
+}

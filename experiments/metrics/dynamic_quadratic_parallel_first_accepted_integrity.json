@@ -1,0 +1,15 @@
+{
+  "complete": true,
+  "passed": true,
+  "scope": "Read-only durable step440 journal/field/input checkpoint/source hashes and recorded native acceptance/whole-element proof consistency. Independent post-cycle native reassembly, norms and history replay remain pending.",
+  "step": 440,
+  "time_s": 0.275625,
+  "native_residual_N": 9.876718488179201e-09,
+  "SNES_reason": 2,
+  "solve_seconds": 230.64116670796648,
+  "coefficient_sha256": "840073110dde063ba56b9b1cce6c3cfa1b5cba355982848451a47b38180b831b",
+  "input_checkpoint_sha256": "d6b2cf35fbb2ca760b737782dc1424bf16b59c82e895bf7d0db4e2bf4a682884",
+  "inherited_whole_element_states_passed": 440,
+  "endpoint_bound": 0.008482496515255334,
+  "stress_bound": 0.0007862763474237017
+}
