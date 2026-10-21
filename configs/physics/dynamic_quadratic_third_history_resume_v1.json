@@ -1,0 +1,37 @@
+{
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 5400,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "history_continuation": {
+    "initial_increment": 0.05,
+    "minimum_increment": 0.000244140625,
+    "maximum_increment": 0.2,
+    "growth_factor": 1.5,
+    "maximum_attempts": 40,
+    "maximum_newton_per_increment": 20
+  },
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "resume_probe_protocol": "configs/physics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json",
+  "required_audit": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_verification_resolved.json",
+  "required_qualification": "experiments/metrics/dynamic_quadratic_history_resume_qualification_verification.json",
+  "output": "experiments/metrics/dynamic_quadratic_third_history_resume_v1.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_third_history_resume_v1_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_third_history_resume_v1_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_history_resume_v1_iterate.npz",
+  "scope": "Prospectively bounded adaptive algebraic history/load homotopy. Reproduce preceding accepted native equation before continuation. All intermediate roots are engineering-only, never physical timesteps or training labels. At fraction one retain the exact original mesh, dt, quadrature, material, histories, load and strict force tolerance. Independent whole-element positivity, norms, history replay and hashes are mandatory. Coarse qualification must also reproduce the archived next state before launching R2. No automatic full-cycle restart, neural training, calibration, or test selection follows a local success. Explicit hash-checked engineering-iterate initialization; no saved unaccepted state is promoted to physical data.",
+  "resume_history_iterate": {
+    "protocol": "configs/physics/dynamic_quadratic_third_history_recovery.json",
+    "output_sha256": "74007dc197b6fcd0209108c2a3d13aebe912d739907ad5f3109daf246ec26ed7",
+    "iterate_sha256": "83081a03fe6ee8783c11b8768414ca9d7c39ae947398c97c1944d4f1bf709062",
+    "fraction": 0.40625
+  },
+  "budget_rationale": "First bounded attempt converged three homotopy roots in903.87/912.19/895.39s; fourth saved iterate residual1.84246e-10N met tolerance but callback aborted before SNES acceptance at3702.16s. Resume only as initial guess after exact history/hash/residual replay and fresh positive SNES convergence. Remaining nominal four roots predict about one hour; independent90-minute solve/105-minute outer guards bound this distinct protocol. No full-cycle launch and no acceptance relaxation."
+}

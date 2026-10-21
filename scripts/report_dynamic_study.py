@@ -400,6 +400,14 @@ def dynamic_rows(P):
   if workflow.exists():
    w=json.loads(workflow.read_text())
    entry+=['',f'Third-mesh exact-step recovery workflow: {w["active_phase"]}; finished={w["complete"]}; independently verified local recovery={w.get("local_recovery_verified",False)}. Native solve budget3600s, each process phase bounded4500s, process-tree RSS30GiB and free-disk reserve100GiB. No automatic full-cycle or cohort restart is authorized by a local result.']
+   original=P/'experiments/metrics/dynamic_quadratic_third_history_recovery.json'
+   if w['complete'] and original.exists():
+    r=json.loads(original.read_text());h=r.get('history_continuation',{})
+    entry+=['',f'The first bounded attempt ended after {r["wall_seconds"]:.2f}s, budget exhausted={r.get("budget_exhausted",False)}. Its {len(h.get("records",[]))} converged intermediate roots reached fraction {h.get("last_accepted_fraction",0):.4f}; no physical step was accepted. The next saved candidate reached force {r["last_iteration_history"][-1]["residual_N"]:.6g}N at fraction0.40625, but the budget callback aborted before native convergence acceptance. It remains an unaccepted engineering iterate; a small residual alone does not qualify a physical reference.']
+  resumed=P/'experiments/metrics/dynamic_quadratic_third_history_resume_v1_workflow.json'
+  if resumed.exists():
+   w=json.loads(resumed.read_text())
+   entry+=['',f'A distinct saved-iterate initialization protocol is now {w["active_phase"]}; finished={w["complete"]}; independently verified physical-step recovery={w.get("local_recovery_verified",False)}. Its coarse qualification passed native force, whole-element positivity, independent norms, history replay and archived-field reproduction. SHA256 links freeze the original timeout and candidate. Exact interpolated histories and native force must replay before fresh SNES acceptance; no candidate is promoted by its saved residual. The prospective solve budget is5400s, outer phase guard6300s, RSS30GiB and disk reserve100GiB. Three previously converged increments took903.87/912.19/895.39s, supporting a bounded continuation rather than repeating their solves. Whole-cycle/reference qualification remains unresolved.']
   followup=P/'configs/physics/dynamic_qualified_followup.json'
   if followup.exists():
    entry+=['','A separate prospective qualified-reference ML protocol is fixed in configs/physics/dynamic_qualified_followup.json: unchanged original model hashes; training/validation input designs relabelled only after numerical qualification;20 new calibration and20 new test geometries, plus4 shifted geometries with two histories each. Selection uses training/validation only; calibration and test response fields remain ungenerated. P2 network-gradient verification, qualified finer labels, independently finer calibration controls and a new frozen comparison remain required. The protocol defines later work; it does not imply those experiments have run.']

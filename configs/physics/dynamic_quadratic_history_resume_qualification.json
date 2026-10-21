@@ -1,0 +1,34 @@
+{
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 900,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "history_continuation": {
+    "initial_increment": 0.05,
+    "minimum_increment": 0.000244140625,
+    "maximum_increment": 0.2,
+    "growth_factor": 1.5,
+    "maximum_attempts": 40,
+    "maximum_newton_per_increment": 20
+  },
+  "reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+  "qualification_step": 400,
+  "output": "experiments/metrics/dynamic_quadratic_history_resume_qualification.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_history_resume_qualification_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_history_resume_qualification_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_history_resume_qualification_iterate.npz",
+  "scope": "Prospectively bounded adaptive algebraic history/load homotopy. Reproduce preceding accepted native equation before continuation. All intermediate roots are engineering-only, never physical timesteps or training labels. At fraction one retain the exact original mesh, dt, quadrature, material, histories, load and strict force tolerance. Independent whole-element positivity, norms, history replay and hashes are mandatory. Coarse qualification must also reproduce the archived next state before launching R2. No automatic full-cycle restart, neural training, calibration, or test selection follows a local success. Explicit hash-checked engineering-iterate initialization; no saved unaccepted state is promoted to physical data.",
+  "resume_history_iterate": {
+    "protocol": "configs/physics/dynamic_quadratic_history_qualification.json",
+    "output_sha256": "4ade168651558a440be00264cb5f469b1ce23728420ae1a2b30640da5bec3669",
+    "iterate_sha256": "ad33f11490ffb1a6caaacf82031f6562db39db417d8f62dd90eb1bece82ad665",
+    "fraction": 1.0
+  }
+}
