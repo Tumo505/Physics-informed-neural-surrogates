@@ -1,0 +1,40 @@
+{
+  "parallel_ranks": 6,
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "frozen_source_sha256": {
+    "scripts/probe_parallel_history_recovery.py": "3590334723098111714f4d7d514614f098de3c0eede648f6f28b05e9571cd55f",
+    "scripts/run_bounded_parallel_recovery.py": "8326921e408cbdbfa36db9944fee87477f22cd227fcae987dde689a296a672dd",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "scripts/verify_quadratic_substep_probe.py": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+    "scripts/resolve_quadratic_positivity.py": "01131f0d2ba6377d01be2388b71a6a1b44372b2178f08e3dd041dff7f5149bca",
+    "scripts/combine_quadratic_probe_audits.py": "37979b89d2a9367d230b8be8d4a5e7c1dcb623305c0aef3f6e5cce7bf03bd47a"
+  },
+  "history_continuation": {
+    "initial_increment": 0.1,
+    "minimum_increment": 0.000244140625,
+    "maximum_increment": 0.25,
+    "growth_factor": 1.5,
+    "maximum_attempts": 40,
+    "maximum_newton_per_increment": 20
+  },
+  "scope": "Prospective separately qualified MPI6 adaptive history/load homotopy. Replay prior accepted equation at strict force; interpolate only engineering histories/pressure. Roll back failed increments,halve step; no physical history updates before exact fraction1. Whole-element endpoint/stress positivity for every accepted engineering root. Require exact final histories/pressure,positive native SNES and1e-8N,then independent native/norm/history/hash and whole-element audit. No full-cycle restart follows a single recovery; nonlinear robustness and runtime must first be demonstrated over consecutive new equations. Preserve all original failures and20 frozen neural checkpoints.",
+  "output": "experiments/metrics/dynamic_quadratic_mpi_history_failed_step_v1.json",
+  "fields": "experiments/logs/dynamic_quadratic_mpi_history_failed_step_v1_fields.npy",
+  "checkpoint": "experiments/logs/dynamic_quadratic_mpi_history_failed_step_v1_restart.npz",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_mpi_history_failed_step_v1_UNACCEPTED_iterate.npz",
+  "engineering_checkpoint": "experiments/logs/dynamic_quadratic_mpi_history_failed_step_v1_engineering_root.npz",
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "reference_config": "configs/physics/dynamic_quadratic_reference_halfstep_ew_third.json",
+  "wall_budget_seconds": 5400,
+  "resume_probe_protocol": "configs/physics/dynamic_quadratic_parallel_accepted_prefix.json",
+  "previous_history_protocol": "configs/physics/dynamic_quadratic_third_best_predictor_pilot.json",
+  "required_audits": [
+    "experiments/metrics/dynamic_quadratic_mpi_history_loaded_control_v1_verification_resolved.json",
+    "experiments/metrics/dynamic_quadratic_parallel_accepted_prefix_verification_resolved.json"
+  ]
+}

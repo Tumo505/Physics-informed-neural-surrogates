@@ -1,0 +1,723 @@
+{
+  "complete": true,
+  "finished": true,
+  "all_requested_steps_accepted": true,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "05b0b6a6e807b3e1a5ca4a8e4ad3a4a18139ef1337de4b49275a5e20c032018c",
+  "source_sha256": "3590334723098111714f4d7d514614f098de3c0eede648f6f28b05e9571cd55f",
+  "checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "reference_config_sha256": "15e5bf12c478ba3a64c60cc6fcefec92e3bb75396e5de92134b16aaf654e4918",
+  "dt_s": 0.000625,
+  "parallel_ranks": 6,
+  "records": [
+    {
+      "step": 400,
+      "time_s": 0.250625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.4302955519288912e-12
+    },
+    {
+      "step": 401,
+      "time_s": 0.25125000000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.5245332158732201e-12
+    }
+  ],
+  "engineering_roots": [
+    {
+      "step": 400,
+      "fraction": 0.1,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9001228631416642,
+          "minimum_parent_Bernstein_bound": 0.9001228631416642,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.8954357219122245,
+          "minimum_parent_Bernstein_bound": 0.8954357219122245,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 400,
+      "fraction": 0.25,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9019210259465241,
+          "minimum_parent_Bernstein_bound": 0.9019210259465241,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.897087373144989,
+          "minimum_parent_Bernstein_bound": 0.897087373144989,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 400,
+      "fraction": 0.47500000000000003,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9046044574822827,
+          "minimum_parent_Bernstein_bound": 0.9046044574822827,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 3.3306690738754696e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.8996014441084224,
+          "minimum_parent_Bernstein_bound": 0.8996014441084224,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 400,
+      "fraction": 0.7250000000000001,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9075636696510948,
+          "minimum_parent_Bernstein_bound": 0.9075636696510948,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 3.3306690738754696e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9024464233731314,
+          "minimum_parent_Bernstein_bound": 0.9024464233731314,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 400,
+      "fraction": 0.9750000000000001,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.910493115414818,
+          "minimum_parent_Bernstein_bound": 0.910493115414818,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9053441679062778,
+          "minimum_parent_Bernstein_bound": 0.9053441679062778,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 400,
+      "fraction": 1.0,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9107840806269834,
+          "minimum_parent_Bernstein_bound": 0.9107840806269834,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9056367264483685,
+          "minimum_parent_Bernstein_bound": 0.9056367264483685,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 401,
+      "fraction": 0.1,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9121176261764304,
+          "minimum_parent_Bernstein_bound": 0.9121176261764304,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9068418529359805,
+          "minimum_parent_Bernstein_bound": 0.9068418529359805,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 401,
+      "fraction": 0.25,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.914102989069433,
+          "minimum_parent_Bernstein_bound": 0.914102989069433,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9086648911721599,
+          "minimum_parent_Bernstein_bound": 0.9086648911721599,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 401,
+      "fraction": 0.47500000000000003,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9170433177553018,
+          "minimum_parent_Bernstein_bound": 0.9170433177553018,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9114327087912909,
+          "minimum_parent_Bernstein_bound": 0.9114327087912909,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 401,
+      "fraction": 0.7250000000000001,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9180696044460088,
+          "minimum_parent_Bernstein_bound": 0.9180696044460088,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9136083065752081,
+          "minimum_parent_Bernstein_bound": 0.9136083065752081,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 401,
+      "fraction": 0.9750000000000001,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9188133369756348,
+          "minimum_parent_Bernstein_bound": 0.9188133369756348,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9156367917474393,
+          "minimum_parent_Bernstein_bound": 0.9156367917474393,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+          "passed": true
+        }
+      }
+    },
+    {
+      "step": 401,
+      "fraction": 1.0,
+      "proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.918902754399753,
+          "minimum_parent_Bernstein_bound": 0.918902754399753,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.915746556953174,
+          "minimum_parent_Bernstein_bound": 0.915746556953174,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+          "passed": true
+        }
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "step": 400,
+      "attempt": 0,
+      "fraction": 0.1,
+      "increment": 0.1,
+      "accepted_engineering_root": true,
+      "physical_endpoint": false,
+      "SNES_reason": 2,
+      "native_residual_N": 4.466274417306757e-11,
+      "newton_iterations": 3,
+      "seconds": 1.6035835000220686,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 1.0647163376862896
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.008516516772783969
+        },
+        {
+          "iteration": 2,
+          "residual_N": 5.976736138560151e-06
+        },
+        {
+          "iteration": 3,
+          "residual_N": 4.466274417306757e-11
+        }
+      ]
+    },
+    {
+      "step": 400,
+      "attempt": 1,
+      "fraction": 0.25,
+      "increment": 0.15000000000000002,
+      "accepted_engineering_root": true,
+      "physical_endpoint": false,
+      "SNES_reason": 2,
+      "native_residual_N": 1.575996634066549e-10,
+      "newton_iterations": 3,
+      "seconds": 1.1829467499628663,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 1.5959510157647199
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.015231664282153378
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.4343540281143146e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.575996634066549e-10
+        }
+      ]
+    },
+    {
+      "step": 400,
+      "attempt": 2,
+      "fraction": 0.47500000000000003,
+      "increment": 0.22500000000000003,
+      "accepted_engineering_root": true,
+      "physical_endpoint": false,
+      "SNES_reason": 2,
+      "native_residual_N": 6.261927975795587e-10,
+      "newton_iterations": 3,
+      "seconds": 1.169751666020602,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 2.3915329675349692
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.029615028207457223
+        },
+        {
+          "iteration": 2,
+          "residual_N": 3.4846861402530724e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 6.261927975767939e-10
+        }
+      ]
+    },
+    {
+      "step": 400,
+      "attempt": 3,
+      "fraction": 0.7250000000000001,
+      "increment": 0.25,
+      "accepted_engineering_root": true,
+      "physical_endpoint": false,
+      "SNES_reason": 2,
+      "native_residual_N": 7.819604244708634e-10,
+      "newton_iterations": 3,
+      "seconds": 1.1868907078169286,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 2.6540208849826388
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.03587066190635603
+        },
+        {
+          "iteration": 2,
+          "residual_N": 4.383076155432461e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 7.819604244789293e-10
+        }
+      ]
+    },
+    {
+      "step": 400,
+      "attempt": 4,
+      "fraction": 0.9750000000000001,
+      "increment": 0.25,
+      "accepted_engineering_root": true,
+      "physical_endpoint": false,
+      "SNES_reason": 2,
+      "native_residual_N": 8.156118684447638e-10,
+      "newton_iterations": 3,
+      "seconds": 1.1851185418199748,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 2.650957796560333
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.03623414713572304
+        },
+        {
+          "iteration": 2,
+          "residual_N": 4.517571135777817e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 8.156118684387388e-10
+        }
+      ]
+    },
+    {
+      "step": 400,
+      "attempt": 5,
+      "fraction": 1.0,
+      "increment": 0.25,
+      "accepted_engineering_root": true,
+      "physical_endpoint": true,
+      "SNES_reason": 2,
+      "native_residual_N": 1.4302955471250879e-12,
+      "newton_iterations": 3,
+      "seconds": 1.2274508331902325,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.2649210205297556
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0018212126160853375
+        },
+        {
+          "iteration": 2,
+          "residual_N": 5.527784775274493e-07
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.4302955495545874e-12
+        }
+      ]
+    },
+    {
+      "step": 401,
+      "attempt": 0,
+      "fraction": 0.1,
+      "increment": 0.1,
+      "accepted_engineering_root": true,
+      "physical_endpoint": false,
+      "SNES_reason": 2,
+      "native_residual_N": 5.097089234447556e-11,
+      "newton_iterations": 3,
+      "seconds": 1.2190140408929437,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 1.0405814900827293
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.009109872120759551
+        },
+        {
+          "iteration": 2,
+          "residual_N": 6.69548415137254e-06
+        },
+        {
+          "iteration": 3,
+          "residual_N": 5.097089233937238e-11
+        }
+      ]
+    },
+    {
+      "step": 401,
+      "attempt": 1,
+      "fraction": 0.25,
+      "increment": 0.15000000000000002,
+      "accepted_engineering_root": true,
+      "physical_endpoint": false,
+      "SNES_reason": 2,
+      "native_residual_N": 1.820114689842005e-10,
+      "newton_iterations": 3,
+      "seconds": 1.2046856668312103,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 1.5596182915858992
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.016150120985711468
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.5965332355746765e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.8201146897845579e-10
+        }
+      ]
+    },
+    {
+      "step": 401,
+      "attempt": 2,
+      "fraction": 0.47500000000000003,
+      "increment": 0.22500000000000003,
+      "accepted_engineering_root": true,
+      "physical_endpoint": false,
+      "SNES_reason": 2,
+      "native_residual_N": 7.265830152561259e-10,
+      "newton_iterations": 3,
+      "seconds": 1.204010667046532,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 2.336785470513687
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.03112216494856655
+        },
+        {
+          "iteration": 2,
+          "residual_N": 3.836220689985204e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 7.265830152554461e-10
+        }
+      ]
+    },
+    {
+      "step": 401,
+      "attempt": 3,
+      "fraction": 0.7250000000000001,
+      "increment": 0.25,
+      "accepted_engineering_root": true,
+      "physical_endpoint": false,
+      "SNES_reason": 2,
+      "native_residual_N": 1.216786997920369e-09,
+      "newton_iterations": 3,
+      "seconds": 1.2064837079960853,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 2.5928615596037874
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.03766044938273385
+        },
+        {
+          "iteration": 2,
+          "residual_N": 5.535247063847907e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.2167869979259378e-09
+        }
+      ]
+    },
+    {
+      "step": 401,
+      "attempt": 4,
+      "fraction": 0.9750000000000001,
+      "increment": 0.25,
+      "accepted_engineering_root": true,
+      "physical_endpoint": false,
+      "SNES_reason": 2,
+      "native_residual_N": 1.2656477987133561e-09,
+      "newton_iterations": 3,
+      "seconds": 1.2215640000067651,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 2.5894981126124152
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.03806580261265142
+        },
+        {
+          "iteration": 2,
+          "residual_N": 5.740040842806705e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.265647798708018e-09
+        }
+      ]
+    },
+    {
+      "step": 401,
+      "attempt": 5,
+      "fraction": 1.0,
+      "increment": 0.25,
+      "accepted_engineering_root": true,
+      "physical_endpoint": true,
+      "SNES_reason": 2,
+      "native_residual_N": 1.5245331663751059e-12,
+      "newton_iterations": 3,
+      "seconds": 1.249416665872559,
+      "failure": null,
+      "positivity_failure": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.25875794760211934
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.0019792683545904743
+        },
+        {
+          "iteration": 2,
+          "residual_N": 6.395821726279403e-07
+        },
+        {
+          "iteration": 3,
+          "residual_N": 1.5245331619453467e-12
+        }
+      ]
+    }
+  ],
+  "scope": "Adaptive algebraic history/load continuation; no intermediate roots are physical timesteps or labels. Final equation, histories, dt, material, load, Q6 and strict1e-8N acceptance unchanged. Local bounded qualification/recovery only.",
+  "start_step": 400,
+  "anchor_replays": [
+    {
+      "step": 399,
+      "native_residual_N": 3.9682446146810635e-11
+    },
+    {
+      "step": 400,
+      "native_residual_N": 1.430295566527684e-12
+    }
+  ],
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 0.25875794760211934
+    },
+    {
+      "iteration": 1,
+      "residual_N": 0.0019792683545904743
+    },
+    {
+      "iteration": 2,
+      "residual_N": 6.395821726279403e-07
+    },
+    {
+      "iteration": 3,
+      "residual_N": 1.5245331619453467e-12
+    }
+  ],
+  "known_field_checks": [
+    {
+      "step": 400,
+      "maximum_absolute_difference_m": 3.6500620234636294e-13
+    },
+    {
+      "step": 401,
+      "maximum_absolute_difference_m": 4.659241742421827e-13
+    }
+  ],
+  "probe_checkpoint_sha256": "d9b96465a04262b42961187466dde13ba01a1a5c45f0f629e36e803a308510a3",
+  "wall_seconds": 16.586711416952312
+}

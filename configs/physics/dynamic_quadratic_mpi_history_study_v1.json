@@ -1,0 +1,20 @@
+{
+  "complete": false,
+  "protocols": [
+    "configs/physics/dynamic_quadratic_mpi_history_coarse_v1.json",
+    "configs/physics/dynamic_quadratic_mpi_history_loaded_control_v1.json",
+    "configs/physics/dynamic_quadratic_mpi_history_failed_step_v1.json"
+  ],
+  "phase_budgets_seconds": [
+    1200,
+    4200,
+    6300
+  ],
+  "workflow_budgets_seconds": [
+    1800,
+    5400,
+    7200
+  ],
+  "native_worker_sha256": "3590334723098111714f4d7d514614f098de3c0eede648f6f28b05e9571cd55f",
+  "scope": "Prospective separately qualified MPI6 adaptive history/load homotopy. Replay prior accepted equation at strict force; interpolate only engineering histories/pressure. Roll back failed increments,halve step; no physical history updates before exact fraction1. Whole-element endpoint/stress positivity for every accepted engineering root. Require exact final histories/pressure,positive native SNES and1e-8N,then independent native/norm/history/hash and whole-element audit. No full-cycle restart follows a single recovery; nonlinear robustness and runtime must first be demonstrated over consecutive new equations. Preserve all original failures and20 frozen neural checkpoints."
+}
