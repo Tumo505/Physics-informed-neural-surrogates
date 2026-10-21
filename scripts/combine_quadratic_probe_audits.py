@@ -8,10 +8,15 @@ pp=P/args.protocol;p=json.loads(pp.read_text());stem=Path(p['output']).stem
 native_path=P/f'experiments/metrics/{stem}_verification.json';refined_path=P/f'experiments/metrics/{stem}_bernstein_refinement.json'
 n=json.loads(native_path.read_text());r=json.loads(refined_path.read_text())
 assert n['complete'] and r['complete'] and r['passed']
+assert r['positive_margin']==1e-9
 assert n['protocol_sha256']==hashlib.sha256(pp.read_bytes()).hexdigest()
 assert r['original_audit_sha256']==hashlib.sha256(native_path.read_bytes()).hexdigest()
 for key,path in [('fields_sha256',P/p['fields']),('inputs_sha256',P/'data/processed'/p['reference']/'inputs.npz')]:
  assert n[key]==r['output_sha256'][key]==hashlib.sha256(path.read_bytes()).hexdigest()
+if p.get('resume_probe_protocol'):
+ parent=json.loads((P/p['resume_probe_protocol']).read_text())
+ probe=json.loads((P/p['output']).read_text())
+ assert r['output_sha256']['resumed_checkpoint_sha256']==probe['resumed_checkpoint_sha256']==hashlib.sha256((P/parent['checkpoint']).read_bytes()).hexdigest()
 assert all(np.isfinite(row['native_residual_N']) and row['native_residual_N']<1e-6 for row in n['records'])
 assert all(row.get('independent_L2_norm_relative_error',0)<1e-11 for row in n['records'])
 assert max(n['final_checkpoint_history_relative_errors'].values())<1e-7

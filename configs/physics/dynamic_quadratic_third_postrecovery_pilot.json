@@ -1,0 +1,21 @@
+{
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 900,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_history_resume_v1.json",
+  "required_audit": "experiments/metrics/dynamic_quadratic_third_history_resume_v1_verification_resolved.json",
+  "output": "experiments/metrics/dynamic_quadratic_third_postrecovery_pilot.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_third_postrecovery_pilot_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_third_postrecovery_pilot_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_postrecovery_pilot_iterate.npz",
+  "scope": "Prospective one-step runtime/continuation feasibility probe at0.27375s from the independently qualified recovered R2 state at0.273125s. Use ordinary old/velocity/acceleration predictor selection with original EWv2/GMRES/GAMG restart200/cap3000,100-Newton ceiling and strict1e-8N/zero-relative acceptance; unchanged mesh,dt,quadrature,material and loading. No algebraic homotopy in this pilot. Bound solving to900s, outer phase1200s and process-tree30GiB with100GiB diskreserve. A timeout is a resource-feasibility finding, not proof of nonexistence. Any success requires independent native force, whole-element positivity, norm and history audits before reuse. No full-cycle, continuum, numerical-convergence, training or calibration claim; no automatic full-cycle restart."
+}

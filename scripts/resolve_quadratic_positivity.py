@@ -17,7 +17,21 @@ if args.probe_protocol:
  assert hashlib.sha256(inputs.read_bytes()).hexdigest()==native_audit['inputs_sha256']
  initial_old=np.load(root/'restart.npz')['u_old']
  assert hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest()==native_audit['original_checkpoint_sha256']
- assert not protocol.get('resume_probe_protocol') and protocol.get('timestep_divisor',1)==1
+ assert protocol.get('timestep_divisor',1)==1 and 'qualification_step' not in protocol
+ resumed_hash=None
+ if protocol.get('resume_probe_protocol'):
+  probe=json.loads((P/protocol['output']).read_text())
+  assert probe['finished'] and probe['all_requested_steps_accepted']
+  assert probe['protocol_sha256']==native_audit['protocol_sha256']==hashlib.sha256((P/args.probe_protocol).read_bytes()).hexdigest()
+  parent=json.loads((P/protocol['resume_probe_protocol']).read_text())
+  assert parent['reference']==protocol['reference'] and parent.get('timestep_divisor',1)==1
+  parent_result=json.loads((P/parent['output']).read_text())
+  resumed_path=P/parent['checkpoint'];resumed_hash=hashlib.sha256(resumed_path.read_bytes()).hexdigest()
+  assert resumed_hash==probe['resumed_checkpoint_sha256']==parent_result['probe_checkpoint_sha256']
+  parent_state=np.load(resumed_path);count=int(parent_state['completed_probe_steps'])
+  assert all(r['accepted'] for r in parent_result['records'][:count])
+  assert probe['start_step']==parent_result['start_step']+count
+  initial_old=parent_state['u_old'].copy()
  audit=dict(complete=True,positive_margin=1e-9,records=[])
  for i,r in enumerate(native_audit['records']):
   row=dict(step=i,time_s=r['time_s'])
@@ -26,6 +40,7 @@ if args.probe_protocol:
    row[state+'_minimum_Bernstein_lower_bound']=r[state+'_minimum_Bernstein_bound']
   audit['records'].append(row)
  proof_hashes=dict(fields_sha256=native_audit['fields_sha256'],inputs_sha256=native_audit['inputs_sha256'])
+ if resumed_hash is not None:proof_hashes['resumed_checkpoint_sha256']=resumed_hash
  target_stem=Path(protocol['output']).stem
 else:
  assert m['complete'] and audit['complete'] and audit['output_sha256']==m['output_sha256']

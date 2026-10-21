@@ -1,0 +1,29 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_third_history_resume_v1.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_third_history_resume_v1.json",
+    "max_phase_seconds": 6300.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100
+  },
+  "phases": [
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 3709.820188916987,
+      "sampled_peak_RSS_bytes": 13503430656
+    },
+    {
+      "phase": "audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 101.10298249998596,
+      "sampled_peak_RSS_bytes": 10514726912
+    }
+  ],
+  "active_phase": "finished",
+  "local_recovery_verified": false
+}
