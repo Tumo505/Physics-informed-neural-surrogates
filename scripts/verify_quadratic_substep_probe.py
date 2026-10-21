@@ -59,6 +59,19 @@ np.testing.assert_allclose(problem.u_space.tabulate_dof_coordinates(), data['dof
 np.testing.assert_array_equal(geo.mesh.cells(), data['cells'])
 for name in ['u', 'u_old', 'v_old', 'a_old']:
     field = getattr(problem, name); field.vector().set_local(saved[name]); field.vector().apply('insert')
+if 'qualification_step' in protocol:
+    assert m['complete'] and not (root/'failure.json').exists()
+    for name, digest in m['output_sha256'].items():
+        assert hashlib.sha256((root/name).read_bytes()).hexdigest() == digest
+    # Independent native history replay, rather than the probe's NumPy recurrence.
+    for name in ['u', 'u_old', 'v_old', 'a_old']:
+        getattr(problem, name).vector().zero()
+    archived = np.load(root/'displacement_coefficients.npy', mmap_mode='r')
+    for current in archived[:protocol['qualification_step']]:
+        problem.u.vector().set_local(current); problem.u.vector().apply('insert')
+        problem._update_fields()
+    expected = archived[protocol['qualification_step']]
+    np.testing.assert_allclose(u[0], expected, rtol=1e-6, atol=1e-9)
 kin = QuadraticKinematics(problem.u_space, data['qpoints'], data['qweights'])
 np.testing.assert_array_equal(kin.maps, data['canonical_cell_dofs'])
 gradients = np.stack([np.concatenate(((4*bary[None,:,None]-1)*kin.grad_lambda,

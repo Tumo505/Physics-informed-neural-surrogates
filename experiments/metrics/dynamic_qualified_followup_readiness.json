@@ -1,0 +1,22 @@
+{
+  "complete": true,
+  "protocol_sha256": "7bbf326f36e9d1c3e9b936887bdc2ccfed4edafb3fdb9fbb1eb4e717f0da76b1",
+  "ready_to_train": false,
+  "split_geometry_counts": {
+    "train": 4,
+    "validation": 2,
+    "calibration": 20,
+    "test": 20,
+    "ood_test": 4
+  },
+  "old_evaluation_geometries_excluded": true,
+  "calibration_order_statistics": {
+    "0.9": 19,
+    "0.95": 20
+  },
+  "blockers": [
+    "No qualified reference freeze: current mesh and Q6 integration controls fail; R2 is incomplete."
+  ],
+  "test_response_fields_read": false,
+  "scope": "Readiness audit only. No reference, network, calibration or final-test experiment is claimed by this report."
+}

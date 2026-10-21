@@ -2,6 +2,14 @@
 
 All results are computational. Released-model inference uses unedited author equations under modern Flax, not an identical legacy runtime. Graph connectivity alone does not establish FE mechanics.
 
+**Adaptive history continuation follow-up (2026-10-21).** The preceding bounded protocol remains failed. A separately declared algebraic homotopy now connects the preceding accepted equation to the exact next equation, without changing final material, mesh, timestep, quadrature, histories, loading or force tolerance. Intermediate roots are not timesteps or training labels.
+
+Coarse qualification at0.250625s: independently passed=True; 7 accepted increments in 41.96s; final native force 1.41013e-09N; whole-element endpoint/stress determinant bounds 0.910784/0.905637. The independent verifier also reproduced the archived next field and replayed histories from rest. This is one local qualification, not a full-cycle or mesh-convergence pass.
+
+Third-mesh exact-step recovery workflow: solve; finished=False; independently verified local recovery=False. Native solve budget3600s, each process phase bounded4500s, process-tree RSS30GiB and free-disk reserve100GiB. No automatic full-cycle or cohort restart is authorized by a local result.
+
+A separate prospective qualified-reference ML protocol is fixed in configs/physics/dynamic_qualified_followup.json: unchanged original model hashes; training/validation input designs relabelled only after numerical qualification;20 new calibration and20 new test geometries, plus4 shifted geometries with two histories each. Selection uses training/validation only; calibration and test response fields remain ungenerated. P2 network-gradient verification, qualified finer labels, independently finer calibration controls and a new frozen comparison remain required. The protocol defines later work; it does not imply those experiments have run.
+
 **Current bounded validation protocol: FAILED (2026-10-21).** This is a scientific validation outcome, not completion of the overall research objective. Both completed inexact-Newton mesh levels passed native-force, output-hash, whole-element positivity and independent norm audits, but their full-cycle difference is11.8666%, exceeding the unchanged1% sensitivity tolerance. A separate validation geometry differs12.3758%. The third mesh failed at0.273125s after100 Newton updates, with436 native-accepted states and430 durable checkpoint states; the six recovered states were independently qualified before use. No complete third-level reference or three-level convergence estimate is available.
 
 Trust-region recovery accepted no state; fine-field prolongation was rejected by its nonfinite initial force; the two-half-step diagnostic exhausted its3600s budget with no accepted state and last unaccepted force 8.63109e+12N. A budget timeout bounds that attempt, rather than proving every solver impossible. Original failed data and all declared criteria remain retained.

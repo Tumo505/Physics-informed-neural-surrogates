@@ -1,0 +1,30 @@
+{
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 3600,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "history_continuation": {
+    "initial_increment": 0.05,
+    "minimum_increment": 0.000244140625,
+    "maximum_increment": 0.2,
+    "growth_factor": 1.5,
+    "maximum_attempts": 40,
+    "maximum_newton_per_increment": 20
+  },
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "resume_probe_protocol": "configs/physics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json",
+  "required_audit": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_verification_resolved.json",
+  "required_qualification": "experiments/metrics/dynamic_quadratic_history_qualification_verification.json",
+  "output": "experiments/metrics/dynamic_quadratic_third_history_recovery.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_third_history_recovery_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_third_history_recovery_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_history_recovery_iterate.npz",
+  "scope": "Prospectively bounded adaptive algebraic history/load homotopy. Reproduce preceding accepted native equation before continuation. All intermediate roots are engineering-only, never physical timesteps or training labels. At fraction one retain the exact original mesh, dt, quadrature, material, histories, load and strict force tolerance. Independent whole-element positivity, norms, history replay and hashes are mandatory. Coarse qualification must also reproduce the archived next state before launching R2. No automatic full-cycle restart, neural training, calibration, or test selection follows a local success."
+}

@@ -20,14 +20,32 @@ ap.add_argument('--protocol', default='configs/physics/dynamic_quadratic_strict_
 args = ap.parse_args()
 protocol_path = P/args.protocol
 protocol = json.loads(protocol_path.read_text())
+if 'required_qualification' in protocol:
+    qualification_audit = json.loads((P/protocol['required_qualification']).read_text())
+    assert qualification_audit['complete'] and qualification_audit['passed'], 'Independent small-case qualification must pass first'
 if 'required_audit' in protocol:
     audit=json.loads((P/protocol['required_audit']).read_text())
     assert audit['complete'] and audit['passed'], 'Recovery histories must pass independent audit before use'
 root = P/'data/processed'/protocol['reference']
-assert (root/'failure.json').exists()
 m = json.loads((root/'manifest.json').read_text()); cfg = m['config']
+qualification = 'qualification_step' in protocol
+assert (root/'failure.json').exists() or (qualification and m['complete'])
 saved = dict(np.load(root/'restart.npz')); inputs = np.load(root/'inputs.npz')
 start_step = int(saved['completed_steps']); assert start_step == m['completed_steps']
+if qualification:
+    assert not (root/'failure.json').exists() and 'resume_probe_protocol' not in protocol
+    for name, digest in m['output_sha256'].items():
+        assert hashlib.sha256((root/name).read_bytes()).hexdigest() == digest
+    start_step = int(protocol['qualification_step'])
+    assert 2 <= start_step < m['completed_steps']
+    coefficients = np.load(root/'displacement_coefficients.npy', mmap_mode='r')
+    old = np.zeros_like(saved['u_old']); velocity = old.copy(); acceleration = old.copy()
+    dt0 = cfg['dt_s']; beta0, gamma0 = .36, .7
+    for current in coefficients[:start_step]:
+        anew = (current-old-dt0*velocity-(.5-beta0)*dt0**2*acceleration)/(beta0*dt0**2)
+        velocity = velocity+dt0*((1-gamma0)*acceleration+gamma0*anew)
+        old = current.copy(); acceleration = anew
+    saved = dict(u=old.copy(), u_old=old, v_old=velocity, a_old=acceleration)
 resume_description = {}
 if 'resume_probe_protocol' in protocol:
     previous_protocol = json.loads((P/protocol['resume_probe_protocol']).read_text())
@@ -48,7 +66,7 @@ if 'resume_probe_protocol' in protocol:
                               resumed_accepted_probe_steps=accepted_count)
 result = dict(complete=False, engineering_only=True, protocol=protocol, records=[],
     protocol_sha256=hashlib.sha256(protocol_path.read_bytes()).hexdigest(),
-    reference_config_sha256=m['config_sha256'], start_step=start_step,
+    reference_config_sha256=m['config_sha256'], start_step=start_step, qualification_only=qualification,
     checkpoint_sha256=hashlib.sha256((root/'restart.npz').read_bytes()).hexdigest(),
     source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
 result.update(resume_description)
@@ -75,6 +93,7 @@ df.PETScOptions.set('mat_mumps_icntl_23', protocol['mumps_memory_limit_MB'])
 geo, material, base = setup(dt=dt, geometry_scales=cfg['geometry_scales'],
                             refinement_level=cfg['refinement_level'])
 parameters = dict(base.parameters); parameters['function_space'] = 'P_2'
+assert abs(float(base._beta)-.36)<1e-14 and abs(float(base._gamma)-.7)<1e-14
 df.parameters['form_compiler']['quadrature_degree'] = cfg['quadrature_degree']
 method = protocol.get('native_solver','mumps')
 problem = make_quadratic_problem(geo, material, parameters, method,
@@ -144,9 +163,20 @@ try:
         old = problem.u_old.vector().get_local().copy()
         velocity = problem.v_old.vector().get_local()
         acceleration = problem.a_old.vector().get_local()
+        if 'history_continuation' in protocol:
+            assert offset == 0 and divisor == 1 and protocol['steps_after_checkpoint'] == 1
+            from lv_surrogate.physics.history_continuation import recover_equation
+            result['history_continuation_source_sha256'] = hashlib.sha256(
+                (P/'src/lv_surrogate/physics/history_continuation.py').read_bytes()).hexdigest()
+            recovered = recover_equation(problem,
+                np.load(root/'displacement_coefficients.npy', mmap_mode='r'),
+                start_step, inputs['pressure'], protocol, result, persist, kin)
+            # Reassemble the exact final equation through the ordinary acceptance path.
+            problem.u.vector().set_local(recovered); problem.u.vector().apply('insert')
         best = old; best_R = float('inf')
         problem.parameters['p'].assign(float(pressure))
-        for guess in [old, old+dt*velocity, old+dt*velocity+.5*dt**2*acceleration]:
+        guesses = [recovered] if 'history_continuation' in protocol else [old, old+dt*velocity, old+dt*velocity+.5*dt**2*acceleration]
+        for guess in guesses:
             problem.u.vector().set_local(guess); problem.u.vector().apply('insert')
             R = float(residual(problem).norm('l2'))
             if np.isfinite(R) and R < best_R:

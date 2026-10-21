@@ -1,0 +1,11 @@
+{
+  "complete": true,
+  "passed": true,
+  "maximum_absolute_coefficient_difference_m": 8.167598541941601e-13,
+  "relative_coefficient_L2_difference": 5.865815951470354e-12,
+  "absolute_tolerance_m": 1e-09,
+  "relative_tolerance": 1e-06,
+  "probe_fields_sha256": "e98bbff727fff442c677c5d6ea89a2776bc5d0764b6b96edc17a1b9ca4420b75",
+  "native_verification_sha256": "693633e3337345e30af0a2f6d1f5a696f9d2dbbca111ddf04b5e38bef2bee2e0",
+  "scope": "One known coarse loaded step; coefficient comparison within the same native P2 basis. Native physical norm and force/positivity/history verification are separately linked. Not a new test outcome or numerical-convergence result."
+}

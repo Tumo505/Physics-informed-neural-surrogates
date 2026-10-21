@@ -1,0 +1,773 @@
+{
+  "name": "qualified_passive_followup_v1",
+  "seed": 20261021,
+  "scope": "Prospective passive idealized affine ellipsoid experiment. Fixed before any new calibration/test response fields exist. Original inspected test cases are excluded; existing training and validation input designs may be relabelled only after FE qualification.",
+  "original_model_freeze": {
+    "path": "experiments/manifests/dynamic_final_freeze.json",
+    "sha256": "5197e5fc10ddc5e83175e7a40ea948848c2a4d7320c2557f4f6fe6e400fd7ea4"
+  },
+  "reference_gate": {
+    "manifest": "experiments/manifests/dynamic_qualified_reference_freeze.json",
+    "relative_sensitivity_tolerance": 0.01,
+    "required_controls": [
+      "mesh",
+      "time",
+      "quadrature"
+    ],
+    "minimum_mesh_levels": 3,
+    "requirements": [
+      "All trajectories complete from rest, or fully traced and independently qualified identical-equation restarts.",
+      "Native positive SNES, residual below1e-6N and configured strict1e-8N stopping, exact hashes, independent norms and whole-element endpoint/stress positivity.",
+      "Full-cycle controlled mesh/time/quadrature comparisons at identical other factors; every declared gate must pass. Three mesh levels with successive decreasing differences and finest-pair difference <=1%; report when asymptotic-rate assumptions are unsupported.",
+      "Qualify baseline and both validation geometry/load extremes before selecting reference settings; apply independently finer controls to new calibration/test cases.",
+      "Freeze selected degree, mesh, dt, quadrature, source and operators before generating new ML labels. No continuum-truth claim based solely on sensitivity."
+    ]
+  },
+  "training": {
+    "paired_budget_config": "configs/physics/dynamic_training.json",
+    "seeds": [
+      11,
+      22,
+      33,
+      44,
+      55
+    ],
+    "warm_updates": 400,
+    "refinement_updates": 250,
+    "regimes": [
+      "full",
+      "limited"
+    ],
+    "arms": [
+      "data",
+      "physics"
+    ],
+    "POD_rank": 12,
+    "POD_fit": "training labels only, separate limited-data fit",
+    "time_grid": "Qualified native FE grid; no downsampling into an inconsistent generalized-alpha residual.",
+    "rollout": "Predicted histories only; zero initial state; full-cycle evaluation. Bounded 32-step truncated backpropagation; multi-step losses at horizons1,8,32 and all available frame displacements; identical paired schedules.",
+    "lambda_selection": "Training-only gradient decade grid; validation-only minimum native force under <=10% displacement degradation constraint, negative finding retained.",
+    "new_backend_gate": "P2 differentiable/native force AND actual network-gradient directional finite-difference checks on training states, <=1% relative mismatch before physics training.",
+    "transfer": "Require geometry-specific canonical coordinates/cells/P2 maps; compare and construct common POD fields through verified reference-coordinate transfer, never assume refined cell ordering matches.",
+    "architecture": {
+      "source": "src/lv_surrogate/models/dynamic_graph.py",
+      "sha256": "e8a8f56774ab21ec55b81932888514fb3a0ac64cac630cfa021407dda7ad6e63",
+      "class_name": "DynamicGraph",
+      "geometry_encoder_width": 32,
+      "geometry_message_steps": 2,
+      "GRU_width": 64,
+      "POD_rank": 12,
+      "output": "bounded tanh coefficients; independent mechanics checks still required"
+    }
+  },
+  "uncertainty": {
+    "unit": "entire independent geometry",
+    "calibration_geometries": 20,
+    "nominal_coverages": [
+      0.9,
+      0.95
+    ],
+    "score": "Maximum standardized full-cycle volume-L2 error over all loading histories belonging to a geometry.",
+    "quantile": "ceil((n+1)*(1-alpha)) order statistic; report infinite set if rank exceeds n.",
+    "leakage": "Freeze models and OOD rule before calibration; calibration adjusts quantiles only; never fit on test fields.",
+    "reference_uncertainty": "Report finer-reference sensitivity separately; do not imply continuum or shifted-population coverage."
+  },
+  "OOD": {
+    "rule": "Reject outside training descriptor min/max in scales, pressure amplitude and timing, or any endpoint/stress positivity failure/nonfinite prediction.",
+    "action": "Attempt qualified FE; return explicit unavailable if FE fails, never return an unqualified fallback as valid.",
+    "metrics": [
+      "rejection and acceptance counts by split",
+      "conditional coverage and accepted fraction",
+      "real fallback success/failure and end-to-end latency"
+    ]
+  },
+  "final": {
+    "unlock": "Only after reference settings, models, preprocessing, lambda, OOD rule and calibration are hashed and frozen.",
+    "comparisons": [
+      "full/data",
+      "full/physics",
+      "limited/data",
+      "limited/physics"
+    ],
+    "endpoints": [
+      "volume-weighted displacement RMSE",
+      "strain error",
+      "native weak force",
+      "endpoint/stress whole-element positivity",
+      "complete-cycle stability",
+      "geometry-level joint coverage and interval size",
+      "OOD/FE routing",
+      "matched single-case CPU runtime including inference checks and routing; successful fallback latency separately"
+    ],
+    "all_cases": "Report every prespecified case including failures, same hardware/thread budgets, no retraining after test access."
+  },
+  "resource_limits": {
+    "native_threads": 2,
+    "max_RSS_GiB": 30,
+    "max_wall_hours_per_reference": 72,
+    "min_free_disk_GiB": 100,
+    "cohort_launch": "Require a measured stable loaded pilot and estimated cohort cost before launching; no blind multi-day retries, no purchased compute."
+  },
+  "cases": [
+    {
+      "id": "qfollow_g000_l0",
+      "geometry_id": "qfollow_g000",
+      "split": "train",
+      "scales": [
+        1.0243222738640203,
+        1.0279061848946924
+      ],
+      "amplitude": 0.9,
+      "timing_scale": 0.95
+    },
+    {
+      "id": "qfollow_g000_l1",
+      "geometry_id": "qfollow_g000",
+      "split": "train",
+      "scales": [
+        1.0243222738640203,
+        1.0279061848946924
+      ],
+      "amplitude": 1.1,
+      "timing_scale": 1.05
+    },
+    {
+      "id": "qfollow_g001_l0",
+      "geometry_id": "qfollow_g001",
+      "split": "train",
+      "scales": [
+        1.0176695070226205,
+        1.0202129041622514
+      ],
+      "amplitude": 0.9,
+      "timing_scale": 0.95
+    },
+    {
+      "id": "qfollow_g001_l1",
+      "geometry_id": "qfollow_g001",
+      "split": "train",
+      "scales": [
+        1.0176695070226205,
+        1.0202129041622514
+      ],
+      "amplitude": 1.1,
+      "timing_scale": 1.05
+    },
+    {
+      "id": "qfollow_g002_l0",
+      "geometry_id": "qfollow_g002",
+      "split": "train",
+      "scales": [
+        0.9905236570281397,
+        1.0153408614895578
+      ],
+      "amplitude": 0.9,
+      "timing_scale": 0.95
+    },
+    {
+      "id": "qfollow_g002_l1",
+      "geometry_id": "qfollow_g002",
+      "split": "train",
+      "scales": [
+        0.9905236570281397,
+        1.0153408614895578
+      ],
+      "amplitude": 1.1,
+      "timing_scale": 1.05
+    },
+    {
+      "id": "qfollow_g003_l0",
+      "geometry_id": "qfollow_g003",
+      "split": "train",
+      "scales": [
+        1.0120888632497704,
+        1.0243351172072461
+      ],
+      "amplitude": 0.9,
+      "timing_scale": 0.95
+    },
+    {
+      "id": "qfollow_g003_l1",
+      "geometry_id": "qfollow_g003",
+      "split": "train",
+      "scales": [
+        1.0120888632497704,
+        1.0243351172072461
+      ],
+      "amplitude": 1.1,
+      "timing_scale": 1.05
+    },
+    {
+      "id": "qfollow_g004_l0",
+      "geometry_id": "qfollow_g004",
+      "split": "validation",
+      "scales": [
+        1.044353065927033,
+        0.9543022400314799
+      ],
+      "amplitude": 0.95,
+      "timing_scale": 1.05
+    },
+    {
+      "id": "qfollow_g004_l1",
+      "geometry_id": "qfollow_g004",
+      "split": "validation",
+      "scales": [
+        1.044353065927033,
+        0.9543022400314799
+      ],
+      "amplitude": 1.05,
+      "timing_scale": 0.95
+    },
+    {
+      "id": "qfollow_g005_l0",
+      "geometry_id": "qfollow_g005",
+      "split": "validation",
+      "scales": [
+        1.021498796532157,
+        0.9510379040647747
+      ],
+      "amplitude": 0.95,
+      "timing_scale": 1.05
+    },
+    {
+      "id": "qfollow_g005_l1",
+      "geometry_id": "qfollow_g005",
+      "split": "validation",
+      "scales": [
+        1.021498796532157,
+        0.9510379040647747
+      ],
+      "amplitude": 1.05,
+      "timing_scale": 0.95
+    },
+    {
+      "id": "qfollow_g1000_l0",
+      "geometry_id": "qfollow_g1000",
+      "split": "calibration",
+      "scales": [
+        0.9715115153409114,
+        0.9525895432750735
+      ],
+      "amplitude": 0.9326103800155434,
+      "timing_scale": 0.9628902026876027
+    },
+    {
+      "id": "qfollow_g1001_l0",
+      "geometry_id": "qfollow_g1001",
+      "split": "calibration",
+      "scales": [
+        0.9552086956486276,
+        0.9785191680550404
+      ],
+      "amplitude": 1.0631275639659652,
+      "timing_scale": 1.0408342044969667
+    },
+    {
+      "id": "qfollow_g1002_l0",
+      "geometry_id": "qfollow_g1002",
+      "split": "calibration",
+      "scales": [
+        0.9719947930859913,
+        1.0202472042205017
+      ],
+      "amplitude": 0.9560043970434824,
+      "timing_scale": 1.0193745276222081
+    },
+    {
+      "id": "qfollow_g1003_l0",
+      "geometry_id": "qfollow_g1003",
+      "split": "calibration",
+      "scales": [
+        0.9701075081996975,
+        1.0251632746753607
+      ],
+      "amplitude": 1.0144365915578422,
+      "timing_scale": 1.0072155809605787
+    },
+    {
+      "id": "qfollow_g1004_l0",
+      "geometry_id": "qfollow_g1004",
+      "split": "calibration",
+      "scales": [
+        1.0373360604631592,
+        0.9715771509836616
+      ],
+      "amplitude": 0.9851273436583035,
+      "timing_scale": 0.9875880440875257
+    },
+    {
+      "id": "qfollow_g1005_l0",
+      "geometry_id": "qfollow_g1005",
+      "split": "calibration",
+      "scales": [
+        0.9508018062685648,
+        1.0004642574420166
+      ],
+      "amplitude": 1.0135585284809834,
+      "timing_scale": 1.0392222986925046
+    },
+    {
+      "id": "qfollow_g1006_l0",
+      "geometry_id": "qfollow_g1006",
+      "split": "calibration",
+      "scales": [
+        1.0067723679396627,
+        0.9693534860258851
+      ],
+      "amplitude": 1.038490346404146,
+      "timing_scale": 0.9847970260675588
+    },
+    {
+      "id": "qfollow_g1007_l0",
+      "geometry_id": "qfollow_g1007",
+      "split": "calibration",
+      "scales": [
+        0.950756361552854,
+        1.017317881771752
+      ],
+      "amplitude": 0.9577157223236917,
+      "timing_scale": 1.0362365501653055
+    },
+    {
+      "id": "qfollow_g1008_l0",
+      "geometry_id": "qfollow_g1008",
+      "split": "calibration",
+      "scales": [
+        0.9859756080108151,
+        0.9976782754614297
+      ],
+      "amplitude": 1.0036120561001214,
+      "timing_scale": 0.9831548771639376
+    },
+    {
+      "id": "qfollow_g1009_l0",
+      "geometry_id": "qfollow_g1009",
+      "split": "calibration",
+      "scales": [
+        0.9511771506153378,
+        0.9737731363841892
+      ],
+      "amplitude": 1.0722938381785518,
+      "timing_scale": 1.0376412959471166
+    },
+    {
+      "id": "qfollow_g1010_l0",
+      "geometry_id": "qfollow_g1010",
+      "split": "calibration",
+      "scales": [
+        0.963866994174889,
+        0.9681060969378377
+      ],
+      "amplitude": 0.9916535235703677,
+      "timing_scale": 0.9614418623710106
+    },
+    {
+      "id": "qfollow_g1011_l0",
+      "geometry_id": "qfollow_g1011",
+      "split": "calibration",
+      "scales": [
+        0.9520722965742355,
+        1.0255612899923698
+      ],
+      "amplitude": 0.9714175095115325,
+      "timing_scale": 1.0259040014929286
+    },
+    {
+      "id": "qfollow_g1012_l0",
+      "geometry_id": "qfollow_g1012",
+      "split": "calibration",
+      "scales": [
+        0.9515656925468434,
+        0.9602185531711388
+      ],
+      "amplitude": 1.060865825755556,
+      "timing_scale": 0.9863402734373167
+    },
+    {
+      "id": "qfollow_g1013_l0",
+      "geometry_id": "qfollow_g1013",
+      "split": "calibration",
+      "scales": [
+        1.033573816989331,
+        0.9654246403628837
+      ],
+      "amplitude": 0.9538581789530655,
+      "timing_scale": 0.9721774350543804
+    },
+    {
+      "id": "qfollow_g1014_l0",
+      "geometry_id": "qfollow_g1014",
+      "split": "calibration",
+      "scales": [
+        0.9806701805759463,
+        0.9881531723871626
+      ],
+      "amplitude": 1.0034222164524838,
+      "timing_scale": 0.9962668974846094
+    },
+    {
+      "id": "qfollow_g1015_l0",
+      "geometry_id": "qfollow_g1015",
+      "split": "calibration",
+      "scales": [
+        1.027148223713376,
+        1.0044822011556516
+      ],
+      "amplitude": 1.05237792781737,
+      "timing_scale": 1.0064467842540652
+    },
+    {
+      "id": "qfollow_g1016_l0",
+      "geometry_id": "qfollow_g1016",
+      "split": "calibration",
+      "scales": [
+        0.9800207674939381,
+        1.030174042995137
+      ],
+      "amplitude": 0.92454854183858,
+      "timing_scale": 0.9699691154221542
+    },
+    {
+      "id": "qfollow_g1017_l0",
+      "geometry_id": "qfollow_g1017",
+      "split": "calibration",
+      "scales": [
+        0.9916302415847731,
+        0.9715966859396047
+      ],
+      "amplitude": 0.9479374240439624,
+      "timing_scale": 0.9716091491188831
+    },
+    {
+      "id": "qfollow_g1018_l0",
+      "geometry_id": "qfollow_g1018",
+      "split": "calibration",
+      "scales": [
+        0.9871066668315832,
+        0.9914497920915718
+      ],
+      "amplitude": 0.9817099316904669,
+      "timing_scale": 0.9543127071031743
+    },
+    {
+      "id": "qfollow_g1019_l0",
+      "geometry_id": "qfollow_g1019",
+      "split": "calibration",
+      "scales": [
+        1.0460917446197564,
+        1.0125070092817339
+      ],
+      "amplitude": 0.9989220080285879,
+      "timing_scale": 1.035832245821893
+    },
+    {
+      "id": "qfollow_g2000_l0",
+      "geometry_id": "qfollow_g2000",
+      "split": "test",
+      "scales": [
+        0.9595476698524735,
+        1.048448151864534
+      ],
+      "amplitude": 1.0979246907770983,
+      "timing_scale": 1.020541449261733
+    },
+    {
+      "id": "qfollow_g2001_l0",
+      "geometry_id": "qfollow_g2001",
+      "split": "test",
+      "scales": [
+        0.9598987511974632,
+        0.9746218167231869
+      ],
+      "amplitude": 1.0884552217848245,
+      "timing_scale": 0.9798196537086872
+    },
+    {
+      "id": "qfollow_g2002_l0",
+      "geometry_id": "qfollow_g2002",
+      "split": "test",
+      "scales": [
+        0.9833911038439506,
+        0.9919959098564048
+      ],
+      "amplitude": 1.096857302867167,
+      "timing_scale": 0.9805911902616089
+    },
+    {
+      "id": "qfollow_g2003_l0",
+      "geometry_id": "qfollow_g2003",
+      "split": "test",
+      "scales": [
+        1.000297988738854,
+        1.0238589482682103
+      ],
+      "amplitude": 1.007646734645153,
+      "timing_scale": 1.0478599464868703
+    },
+    {
+      "id": "qfollow_g2004_l0",
+      "geometry_id": "qfollow_g2004",
+      "split": "test",
+      "scales": [
+        0.9618733477360258,
+        1.014320726931073
+      ],
+      "amplitude": 0.9421079148487684,
+      "timing_scale": 0.9805380123995562
+    },
+    {
+      "id": "qfollow_g2005_l0",
+      "geometry_id": "qfollow_g2005",
+      "split": "test",
+      "scales": [
+        1.0014714416054542,
+        0.9705189211355595
+      ],
+      "amplitude": 0.9147807913542226,
+      "timing_scale": 0.9581158423710479
+    },
+    {
+      "id": "qfollow_g2006_l0",
+      "geometry_id": "qfollow_g2006",
+      "split": "test",
+      "scales": [
+        1.0394024828025032,
+        0.9636336373418833
+      ],
+      "amplitude": 1.0489266253166603,
+      "timing_scale": 1.0356333318815825
+    },
+    {
+      "id": "qfollow_g2007_l0",
+      "geometry_id": "qfollow_g2007",
+      "split": "test",
+      "scales": [
+        1.028008228945414,
+        1.0246268170805697
+      ],
+      "amplitude": 0.9698387015614189,
+      "timing_scale": 0.9504218714820436
+    },
+    {
+      "id": "qfollow_g2008_l0",
+      "geometry_id": "qfollow_g2008",
+      "split": "test",
+      "scales": [
+        0.9807167120763426,
+        0.9634864153721646
+      ],
+      "amplitude": 0.959872043257357,
+      "timing_scale": 1.031224702961794
+    },
+    {
+      "id": "qfollow_g2009_l0",
+      "geometry_id": "qfollow_g2009",
+      "split": "test",
+      "scales": [
+        1.005810314867581,
+        0.9852937200781386
+      ],
+      "amplitude": 0.9465274086555473,
+      "timing_scale": 0.9863651490200531
+    },
+    {
+      "id": "qfollow_g2010_l0",
+      "geometry_id": "qfollow_g2010",
+      "split": "test",
+      "scales": [
+        0.9672471743673855,
+        1.021573675829968
+      ],
+      "amplitude": 0.9779775452560848,
+      "timing_scale": 1.030497662687387
+    },
+    {
+      "id": "qfollow_g2011_l0",
+      "geometry_id": "qfollow_g2011",
+      "split": "test",
+      "scales": [
+        1.0086355491081245,
+        1.0493928415528386
+      ],
+      "amplitude": 1.0688695890997575,
+      "timing_scale": 1.0397218010486735
+    },
+    {
+      "id": "qfollow_g2012_l0",
+      "geometry_id": "qfollow_g2012",
+      "split": "test",
+      "scales": [
+        1.0120565950413185,
+        0.9682844749440718
+      ],
+      "amplitude": 1.0786809839247014,
+      "timing_scale": 0.9705970681849017
+    },
+    {
+      "id": "qfollow_g2013_l0",
+      "geometry_id": "qfollow_g2013",
+      "split": "test",
+      "scales": [
+        1.0211729021584532,
+        0.9522441076150395
+      ],
+      "amplitude": 0.9148807807040248,
+      "timing_scale": 0.9718686063746445
+    },
+    {
+      "id": "qfollow_g2014_l0",
+      "geometry_id": "qfollow_g2014",
+      "split": "test",
+      "scales": [
+        1.038001253744186,
+        0.9603254130012738
+      ],
+      "amplitude": 0.9703394167429763,
+      "timing_scale": 0.983716751983381
+    },
+    {
+      "id": "qfollow_g2015_l0",
+      "geometry_id": "qfollow_g2015",
+      "split": "test",
+      "scales": [
+        0.9606472565497471,
+        1.0280688942559577
+      ],
+      "amplitude": 1.0181357488361316,
+      "timing_scale": 1.0314955587191343
+    },
+    {
+      "id": "qfollow_g2016_l0",
+      "geometry_id": "qfollow_g2016",
+      "split": "test",
+      "scales": [
+        0.9565407400041979,
+        0.9676701743654231
+      ],
+      "amplitude": 1.066329244826009,
+      "timing_scale": 0.9833871846814793
+    },
+    {
+      "id": "qfollow_g2017_l0",
+      "geometry_id": "qfollow_g2017",
+      "split": "test",
+      "scales": [
+        1.0246617669856444,
+        0.9852040790442282
+      ],
+      "amplitude": 0.9721453925628839,
+      "timing_scale": 1.023963038732752
+    },
+    {
+      "id": "qfollow_g2018_l0",
+      "geometry_id": "qfollow_g2018",
+      "split": "test",
+      "scales": [
+        1.0133067166507463,
+        1.0178610364790275
+      ],
+      "amplitude": 0.9276496107132294,
+      "timing_scale": 0.9763683213242543
+    },
+    {
+      "id": "qfollow_g2019_l0",
+      "geometry_id": "qfollow_g2019",
+      "split": "test",
+      "scales": [
+        0.9797640200867002,
+        1.0372474584521627
+      ],
+      "amplitude": 1.017443603499713,
+      "timing_scale": 0.9516296619424269
+    },
+    {
+      "id": "qfollow_g3000_l0",
+      "geometry_id": "qfollow_g3000",
+      "split": "ood_test",
+      "scales": [
+        1.129687976303667,
+        0.8234994922341891
+      ],
+      "amplitude": 0.8,
+      "timing_scale": 0.9
+    },
+    {
+      "id": "qfollow_g3000_l1",
+      "geometry_id": "qfollow_g3000",
+      "split": "ood_test",
+      "scales": [
+        1.129687976303667,
+        0.8234994922341891
+      ],
+      "amplitude": 1.2,
+      "timing_scale": 1.1
+    },
+    {
+      "id": "qfollow_g3001_l0",
+      "geometry_id": "qfollow_g3001",
+      "split": "ood_test",
+      "scales": [
+        1.126126322260717,
+        0.8656664362692229
+      ],
+      "amplitude": 0.8,
+      "timing_scale": 0.9
+    },
+    {
+      "id": "qfollow_g3001_l1",
+      "geometry_id": "qfollow_g3001",
+      "split": "ood_test",
+      "scales": [
+        1.126126322260717,
+        0.8656664362692229
+      ],
+      "amplitude": 1.2,
+      "timing_scale": 1.1
+    },
+    {
+      "id": "qfollow_g3002_l0",
+      "geometry_id": "qfollow_g3002",
+      "split": "ood_test",
+      "scales": [
+        1.1483353458608063,
+        0.8796037369286291
+      ],
+      "amplitude": 0.8,
+      "timing_scale": 0.9
+    },
+    {
+      "id": "qfollow_g3002_l1",
+      "geometry_id": "qfollow_g3002",
+      "split": "ood_test",
+      "scales": [
+        1.1483353458608063,
+        0.8796037369286291
+      ],
+      "amplitude": 1.2,
+      "timing_scale": 1.1
+    },
+    {
+      "id": "qfollow_g3003_l0",
+      "geometry_id": "qfollow_g3003",
+      "split": "ood_test",
+      "scales": [
+        1.1694343165605317,
+        0.8407857711756983
+      ],
+      "amplitude": 0.8,
+      "timing_scale": 0.9
+    },
+    {
+      "id": "qfollow_g3003_l1",
+      "geometry_id": "qfollow_g3003",
+      "split": "ood_test",
+      "scales": [
+        1.1694343165605317,
+        0.8407857711756983
+      ],
+      "amplitude": 1.2,
+      "timing_scale": 1.1
+    }
+  ]
+}
