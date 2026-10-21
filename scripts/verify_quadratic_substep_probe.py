@@ -40,7 +40,10 @@ if 'resume_probe_protocol' in protocol:
     assert hashlib.sha256(resumed_path.read_bytes()).hexdigest() == probe['resumed_checkpoint_sha256']
     saved = np.load(resumed_path)
 u = np.load(P/protocol['fields'], mmap_mode='r')
-assert len(u) == len(probe['records']) == protocol['steps_after_checkpoint']
+assert len(u) == protocol['steps_after_checkpoint']
+assert len(probe['records']) <= len(u)
+if not args.accepted_prefix:
+    assert len(u) == len(probe['records'])
 if args.accepted_prefix:
     count = 0
     for r in probe['records']:
@@ -48,6 +51,7 @@ if args.accepted_prefix:
             break
         count += 1
     assert count>0
+    assert int(np.load(P/protocol['checkpoint'])['completed_probe_steps']) == count
     u = u[:count]
     probe = dict(probe,records=probe['records'][:count])
 dt = probe['dt_s']

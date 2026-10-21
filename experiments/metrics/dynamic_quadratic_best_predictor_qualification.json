@@ -1,0 +1,190 @@
+{
+  "complete": true,
+  "engineering_only": true,
+  "protocol": {
+    "steps_after_checkpoint": 2,
+    "timestep_divisor": 1,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 900,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "gamg",
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "inexact_newton": true,
+    "reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+    "qualification_step": 400,
+    "output": "experiments/metrics/dynamic_quadratic_best_predictor_qualification.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_best_predictor_qualification_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_best_predictor_qualification_fields.npy",
+    "iterate_checkpoint": "experiments/logs/dynamic_quadratic_best_predictor_qualification_iterate.npz",
+    "scope": "New prospective initialization policy: evaluate native residual at old,velocity,acceleration and preceding-stress-stage predictors, then select the finite minimum. No minimum improvement factor; this is an initial-guess selection rule. Preserve the previous100-fold-gated pilot as incomplete after its second candidate gave28.3325-fold improvement. Final physics/strict1e-8N/native positive SNES/whole-element positivity/norm/history acceptance remain unchanged. Independently reproduce two known coarse targets before R2 use. R2 starts only from the independently audited accepted prefix at0.274375s and attempts one previously unattempted physical equation at0.275s, not repeating the prefix. Bound R2 solve1200s/phase1500s,coarse900s,RSS30GiB,disk100GiB. Retain failures and conservative resource projections. No full-cycle,continuum,numerical-convergence or ML qualification claim.",
+    "stress_stage_predictor": {
+      "select_minimum_native_residual": true
+    }
+  },
+  "records": [
+    {
+      "step": 400,
+      "time_s": 0.250625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 3.186571472919734e-10,
+      "KSP_reason": 2,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "effective_SNES": "newtonls",
+      "EW_effective": true,
+      "last_linear_iterations": 28,
+      "minimum_endpoint_sampled_detF": 0.9107840806277006,
+      "minimum_stress_sampled_detF": 0.9056367264488079,
+      "nonlinear_seconds": 7.572305084089749,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.5158376319780605,
+          "KSP_rtol": 1e-10
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.009236325827994394,
+          "KSP_rtol": 0.01
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.3799030999621448e-05,
+          "KSP_rtol": 0.0014902952934053
+        },
+        {
+          "iteration": 3,
+          "residual_N": 3.186571472919734e-10,
+          "KSP_rtol": 2.6791757294714572e-05
+        }
+      ]
+    },
+    {
+      "step": 401,
+      "time_s": 0.25125,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.3281733083689943e-12,
+      "KSP_reason": 3,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "effective_SNES": "newtonls",
+      "EW_effective": true,
+      "last_linear_iterations": 28,
+      "minimum_endpoint_sampled_detF": 0.9189027544000407,
+      "minimum_stress_sampled_detF": 0.9157465569536275,
+      "nonlinear_seconds": 7.610733667039312,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.6921257321204267,
+          "KSP_rtol": 1e-10
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.018004041217439426,
+          "KSP_rtol": 0.01
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.00010729492838679015,
+          "KSP_rtol": 0.0027271904557361207
+        },
+        {
+          "iteration": 3,
+          "residual_N": 2.6085794696883364e-08,
+          "KSP_rtol": 0.0002513117884496515
+        },
+        {
+          "iteration": 4,
+          "residual_N": 1.3281733083689943e-12,
+          "KSP_rtol": 1.4195209642829212e-06
+        }
+      ]
+    }
+  ],
+  "protocol_sha256": "fbe7ec8ef85299b40c8b7caaf86ef7a77e012f73d4dc012ff43e0d5e51909ad4",
+  "reference_config_sha256": "15e5bf12c478ba3a64c60cc6fcefec92e3bb75396e5de92134b16aaf654e4918",
+  "start_step": 400,
+  "qualification_only": true,
+  "checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "source_sha256": "4eea0c55dca30a8f3d431ee2a486463865a5c1481af139784a0202e9ea654ae7",
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "last_attempt_time_s": 0.25125,
+  "stress_stage_initialization": {
+    "original_predictor_residual_N": 0.6921257321204267,
+    "stress_stage_predictor_residual_N": 17.4505555559265,
+    "improvement_factor": 0.039662103014558144,
+    "alpha_f": 0.4,
+    "invariant": "alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement",
+    "initialization_only": true,
+    "selection_policy": "minimum finite native force among four predictors",
+    "selected_predictor": "ordinary",
+    "admission_met": true
+  },
+  "stress_stage_initializations": [
+    {
+      "step": 400,
+      "time_s": 0.250625,
+      "original_predictor_residual_N": 0.5158376319780605,
+      "stress_stage_predictor_residual_N": 17.783321060186516,
+      "improvement_factor": 0.029006822192111415,
+      "alpha_f": 0.4,
+      "invariant": "alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement",
+      "initialization_only": true,
+      "selection_policy": "minimum finite native force among four predictors",
+      "selected_predictor": "ordinary",
+      "admission_met": true
+    },
+    {
+      "step": 401,
+      "time_s": 0.25125,
+      "original_predictor_residual_N": 0.6921257321204267,
+      "stress_stage_predictor_residual_N": 17.4505555559265,
+      "improvement_factor": 0.039662103014558144,
+      "alpha_f": 0.4,
+      "invariant": "alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement",
+      "initialization_only": true,
+      "selection_policy": "minimum finite native force among four predictors",
+      "selected_predictor": "ordinary",
+      "admission_met": true
+    }
+  ],
+  "probe_checkpoint_sha256": "6db626fa1a1e45716c7ec0d7067b10d3b29684f0a5628ae7d0fbcca1c7e228d3",
+  "all_requested_steps_accepted": true,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 0.6921257321204267,
+      "KSP_rtol": 1e-10
+    },
+    {
+      "iteration": 1,
+      "residual_N": 0.018004041217439426,
+      "KSP_rtol": 0.01
+    },
+    {
+      "iteration": 2,
+      "residual_N": 0.00010729492838679015,
+      "KSP_rtol": 0.0027271904557361207
+    },
+    {
+      "iteration": 3,
+      "residual_N": 2.6085794696883364e-08,
+      "KSP_rtol": 0.0002513117884496515
+    },
+    {
+      "iteration": 4,
+      "residual_N": 1.3281733083689943e-12,
+      "KSP_rtol": 1.4195209642829212e-06
+    }
+  ],
+  "wall_seconds": 15.894610166898929
+}

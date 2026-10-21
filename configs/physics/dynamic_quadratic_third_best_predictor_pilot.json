@@ -1,0 +1,26 @@
+{
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 1200,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+  "required_audit": "experiments/metrics/dynamic_quadratic_third_stress_predictor_consecutive_verification_resolved.json",
+  "output": "experiments/metrics/dynamic_quadratic_third_best_predictor_pilot.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_third_best_predictor_pilot_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_third_best_predictor_pilot_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_best_predictor_pilot_iterate.npz",
+  "scope": "New prospective initialization policy: evaluate native residual at old,velocity,acceleration and preceding-stress-stage predictors, then select the finite minimum. No minimum improvement factor; this is an initial-guess selection rule. Preserve the previous100-fold-gated pilot as incomplete after its second candidate gave28.3325-fold improvement. Final physics/strict1e-8N/native positive SNES/whole-element positivity/norm/history acceptance remain unchanged. Independently reproduce two known coarse targets before R2 use. R2 starts only from the independently audited accepted prefix at0.274375s and attempts one previously unattempted physical equation at0.275s, not repeating the prefix. Bound R2 solve1200s/phase1500s,coarse900s,RSS30GiB,disk100GiB. Retain failures and conservative resource projections. No full-cycle,continuum,numerical-convergence or ML qualification claim.",
+  "stress_stage_predictor": {
+    "previous_displacement_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_pilot.json",
+    "select_minimum_native_residual": true
+  },
+  "required_qualification": "experiments/metrics/dynamic_quadratic_best_predictor_qualification_verification.json"
+}

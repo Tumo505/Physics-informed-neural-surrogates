@@ -421,11 +421,13 @@ def dynamic_rows(P):
    if w['complete']:
     r=json.loads((P/'experiments/metrics/dynamic_quadratic_third_postrecovery_pilot.json').read_text())
     entry+=['',f'The ordinary next-step pilot exhausted its budget after {r["wall_seconds"]:.2f}s with zero accepted states. Initial force {r["last_iteration_history"][0]["residual_N"]:.6g}N, final unaccepted force {r["last_iteration_history"][-1]["residual_N"]:.6g}N. Positive recovery of the previous step therefore does not establish feasible subsequent stepping. No full-cycle restart was launched.']
-  for stem,label in [('dynamic_quadratic_stress_predictor_qualification','Known-step stress-stage predictor qualification'),('dynamic_quadratic_third_stress_predictor_pilot','R2 stress-stage predictor feasibility'),('dynamic_quadratic_stress_predictor_consecutive_qualification','Two-known-step carried predictor qualification'),('dynamic_quadratic_third_stress_predictor_consecutive','Two-consecutive-step R2 runtime qualification')]:
+  for stem,label in [('dynamic_quadratic_stress_predictor_qualification','Known-step stress-stage predictor qualification'),('dynamic_quadratic_third_stress_predictor_pilot','R2 stress-stage predictor feasibility'),('dynamic_quadratic_stress_predictor_consecutive_qualification','Two-known-step carried predictor qualification'),('dynamic_quadratic_third_stress_predictor_consecutive','Two-consecutive-step R2 runtime qualification'),('dynamic_quadratic_best_predictor_qualification','Four-candidate minimum-residual known-step qualification'),('dynamic_quadratic_third_best_predictor_pilot','Four-candidate R2 minimum-residual initialization pilot')]:
    wp=P/f'experiments/metrics/{stem}_workflow.json'
    if not wp.exists():continue
    w=json.loads(wp.read_text())
-   entry+=['',f'{label}: phase={w["active_phase"]}, finished={w["complete"]}, independently verified pass={w.get("local_recovery_verified",False)}. The initial guess preserves the preceding weighted generalized-alpha displacement stage, alpha_f*u_old+(1-alpha_f)*u_guess, rather than changing the final equation. Source histories are hash/index checked; the R2 admission gate requires100-fold native residual improvement over ordinary predictors. Known-field qualification is mandatory first. Both use900s solving/1200s phase/30GiB guards, unchanged strict force acceptance and independent audits.']
+   pc=json.loads((P/w['protocol']).read_text());option=pc['stress_stage_predictor']
+   policy='Select minimum finite native force among ordinary and stress-stage candidates.' if option.get('select_minimum_native_residual') else f'Force stress-stage candidate after its declared {option["minimum_residual_improvement_factor"]:g}-fold initial-force admission gate.'
+   entry+=['',f'{label}: phase={w["active_phase"]}, finished={w["complete"]}, independently verified pass={w.get("local_recovery_verified",False)}. The added initial guess preserves the preceding weighted generalized-alpha displacement stage, alpha_f*u_old+(1-alpha_f)*u_guess. Source histories are hash/index checked. {policy} Known-field qualification is mandatory first. Native solve budget{pc["wall_budget_seconds"]}s, outer phase{w["limits"]["max_phase_seconds"]:g}s, RSS30GiB; strict final force/whole-element/norm/history criteria are unchanged.']
    rp=P/f'experiments/metrics/{stem}.json'
    if rp.exists():
     r=json.loads(rp.read_text());s=r.get('stress_stage_initialization')
@@ -434,7 +436,12 @@ def dynamic_rows(P):
    if resolved.exists():
     a=json.loads(resolved.read_text());assert a['complete'] and a['passed']
     for r in a['records']:
-     entry+=['',f'Supplemental SHA-linked independent audit PASSED at{r["time_s"]:.6f}s: native force {r["native_residual_N"]:.6g}N; whole-element endpoint/stress lower bounds {r["endpoint_minimum_Bernstein_bound"]:.6g}/{r["stress_minimum_Bernstein_bound"]:.6g}; independent norm relative error {r.get("independent_L2_norm_relative_error",0):.3g}, final history replay passed. Initial inconclusive parent bounds and runner audit_failed record remain retained; composed audit resolves positivity without lowering its margin. This is a discrete local step, not full-cycle numerical convergence.']
+     entry+=['',f'Supplemental SHA-linked independent audit PASSED at{r["time_s"]:.6f}s: native force {r["native_residual_N"]:.6g}N; whole-element endpoint/stress lower bounds {r["endpoint_minimum_Bernstein_bound"]:.6g}/{r["stress_minimum_Bernstein_bound"]:.6g}; independent norm relative error {r.get("independent_L2_norm_relative_error",0):.3g}, final history replay passed. Accepted-prefix-only audit={a.get("accepted_prefix_only",False)}. Initial inconclusive parent bounds and runner result remain retained; composed audit resolves positivity without lowering its margin. A prefix pass does not pass an incomplete pilot or full-cycle numerical convergence.']
+  partial=P/'experiments/metrics/dynamic_quadratic_third_stress_predictor_consecutive.json'
+  if partial.exists():
+   r=json.loads(partial.read_text())
+   if r.get('finished') and not r.get('all_requested_steps_accepted'):
+    entry+=['',f'The100-fold-gated two-step pilot remains INCOMPLETE: {sum(x["accepted"] for x in r["records"])} physical step accepted; the0.275s equation was not solved because its stress-stage candidate improved initial force28.3325-fold, below100. This is an initialization-admission stop. Preserve the failed protocol, partial-prefix audit and numerical result. A separately declared four-candidate minimum-residual rule is qualified on two known coarse targets before its new R2 attempt; final physical acceptance is unchanged. No inspected surrogate test outcomes informed the rule.']
   stress=P/'experiments/metrics/dynamic_quadratic_third_stress_predictor_pilot.json'
   if stress.exists():
    s=json.loads(stress.read_text())

@@ -1,0 +1,179 @@
+{
+  "complete": false,
+  "engineering_only": true,
+  "protocol": {
+    "steps_after_checkpoint": 2,
+    "timestep_divisor": 1,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 2400,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "gamg",
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "inexact_newton": true,
+    "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+    "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_pilot.json",
+    "required_audit": "experiments/metrics/dynamic_quadratic_third_stress_predictor_pilot_verification_resolved.json",
+    "output": "experiments/metrics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_third_stress_predictor_consecutive_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_third_stress_predictor_consecutive_fields.npy",
+    "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_stress_predictor_consecutive_iterate.npz",
+    "scope": "Prospective two-consecutive-step stress-stage predictor qualification. Independently reproduce both archived coarse targets before R2 use. R2 starts only from independently qualified0.27375s state and targets0.274375/0.275s; previous accepted displacement is carried across steps without teacher fields. Preserve alpha_f weighted displacement stage only as a Newton initial guess; require100-fold initial-force improvement at each R2 step or stop without further solving. Unchanged physical equations,strict1e-8N/native positive SNES,100Newton ceiling and final whole-element positivity/norm/history audits. Native total2400s (coarse900s),outer phase2700s,RSS30GiB/disk100GiB; no full-cycle/cohort launch. A partial prefix is not a completed pilot or full reference. Prior failed initialization and inconclusive bounds retained.",
+    "stress_stage_predictor": {
+      "minimum_residual_improvement_factor": 100.0,
+      "previous_displacement_protocol": "configs/physics/dynamic_quadratic_third_history_resume_v1.json"
+    },
+    "required_qualification": "experiments/metrics/dynamic_quadratic_stress_predictor_consecutive_qualification_verification.json"
+  },
+  "records": [
+    {
+      "step": 438,
+      "time_s": 0.274375,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 5.004675027641853e-12,
+      "KSP_reason": 3,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "effective_SNES": "newtonls",
+      "EW_effective": true,
+      "last_linear_iterations": 69,
+      "minimum_endpoint_sampled_detF": 0.11111978675513912,
+      "minimum_stress_sampled_detF": 0.11307338846343987,
+      "nonlinear_seconds": 1045.1534183329204,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.5446503617039163,
+          "KSP_rtol": 1e-10
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.08704650894319957,
+          "KSP_rtol": 0.01
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.02260500846770469,
+          "KSP_rtol": 0.0514578972473773
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.0039660640002757526,
+          "KSP_rtol": 0.1
+        },
+        {
+          "iteration": 4,
+          "residual_N": 0.0003800198806321749,
+          "KSP_rtol": 0.059843525545087664
+        },
+        {
+          "iteration": 5,
+          "residual_N": 8.367425561622135e-06,
+          "KSP_rtol": 0.022487748625194034
+        },
+        {
+          "iteration": 6,
+          "residual_N": 1.6101223985042737e-08,
+          "KSP_rtol": 0.0020824312745359153
+        },
+        {
+          "iteration": 7,
+          "residual_N": 5.004675027641853e-12,
+          "KSP_rtol": 4.0350763508223345e-05
+        }
+      ]
+    }
+  ],
+  "protocol_sha256": "9e4d3f7f62c493406cd4975727b481414b7e3c6c037aa712f4901f158a658c1c",
+  "reference_config_sha256": "5725147217290e5bf505a8d9fe7973e4606670f190b0abba8b0ddafc06d95b48",
+  "start_step": 438,
+  "qualification_only": false,
+  "checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "source_sha256": "2c9c8adcbf9dafd45595958c6be85d64114785d96c7cd1d91739bb3003bba992",
+  "resumed_checkpoint_sha256": "66e0ed00e7e22c6186e5fd9a123aac462560d59dfada65b14e3ff8e2975fa8b1",
+  "resumed_accepted_probe_steps": 1,
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "last_attempt_time_s": 0.27499999999999997,
+  "stress_stage_initialization": {
+    "original_predictor_residual_N": 14.772035916940819,
+    "stress_stage_predictor_residual_N": 0.5213813256305331,
+    "improvement_factor": 28.3324990573382,
+    "alpha_f": 0.4,
+    "invariant": "alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement",
+    "initialization_only": true
+  },
+  "stress_stage_initializations": [
+    {
+      "step": 438,
+      "time_s": 0.274375,
+      "original_predictor_residual_N": 2408.4203693192385,
+      "stress_stage_predictor_residual_N": 0.5446503617039163,
+      "improvement_factor": 4421.956797723578,
+      "alpha_f": 0.4,
+      "invariant": "alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement",
+      "initialization_only": true
+    },
+    {
+      "step": 439,
+      "time_s": 0.27499999999999997,
+      "original_predictor_residual_N": 14.772035916940819,
+      "stress_stage_predictor_residual_N": 0.5213813256305331,
+      "improvement_factor": 28.3324990573382,
+      "alpha_f": 0.4,
+      "invariant": "alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement",
+      "initialization_only": true
+    }
+  ],
+  "probe_checkpoint_sha256": "d45b70a590fcdca7f91d56d962a10448e3121ef4e5dfcf2fb5beab576e34322a",
+  "failure": "Stress-stage initialization failed predeclared admission gate",
+  "all_requested_steps_accepted": false,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 0.5446503617039163,
+      "KSP_rtol": 1e-10
+    },
+    {
+      "iteration": 1,
+      "residual_N": 0.08704650894319957,
+      "KSP_rtol": 0.01
+    },
+    {
+      "iteration": 2,
+      "residual_N": 0.02260500846770469,
+      "KSP_rtol": 0.0514578972473773
+    },
+    {
+      "iteration": 3,
+      "residual_N": 0.0039660640002757526,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 4,
+      "residual_N": 0.0003800198806321749,
+      "KSP_rtol": 0.059843525545087664
+    },
+    {
+      "iteration": 5,
+      "residual_N": 8.367425561622135e-06,
+      "KSP_rtol": 0.022487748625194034
+    },
+    {
+      "iteration": 6,
+      "residual_N": 1.6101223985042737e-08,
+      "KSP_rtol": 0.0020824312745359153
+    },
+    {
+      "iteration": 7,
+      "residual_N": 5.004675027641853e-12,
+      "KSP_rtol": 4.0350763508223345e-05
+    }
+  ],
+  "wall_seconds": 1085.1860596250044
+}

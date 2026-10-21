@@ -1,0 +1,29 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+    "max_phase_seconds": 2700.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100
+  },
+  "phases": [
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 1171.5929680410773,
+      "sampled_peak_RSS_bytes": 13561659392
+    },
+    {
+      "phase": "audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.041727500036359,
+      "sampled_peak_RSS_bytes": 2457600
+    }
+  ],
+  "active_phase": "finished",
+  "local_recovery_verified": false
+}

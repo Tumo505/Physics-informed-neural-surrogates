@@ -213,11 +213,23 @@ try:
                 improvement_factor=improvement, alpha_f=alpha,
                 invariant='alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement',
                 initialization_only=True)
+            if option.get('select_minimum_native_residual',False):
+                selected = bool(np.isfinite(stage_R) and stage_R < best_R)
+                result['stress_stage_initialization'].update(
+                    selection_policy='minimum finite native force among four predictors',
+                    selected_predictor='stress_stage' if selected else 'ordinary')
+                if selected:
+                    best = stage_guess; best_R = stage_R
+                admitted = bool(np.isfinite(best_R))
+            else:
+                admitted = bool(np.isfinite(stage_R) and improvement >= option['minimum_residual_improvement_factor'])
+                if admitted:
+                    best = stage_guess; best_R = stage_R
+            result['stress_stage_initialization']['admission_met'] = admitted
             result.setdefault('stress_stage_initializations', []).append(
                 dict(step=i,time_s=float(time_s),**result['stress_stage_initialization']))
             persist()
-            assert np.isfinite(stage_R) and improvement >= option['minimum_residual_improvement_factor'], 'Stress-stage initialization failed predeclared admission gate'
-            best = stage_guess; best_R = stage_R
+            assert admitted, 'Stress-stage initialization failed predeclared admission gate'
         if guess_source is not None:
             source_space,source_inputs,source_fields=guess_source
             np.testing.assert_allclose(source_inputs['time'][i],time_s,atol=1e-12,rtol=0)

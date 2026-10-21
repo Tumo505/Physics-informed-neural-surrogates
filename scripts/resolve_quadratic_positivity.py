@@ -21,7 +21,8 @@ if args.probe_protocol:
  resumed_hash=None
  if protocol.get('resume_probe_protocol'):
   probe=json.loads((P/protocol['output']).read_text())
-  assert probe['finished'] and probe['all_requested_steps_accepted']
+  assert probe['finished']
+  assert probe['all_requested_steps_accepted'] or (native_audit['accepted_prefix_only'] and all(r['accepted'] for r in probe['records'][:len(native_audit['records'])]))
   assert probe['protocol_sha256']==native_audit['protocol_sha256']==hashlib.sha256((P/args.probe_protocol).read_bytes()).hexdigest()
   parent=json.loads((P/protocol['resume_probe_protocol']).read_text())
   assert parent['reference']==protocol['reference'] and parent.get('timestep_divisor',1)==1
