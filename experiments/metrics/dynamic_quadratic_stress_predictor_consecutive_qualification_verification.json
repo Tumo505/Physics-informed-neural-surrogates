@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "passed": true,
+  "full_cycle": false,
+  "records": [
+    {
+      "time_s": 0.250625,
+      "native_residual_N": 1.3635766589442024e-12,
+      "endpoint_minimum_Bernstein_bound": 0.9107840806269807,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.9056367264483678,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 2.805423690978496e-15
+    },
+    {
+      "time_s": 0.25125,
+      "native_residual_N": 1.3921341005574078e-12,
+      "endpoint_minimum_Bernstein_bound": 0.9189027543997538,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.9157465569531796,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 6.1186840625874625e-15
+    }
+  ],
+  "dt_s": 0.000625,
+  "final_checkpoint_history_relative_errors": {
+    "u": 0.0,
+    "u_old": 0.0,
+    "v_old": 5.283568478990294e-15,
+    "a_old": 1.6086249797642737e-13
+  },
+  "accepted_prefix_only": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "d9834acade6a87f8d4d9032225941c36ee917565b0e0fb32c57fc758fdaf89d6",
+  "original_checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "fields_sha256": "cfe57618021ac22f022711bd64433b91b5627b30fb4e2039fb9d379abe52b9de",
+  "inputs_sha256": "d5e2dfd90a39a8fe4f5e411378cd83ab8c53809057b8a43c4e37d6a014265ea6",
+  "executed_source_sha256": "edf318c73f314401abf0ff50a13e9d505adec5450e698f869fbbb64e4e1c8686",
+  "scope": "2 local probe steps with inherited nonzero histories, not a full-cycle reference. The recorded protocol specifies whether time discretization changed. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities and independent canonical-quadrature/UFL displacement norms checked at 2 fixed frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim."
+}

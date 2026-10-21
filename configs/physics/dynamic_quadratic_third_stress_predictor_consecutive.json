@@ -1,0 +1,26 @@
+{
+  "steps_after_checkpoint": 2,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 2400,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_pilot.json",
+  "required_audit": "experiments/metrics/dynamic_quadratic_third_stress_predictor_pilot_verification_resolved.json",
+  "output": "experiments/metrics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_third_stress_predictor_consecutive_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_third_stress_predictor_consecutive_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_stress_predictor_consecutive_iterate.npz",
+  "scope": "Prospective two-consecutive-step stress-stage predictor qualification. Independently reproduce both archived coarse targets before R2 use. R2 starts only from independently qualified0.27375s state and targets0.274375/0.275s; previous accepted displacement is carried across steps without teacher fields. Preserve alpha_f weighted displacement stage only as a Newton initial guess; require100-fold initial-force improvement at each R2 step or stop without further solving. Unchanged physical equations,strict1e-8N/native positive SNES,100Newton ceiling and final whole-element positivity/norm/history audits. Native total2400s (coarse900s),outer phase2700s,RSS30GiB/disk100GiB; no full-cycle/cohort launch. A partial prefix is not a completed pilot or full reference. Prior failed initialization and inconclusive bounds retained.",
+  "stress_stage_predictor": {
+    "minimum_residual_improvement_factor": 100.0,
+    "previous_displacement_protocol": "configs/physics/dynamic_quadratic_third_history_resume_v1.json"
+  },
+  "required_qualification": "experiments/metrics/dynamic_quadratic_stress_predictor_consecutive_qualification_verification.json"
+}

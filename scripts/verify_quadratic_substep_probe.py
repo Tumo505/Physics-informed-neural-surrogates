@@ -70,8 +70,8 @@ if 'qualification_step' in protocol:
     for current in archived[:protocol['qualification_step']]:
         problem.u.vector().set_local(current); problem.u.vector().apply('insert')
         problem._update_fields()
-    expected = archived[protocol['qualification_step']]
-    np.testing.assert_allclose(u[0], expected, rtol=1e-6, atol=1e-9)
+    expected = archived[protocol['qualification_step']:protocol['qualification_step']+len(u)]
+    np.testing.assert_allclose(u, expected, rtol=1e-6, atol=1e-9)
 kin = QuadraticKinematics(problem.u_space, data['qpoints'], data['qweights'])
 np.testing.assert_array_equal(kin.maps, data['canonical_cell_dofs'])
 gradients = np.stack([np.concatenate(((4*bary[None,:,None]-1)*kin.grad_lambda,

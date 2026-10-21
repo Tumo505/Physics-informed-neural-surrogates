@@ -182,9 +182,11 @@ try:
             if np.isfinite(R) and R < best_R:
                 best = guess; best_R = R
         if 'stress_stage_predictor' in protocol:
-            assert offset == 0 and divisor == 1 and protocol['steps_after_checkpoint'] == 1
+            assert divisor == 1
             option = protocol['stress_stage_predictor']
-            if qualification:
+            if offset:
+                prior_displacement = previous_step_old
+            elif qualification:
                 prior_displacement = np.load(root/'displacement_coefficients.npy',mmap_mode='r')[i-2].copy()
             else:
                 predecessor = json.loads((P/option['previous_displacement_protocol']).read_text())
@@ -211,6 +213,8 @@ try:
                 improvement_factor=improvement, alpha_f=alpha,
                 invariant='alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement',
                 initialization_only=True)
+            result.setdefault('stress_stage_initializations', []).append(
+                dict(step=i,time_s=float(time_s),**result['stress_stage_initialization']))
             persist()
             assert np.isfinite(stage_R) and improvement >= option['minimum_residual_improvement_factor'], 'Stress-stage initialization failed predeclared admission gate'
             best = stage_guess; best_R = stage_R
@@ -254,6 +258,7 @@ try:
         if not accepted:
             raise RuntimeError('Physical acceptance criteria failed in strict probe')
         problem._update_fields()
+        previous_step_old = old.copy()
         if fields is not None:
             fields[offset] = u
             fields.flush()

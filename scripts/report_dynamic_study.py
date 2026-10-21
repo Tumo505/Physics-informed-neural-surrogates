@@ -421,7 +421,7 @@ def dynamic_rows(P):
    if w['complete']:
     r=json.loads((P/'experiments/metrics/dynamic_quadratic_third_postrecovery_pilot.json').read_text())
     entry+=['',f'The ordinary next-step pilot exhausted its budget after {r["wall_seconds"]:.2f}s with zero accepted states. Initial force {r["last_iteration_history"][0]["residual_N"]:.6g}N, final unaccepted force {r["last_iteration_history"][-1]["residual_N"]:.6g}N. Positive recovery of the previous step therefore does not establish feasible subsequent stepping. No full-cycle restart was launched.']
-  for stem,label in [('dynamic_quadratic_stress_predictor_qualification','Known-step stress-stage predictor qualification'),('dynamic_quadratic_third_stress_predictor_pilot','R2 stress-stage predictor feasibility')]:
+  for stem,label in [('dynamic_quadratic_stress_predictor_qualification','Known-step stress-stage predictor qualification'),('dynamic_quadratic_third_stress_predictor_pilot','R2 stress-stage predictor feasibility'),('dynamic_quadratic_stress_predictor_consecutive_qualification','Two-known-step carried predictor qualification'),('dynamic_quadratic_third_stress_predictor_consecutive','Two-consecutive-step R2 runtime qualification')]:
    wp=P/f'experiments/metrics/{stem}_workflow.json'
    if not wp.exists():continue
    w=json.loads(wp.read_text())
@@ -430,6 +430,17 @@ def dynamic_rows(P):
    if rp.exists():
     r=json.loads(rp.read_text());s=r.get('stress_stage_initialization')
     if s:entry+=['',f'Recorded initialization: ordinary predictor force {s["original_predictor_residual_N"]}N; stress-stage predictor force {s["stress_stage_predictor_residual_N"]}N; improvement factor {s["improvement_factor"]:.6g}. Initial residual improvement alone is not nonlinear convergence or a qualified physical state.']
+   resolved=P/f'experiments/metrics/{stem}_verification_resolved.json'
+   if resolved.exists():
+    a=json.loads(resolved.read_text());assert a['complete'] and a['passed']
+    for r in a['records']:
+     entry+=['',f'Supplemental SHA-linked independent audit PASSED at{r["time_s"]:.6f}s: native force {r["native_residual_N"]:.6g}N; whole-element endpoint/stress lower bounds {r["endpoint_minimum_Bernstein_bound"]:.6g}/{r["stress_minimum_Bernstein_bound"]:.6g}; independent norm relative error {r.get("independent_L2_norm_relative_error",0):.3g}, final history replay passed. Initial inconclusive parent bounds and runner audit_failed record remain retained; composed audit resolves positivity without lowering its margin. This is a discrete local step, not full-cycle numerical convergence.']
+  stress=P/'experiments/metrics/dynamic_quadratic_third_stress_predictor_pilot.json'
+  if stress.exists():
+   s=json.loads(stress.read_text())
+   if s.get('all_requested_steps_accepted'):
+    seconds=s['records'][0]['nonlinear_seconds'];remaining=1600-s['start_step']-1
+    entry+=['',f'Runtime limitation: the first successful stress-stage R2 solve took{seconds:.2f}s for one0.625ms timestep. A flat extrapolation of that single measured cost over{remaining} remaining steps is{seconds*remaining/3600:.1f}h, beyond the72h per-reference budget. This is a sensitivity calculation, not an ETA or proof that later steps have equal cost. Consecutive-step measurements and improved solver throughput are required before a prudent full-cycle launch. The original mesh/Q6 failures, incomplete third reference, P2 network-gradient gate and independent finer-reference calibration/test requirements remain unresolved.']
   followup=P/'configs/physics/dynamic_qualified_followup.json'
   if followup.exists():
    entry+=['','A separate prospective qualified-reference ML protocol is fixed in configs/physics/dynamic_qualified_followup.json: unchanged original model hashes; training/validation input designs relabelled only after numerical qualification;20 new calibration and20 new test geometries, plus4 shifted geometries with two histories each. Selection uses training/validation only; calibration and test response fields remain ungenerated. P2 network-gradient verification, qualified finer labels, independently finer calibration controls and a new frozen comparison remain required. The protocol defines later work; it does not imply those experiments have run.']

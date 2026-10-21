@@ -1,0 +1,146 @@
+{
+  "complete": true,
+  "engineering_only": true,
+  "protocol": {
+    "steps_after_checkpoint": 1,
+    "timestep_divisor": 1,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 900,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "gamg",
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "inexact_newton": true,
+    "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+    "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_history_resume_v1.json",
+    "required_audit": "experiments/metrics/dynamic_quadratic_third_history_resume_v1_verification_resolved.json",
+    "output": "experiments/metrics/dynamic_quadratic_third_stress_predictor_pilot.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_third_stress_predictor_pilot_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_third_stress_predictor_pilot_fields.npy",
+    "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_stress_predictor_pilot_iterate.npz",
+    "scope": "Preserve the preceding generalized-alpha weighted displacement stage only as a Newton initial guess. Reproduce the exact affine-stage identity, source state indexing/hashes and native force; production admission requires >=100-fold improvement over ordinary three predictors. Coarse known-state qualification forces this predictor before use. Unchanged final equation,dt,mesh,quadrature,material,loading,strict1e-8N acceptance and100 Newton ceiling. Solve900s/phase1200s/RSS30GiB/diskreserve100GiB. Intermediate predictor is not an accepted field. Independent native force, whole-element positivity,norm/history and hash checks required after any accepted final solve. Negative findings retained; no full-cycle,numerical-convergence,continuum or ML qualification claim.",
+    "stress_stage_predictor": {
+      "minimum_residual_improvement_factor": 100.0,
+      "previous_displacement_protocol": "configs/physics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json"
+    },
+    "required_qualification": "experiments/metrics/dynamic_quadratic_stress_predictor_qualification_verification.json"
+  },
+  "records": [
+    {
+      "step": 437,
+      "time_s": 0.27375,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 5.2030249780246e-09,
+      "KSP_reason": 2,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "effective_SNES": "newtonls",
+      "EW_effective": true,
+      "last_linear_iterations": 48,
+      "minimum_endpoint_sampled_detF": 0.11602909747681739,
+      "minimum_stress_sampled_detF": 0.11957640142534601,
+      "nonlinear_seconds": 913.7244602090213,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.5727394950525655,
+          "KSP_rtol": 1e-10
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.10114450092057606,
+          "KSP_rtol": 0.01
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.020163540240874942,
+          "KSP_rtol": 0.060477853431667714
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.0035384501483649924,
+          "KSP_rtol": 0.07358150274708779
+        },
+        {
+          "iteration": 4,
+          "residual_N": 0.00028096588516522865,
+          "KSP_rtol": 0.0598638740297335
+        },
+        {
+          "iteration": 5,
+          "residual_N": 4.568996414416889e-06,
+          "KSP_rtol": 0.01659222207105344
+        },
+        {
+          "iteration": 6,
+          "residual_N": 5.2030249780246e-09,
+          "KSP_rtol": 0.0012752865273353835
+        }
+      ]
+    }
+  ],
+  "protocol_sha256": "15f5d4d9fac49efad7e7fdfca7c2672a4d6470be70c9e5155f88a0bbdc530dad",
+  "reference_config_sha256": "5725147217290e5bf505a8d9fe7973e4606670f190b0abba8b0ddafc06d95b48",
+  "start_step": 437,
+  "qualification_only": false,
+  "checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "source_sha256": "32b63f2bebf6c3f24d009a8222708c41acbbdb07c52b1d493cc21c1f5a77a09f",
+  "resumed_checkpoint_sha256": "6af1014c11dc87cbb2d0ff4e2dc24f2247c600a0525dc13d5579874c229e42ca",
+  "resumed_accepted_probe_steps": 1,
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "last_attempt_time_s": 0.27375,
+  "stress_stage_initialization": {
+    "original_predictor_residual_N": 5662503389798.425,
+    "stress_stage_predictor_residual_N": 0.5727394950525655,
+    "improvement_factor": 9886699692813.615,
+    "alpha_f": 0.4,
+    "invariant": "alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement",
+    "initialization_only": true
+  },
+  "probe_checkpoint_sha256": "66e0ed00e7e22c6186e5fd9a123aac462560d59dfada65b14e3ff8e2975fa8b1",
+  "all_requested_steps_accepted": true,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 0.5727394950525655,
+      "KSP_rtol": 1e-10
+    },
+    {
+      "iteration": 1,
+      "residual_N": 0.10114450092057606,
+      "KSP_rtol": 0.01
+    },
+    {
+      "iteration": 2,
+      "residual_N": 0.020163540240874942,
+      "KSP_rtol": 0.060477853431667714
+    },
+    {
+      "iteration": 3,
+      "residual_N": 0.0035384501483649924,
+      "KSP_rtol": 0.07358150274708779
+    },
+    {
+      "iteration": 4,
+      "residual_N": 0.00028096588516522865,
+      "KSP_rtol": 0.0598638740297335
+    },
+    {
+      "iteration": 5,
+      "residual_N": 4.568996414416889e-06,
+      "KSP_rtol": 0.01659222207105344
+    },
+    {
+      "iteration": 6,
+      "residual_N": 5.2030249780246e-09,
+      "KSP_rtol": 0.0012752865273353835
+    }
+  ],
+  "wall_seconds": 935.6229049169924
+}
