@@ -1,0 +1,123 @@
+{
+  "complete": true,
+  "finished": true,
+  "engineering_only": true,
+  "protocol": {
+    "steps_after_checkpoint": 1,
+    "timestep_divisor": 1,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 900,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "gamg",
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "inexact_newton": true,
+    "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+    "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+    "required_audit": "experiments/metrics/dynamic_quadratic_third_stress_predictor_consecutive_verification_resolved.json",
+    "output": "experiments/metrics/dynamic_quadratic_mpi6_third_equivalence.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_mpi6_third_equivalence_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_mpi6_third_equivalence_fields.npy",
+    "scope": "Prospective fixed-equation six-rank MPI throughput/equivalence control at previously verified R2 target0.275s. Load exact serial tetrahedra,facet markers,P1 fibers and canonical histories; source hashes and bijective DOF coordinate/component transfer mandatory. Select minimum of same4 initial guesses. Keep mechanics,Q6,dt,strict1e-8N/native positiveSNES/EWv2/GAMG settings. Require known serial target agreement<1e-6 volumeL2/max1nm plus independent serial force/whole-element/norm/history audits. Native900s/phase1200s/30GiB/100GiB reserve;1thread perrank. No new trajectory,convergence or model-training claim. Six ranks match the six cores in the first local hardware performance level; no CPU affinity is assumed. Exact known target and independent audit gates remain mandatory. Run after the four-rank audit completes to avoid competing FE workloads.",
+    "stress_stage_predictor": {
+      "previous_displacement_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_pilot.json",
+      "select_minimum_native_residual": true
+    },
+    "required_qualification": "experiments/metrics/dynamic_quadratic_mpi4_third_equivalence_verification_resolved.json",
+    "parallel_ranks": 6,
+    "serial_target_protocol": "configs/physics/dynamic_quadratic_third_best_predictor_pilot.json",
+    "required_serial_target_audit": "experiments/metrics/dynamic_quadratic_third_best_predictor_pilot_verification_resolved.json"
+  },
+  "protocol_sha256": "d84ebb143ab79fc83bfe73dc76b6da2f7234efc0b782ff73849fa0fb2840baf0",
+  "reference_config_sha256": "5725147217290e5bf505a8d9fe7973e4606670f190b0abba8b0ddafc06d95b48",
+  "checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "start_step": 439,
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "qualification_only": false,
+  "records": [
+    {
+      "step": 439,
+      "time_s": 0.275,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 3.074116018839381e-11,
+      "nonlinear_seconds": 200.73119933297858,
+      "nonlinear_iterations": 8,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.5213813256305337
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.18689948437588041
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.057056819344065056
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.014468222665248522
+        },
+        {
+          "iteration": 4,
+          "residual_N": 0.0026692090926119976
+        },
+        {
+          "iteration": 5,
+          "residual_N": 0.0004108982372578666
+        },
+        {
+          "iteration": 6,
+          "residual_N": 1.7849279606816912e-05
+        },
+        {
+          "iteration": 7,
+          "residual_N": 1.1574712273419016e-07
+        },
+        {
+          "iteration": 8,
+          "residual_N": 3.074116018787604e-11
+        }
+      ],
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "EW_effective": true,
+      "mechanical_audit_pending": true
+    }
+  ],
+  "parallel_ranks": 6,
+  "source_sha256": "315fa899d574c030acc188a5b5cb0b4111caf7ed42b6558d15d6678a005d061f",
+  "resumed_checkpoint_sha256": "d45b70a590fcdca7f91d56d962a10448e3121ef4e5dfcf2fb5beab576e34322a",
+  "resumed_accepted_probe_steps": 1,
+  "canonical_mapping_max_coordinate_error_m": 0.0,
+  "initial_predictor_residuals_N": [
+    14.772035916940766,
+    null,
+    null,
+    0.5213813256305337
+  ],
+  "selected_predictor": 3,
+  "setup_seconds": 8.875846832990646,
+  "serial_target_equivalence": {
+    "relative_volume_L2": 6.518655123233805e-14,
+    "maximum_absolute_coefficient_difference_m": 2.813587036964993e-13,
+    "passed": true
+  },
+  "assembly_profile_max_rank_seconds": {
+    "F": 22.49931433587335,
+    "J": 112.1943492917344
+  },
+  "assembly_calls": {
+    "F": 25,
+    "J": 9
+  },
+  "probe_checkpoint_sha256": "86a8120acd4aae3ba7f212eb72f8826c113f8fe8d6ba0cac203032efe02290d3",
+  "all_requested_steps_accepted": true,
+  "wall_seconds": 200.73119933297858
+}

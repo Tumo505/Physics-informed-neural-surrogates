@@ -1,0 +1,14 @@
+{
+  "config": "configs/physics/dynamic_quadratic_parallel_stream_coarse_reference_v2.json",
+  "source_reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+  "seed_steps": 400,
+  "parallel_ranks": 6,
+  "per_step_wall_seconds": 1800,
+  "required_audits": [
+    "experiments/metrics/quadratic_chunked_positivity.json",
+    "experiments/metrics/dynamic_quadratic_mpi4_coarse_qualification_v3_verification.json"
+  ],
+  "stop_after_steps": 402,
+  "known_reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+  "inherit_verified_prefix_positivity": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_coarse_v1_bernstein.json"
+}

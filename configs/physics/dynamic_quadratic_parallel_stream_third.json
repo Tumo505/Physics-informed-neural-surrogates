@@ -1,0 +1,24 @@
+{
+  "config": "configs/physics/dynamic_quadratic_parallel_stream_third_reference.json",
+  "source_reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "seed_steps": 440,
+  "parallel_ranks": 6,
+  "per_step_wall_seconds": 1800,
+  "required_audits": [
+    "experiments/metrics/quadratic_chunked_positivity.json",
+    "experiments/metrics/dynamic_quadratic_mpi4_coarse_qualification_v3_verification.json",
+    "experiments/metrics/dynamic_quadratic_mpi6_third_equivalence_verification_resolved.json",
+    "experiments/metrics/dynamic_quadratic_parallel_stream_coarse_qualification_v2_verification.json",
+    "experiments/metrics/quadratic_parallel_checkpoint_recovery.json"
+  ],
+  "original_native_accepted_steps": 436,
+  "recovered_tail_protocol": "configs/physics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json",
+  "recovered_tail_audit": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_verification_resolved.json",
+  "accepted_probe_protocols": [
+    "configs/physics/dynamic_quadratic_third_history_resume_v1.json",
+    "configs/physics/dynamic_quadratic_third_stress_predictor_pilot.json",
+    "configs/physics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+    "configs/physics/dynamic_quadratic_third_best_predictor_pilot.json"
+  ],
+  "source_freeze": "experiments/manifests/parallel_reference_source_freeze.json"
+}

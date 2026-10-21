@@ -1,0 +1,20 @@
+{
+  "complete": true,
+  "training_case": {
+    "id": "g000_l0",
+    "geometry": 0,
+    "split": "train",
+    "scales": [
+      1.0243222738640203,
+      1.0279061848946924
+    ],
+    "amplitude": 0.9,
+    "timing_scale": 0.95,
+    "dt": 0.005,
+    "refinement": 0
+  },
+  "path": "experiments/logs/quadratic_network_geometry.npz",
+  "sha256": "90c1d35a356084fbd886201eccdf7e85417b690de4d7458b34152d8a05bbba04",
+  "source_sha256": "49d0e6c610e4b996c7945b6a59d212f6c7f64bad4f8e0278bd87ee0f1687e692",
+  "scope": "Native coarse P2 displacement/test space on the first prespecified original training geometry; no new labels,calibration or test fields."
+}

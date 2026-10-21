@@ -11,6 +11,11 @@ import sys
 import numpy as np
 
 P = Path(__file__).resolve().parents[1]
+def file_sha(path):
+    h=hashlib.sha256()
+    with path.open('rb') as f:
+        for block in iter(lambda:f.read(8*1024**2),b''):h.update(block)
+    return h.hexdigest()
 sys.path.insert(0, str(P / 'src'))
 from lv_surrogate.physics.reference_fem import setup, df
 
@@ -32,7 +37,7 @@ def read(config):
         assert manifest['complete'], 'Full-cycle comparison requires both completed references'
         assert not (root / 'failure.json').exists()
         for filename, digest in manifest['output_sha256'].items():
-            assert hashlib.sha256((root / filename).read_bytes()).hexdigest() == digest
+            assert file_sha(root/filename) == digest
         (P/'experiments/manifests'/f'{cfg["name"]}.json').write_text(
             json.dumps(manifest, indent=2, allow_nan=False))
     inputs = np.load(root / 'inputs.npz')

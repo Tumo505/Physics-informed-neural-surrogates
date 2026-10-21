@@ -1,0 +1,90 @@
+{
+  "complete": true,
+  "passed": true,
+  "records": [
+    {
+      "frame": 0,
+      "autograd_directional_derivative": -0.15583180083963014,
+      "finite_differences": [
+        {
+          "epsilon": 0.001,
+          "native_FD": -0.1558317599609227,
+          "relative_error": 2.6232583610398275e-07
+        },
+        {
+          "epsilon": 0.0003,
+          "native_FD": -0.15583179716135062,
+          "relative_error": 2.360416483983872e-08
+        },
+        {
+          "epsilon": 0.0001,
+          "native_FD": -0.15583180042466616,
+          "relative_error": 2.662896646311478e-09
+        }
+      ],
+      "baseline_loss_relative_error": 8.364355562590051e-15,
+      "two_smallest_epsilon_consistency": 2.0941268249291674e-08,
+      "passed": true
+    },
+    {
+      "frame": 5,
+      "autograd_directional_derivative": -42.81964606723639,
+      "finite_differences": [
+        {
+          "epsilon": 0.001,
+          "native_FD": -42.81965372618579,
+          "relative_error": 1.7886531308545337e-07
+        },
+        {
+          "epsilon": 0.0003,
+          "native_FD": -42.81964675673323,
+          "relative_error": 1.6102347866955095e-08
+        },
+        {
+          "epsilon": 0.0001,
+          "native_FD": -42.819646143961165,
+          "relative_error": 1.7918124304232504e-09
+        }
+      ],
+      "baseline_loss_relative_error": 3.1395828414387737e-15,
+      "two_smallest_epsilon_consistency": 1.4310535410890049e-08,
+      "passed": true
+    },
+    {
+      "frame": 10,
+      "autograd_directional_derivative": -19.59079358518258,
+      "finite_differences": [
+        {
+          "epsilon": 0.001,
+          "native_FD": -19.59079486426063,
+          "relative_error": 6.528975170141955e-08
+        },
+        {
+          "epsilon": 0.0003,
+          "native_FD": -19.590793700340708,
+          "relative_error": 5.878175689484613e-09
+        },
+        {
+          "epsilon": 0.0001,
+          "native_FD": -19.590793598318612,
+          "relative_error": 6.70520613295002e-10
+        }
+      ],
+      "baseline_loss_relative_error": 2.996612498078203e-15,
+      "two_smallest_epsilon_consistency": 5.207655072697771e-09,
+      "passed": true
+    }
+  ],
+  "declared_tolerances": {
+    "native_parameter_FD_relative_error": 0.01,
+    "FD_epsilon_consistency": 0.005,
+    "baseline_loss": 1e-07
+  },
+  "network_export_sha256": "2a267d55ee97c7ba7193ffdda08cd0fe28d267ad9551d736075ba8bf5cf6bc51",
+  "fields_sha256": "091fe68aaf7563e17b164c7841600f4db537f1ac458194d952530f901e5d57f8",
+  "checkpoint_sha256": "15629338e3a5f0071c574c165dd49f2d21aa02ab4527ec62d3a6f292c8caea1a",
+  "source_sha256": "6cb4eb9f0dec8a1f669d8e5e206be1b2ff8ed61015cfe38d4bb6406320c0553d",
+  "pretraining_architecture_chain_verified": true,
+  "new_trained_full_P2_checkpoint_verified": false,
+  "scope": "Actual frozen trained graph/GRU weights, causal predicted histories and exact Newmark chain through a P1-to-P2 lifted train-only POD decoder into the P2 weak residual. Temporary in-memory parameter perturbations only; checkpoint unchanged. This verifies the architecture/backend chain, not a newly trained full-P2 basis/model; final follow-up trained checkpoints must be rechecked. No test/calibration data or training updates. Independent native assembly at all centered parameter perturbations verifies force-loss gradients through current and predicted histories. CPU64 only; future GPU/full-P2 trained checkpoint checks remain required."
+}

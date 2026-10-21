@@ -1,0 +1,9 @@
+{
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "stream_protocol": "configs/physics/dynamic_quadratic_parallel_stream_third.json",
+  "parallel_ranks": 6,
+  "output": "experiments/metrics/dynamic_quadratic_parallel_third_pipeline.json",
+  "full_reference_stream": true,
+  "mesh_baseline_config": "configs/physics/dynamic_quadratic_reference_halfstep_ew_refined.json",
+  "mesh_comparison_output": "experiments/metrics/dynamic_quadratic_controlled_mpi6_third_mesh.json"
+}

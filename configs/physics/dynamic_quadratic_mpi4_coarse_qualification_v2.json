@@ -1,0 +1,24 @@
+{
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 600,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+  "qualification_step": 400,
+  "output": "experiments/metrics/dynamic_quadratic_mpi4_coarse_qualification_v2.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_mpi4_coarse_qualification_v2_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_mpi4_coarse_qualification_v2_fields.npy",
+  "scope": "One known coarse loaded equation on the exact cached serial tetrahedra/fibers,partitioned over4 local MPI ranks,1 thread/rank. Bijective canonical coordinate/component transfer, native convergence, serial-target relative volume L2<1e-6/max coefficient error<1nm and independent serial force/whole-element/norm/history audit mandatory. Same mechanics,dt,Q6,strict1e-8N,EWv2/GAMG settings. Native600s/phase900s/RSS30GiB. This is a throughput qualification,not a new trajectory or numerical convergence.",
+  "stress_stage_predictor": {
+    "select_minimum_native_residual": true
+  },
+  "parallel_ranks": 4,
+  "supersedes": "Initial MPI adapter stopped before any solve because legacy Parameters.update requires a dictionary; original output preserved."
+}

@@ -15,6 +15,8 @@ ap.add_argument('--protocol', required=True)
 ap.add_argument('--max-phase-seconds', type=float, default=4500)
 ap.add_argument('--max-rss-gib', type=float, default=30)
 ap.add_argument('--min-free-disk-gib', type=float, default=100)
+ap.add_argument('--max-workflow-seconds',type=float)
+ap.add_argument('--resume',action='store_true')
 args = ap.parse_args()
 assert min(args.max_phase_seconds, args.max_rss_gib, args.min_free_disk_gib)>0
 protocol = json.loads((P/args.protocol).read_text())
@@ -23,15 +25,30 @@ lock = (P/f'experiments/logs/{stem}_runner.lock').open('w')
 fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
 assert not (P/protocol['output']).exists(), 'Preserve existing attempt; never auto-retry'
 path = P/f'experiments/metrics/{stem}_workflow.json'
+previous_elapsed=0.;previous_phases=[]
+if path.exists():
+    assert args.resume, 'Workflow already exists; preserve it or explicitly resume its remaining budget'
+    previous=json.loads(path.read_text());assert not previous['complete']
+    assert previous['limits'].get('max_workflow_seconds')==args.max_workflow_seconds
+    previous_elapsed=previous.get('total_wall_seconds',sum(x['wall_seconds'] for x in previous['phases']))
+    assert not args.max_workflow_seconds or previous_elapsed<args.max_workflow_seconds, 'Original cumulative workflow budget exhausted'
+    import hashlib
+    digest=hashlib.sha256(path.read_bytes()).hexdigest()
+    (P/f'experiments/logs/{stem}_workflow_before_resume_{digest[:12]}.json').write_text(json.dumps(previous,indent=2))
+    previous_phases=previous['phases']
 state = dict(complete=False, full_cycle_validated=False, protocol=args.protocol,
-    limits=vars(args), phases=[])
+    limits=vars(args), phases=previous_phases)
+workflow_started=time.perf_counter()
 def persist():
+    state['total_wall_seconds']=previous_elapsed+time.perf_counter()-workflow_started
     temporary = path.with_suffix('.pending.json')
     temporary.write_text(json.dumps(state, indent=2)); temporary.replace(path)
 env = os.environ.copy()
 env.update(FI_PROVIDER='tcp', FI_TCP_IFACE='en0', OMP_NUM_THREADS='2', OPENBLAS_NUM_THREADS='2',
     MAMBA_ROOT_PREFIX=str(P/'.mamba'), XDG_CACHE_HOME=str(P/'.cache'),
     DIJITSO_CACHE_DIR=str(P/'.fenics-cache-activated'))
+if protocol.get('parallel_ranks'):
+    env.update(OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1')
 def run(phase, command):
     state['active_phase'] = phase; persist()
     tick = time.perf_counter(); peak = 0; stop = None
@@ -49,9 +66,11 @@ def run(phase, command):
                     descendants.update(found)
                 peak = max(peak, sum(rss*1024 for pid,parent,rss in processes if pid in descendants))
                 if time.perf_counter()-tick > args.max_phase_seconds: stop = 'phase_wall_limit'
+                if args.max_workflow_seconds and previous_elapsed+time.perf_counter()-workflow_started>args.max_workflow_seconds:stop='workflow_wall_limit'
                 if peak > args.max_rss_gib*2**30: stop = 'descendant_RSS_limit'
                 if shutil.disk_usage(P).free < args.min_free_disk_gib*2**30: stop = 'free_disk_reserve'
                 if stop: break
+                persist()
                 time.sleep(2)
         finally:
             if child.poll() is None:
@@ -66,11 +85,36 @@ def run(phase, command):
     if code or stop: raise RuntimeError(f'{phase}: {stop or code}')
 try:
     native = [str(P/'.tools/bin/micromamba'), 'run', '-p', str(P/'.fenics'), 'python']
-    run('solve', native+['scripts/probe_quadratic_strict_stopping.py', '--protocol', args.protocol])
-    run('audit', [str(P/'.venv/bin/python'), 'scripts/finish_quadratic_probe.py', '--protocol', args.protocol])
-    audit = json.loads((P/f'experiments/logs/{stem}_audit_workflow.json').read_text())
-    state.update(complete=True, local_recovery_verified=audit.get('local_recovery_verified', False),
-        active_phase='finished')
+    if protocol.get('stream_protocol'):
+        stream=json.loads((P/protocol['stream_protocol']).read_text())
+        run('seed',[str(P/'.venv/bin/python'),'scripts/seed_parallel_reference.py','--protocol',protocol['stream_protocol']])
+        run('prefix_positivity',[str(P/'.venv/bin/python'),'scripts/audit_parallel_prefix.py','--protocol',protocol['stream_protocol']])
+        run('solve',native[:-1]+['mpiexec','-n',str(stream['parallel_ranks']),'python',
+            'scripts/generate_parallel_reference.py','--protocol',protocol['stream_protocol']])
+        if not protocol.get('full_reference_stream'):
+            run('export_probe',[str(P/'.venv/bin/python'),'scripts/export_parallel_stream_probe.py','--protocol',args.protocol])
+    elif protocol.get('parallel_ranks'):
+        run('solve', native[:-1]+['mpiexec','-n',str(protocol['parallel_ranks']),
+            'python','scripts/probe_parallel_quadratic.py','--protocol',args.protocol])
+    else:
+        run('solve', native+['scripts/probe_quadratic_strict_stopping.py', '--protocol', args.protocol])
+    if protocol.get('full_reference_stream'):
+        cfg=json.loads((P/stream['config']).read_text())
+        run('whole_element_summary',[str(P/'.venv/bin/python'),'scripts/finalize_parallel_reference.py','--protocol',protocol['stream_protocol']])
+        run('independent_native_audit',native+['scripts/verify_completed_quadratic_reference.py','--config',stream['config'],'--reassemble-force-subset'])
+        v=json.loads((P/f'experiments/metrics/{cfg["name"]}_verification.json').read_text());assert v['passed']
+        if protocol.get('mesh_baseline_config'):
+            run('mesh_comparison',native+['scripts/compare_quadratic_references.py','--config-a',protocol['mesh_baseline_config'],
+                '--config-b',stream['config'],'--output',protocol['mesh_comparison_output']])
+        result=dict(complete=True,full_reference_native_verified=True,study_validation_passed=False,
+            scope='Completed native reference/audits; numerical-convergence,geometry/loading,trained-model/calibration/frozen-test gates remain separate.')
+        (P/protocol['output']).write_text(json.dumps(result,indent=2))
+        state.update(complete=True,native_reference_verified=True,active_phase='finished')
+    else:
+        run('audit', [str(P/'.venv/bin/python'), 'scripts/finish_quadratic_probe.py', '--protocol', args.protocol])
+        audit = json.loads((P/f'experiments/logs/{stem}_audit_workflow.json').read_text())
+        state.update(complete=True, local_recovery_verified=audit.get('local_recovery_verified', False),
+            active_phase='finished')
 except Exception as error:
     state.update(complete=True, local_recovery_verified=False, failure=str(error), active_phase='stopped')
 finally:

@@ -1,0 +1,10 @@
+{
+  "reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+  "stream_protocol": "configs/physics/dynamic_quadratic_parallel_stream_coarse_v3.json",
+  "parallel_ranks": 6,
+  "output": "experiments/metrics/dynamic_quadratic_parallel_stream_coarse_qualification_v3.json",
+  "qualification_step": 400,
+  "steps_after_checkpoint": 2,
+  "checkpoint": "experiments/logs/dynamic_quadratic_parallel_stream_coarse_qualification_v3_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_parallel_stream_coarse_qualification_v3_fields.npy"
+}

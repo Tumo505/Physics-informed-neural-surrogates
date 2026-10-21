@@ -1,0 +1,46 @@
+{
+  "complete": true,
+  "passed": true,
+  "records": [
+    {
+      "protocol": "dynamic_quadratic_third_history_resume_v1",
+      "passed": true,
+      "seconds": 8.670465582981706,
+      "bounds": {
+        "endpoint": 0.0005496253777874938,
+        "stress": 0.006465923727338012
+      }
+    },
+    {
+      "protocol": "dynamic_quadratic_third_stress_predictor_pilot",
+      "passed": true,
+      "seconds": 8.605394833954051,
+      "bounds": {
+        "endpoint": 0.004880075614241419,
+        "stress": 0.0006056413078567263
+      }
+    },
+    {
+      "protocol": "dynamic_quadratic_third_stress_predictor_consecutive",
+      "passed": true,
+      "seconds": 8.890033917035908,
+      "bounds": {
+        "endpoint": 0.000754404849958894,
+        "stress": 0.005314801535055969
+      }
+    },
+    {
+      "protocol": "dynamic_quadratic_third_best_predictor_pilot",
+      "passed": true,
+      "seconds": 8.962471624836326,
+      "bounds": {
+        "endpoint": 0.0041207757116542565,
+        "stress": 0.004280214339359776
+      }
+    }
+  ],
+  "positive_margin": 1e-09,
+  "source_sha256": "fbae0dacd3f04a64627968ceb927d5490d2ae7d319ad9e2eebdc176fbcbd7662",
+  "operator_sha256": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+  "scope": "Chunked memory-bounded algebraic positivity matches four retained independently assembled/native-map serial audits, including their original unresolved counts and recursively certified bounds. Same1e-9 float64 margin; not interval arithmetic or full-reference qualification."
+}

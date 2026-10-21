@@ -1,0 +1,97 @@
+{
+  "complete": true,
+  "finished": true,
+  "engineering_only": true,
+  "protocol": {
+    "steps_after_checkpoint": 1,
+    "timestep_divisor": 1,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 600,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "gamg",
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "inexact_newton": true,
+    "reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+    "qualification_step": 400,
+    "output": "experiments/metrics/dynamic_quadratic_mpi4_coarse_qualification_v2.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_mpi4_coarse_qualification_v2_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_mpi4_coarse_qualification_v2_fields.npy",
+    "scope": "One known coarse loaded equation on the exact cached serial tetrahedra/fibers,partitioned over4 local MPI ranks,1 thread/rank. Bijective canonical coordinate/component transfer, native convergence, serial-target relative volume L2<1e-6/max coefficient error<1nm and independent serial force/whole-element/norm/history audit mandatory. Same mechanics,dt,Q6,strict1e-8N,EWv2/GAMG settings. Native600s/phase900s/RSS30GiB. This is a throughput qualification,not a new trajectory or numerical convergence.",
+    "stress_stage_predictor": {
+      "select_minimum_native_residual": true
+    },
+    "parallel_ranks": 4,
+    "supersedes": "Initial MPI adapter stopped before any solve because legacy Parameters.update requires a dictionary; original output preserved."
+  },
+  "protocol_sha256": "4eb773cfed4c17c1dceb9816c2ef40a851b32b64b20914da30ab3803a21334a8",
+  "reference_config_sha256": "15e5bf12c478ba3a64c60cc6fcefec92e3bb75396e5de92134b16aaf654e4918",
+  "checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "start_step": 400,
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "qualification_only": true,
+  "records": [
+    {
+      "step": 400,
+      "time_s": 0.250625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 3.514791358500183e-10,
+      "nonlinear_seconds": 1.97874291613698,
+      "nonlinear_iterations": 3,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.5158376319780636
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.009317996773507906
+        },
+        {
+          "iteration": 2,
+          "residual_N": 1.4385964439517816e-05
+        },
+        {
+          "iteration": 3,
+          "residual_N": 3.514791358500183e-10
+        }
+      ],
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "EW_effective": true,
+      "mechanical_audit_pending": true
+    }
+  ],
+  "parallel_ranks": 4,
+  "source_sha256": "fb8b59418447e606a16ea19760cf8f636782888d69919824fbad8f0a35eea8d7",
+  "canonical_mapping_max_coordinate_error_m": 0.0,
+  "initial_predictor_residuals_N": [
+    10.62901759623598,
+    1.161985882380239,
+    0.5158376319780636,
+    17.783321060186516
+  ],
+  "selected_predictor": 2,
+  "setup_seconds": 0.2605492908041924,
+  "serial_target_equivalence": {
+    "relative_volume_L2": 1.39322102564293e-12,
+    "maximum_absolute_coefficient_difference_m": 3.7091911573444714e-13,
+    "passed": true
+  },
+  "assembly_profile_max_rank_seconds": {
+    "F": 0.19008524878881872,
+    "J": 1.2312699991744012
+  },
+  "assembly_calls": {
+    "F": 10,
+    "J": 4
+  },
+  "probe_checkpoint_sha256": "aa2d2ff8fa77ae21902ad92801553d0dd405cd3c5eae3f9f25639c934afd2363",
+  "all_requested_steps_accepted": true,
+  "wall_seconds": 1.97874291613698
+}

@@ -1,0 +1,33 @@
+{
+  "complete": true,
+  "finished": true,
+  "all_requested_steps_accepted": true,
+  "records": [
+    {
+      "step": 400,
+      "time_s": 0.250625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 2.6043751076258696e-10
+    },
+    {
+      "step": 401,
+      "time_s": 0.25125000000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.3134848518505752e-12
+    }
+  ],
+  "start_step": 400,
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "qualification_only": true,
+  "protocol_sha256": "2aef14b183507362fa739acb4cc0ba0964ecc29825297a117facb199ddce93c4",
+  "checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "probe_checkpoint_sha256": "a1d9024d89fd3a2178f3dbcfb4e27f86ede1c475211762005800fb1c62fc3ec7",
+  "reference_config_sha256": "15e5bf12c478ba3a64c60cc6fcefec92e3bb75396e5de92134b16aaf654e4918",
+  "source_sha256": "0e907864cc1a5d83210a27af04bba3d2c99f5778ad9e6a9571f03b6780bfd5ab",
+  "stream_manifest_sha256": "31cc69e78e9667b6372a7700d23203de4c20d019ee4d5aed25bd5ae4c5be521f",
+  "scope": "Adapter exposes actual newly solved streaming-pilot fields/checkpoint to the independent serial known-reference verifier; inherited rows are not new solves, full-cycle completion is not claimed."
+}

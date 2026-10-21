@@ -1,0 +1,50 @@
+{
+  "complete": true,
+  "passed": true,
+  "sha256": {
+    "scripts/generate_parallel_reference.py": "2e4ada06be717a1d7547c38c90febf0c49d04160862f1ab2d4f12427fa73aaf9",
+    "scripts/seed_parallel_reference.py": "8541793b9da2feb61b4e0f639a244a1a7327e348a80722bb130075df8712987f",
+    "scripts/audit_parallel_prefix.py": "55aaea950015182520c4a0952850f54607cbb6bd706c7a9e8340c25b1defafa5",
+    "scripts/finalize_parallel_reference.py": "188a74a7de5ffec8444242ab8fa95c19e1c661d25c4d57e2a785db940d91896a",
+    "scripts/run_bounded_quadratic_probe.py": "d53ed8618eb736a4439288baabd6a81158973ac75204ee607621a2f73fbb1482",
+    "scripts/verify_completed_quadratic_reference.py": "c05b2c0c59d9e472d3524cbf674fd0902a98cc85355c15c4735e88122d861944",
+    "scripts/compare_quadratic_references.py": "a9e90eedd0b6fbf44b7e706189875f439ec84302351cbc6348ebc2698c5b3133",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c",
+    "external/cardiac_benchmark/src/cardiac_benchmark/problem.py": "df2b401337a0d650ca7d1f7baaf59753c685a23177b5ae4322935cedfa684207",
+    "external/cardiac_benchmark/src/cardiac_benchmark/solver.py": "82ebc9cc23e244d52684cd1b041769cf0c19d9b8629396dc7f5d99a68d2d2ca0",
+    "external/cardiac_benchmark/src/cardiac_benchmark/material.py": "4c26bacdc5ad763e7c11e37bd1cf547463e6be3a930816d03ae53d73db9bcc8f",
+    "scripts/probe_parallel_quadratic.py": "315fa899d574c030acc188a5b5cb0b4111caf7ed42b6558d15d6678a005d061f",
+    "scripts/prepare_parallel_quadratic_mesh.py": "95b02448baf4e2eefe76612cc93b8772fc95907f71ead7b127a869fa5d74e38d"
+  },
+  "snapshots": {
+    "scripts/generate_parallel_reference.py": "experiments/manifests/source_snapshots/generate_parallel_reference_2e4ada06be717a1d7547c38c90febf0c49d04160862f1ab2d4f12427fa73aaf9.py",
+    "scripts/seed_parallel_reference.py": "experiments/manifests/source_snapshots/seed_parallel_reference_8541793b9da2feb61b4e0f639a244a1a7327e348a80722bb130075df8712987f.py",
+    "scripts/audit_parallel_prefix.py": "experiments/manifests/source_snapshots/audit_parallel_prefix_55aaea950015182520c4a0952850f54607cbb6bd706c7a9e8340c25b1defafa5.py",
+    "scripts/finalize_parallel_reference.py": "experiments/manifests/source_snapshots/finalize_parallel_reference_188a74a7de5ffec8444242ab8fa95c19e1c661d25c4d57e2a785db940d91896a.py",
+    "scripts/run_bounded_quadratic_probe.py": "experiments/manifests/source_snapshots/run_bounded_quadratic_probe_d53ed8618eb736a4439288baabd6a81158973ac75204ee607621a2f73fbb1482.py",
+    "scripts/verify_completed_quadratic_reference.py": "experiments/manifests/source_snapshots/verify_completed_quadratic_reference_c05b2c0c59d9e472d3524cbf674fd0902a98cc85355c15c4735e88122d861944.py",
+    "scripts/compare_quadratic_references.py": "experiments/manifests/source_snapshots/compare_quadratic_references_a9e90eedd0b6fbf44b7e706189875f439ec84302351cbc6348ebc2698c5b3133.py",
+    "src/lv_surrogate/physics/parallel_fem.py": "experiments/manifests/source_snapshots/parallel_fem_52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44.py",
+    "src/lv_surrogate/physics/bernstein.py": "experiments/manifests/source_snapshots/bernstein_c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9.py",
+    "src/lv_surrogate/physics/quadratic_solver.py": "experiments/manifests/source_snapshots/quadratic_solver_e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31.py",
+    "src/lv_surrogate/physics/reference_fem.py": "experiments/manifests/source_snapshots/reference_fem_2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c.py",
+    "external/cardiac_benchmark/src/cardiac_benchmark/problem.py": "experiments/manifests/source_snapshots/problem_df2b401337a0d650ca7d1f7baaf59753c685a23177b5ae4322935cedfa684207.py",
+    "external/cardiac_benchmark/src/cardiac_benchmark/solver.py": "experiments/manifests/source_snapshots/solver_82ebc9cc23e244d52684cd1b041769cf0c19d9b8629396dc7f5d99a68d2d2ca0.py",
+    "external/cardiac_benchmark/src/cardiac_benchmark/material.py": "experiments/manifests/source_snapshots/material_4c26bacdc5ad763e7c11e37bd1cf547463e6be3a930816d03ae53d73db9bcc8f.py",
+    "scripts/probe_parallel_quadratic.py": "experiments/manifests/source_snapshots/probe_parallel_quadratic_315fa899d574c030acc188a5b5cb0b4111caf7ed42b6558d15d6678a005d061f.py",
+    "scripts/prepare_parallel_quadratic_mesh.py": "experiments/manifests/source_snapshots/prepare_parallel_quadratic_mesh_95b02448baf4e2eefe76612cc93b8772fc95907f71ead7b127a869fa5d74e38d.py"
+  },
+  "scope": "Frozen numerical/execution implementation for the separately qualified MPI6 continuation. No neural model changes. Report templates may update independently.",
+  "cache_manifest_sha256": {
+    "data/processed/parallel_mesh_cache/cardiac_quadratic_reference_halfstep_ew_coarse_v1/manifest.json": "917c89542811e1677f9d70306da9ad7659f08b7d5e1dd8f76cfab726011dc2bc",
+    "data/processed/parallel_mesh_cache/cardiac_quadratic_reference_halfstep_ew_third_v1/manifest.json": "02e7b31c0c68107a0c5ce3adf65334ccd01c0e5b00688e04c7154f27666db2b6"
+  },
+  "qualification_audit_sha256": {
+    "experiments/metrics/dynamic_quadratic_parallel_stream_coarse_qualification_v3_verification.json": "2d3081ee6e08f5611c38e1e00c68602d12760e0653409fdffb86dd2f95254483",
+    "experiments/metrics/quadratic_completed_streaming_replay_qualification.json": "ae4740c0a361fb135069ae8449b448a847fe642044a379c4ddee00342289b6b3"
+  },
+  "memory_IO_revision": "After seed and before native continuation: clean mmap pages released after trajectory writes and during independent full-history replay. Qualified by two known native steps and complete coarse-reference force/norm/history audit. Numerical equations and acceptance unchanged; original snapshots retained."
+}

@@ -1,0 +1,53 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_parallel_stream_coarse_qualification_v3.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_parallel_stream_coarse_qualification_v3.json",
+    "max_phase_seconds": 1200.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 3600.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "seed",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.0240515838377178,
+      "sampled_peak_RSS_bytes": 2473984
+    },
+    {
+      "phase": "prefix_positivity",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.023958042031154,
+      "sampled_peak_RSS_bytes": 2473984
+    },
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 8.092687832890078,
+      "sampled_peak_RSS_bytes": 2142994432
+    },
+    {
+      "phase": "export_probe",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.025345291942358,
+      "sampled_peak_RSS_bytes": 2244608
+    },
+    {
+      "phase": "audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 8.091408625012264,
+      "sampled_peak_RSS_bytes": 946733056
+    }
+  ],
+  "active_phase": "finished",
+  "total_wall_seconds": 22.261017584009096,
+  "local_recovery_verified": true
+}

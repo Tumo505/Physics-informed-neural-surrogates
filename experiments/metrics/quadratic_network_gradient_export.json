@@ -1,0 +1,196 @@
+{
+  "complete": true,
+  "checkpoint": "experiments/checkpoints/cardiac_dynamic_graph_v2_full/data_seed11.pt",
+  "checkpoint_sha256": "15629338e3a5f0071c574c165dd49f2d21aa02ab4527ec62d3a6f292c8caea1a",
+  "geometry_manifest_sha256": "4a431b0d6b0de3245cb43a32bdd24e1634b5f0154bc6f7ecaff239eb4d2391d7",
+  "fields_path": "experiments/logs/quadratic_network_gradient_fields.npz",
+  "fields_sha256": "091fe68aaf7563e17b164c7841600f4db537f1ac458194d952530f901e5d57f8",
+  "cases": [
+    {
+      "direction": 0,
+      "frame": 0,
+      "epsilon": 0.0,
+      "sign": 0
+    },
+    {
+      "direction": 0,
+      "frame": 0,
+      "epsilon": 0.001,
+      "sign": -1
+    },
+    {
+      "direction": 0,
+      "frame": 0,
+      "epsilon": 0.001,
+      "sign": 1
+    },
+    {
+      "direction": 0,
+      "frame": 0,
+      "epsilon": 0.0003,
+      "sign": -1
+    },
+    {
+      "direction": 0,
+      "frame": 0,
+      "epsilon": 0.0003,
+      "sign": 1
+    },
+    {
+      "direction": 0,
+      "frame": 0,
+      "epsilon": 0.0001,
+      "sign": -1
+    },
+    {
+      "direction": 0,
+      "frame": 0,
+      "epsilon": 0.0001,
+      "sign": 1
+    },
+    {
+      "direction": 1,
+      "frame": 5,
+      "epsilon": 0.0,
+      "sign": 0
+    },
+    {
+      "direction": 1,
+      "frame": 5,
+      "epsilon": 0.001,
+      "sign": -1
+    },
+    {
+      "direction": 1,
+      "frame": 5,
+      "epsilon": 0.001,
+      "sign": 1
+    },
+    {
+      "direction": 1,
+      "frame": 5,
+      "epsilon": 0.0003,
+      "sign": -1
+    },
+    {
+      "direction": 1,
+      "frame": 5,
+      "epsilon": 0.0003,
+      "sign": 1
+    },
+    {
+      "direction": 1,
+      "frame": 5,
+      "epsilon": 0.0001,
+      "sign": -1
+    },
+    {
+      "direction": 1,
+      "frame": 5,
+      "epsilon": 0.0001,
+      "sign": 1
+    },
+    {
+      "direction": 2,
+      "frame": 10,
+      "epsilon": 0.0,
+      "sign": 0
+    },
+    {
+      "direction": 2,
+      "frame": 10,
+      "epsilon": 0.001,
+      "sign": -1
+    },
+    {
+      "direction": 2,
+      "frame": 10,
+      "epsilon": 0.001,
+      "sign": 1
+    },
+    {
+      "direction": 2,
+      "frame": 10,
+      "epsilon": 0.0003,
+      "sign": -1
+    },
+    {
+      "direction": 2,
+      "frame": 10,
+      "epsilon": 0.0003,
+      "sign": 1
+    },
+    {
+      "direction": 2,
+      "frame": 10,
+      "epsilon": 0.0001,
+      "sign": -1
+    },
+    {
+      "direction": 2,
+      "frame": 10,
+      "epsilon": 0.0001,
+      "sign": 1
+    }
+  ],
+  "records": [
+    {
+      "direction": 0,
+      "frame": 0,
+      "autograd_directional_derivative": -0.15583180083963014,
+      "torch_baseline_loss": 1.3538729632471411,
+      "field_rows": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "direction": 1,
+      "frame": 5,
+      "autograd_directional_derivative": -42.81964606723639,
+      "torch_baseline_loss": 29.42128311749919,
+      "field_rows": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "direction": 2,
+      "frame": 10,
+      "autograd_directional_derivative": -19.59079358518258,
+      "torch_baseline_loss": 56.90767714937769,
+      "field_rows": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    }
+  ],
+  "epsilons": [
+    0.001,
+    0.0003,
+    0.0001
+  ],
+  "data_access": [
+    "original_train_inputs",
+    "original_train_only_preprocessing",
+    "frozen_checkpoint"
+  ],
+  "model_source_sha256": "e8a8f56774ab21ec55b81932888514fb3a0ac64cac630cfa021407dda7ad6e63",
+  "source_sha256": "160813ae074391aeec6f999018c478444b393ba9dbcaea06295d5bc6dc7ce093",
+  "scope": "Actual frozen trained graph/GRU weights, causal predicted histories and exact Newmark chain through a P1-to-P2 lifted train-only POD decoder into the P2 weak residual. Temporary in-memory parameter perturbations only; checkpoint unchanged. This verifies the architecture/backend chain, not a newly trained full-P2 basis/model; final follow-up trained checkpoints must be rechecked. No test/calibration data or training updates."
+}

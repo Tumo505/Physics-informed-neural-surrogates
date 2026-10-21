@@ -1,0 +1,11 @@
+{
+  "complete": true,
+  "passed": true,
+  "restored_step": 401,
+  "native_acceptance_record_restored": true,
+  "coefficients_nodes_histories_and_positivity_bytes_unchanged": true,
+  "physical_steps_recomputed": 0,
+  "source_sha256": "f477c0209264151801dae9ce9bbb2fe612a17f6bb2f9db2db994a516b65943bb",
+  "generator_sha256": "ee7296aea7e461341c42088d64e04c36b394921af217eff7b455ac57ed55d194",
+  "scope": "Injected loss of the final manifest update after durable native checkpoint/journal on a disposable independently verified coarse2-step qualification. Original references/models untouched. Verified exact restoration of actual positive SNES record without fabrication or physical recomputation; not a guarantee against arbitrary storage failure."
+}

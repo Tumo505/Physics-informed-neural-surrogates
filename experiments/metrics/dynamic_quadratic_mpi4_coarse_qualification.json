@@ -1,0 +1,39 @@
+{
+  "complete": false,
+  "finished": false,
+  "engineering_only": true,
+  "protocol": {
+    "steps_after_checkpoint": 1,
+    "timestep_divisor": 1,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 600,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "gamg",
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "inexact_newton": true,
+    "reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+    "qualification_step": 400,
+    "output": "experiments/metrics/dynamic_quadratic_mpi4_coarse_qualification.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_mpi4_coarse_qualification_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_mpi4_coarse_qualification_fields.npy",
+    "scope": "One known coarse loaded equation on the exact cached serial tetrahedra/fibers,partitioned over4 local MPI ranks,1 thread/rank. Bijective canonical coordinate/component transfer, native convergence, serial-target relative volume L2<1e-6/max coefficient error<1nm and independent serial force/whole-element/norm/history audit mandatory. Same mechanics,dt,Q6,strict1e-8N,EWv2/GAMG settings. Native600s/phase900s/RSS30GiB. This is a throughput qualification,not a new trajectory or numerical convergence.",
+    "stress_stage_predictor": {
+      "select_minimum_native_residual": true
+    },
+    "parallel_ranks": 4
+  },
+  "protocol_sha256": "048b7a17420ef277c17a457b7db9b89473e71a7b7cc73ac39fdfdb98d1d8044d",
+  "reference_config_sha256": "15e5bf12c478ba3a64c60cc6fcefec92e3bb75396e5de92134b16aaf654e4918",
+  "checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "start_step": 400,
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "qualification_only": true,
+  "records": [],
+  "parallel_ranks": 4,
+  "source_sha256": "40e35472dd9a88fff54138210b7358598f167b988866d19b573d9f4e0741d43d"
+}

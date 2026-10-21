@@ -1,0 +1,28 @@
+{
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 900,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+  "required_audit": "experiments/metrics/dynamic_quadratic_third_stress_predictor_consecutive_verification_resolved.json",
+  "output": "experiments/metrics/dynamic_quadratic_mpi4_third_equivalence.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_mpi4_third_equivalence_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_mpi4_third_equivalence_fields.npy",
+  "scope": "Prospective fixed-equation four-rank MPI throughput/equivalence control at previously verified R2 target0.275s. Load exact serial tetrahedra,facet markers,P1 fibers and canonical histories; source hashes and bijective DOF coordinate/component transfer mandatory. Select minimum of same4 initial guesses. Keep mechanics,Q6,dt,strict1e-8N/native positiveSNES/EWv2/GAMG settings. Require known serial target agreement<1e-6 volumeL2/max1nm plus independent serial force/whole-element/norm/history audits. Native900s/phase1200s/30GiB/100GiB reserve;1thread perrank. No new trajectory,convergence or model-training claim.",
+  "stress_stage_predictor": {
+    "previous_displacement_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_pilot.json",
+    "select_minimum_native_residual": true
+  },
+  "required_qualification": "experiments/metrics/dynamic_quadratic_mpi4_coarse_qualification_v3_verification.json",
+  "parallel_ranks": 4,
+  "serial_target_protocol": "configs/physics/dynamic_quadratic_third_best_predictor_pilot.json",
+  "required_serial_target_audit": "experiments/metrics/dynamic_quadratic_third_best_predictor_pilot_verification_resolved.json"
+}

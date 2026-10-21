@@ -1,0 +1,51 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_parallel_stream_coarse_qualification_v2.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_parallel_stream_coarse_qualification_v2.json",
+    "max_phase_seconds": 1200.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 3600.0
+  },
+  "phases": [
+    {
+      "phase": "seed",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.0241022501140833,
+      "sampled_peak_RSS_bytes": 2473984
+    },
+    {
+      "phase": "prefix_positivity",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.032065666979179,
+      "sampled_peak_RSS_bytes": 2473984
+    },
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 6.078664458123967,
+      "sampled_peak_RSS_bytes": 2134212608
+    },
+    {
+      "phase": "export_probe",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.027962999884039,
+      "sampled_peak_RSS_bytes": 2277376
+    },
+    {
+      "phase": "audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 8.093340625055134,
+      "sampled_peak_RSS_bytes": 905166848
+    }
+  ],
+  "active_phase": "finished",
+  "local_recovery_verified": true
+}

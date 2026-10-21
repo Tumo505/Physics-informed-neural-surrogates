@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import mmap
 from pathlib import Path
 import sys
 
@@ -10,12 +11,19 @@ from FIAT.quadrature_schemes import create_quadrature
 from FIAT.reference_element import UFCTetrahedron
 
 P = Path(__file__).resolve().parents[1]
+def file_sha(path):
+    h=hashlib.sha256()
+    with path.open('rb') as f:
+        for block in iter(lambda:f.read(8*1024**2),b''):h.update(block)
+    return h.hexdigest()
 sys.path.insert(0, str(P / 'src'))
 from lv_surrogate.physics.reference_fem import setup, df
 from lv_surrogate.physics.quadratic import QuadraticKinematics
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--config', required=True)
+ap.add_argument('--reassemble-force-subset',action='store_true')
+ap.add_argument('--output')
 args = ap.parse_args()
 config = P / args.config
 cfg = json.loads(config.read_text())
@@ -25,11 +33,25 @@ assert m['complete'] and m['completed_steps'] == m['n_steps']
 assert not (root / 'failure.json').exists()
 assert m['config_sha256'] == hashlib.sha256(config.read_bytes()).hexdigest()
 for name, digest in m['output_sha256'].items():
-    assert hashlib.sha256((root / name).read_bytes()).hexdigest() == digest
+    assert file_sha(root/name) == digest
 steps = m['steps']
 assert len(steps) == m['n_steps']
-assert all(s['SNES_reason'] > 0 and np.isfinite(s['residual_l2_N'])
-           and s['residual_l2_N'] < 1e-6 for s in steps)
+assert all(np.isfinite(s['residual_l2_N']) and s['residual_l2_N']<1e-6 for s in steps)
+lost_reason_checks=[]
+coefficients=np.load(root/'displacement_coefficients.npy',mmap_mode='r')
+for s in steps:
+    if s['SNES_reason'] is not None:
+        assert s['SNES_reason']>0
+        continue
+    assert s.get('native_reason_record_lost') and s.get('native_acceptance_provenance')
+    p=s['native_acceptance_provenance']
+    for key,digest in [('failure_path','failure_sha256'),('independent_audit','independent_audit_sha256'),('accepted_fields','accepted_fields_sha256')]:
+        assert file_sha(P/p[key])==p[digest]
+    failure=json.loads((P/p['failure_path']).read_text());audit=json.loads((P/p['independent_audit']).read_text())
+    assert failure['persisted_checkpoint_steps']<=s['step']<failure['accepted_steps_before_failure']
+    assert audit['complete'] and audit['passed'] and audit['records'][p['audit_record']]['native_residual_N']<1e-6
+    np.testing.assert_array_equal(coefficients[s['step']],np.load(P/p['accepted_fields'],mmap_mode='r')[p['audit_record']])
+    lost_reason_checks.append(dict(step=s['step'],positive_native_acceptance_count_proven=True,individual_SNES_reason_recreated=False))
 b = json.loads((P / 'experiments/metrics' / (cfg['name'] + '_bernstein.json')).read_text())
 assert b['complete'] and b['checked_steps'] == m['n_steps']
 assert b['output_sha256'] == m['output_sha256']
@@ -79,6 +101,29 @@ result = dict(complete=True, reference_name=cfg['name'], passed=True,
               minimum_endpoint_Bernstein_bound=endpoint_bound,
               minimum_stress_Bernstein_bound=stress_bound, positivity_refinement=positivity_refinement,norm_checks=checks,
               scope='Native convergence records, immutable hashes, whole-element float64 sufficient positivity audit and independent canonical P2 quadrature versus UFL norms. Does not establish mesh/time/quadrature convergence or continuum accuracy.')
+result['lost_individual_reason_provenance_checks']=lost_reason_checks
+if args.reassemble_force_subset:
+    from lv_surrogate.physics.quadratic_solver import make_quadratic_problem
+    from lv_surrogate.physics.reference_fem import residual
+    geo,material,base=setup(dt=cfg['dt_s'],refinement_level=cfg['refinement_level'],geometry_scales=cfg['geometry_scales'])
+    params=dict(base.parameters);params['function_space']='P_2'
+    problem=make_quadratic_problem(geo,material,params,'gamg')
+    chosen=set(np.linspace(0,len(steps)-1,4,dtype=int).tolist()+[s['step'] for s in lost_reason_checks[:1]])
+    old=np.zeros(u.shape[1]);v=old.copy();a=old.copy();forces=[];dt=cfg['dt_s']
+    for i,current in enumerate(u):
+        if i in chosen:
+            for name,value in [('u',current),('u_old',old),('v_old',v),('a_old',a)]:
+                f=getattr(problem,name);f.vector().set_local(value);f.vector().apply('insert')
+            problem.parameters['p'].assign(float(inputs['pressure'][i]));R=float(residual(problem).norm('l2'))
+            assert np.isfinite(R) and R<1e-6
+            _,integral=kin.audit(current)
+            native=float(df.assemble(df.det(df.Identity(3)+df.grad(problem.u))*df.dx(metadata={'quadrature_degree':4})))
+            np.testing.assert_allclose(integral,native,rtol=1e-11,atol=1e-14)
+            forces.append(dict(step=i,native_residual_N=R,determinant_integral_relative_error=abs(integral-native)/max(abs(native),1e-30)))
+        anew=(current-old-dt*v-(.5-.36)*dt**2*a)/(.36*dt**2)
+        v=v+dt*(.3*a+.7*anew);a=anew;old=current.copy()
+        if (i+1)%8==0 and hasattr(u._mmap,'madvise'):u._mmap.madvise(mmap.MADV_DONTNEED)
+    result['independent_force_and_integral_checks']=forces
 (P / 'experiments/manifests' / (cfg['name'] + '.json')).write_text(json.dumps(m, indent=2, allow_nan=False))
-(P / 'experiments/metrics' / (cfg['name'] + '_verification.json')).write_text(json.dumps(result, indent=2, allow_nan=False))
+(P/(args.output or ('experiments/metrics/'+cfg['name']+'_verification.json'))).write_text(json.dumps(result, indent=2, allow_nan=False))
 print(json.dumps(result, indent=2, allow_nan=False))
