@@ -1,0 +1,46 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_mpi_history_loaded_control_v1.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_mpi_history_loaded_control_v1.json",
+    "max_phase_seconds": 4200.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 5400.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 783.3420886669774,
+      "sampled_peak_RSS_bytes": 26179600384
+    },
+    {
+      "phase": "audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 99.2004417499993,
+      "sampled_peak_RSS_bytes": 10466066432
+    },
+    {
+      "phase": "resolve_positivity",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 10.118896916043013,
+      "sampled_peak_RSS_bytes": 5839208448
+    },
+    {
+      "phase": "compose_audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.0352876249235123,
+      "sampled_peak_RSS_bytes": 1638400
+    }
+  ],
+  "active_phase": "finished",
+  "total_wall_seconds": 894.7056792080402,
+  "local_recovery_verified": true
+}
