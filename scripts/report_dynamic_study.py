@@ -418,6 +418,18 @@ def dynamic_rows(P):
   if pilot.exists():
    w=json.loads(pilot.read_text())
    entry+=['',f'Ordinary next-step runtime pilot at0.27375s: phase={w["active_phase"]}, finished={w["complete"]}, independent local pass={w.get("local_recovery_verified",False)}. Starts only from the qualified recovered state, original100-Newton/strict1e-8N EW/GAMG settings, ordinary three-predictor initialization, unchanged physical equation,900s solve budget,1200s phase guard and30GiB memory limit. It assesses whether subsequent stepping is feasible before any full-cycle launch; no automatic continuation of a completed or timed-out output.']
+   if w['complete']:
+    r=json.loads((P/'experiments/metrics/dynamic_quadratic_third_postrecovery_pilot.json').read_text())
+    entry+=['',f'The ordinary next-step pilot exhausted its budget after {r["wall_seconds"]:.2f}s with zero accepted states. Initial force {r["last_iteration_history"][0]["residual_N"]:.6g}N, final unaccepted force {r["last_iteration_history"][-1]["residual_N"]:.6g}N. Positive recovery of the previous step therefore does not establish feasible subsequent stepping. No full-cycle restart was launched.']
+  for stem,label in [('dynamic_quadratic_stress_predictor_qualification','Known-step stress-stage predictor qualification'),('dynamic_quadratic_third_stress_predictor_pilot','R2 stress-stage predictor feasibility')]:
+   wp=P/f'experiments/metrics/{stem}_workflow.json'
+   if not wp.exists():continue
+   w=json.loads(wp.read_text())
+   entry+=['',f'{label}: phase={w["active_phase"]}, finished={w["complete"]}, independently verified pass={w.get("local_recovery_verified",False)}. The initial guess preserves the preceding weighted generalized-alpha displacement stage, alpha_f*u_old+(1-alpha_f)*u_guess, rather than changing the final equation. Source histories are hash/index checked; the R2 admission gate requires100-fold native residual improvement over ordinary predictors. Known-field qualification is mandatory first. Both use900s solving/1200s phase/30GiB guards, unchanged strict force acceptance and independent audits.']
+   rp=P/f'experiments/metrics/{stem}.json'
+   if rp.exists():
+    r=json.loads(rp.read_text());s=r.get('stress_stage_initialization')
+    if s:entry+=['',f'Recorded initialization: ordinary predictor force {s["original_predictor_residual_N"]}N; stress-stage predictor force {s["stress_stage_predictor_residual_N"]}N; improvement factor {s["improvement_factor"]:.6g}. Initial residual improvement alone is not nonlinear convergence or a qualified physical state.']
   followup=P/'configs/physics/dynamic_qualified_followup.json'
   if followup.exists():
    entry+=['','A separate prospective qualified-reference ML protocol is fixed in configs/physics/dynamic_qualified_followup.json: unchanged original model hashes; training/validation input designs relabelled only after numerical qualification;20 new calibration and20 new test geometries, plus4 shifted geometries with two histories each. Selection uses training/validation only; calibration and test response fields remain ungenerated. P2 network-gradient verification, qualified finer labels, independently finer calibration controls and a new frozen comparison remain required. The protocol defines later work; it does not imply those experiments have run.']

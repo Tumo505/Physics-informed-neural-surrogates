@@ -1,0 +1,23 @@
+{
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "maximum_newton_iterations": 100,
+  "wall_budget_seconds": 900,
+  "mumps_memory_limit_MB": 20000,
+  "native_solver": "gamg",
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "inexact_newton": true,
+  "reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+  "qualification_step": 400,
+  "output": "experiments/metrics/dynamic_quadratic_stress_predictor_qualification.json",
+  "checkpoint": "experiments/logs/dynamic_quadratic_stress_predictor_qualification_restart.npz",
+  "fields": "experiments/logs/dynamic_quadratic_stress_predictor_qualification_fields.npy",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_stress_predictor_qualification_iterate.npz",
+  "scope": "Preserve the preceding generalized-alpha weighted displacement stage only as a Newton initial guess. Reproduce the exact affine-stage identity, source state indexing/hashes and native force; production admission requires >=100-fold improvement over ordinary three predictors. Coarse known-state qualification forces this predictor before use. Unchanged final equation,dt,mesh,quadrature,material,loading,strict1e-8N acceptance and100 Newton ceiling. Solve900s/phase1200s/RSS30GiB/diskreserve100GiB. Intermediate predictor is not an accepted field. Independent native force, whole-element positivity,norm/history and hash checks required after any accepted final solve. Negative findings retained; no full-cycle,numerical-convergence,continuum or ML qualification claim.",
+  "stress_stage_predictor": {
+    "minimum_residual_improvement_factor": 0.0
+  }
+}

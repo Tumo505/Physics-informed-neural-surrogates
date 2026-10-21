@@ -181,6 +181,39 @@ try:
             R = float(residual(problem).norm('l2'))
             if np.isfinite(R) and R < best_R:
                 best = guess; best_R = R
+        if 'stress_stage_predictor' in protocol:
+            assert offset == 0 and divisor == 1 and protocol['steps_after_checkpoint'] == 1
+            option = protocol['stress_stage_predictor']
+            if qualification:
+                prior_displacement = np.load(root/'displacement_coefficients.npy',mmap_mode='r')[i-2].copy()
+            else:
+                predecessor = json.loads((P/option['previous_displacement_protocol']).read_text())
+                predecessor_result = json.loads((P/predecessor['output']).read_text())
+                predecessor_checkpoint = P/predecessor['checkpoint']
+                digest = hashlib.sha256(predecessor_checkpoint.read_bytes()).hexdigest()
+                assert digest == predecessor_result['probe_checkpoint_sha256']
+                assert previous_protocol['resume_probe_protocol'] == option['previous_displacement_protocol']
+                assert previous_result['resumed_checkpoint_sha256'] == digest
+                prior_state = np.load(predecessor_checkpoint)
+                assert predecessor_result['start_step']+int(prior_state['completed_probe_steps'])-1 == i-2
+                prior_displacement = prior_state['u_old'].copy()
+            alpha = float(problem.parameters['alpha_f'])
+            assert 0 <= alpha < 1
+            prior_stage = alpha*prior_displacement+(1-alpha)*old
+            stage_guess = (prior_stage-alpha*old)/(1-alpha)
+            np.testing.assert_allclose(alpha*old+(1-alpha)*stage_guess,prior_stage,rtol=1e-13,atol=1e-15)
+            problem.u.vector().set_local(stage_guess); problem.u.vector().apply('insert')
+            stage_R = float(residual(problem).norm('l2'))
+            improvement = best_R/max(stage_R,1e-300) if np.isfinite(stage_R) else 0.
+            result['stress_stage_initialization'] = dict(
+                original_predictor_residual_N=best_R if np.isfinite(best_R) else None,
+                stress_stage_predictor_residual_N=stage_R if np.isfinite(stage_R) else None,
+                improvement_factor=improvement, alpha_f=alpha,
+                invariant='alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement',
+                initialization_only=True)
+            persist()
+            assert np.isfinite(stage_R) and improvement >= option['minimum_residual_improvement_factor'], 'Stress-stage initialization failed predeclared admission gate'
+            best = stage_guess; best_R = stage_R
         if guess_source is not None:
             source_space,source_inputs,source_fields=guess_source
             np.testing.assert_allclose(source_inputs['time'][i],time_s,atol=1e-12,rtol=0)

@@ -1,0 +1,85 @@
+{
+  "complete": false,
+  "engineering_only": true,
+  "protocol": {
+    "steps_after_checkpoint": 1,
+    "timestep_divisor": 1,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 900,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "gamg",
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "inexact_newton": true,
+    "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+    "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_history_resume_v1.json",
+    "required_audit": "experiments/metrics/dynamic_quadratic_third_history_resume_v1_verification_resolved.json",
+    "output": "experiments/metrics/dynamic_quadratic_third_postrecovery_pilot.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_third_postrecovery_pilot_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_third_postrecovery_pilot_fields.npy",
+    "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_postrecovery_pilot_iterate.npz",
+    "scope": "Prospective one-step runtime/continuation feasibility probe at0.27375s from the independently qualified recovered R2 state at0.273125s. Use ordinary old/velocity/acceleration predictor selection with original EWv2/GMRES/GAMG restart200/cap3000,100-Newton ceiling and strict1e-8N/zero-relative acceptance; unchanged mesh,dt,quadrature,material and loading. No algebraic homotopy in this pilot. Bound solving to900s, outer phase1200s and process-tree30GiB with100GiB diskreserve. A timeout is a resource-feasibility finding, not proof of nonexistence. Any success requires independent native force, whole-element positivity, norm and history audits before reuse. No full-cycle, continuum, numerical-convergence, training or calibration claim; no automatic full-cycle restart."
+  },
+  "records": [],
+  "protocol_sha256": "de77662d6975434f45b410eb4586289b2431a7b6963042e1308f17479f3e1448",
+  "reference_config_sha256": "5725147217290e5bf505a8d9fe7973e4606670f190b0abba8b0ddafc06d95b48",
+  "start_step": 437,
+  "qualification_only": false,
+  "checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "source_sha256": "9fc00b68a8cdc0e2b7c6c0961b2c49eb7090f6b457cf2bcd2974c847e286c3b9",
+  "resumed_checkpoint_sha256": "6af1014c11dc87cbb2d0ff4e2dc24f2247c600a0525dc13d5579874c229e42ca",
+  "resumed_accepted_probe_steps": 1,
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "last_attempt_time_s": 0.27375,
+  "budget_exhausted": true,
+  "failure": "\n\n*** -------------------------------------------------------------------------\n*** DOLFIN encountered an error. If you are not able to resolve this issue\n*** using the information listed below, you can ask for help at\n***\n***     fenics-support@googlegroups.com\n***\n*** Remember to include the error message listed below and, if possible,\n*** include a *minimal* running example to reproduce the error.\n***\n*** -------------------------------------------------------------------------\n*** Error:   Unable to successfully call PETSc function 'SNESSolve'.\n*** Reason:  PETSc error code is: 101 (Unhandled Python Exception).\n*** Where:   This error was encountered inside /Users/runner/miniforge3/conda-bld/bld/rattler-build_fenics-libdolfin_1792146198/work/dolfin/nls/PETScSNESSolver.cpp.\n*** Process: 0\n*** \n*** DOLFIN version: 2019.1.0\n*** Git changeset:  \n*** -------------------------------------------------------------------------\n",
+  "all_requested_steps_accepted": false,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 5662503389798.425,
+      "KSP_rtol": 1e-10
+    },
+    {
+      "iteration": 1,
+      "residual_N": 2133351282802.322,
+      "KSP_rtol": 0.01
+    },
+    {
+      "iteration": 2,
+      "residual_N": 1930235943417.1924,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 3,
+      "residual_N": 1746466827859.3958,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 4,
+      "residual_N": 639154392076.2548,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 5,
+      "residual_N": 235338339836.0576,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 6,
+      "residual_N": 212959616802.84244,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 7,
+      "residual_N": 192712021157.23373,
+      "KSP_rtol": 0.1
+    }
+  ],
+  "wall_seconds": 938.702166250092
+}
