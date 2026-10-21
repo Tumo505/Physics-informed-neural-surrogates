@@ -2,6 +2,14 @@
 
 All results are computational. Released-model inference uses unedited author equations under modern Flax, not an identical legacy runtime. Graph connectivity alone does not establish FE mechanics.
 
+**Bounded solver recovery completed; full study validation remains INCOMPLETE (2026-10-21).** Four consecutive local R2 endpoints0.273125–0.275s passed positive native convergence, strict force, whole-element endpoint/stress positivity, independent norm/history replay and hash checks. The earlier100-fold-gated two-step pilot remains incomplete; only its independently verified accepted prefix was reused. Original failed audits, nonlinear failures and timeouts remain retained. These local proofs do not qualify the entire original prefix, remaining full cycle or continuum accuracy.
+
+Three direct loaded solves took 15.23, 17.42, 19.38 minutes. A flat mean-cost scenario for1160 remaining steps is335.3h versus72h per-reference, requiring an idealized4.66-fold throughput improvement before setup/audit costs. This is a sensitivity scenario, not an ETA or a claim that later steps cost equally. No full-cycle restart was launched; no FE/audit jobs were active at this assessment. The bounded recurring monitor is closed after its completed audits.
+
+The unchanged1% spatial and Q6 integration gates still FAIL. Faster independently qualified FE throughput, a complete and fully audited third-level cycle, mesh/time/quadrature qualification across geometry/load designs, actual P2 network-gradient verification, qualified-reference training, independent finer-reference recalibration and a fresh untouched frozen comparison remain required. Existing20 neural checkpoints remain unchanged. Passive and idealized-geometry limitations remain; this is not active-heart or clinical validation.
+
+![Local recovery checks and remaining runtime limitation](figures/dynamic_quadratic_recovery_assessment.png)
+
 **Adaptive history continuation follow-up (2026-10-21).** The preceding bounded protocol remains failed. A separately declared algebraic homotopy now connects the preceding accepted equation to the exact next equation, without changing final material, mesh, timestep, quadrature, histories, loading or force tolerance. Intermediate roots are not timesteps or training labels.
 
 Coarse qualification at0.250625s: independently passed=True; 7 accepted increments in 41.96s; final native force 1.41013e-09N; whole-element endpoint/stress determinant bounds 0.910784/0.905637. The independent verifier also reproduced the archived next field and replayed histories from rest. This is one local qualification, not a full-cycle or mesh-convergence pass.
@@ -44,7 +52,11 @@ Four-candidate minimum-residual known-step qualification: phase=finished, finish
 
 Recorded initialization: ordinary predictor force 0.6921257321204267N; stress-stage predictor force 17.4505555559265N; improvement factor 0.0396621. Initial residual improvement alone is not nonlinear convergence or a qualified physical state.
 
-Four-candidate R2 minimum-residual initialization pilot: phase=solve, finished=False, independently verified pass=False. The added initial guess preserves the preceding weighted generalized-alpha displacement stage, alpha_f*u_old+(1-alpha_f)*u_guess. Source histories are hash/index checked. Select minimum finite native force among ordinary and stress-stage candidates. Known-field qualification is mandatory first. Native solve budget1200s, outer phase1500s, RSS30GiB; strict final force/whole-element/norm/history criteria are unchanged.
+Four-candidate R2 minimum-residual initialization pilot: phase=finished, finished=True, independently verified pass=False. The added initial guess preserves the preceding weighted generalized-alpha displacement stage, alpha_f*u_old+(1-alpha_f)*u_guess. Source histories are hash/index checked. Select minimum finite native force among ordinary and stress-stage candidates. Known-field qualification is mandatory first. Native solve budget1200s, outer phase1500s, RSS30GiB; strict final force/whole-element/norm/history criteria are unchanged.
+
+Recorded initialization: ordinary predictor force 14.772035916940819N; stress-stage predictor force 0.5213813256305331N; improvement factor 28.3325. Initial residual improvement alone is not nonlinear convergence or a qualified physical state.
+
+Supplemental SHA-linked independent audit PASSED at0.275000s: native force 5.01975e-12N; whole-element endpoint/stress lower bounds 0.00412078/0.00428021; independent norm relative error 5.01e-14, final history replay passed. Accepted-prefix-only audit=False. Initial inconclusive parent bounds and runner result remain retained; composed audit resolves positivity without lowering its margin. A prefix pass does not pass an incomplete pilot or full-cycle numerical convergence.
 
 The100-fold-gated two-step pilot remains INCOMPLETE: 1 physical step accepted; the0.275s equation was not solved because its stress-stage candidate improved initial force28.3325-fold, below100. This is an initialization-admission stop. Preserve the failed protocol, partial-prefix audit and numerical result. A separately declared four-candidate minimum-residual rule is qualified on two known coarse targets before its new R2 attempt; final physical acceptance is unchanged. No inspected surrogate test outcomes informed the rule.
 

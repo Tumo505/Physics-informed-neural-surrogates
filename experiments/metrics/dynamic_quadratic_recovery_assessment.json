@@ -1,0 +1,124 @@
+{
+  "complete": true,
+  "created_utc": "2026-10-21T12:17:42.119062+00:00",
+  "bounded_local_recovery_passed": true,
+  "study_validation_passed": false,
+  "full_cycle_qualified": false,
+  "numerical_convergence_passed": false,
+  "runtime_feasibility_established": false,
+  "observed_active_FE_or_audit_jobs": [],
+  "verified_local_states": [
+    {
+      "step": 436,
+      "time_s": 0.273125,
+      "native_residual_N": 8.223299362624395e-12,
+      "endpoint_lower_bound": 0.0005496253777874938,
+      "stress_lower_bound": 0.006465923727338012,
+      "independently_verified": true,
+      "accepted_prefix_only": false,
+      "evidence": "dynamic_quadratic_third_history_resume_v1",
+      "nonlinear_seconds": 40.437735624960624
+    },
+    {
+      "step": 437,
+      "time_s": 0.27375,
+      "native_residual_N": 5.2030249780246e-09,
+      "endpoint_lower_bound": 0.004880075614241419,
+      "stress_lower_bound": 0.0006056413078567263,
+      "independently_verified": true,
+      "accepted_prefix_only": false,
+      "evidence": "dynamic_quadratic_third_stress_predictor_pilot",
+      "nonlinear_seconds": 913.7244602090213
+    },
+    {
+      "step": 438,
+      "time_s": 0.274375,
+      "native_residual_N": 5.004675027641853e-12,
+      "endpoint_lower_bound": 0.000754404849958894,
+      "stress_lower_bound": 0.005314801535055969,
+      "independently_verified": true,
+      "accepted_prefix_only": true,
+      "evidence": "dynamic_quadratic_third_stress_predictor_consecutive",
+      "nonlinear_seconds": 1045.1534183329204
+    },
+    {
+      "step": 439,
+      "time_s": 0.27499999999999997,
+      "native_residual_N": 5.0197524056593614e-12,
+      "endpoint_lower_bound": 0.0041207757116542565,
+      "stress_lower_bound": 0.004280214339359776,
+      "independently_verified": true,
+      "accepted_prefix_only": false,
+      "evidence": "dynamic_quadratic_third_best_predictor_pilot",
+      "nonlinear_seconds": 1162.7306997498963
+    }
+  ],
+  "original_reference_manifest_unchanged": true,
+  "partial_pilot_remains_incomplete": true,
+  "failed_numerical_controls": [
+    {
+      "evidence": "dynamic_quadratic_controlled_ew_mesh",
+      "relative_space_time_L2": 0.11866608878343607,
+      "tolerance": 0.01,
+      "passed": false
+    },
+    {
+      "evidence": "dynamic_quadratic_validation_g004_l0",
+      "relative_space_time_L2": 0.12375764817217594,
+      "tolerance": 0.01,
+      "passed": false
+    },
+    {
+      "evidence": "dynamic_quadratic_controlled_halfstep_quadrature",
+      "relative_space_time_L2": 0.01571496941545504,
+      "tolerance": 0.01,
+      "passed": false
+    }
+  ],
+  "neural_checkpoints": {
+    "count": 20,
+    "all_frozen_hashes_unchanged": true
+  },
+  "runtime": {
+    "measured_direct_loaded_step_seconds": [
+      913.7244602090213,
+      1045.1534183329204,
+      1162.7306997498963
+    ],
+    "mean_seconds": 1040.536192763946,
+    "remaining_steps": 1160,
+    "flat_cost_scenario_hours": 335.28388433504927,
+    "per_reference_budget_hours": 72,
+    "required_mean_seconds_to_fit_remaining_steps_in_72h": 223.44827586206895,
+    "idealized_throughput_improvement_vs_measured_mean": 4.6567206157645735,
+    "scope": "Flat-rate sensitivity scenario, not ETA. Excludes setup, predictor screening, audits and already expended prefix/recovery cost; later-step costs are unknown."
+  },
+  "remaining_requirements": [
+    "Profile and independently qualify materially faster FE throughput before a full-cycle R2 restart; repeated isolated-step solves do not establish the72h budget.",
+    "Complete the third-mesh cycle and audit its entire prefix as well as new states; these four local proofs do not qualify the original whole prefix.",
+    "Pass full-cycle spatial, timestep and quadrature sensitivity gates at unchanged1% across baseline and validation geometry/load designs; report rates only if assumptions hold.",
+    "Verify actual P2 neural-network directional gradients, then execute the separately fixed training/validation-only follow-up with qualified labels.",
+    "Independently recalibrate finer-reference uncertainty and perform untouched frozen accuracy/mechanics/rollout/coverage/OOD/FE-routing/runtime comparison."
+  ],
+  "evidence_sha256": {
+    "experiments/metrics/dynamic_quadratic_third_history_resume_v1.json": "48cd64f4631986e10e56bab5851b346d49ab2e71439f1db6ec63ae4b2a463eff",
+    "experiments/metrics/dynamic_quadratic_third_history_resume_v1_verification_resolved.json": "5422f3484b36b5dc6c2a109f3ed91863db6ab35ac5a48a438d135c18363500e2",
+    "configs/physics/dynamic_quadratic_third_history_resume_v1.json": "1afbfb830626135183d8cdeceb921115fdf8022a81c565929beb7f9b02156b60",
+    "experiments/metrics/dynamic_quadratic_third_stress_predictor_pilot.json": "61b5d0fd21787767935290953a6941fe7c60895747a60af56969128708264bfc",
+    "experiments/metrics/dynamic_quadratic_third_stress_predictor_pilot_verification_resolved.json": "5d0c6710e498559a36735a6de0a03d379c4fa0d04a6d6869ddaa2b7de67adc22",
+    "configs/physics/dynamic_quadratic_third_stress_predictor_pilot.json": "15f5d4d9fac49efad7e7fdfca7c2672a4d6470be70c9e5155f88a0bbdc530dad",
+    "experiments/metrics/dynamic_quadratic_third_stress_predictor_consecutive.json": "4c6c2a26d61b6d3c029e1f78c1484b88e9692d21eb8f9517715170ca9c3db544",
+    "experiments/metrics/dynamic_quadratic_third_stress_predictor_consecutive_verification_resolved.json": "d2cfa6f2eb620f8c4ee8d77da6c40f78a1c9c59d9ba432a03391f8b1850138f9",
+    "configs/physics/dynamic_quadratic_third_stress_predictor_consecutive.json": "9e4d3f7f62c493406cd4975727b481414b7e3c6c037aa712f4901f158a658c1c",
+    "experiments/metrics/dynamic_quadratic_third_best_predictor_pilot.json": "cf9bb1e34e9102f2ac3b985ac0f3588920f9105e46e991bde0e3277bfe28f3b3",
+    "experiments/metrics/dynamic_quadratic_third_best_predictor_pilot_verification_resolved.json": "6c5a02e3c3945a2e4b8c63d5215ecf00a5f6ac205d9ff3e59c48357950f18a45",
+    "configs/physics/dynamic_quadratic_third_best_predictor_pilot.json": "3bb3eba387787efe8469fa69245de0ee4ac6f92275938ac671526cc71b77e9ce",
+    "experiments/metrics/dynamic_quadratic_controlled_ew_mesh.json": "b2b39c6b1f6a31caca8d70ca910f60d807211d9401c958f2d8354ba26f9de1a5",
+    "experiments/metrics/dynamic_quadratic_validation_g004_l0.json": "a212a299161df5012dc245a6e57959604f24880f6e0d81f63f5a3d2582851876",
+    "experiments/metrics/dynamic_quadratic_controlled_halfstep_quadrature.json": "4a6d98c3d211df71f9f4b7ed9c35308da5b915c500dd1abb7a0d54601242a232",
+    "experiments/manifests/dynamic_final_freeze.json": "5197e5fc10ddc5e83175e7a40ea948848c2a4d7320c2557f4f6fe6e400fd7ea4"
+  },
+  "source_sha256": "6e0fb610b6ba181eb4d515e2ca1a934b82a539dcf68882e2af1c01a02aa21898",
+  "monitor_action": "Bounded pilot and justified audits finished with no active jobs; stop this recurring monitor.",
+  "scope": "Local nonlinear failures repaired through0.275s on the idealized passive R2 discrete problem. No full-cycle, continuum, active-heart, clinical, population coverage or completed-study validation claim. Negative results and initial failed audits retained; no model training, test selection, compute purchase, push or publication."
+}

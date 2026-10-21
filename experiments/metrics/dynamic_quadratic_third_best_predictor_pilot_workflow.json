@@ -1,0 +1,29 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_third_best_predictor_pilot.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_third_best_predictor_pilot.json",
+    "max_phase_seconds": 1500.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100
+  },
+  "phases": [
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 1270.1902666250244,
+      "sampled_peak_RSS_bytes": 13171458048
+    },
+    {
+      "phase": "audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 99.30031437496655,
+      "sampled_peak_RSS_bytes": 9753362432
+    }
+  ],
+  "active_phase": "finished",
+  "local_recovery_verified": false
+}

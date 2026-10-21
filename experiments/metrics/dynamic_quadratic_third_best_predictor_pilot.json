@@ -1,0 +1,184 @@
+{
+  "complete": true,
+  "engineering_only": true,
+  "protocol": {
+    "steps_after_checkpoint": 1,
+    "timestep_divisor": 1,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 1200,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "gamg",
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "inexact_newton": true,
+    "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+    "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+    "required_audit": "experiments/metrics/dynamic_quadratic_third_stress_predictor_consecutive_verification_resolved.json",
+    "output": "experiments/metrics/dynamic_quadratic_third_best_predictor_pilot.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_third_best_predictor_pilot_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_third_best_predictor_pilot_fields.npy",
+    "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_best_predictor_pilot_iterate.npz",
+    "scope": "New prospective initialization policy: evaluate native residual at old,velocity,acceleration and preceding-stress-stage predictors, then select the finite minimum. No minimum improvement factor; this is an initial-guess selection rule. Preserve the previous100-fold-gated pilot as incomplete after its second candidate gave28.3325-fold improvement. Final physics/strict1e-8N/native positive SNES/whole-element positivity/norm/history acceptance remain unchanged. Independently reproduce two known coarse targets before R2 use. R2 starts only from the independently audited accepted prefix at0.274375s and attempts one previously unattempted physical equation at0.275s, not repeating the prefix. Bound R2 solve1200s/phase1500s,coarse900s,RSS30GiB,disk100GiB. Retain failures and conservative resource projections. No full-cycle,continuum,numerical-convergence or ML qualification claim.",
+    "stress_stage_predictor": {
+      "previous_displacement_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_pilot.json",
+      "select_minimum_native_residual": true
+    },
+    "required_qualification": "experiments/metrics/dynamic_quadratic_best_predictor_qualification_verification.json"
+  },
+  "records": [
+    {
+      "step": 439,
+      "time_s": 0.27499999999999997,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 5.0197524056593614e-12,
+      "KSP_reason": 3,
+      "effective_KSP": "gmres",
+      "effective_PC": "gamg",
+      "effective_SNES": "newtonls",
+      "EW_effective": true,
+      "last_linear_iterations": 67,
+      "minimum_endpoint_sampled_detF": 0.10729414716443053,
+      "minimum_stress_sampled_detF": 0.10880657492207328,
+      "nonlinear_seconds": 1162.7306997498963,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "residual_N": 0.5213813256305331,
+          "KSP_rtol": 1e-10
+        },
+        {
+          "iteration": 1,
+          "residual_N": 0.18284942609872012,
+          "KSP_rtol": 0.01
+        },
+        {
+          "iteration": 2,
+          "residual_N": 0.05546451152953955,
+          "KSP_rtol": 0.1
+        },
+        {
+          "iteration": 3,
+          "residual_N": 0.013600255975672292,
+          "KSP_rtol": 0.1
+        },
+        {
+          "iteration": 4,
+          "residual_N": 0.00231994138950738,
+          "KSP_rtol": 0.1
+        },
+        {
+          "iteration": 5,
+          "residual_N": 0.0002377267375645334,
+          "KSP_rtol": 0.05717899556181547
+        },
+        {
+          "iteration": 6,
+          "residual_N": 5.967142040008439e-06,
+          "KSP_rtol": 0.025067949867858666
+        },
+        {
+          "iteration": 7,
+          "residual_N": 1.5394333338922144e-08,
+          "KSP_rtol": 0.002574194453795707
+        },
+        {
+          "iteration": 8,
+          "residual_N": 5.0197524056593614e-12,
+          "KSP_rtol": 6.484432014469926e-05
+        }
+      ]
+    }
+  ],
+  "protocol_sha256": "3bb3eba387787efe8469fa69245de0ee4ac6f92275938ac671526cc71b77e9ce",
+  "reference_config_sha256": "5725147217290e5bf505a8d9fe7973e4606670f190b0abba8b0ddafc06d95b48",
+  "start_step": 439,
+  "qualification_only": false,
+  "checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "source_sha256": "4eea0c55dca30a8f3d431ee2a486463865a5c1481af139784a0202e9ea654ae7",
+  "resumed_checkpoint_sha256": "d45b70a590fcdca7f91d56d962a10448e3121ef4e5dfcf2fb5beab576e34322a",
+  "resumed_accepted_probe_steps": 1,
+  "dt_s": 0.000625,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "last_attempt_time_s": 0.27499999999999997,
+  "stress_stage_initialization": {
+    "original_predictor_residual_N": 14.772035916940819,
+    "stress_stage_predictor_residual_N": 0.5213813256305331,
+    "improvement_factor": 28.3324990573382,
+    "alpha_f": 0.4,
+    "invariant": "alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement",
+    "initialization_only": true,
+    "selection_policy": "minimum finite native force among four predictors",
+    "selected_predictor": "stress_stage",
+    "admission_met": true
+  },
+  "stress_stage_initializations": [
+    {
+      "step": 439,
+      "time_s": 0.27499999999999997,
+      "original_predictor_residual_N": 14.772035916940819,
+      "stress_stage_predictor_residual_N": 0.5213813256305331,
+      "improvement_factor": 28.3324990573382,
+      "alpha_f": 0.4,
+      "invariant": "alpha_f*u_old+(1-alpha_f)*u_guess equals preceding stress-stage displacement",
+      "initialization_only": true,
+      "selection_policy": "minimum finite native force among four predictors",
+      "selected_predictor": "stress_stage",
+      "admission_met": true
+    }
+  ],
+  "probe_checkpoint_sha256": "ff928a2f009474ab3a885358ceccd05a1570fc4afed7d837a2166d47d02f877f",
+  "all_requested_steps_accepted": true,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 0.5213813256305331,
+      "KSP_rtol": 1e-10
+    },
+    {
+      "iteration": 1,
+      "residual_N": 0.18284942609872012,
+      "KSP_rtol": 0.01
+    },
+    {
+      "iteration": 2,
+      "residual_N": 0.05546451152953955,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 3,
+      "residual_N": 0.013600255975672292,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 4,
+      "residual_N": 0.00231994138950738,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 5,
+      "residual_N": 0.0002377267375645334,
+      "KSP_rtol": 0.05717899556181547
+    },
+    {
+      "iteration": 6,
+      "residual_N": 5.967142040008439e-06,
+      "KSP_rtol": 0.025067949867858666
+    },
+    {
+      "iteration": 7,
+      "residual_N": 1.5394333338922144e-08,
+      "KSP_rtol": 0.002574194453795707
+    },
+    {
+      "iteration": 8,
+      "residual_N": 5.0197524056593614e-12,
+      "KSP_rtol": 6.484432014469926e-05
+    }
+  ],
+  "wall_seconds": 1184.4853690001182
+}
