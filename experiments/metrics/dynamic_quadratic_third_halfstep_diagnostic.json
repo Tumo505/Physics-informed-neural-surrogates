@@ -1,0 +1,194 @@
+{
+  "complete": false,
+  "engineering_only": true,
+  "protocol": {
+    "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+    "timestep_divisor": 2,
+    "steps_after_checkpoint": 2,
+    "absolute_tolerance_N": 1e-08,
+    "relative_tolerance": 0.0,
+    "maximum_newton_iterations": 100,
+    "wall_budget_seconds": 3600,
+    "mumps_memory_limit_MB": 20000,
+    "native_solver": "gamg",
+    "linear_maximum_iterations": 3000,
+    "gmres_restart": 200,
+    "inexact_newton": true,
+    "resume_probe_protocol": "configs/physics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail.json",
+    "required_audit": "experiments/metrics/cardiac_quadratic_reference_halfstep_ew_third_v1_accepted_tail_verification_resolved.json",
+    "output": "experiments/metrics/dynamic_quadratic_third_halfstep_diagnostic.json",
+    "checkpoint": "experiments/logs/dynamic_quadratic_third_halfstep_diagnostic_restart.npz",
+    "fields": "experiments/logs/dynamic_quadratic_third_halfstep_diagnostic_fields.npy",
+    "iterate_checkpoint": "experiments/logs/dynamic_quadratic_third_halfstep_diagnostic_iterate.npz",
+    "scope": "A separately fixed changed-timegrid diagnostic, not recovery of the rejected original algebraic target. From the independently qualified third-mesh state at0.2725s, attempt0.2728125/0.273125s atdt0.3125ms with consistently recomputed generalized-alpha pressure stages and unchanged carried displacement/velocity/acceleration histories. Original100-Newton, trust-region and fine-field initialization failures remain retained. Native backtracking/EW/GMRES/GAMG restart200/cap3000, strict1e-8N final-force acceptance,100 Newton ceiling and3600s total local solve budget remain fixed. Preserve unaccepted iterates and accepted-history checkpoints. Independent force, positivity, norms and histories gate any local success. Inherited coarse-time history prevents a from-rest finer-timestep/full-cycle or temporal-convergence claim; no model training/calibration is authorized by success alone."
+  },
+  "records": [],
+  "protocol_sha256": "ee7426bd6b983f6e600d1f4eff9dfa67a48bded90986288100980c9cb330643e",
+  "reference_config_sha256": "5725147217290e5bf505a8d9fe7973e4606670f190b0abba8b0ddafc06d95b48",
+  "start_step": 436,
+  "checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "source_sha256": "c021ba1586c0d68e0eb38e05d6c126f72c33a73a1c3d5d875e6d3720eed38d3b",
+  "resumed_checkpoint_sha256": "c73b00f474eca3e85356fd6d08097795ffe3ba62e7d242d4226249e1fcd409fc",
+  "resumed_accepted_probe_steps": 6,
+  "dt_s": 0.0003125,
+  "full_cycle": false,
+  "changed_time_discretization": true,
+  "last_attempt_time_s": 0.2728125,
+  "budget_exhausted": true,
+  "failure": "\n\n*** -------------------------------------------------------------------------\n*** DOLFIN encountered an error. If you are not able to resolve this issue\n*** using the information listed below, you can ask for help at\n***\n***     fenics-support@googlegroups.com\n***\n*** Remember to include the error message listed below and, if possible,\n*** include a *minimal* running example to reproduce the error.\n***\n*** -------------------------------------------------------------------------\n*** Error:   Unable to successfully call PETSc function 'SNESSolve'.\n*** Reason:  PETSc error code is: 101 (Unhandled Python Exception).\n*** Where:   This error was encountered inside /Users/runner/miniforge3/conda-bld/bld/rattler-build_fenics-libdolfin_1792146198/work/dolfin/nls/PETScSNESSolver.cpp.\n*** Process: 0\n*** \n*** DOLFIN version: 2019.1.0\n*** Git changeset:  \n*** -------------------------------------------------------------------------\n",
+  "all_requested_steps_accepted": false,
+  "finished": true,
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "residual_N": 19588014493422.227,
+      "KSP_rtol": 1e-10
+    },
+    {
+      "iteration": 1,
+      "residual_N": 17724500416565.676,
+      "KSP_rtol": 0.01
+    },
+    {
+      "iteration": 2,
+      "residual_N": 16038315931621.04,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 3,
+      "residual_N": 14512522970635.625,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 4,
+      "residual_N": 14368132295410.229,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 5,
+      "residual_N": 14225178117711.334,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 6,
+      "residual_N": 14083646145260.152,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 7,
+      "residual_N": 13943522229594.78,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 8,
+      "residual_N": 13263569237528.32,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 9,
+      "residual_N": 12003116617186.107,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 10,
+      "residual_N": 11883710533995.438,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 11,
+      "residual_N": 11765492309377.605,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 12,
+      "residual_N": 11648450085459.96,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 13,
+      "residual_N": 11532572141787.615,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 14,
+      "residual_N": 11417846293418.844,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 15,
+      "residual_N": 10861378725314.703,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 16,
+      "residual_N": 9829076616531.705,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 17,
+      "residual_N": 9731295698583.838,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 18,
+      "residual_N": 9634487475274.223,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 19,
+      "residual_N": 9538640557405.469,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 20,
+      "residual_N": 9443748680912.23,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 21,
+      "residual_N": 9349800856745.324,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 22,
+      "residual_N": 9256787597000.62,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 23,
+      "residual_N": 9164699612960.082,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 24,
+      "residual_N": 9073527699735.96,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 25,
+      "residual_N": 8983262744604.1,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 26,
+      "residual_N": 8893895730244.2,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 27,
+      "residual_N": 8805417727776.234,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 28,
+      "residual_N": 8717819889993.317,
+      "KSP_rtol": 0.1
+    },
+    {
+      "iteration": 29,
+      "residual_N": 8631093455480.889,
+      "KSP_rtol": 0.1
+    }
+  ],
+  "wall_seconds": 3646.896457709023
+}

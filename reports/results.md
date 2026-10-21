@@ -2,6 +2,16 @@
 
 All results are computational. Released-model inference uses unedited author equations under modern Flax, not an identical legacy runtime. Graph connectivity alone does not establish FE mechanics.
 
+**Current bounded validation protocol: FAILED (2026-10-21).** This is a scientific validation outcome, not completion of the overall research objective. Both completed inexact-Newton mesh levels passed native-force, output-hash, whole-element positivity and independent norm audits, but their full-cycle difference is11.8666%, exceeding the unchanged1% sensitivity tolerance. A separate validation geometry differs12.3758%. The third mesh failed at0.273125s after100 Newton updates, with436 native-accepted states and430 durable checkpoint states; the six recovered states were independently qualified before use. No complete third-level reference or three-level convergence estimate is available.
+
+Trust-region recovery accepted no state; fine-field prolongation was rejected by its nonfinite initial force; the two-half-step diagnostic exhausted its3600s budget with no accepted state and last unaccepted force 8.63109e+12N. A budget timeout bounds that attempt, rather than proving every solver impossible. Original failed data and all declared criteria remain retained.
+
+All 20 frozen neural checkpoint hashes remain unchanged. Existing neural accuracy, physics-loss, rollout, uncertainty/routing and runtime results describe the original coarse numerical task. Qualified-reference retraining, independent recalibration and a fresh untouched comparison remain blocked. Isolated passing timestep and Q8/Q10 controls do not overcome failed mesh/Q6 integration qualification. Passive and idealized-geometry limitations remain.
+
+No FE or audit jobs were active at assessment. Further scientifically defensible progress requires a separately fixed reference-solver/discretization protocol and demonstrated runtime feasibility before another multi-day cohort run. Additional hardware alone has not been shown to cure the nonlinear failure. Do not relax acceptance, select on inspected tests or describe finished calculations as passed validation.
+
+![Numerical validation assessment and remaining failed gates](figures/dynamic_quadratic_validation_assessment.png)
+
 **Full-cycle follow-up (2026-10-17).** This is a new passive numerical benchmark task. The earlier1ms acceleration-increment model remains a failed recursive pilot; the new model uses5ms steps and a different recurrent formulation. Stability improvements cannot be attributed to one change alone. No active electromechanical or clinical claim follows.
 
 **Numerical validation gate remains unmet.** Full-cycle mesh refinement changes displacement by 13.12%, exceeding the stated1% tolerance. The5ms temporal target also misses1%. All model improvements and calibration below refer to the coarse discrete reference; they exclude FE discretization uncertainty and do not establish continuum accuracy.
@@ -280,7 +290,7 @@ Initial predictor force 19588014493422.227N; prolonged initial force NoneN; impr
 
 **Bounded changed-timegrid diagnostic.** The prolonged fine-field initialization produced a nonfinite residual and failed its predeclared admission gate, so no nonlinear solve was launched for that guess. Separately, from the independently qualified third-mesh state at0.2725s, attempt two0.3125ms steps through0.273125s with consistently recomputed pressure stages. Retain native backtracking/EW/GMRES/GAMG and strict1e-8N final-force acceptance,100 Newton ceiling and3600s total local budget. Carry the verified displacement/velocity/acceleration histories; preserve all original failures. Independent force/positivity/norm/history audits gate local acceptance. This changes the algebraic time-discrete targets and inherits a coarser-time prefix; it cannot repair or validate the original full-cycle reference, establish temporal convergence or justify neural retraining.
 
-Changed-grid diagnostic finished False; accepted 0/2; recorded failure none.
+Changed-grid diagnostic finished True; accepted 0/2; recorded failure declared local solve budget exhausted; not a convergence result.
 
 **Coarse recursive solver-policy control.** Compare all 1600 states against the prior strict GMRES/GAMG/direct-fallback protocol, with identical space, timestep, quadrature, forcing and geometry. Both complete references independently passed native/hash/whole-element/norm audits. Existing1e-6 frame-relative/1nm absolute coefficient criteria passed False; maximum frame-relative difference 2.56828e-05, maximum absolute difference 7.78933e-10m. This checks accumulated solver agreement on one case, not continuum accuracy or an isolated speedup.
 
