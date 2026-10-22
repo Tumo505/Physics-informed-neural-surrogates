@@ -2,9 +2,11 @@
 
 All results are computational. Released-model inference uses unedited author equations under modern Flax, not an identical legacy runtime. Graph connectivity alone does not establish FE mechanics.
 
+**Admissibility-aware loaded R2 qualification independently passed.** The known0.275625s equation converged in7customNewton steps; the first accepted step used half the full direction. Every accepted custom step passed exact native force decrease and whole-element endpoint/stress positivity. Final force4.78232e-12N was confirmed by a real native SNES positive reason2 with zero additional updates. The known field differed by7.71e-11m,below declared1nm. Independent native force,norm,history,hash and same-margin whole-element subdivision audits passed; original inconclusive parent bounds remain preserved. Native solve including custom proof checks took439.38s; this is one known-equation measurement,not a full-cycle ETA. The separately fixed failed0.27625s test started only after qualification; it has not yet passed.
+
 **Admissibility-aware Newton coarse controls independently passed.** Archived targets0.250625/0.25125s converged in3/4customNewton steps,with all accepted steps force-decreasing and whole-element-positive. A real fresh native SNES then confirmed convergence with zero updates. Endpoint force3.80e-11/1.36e-12N; independent serial force,norm,history and whole-element checks passed. Loaded qualification and failed-equation recovery remain separately gated.
 
-**Current admissibility-aware Newton study.** Active stage: configs/physics/dynamic_quadratic_mpi_admissible_loaded_control_v1.json. Archived coarse2steps and loadedR2knownendpoint must independently pass before the failed equation is attempted. Native budgets600/1800/3600s,RSS30GiB,diskreserve100GiB; source/config snapshots frozen before launch. A successful local recovery would still leave consecutive-step robustness/runtime qualification,full-cycle R2,unchanged1% numerical controls,and preregistered neural/calibration/untouched-test study incomplete.
+**Current admissibility-aware Newton study.** Active stage: configs/physics/dynamic_quadratic_mpi_admissible_failed_step_v1.json. Archived coarse2steps and loadedR2knownendpoint must independently pass before the failed equation is attempted. Native budgets600/1800/3600s,RSS30GiB,diskreserve100GiB; source/config snapshots frozen before launch. A successful local recovery would still leave consecutive-step robustness/runtime qualification,full-cycle R2,unchanged1% numerical controls,and preregistered neural/calibration/untouched-test study incomplete.
 
 **Trust-region loaded control failed; admissibility-aware follow-up is separate.** The newtontr/fixed-tight-linear control passed the two coarse archived equations but returned DIVERGED_FUNCTION_NANORINF on the known R2 target0.275625s,with zero completed nonlinear iterations. No failed0.27625s trust-region test was launched. The last saved state remained finite; the offending internal trial was not exported,so its nonfinite cause cannot be identified specifically as inversion. This negative finding is retained.
 
@@ -69,7 +71,8 @@ dynamic_quadratic_mpi4_third_equivalence: 4 rank(s), native solve 282.1396s, ser
 
 dynamic_quadratic_mpi6_third_equivalence: 6 rank(s), native solve 200.7312s, serial-target volumeL2 difference 6.51866e-14, max coefficient difference 2.81359e-13m. Clean process completion and the independent serial audit, including whole-element positivity, are separate mandatory gates. This one-query result is not a continuum or full-cycle validation.
 | dynamic_quadratic_mpi_admissible_coarse_v1 | finished | True | True |
-| dynamic_quadratic_mpi_admissible_loaded_control_v1 | solve | False | False |
+| dynamic_quadratic_mpi_admissible_failed_step_v1 | solve | False | False |
+| dynamic_quadratic_mpi_admissible_loaded_control_v1 | finished | True | True |
 | dynamic_quadratic_mpi_history_coarse_v1 | finished | True | True |
 | dynamic_quadratic_mpi_history_failed_step_v1 | stopped | True | False |
 | dynamic_quadratic_mpi_history_loaded_control_v1 | finished | True | True |

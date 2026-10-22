@@ -519,4 +519,8 @@ def dynamic_rows(P):
  if admissible_coarse.exists():
   a=json.loads(admissible_coarse.read_text())
   if a['passed']:rows[:0]=['','**Admissibility-aware Newton coarse controls independently passed.** Archived targets0.250625/0.25125s converged in3/4customNewton steps,with all accepted steps force-decreasing and whole-element-positive. A real fresh native SNES then confirmed convergence with zero updates. Endpoint force3.80e-11/1.36e-12N; independent serial force,norm,history and whole-element checks passed. Loaded qualification and failed-equation recovery remain separately gated.']
+ admissible_loaded=P/'experiments/metrics/dynamic_quadratic_mpi_admissible_loaded_control_v1_verification_resolved.json'
+ if admissible_loaded.exists():
+  a=json.loads(admissible_loaded.read_text())
+  if a['passed']:rows[:0]=['','**Admissibility-aware loaded R2 qualification independently passed.** The known0.275625s equation converged in7customNewton steps; the first accepted step used half the full direction. Every accepted custom step passed exact native force decrease and whole-element endpoint/stress positivity. Final force4.78232e-12N was confirmed by a real native SNES positive reason2 with zero additional updates. The known field differed by7.71e-11m,below declared1nm. Independent native force,norm,history,hash and same-margin whole-element subdivision audits passed; original inconclusive parent bounds remain preserved. Native solve including custom proof checks took439.38s; this is one known-equation measurement,not a full-cycle ETA. The separately fixed failed0.27625s test started only after qualification; it has not yet passed.']
  return rows
