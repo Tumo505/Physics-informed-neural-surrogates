@@ -1,0 +1,18 @@
+{
+  "protocols": [
+    "configs/physics/dynamic_quadratic_mpi_admissible_coarse_v1.json",
+    "configs/physics/dynamic_quadratic_mpi_admissible_loaded_control_v1.json",
+    "configs/physics/dynamic_quadratic_mpi_admissible_failed_step_v1.json"
+  ],
+  "phase_budgets_seconds": [
+    900,
+    2400,
+    4200
+  ],
+  "workflow_budgets_seconds": [
+    1500,
+    3600,
+    5400
+  ],
+  "scope": "Diagnostic-guided admissibility-aware Armijo Newton control. Native tangent verified at preserved states; tight true linear solves achievable; default trust-region loaded control failed with nonfinite function after initialstate. Exact cached mesh,dt,Q6,material,load,histories and final force1e-8N unchanged. Custom Newton uses assembled true tangent,GMRES/GAMG1e-8relative/1e-12Nabsolute/max3000; independently measured true linear residual must pass. Each trial must decrease exact native force by Armijo constant1e-4 and pass whole-element endpoint/stress positivity; rejected steps halve up to20times and rollback. Custom force target1e-9N; max100custom iterations. A fresh real native SNES at unchanged final equation must confirm positive stopping with zero Newtonupdates; no SNES reason is synthesized. Independent native/field/norm/history/hash/whole-element audits mandatory; no fullcycle or ML claim from a localpass."
+}

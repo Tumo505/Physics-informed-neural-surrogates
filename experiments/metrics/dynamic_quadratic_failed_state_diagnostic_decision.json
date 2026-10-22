@@ -1,0 +1,13 @@
+{
+  "complete": true,
+  "diagnostic_gate_passed": true,
+  "physical_step_recovered": false,
+  "diagnostic_sha256": "cb7b09a98bcd9ef593ae7de7041036a42dfc83b0f3ec48d2a10733674e055c8a",
+  "max_two_smallest_step_tangent_relative_error": 1.8664679368712145e-06,
+  "tight_linear_true_relative_residuals": [
+    3.833048117394168e-08,
+    8.93744918005082e-09
+  ],
+  "selected_bounded_followup": "Exact-equation Newton trust region with fixed tighter linear solves,qualified on known coarse/loaded equations before failedstep.",
+  "scope": "No defect was detected by these finite directional/history/force checks. Tight true linear residuals are achievable at the two tested nonconverged states. This supports a globalization control; it does not exclude all implementation errors or establish root existence,uniqueness,conditioning or nonlinear robustness. Globalization and linear tolerances change together,so any success is attributed to the combined protocol."
+}

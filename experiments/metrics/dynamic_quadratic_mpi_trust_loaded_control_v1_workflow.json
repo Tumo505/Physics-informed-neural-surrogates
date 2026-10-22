@@ -1,0 +1,26 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_mpi_trust_loaded_control_v1.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_mpi_trust_loaded_control_v1.json",
+    "max_phase_seconds": 2400.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 3600.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 142.0183769580908,
+      "sampled_peak_RSS_bytes": 26281279488
+    }
+  ],
+  "active_phase": "stopped",
+  "total_wall_seconds": 142.02140900003724,
+  "local_recovery_verified": false,
+  "failure": "Trust-region did not reach all exact physical endpoints"
+}

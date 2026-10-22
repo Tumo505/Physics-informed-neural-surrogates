@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "passed": true,
+  "full_cycle": false,
+  "records": [
+    {
+      "time_s": 0.250625,
+      "native_residual_N": 3.8018679299105706e-11,
+      "endpoint_minimum_Bernstein_bound": 0.9107840806269804,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.9056367264483675,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 2.6495668192574673e-15
+    },
+    {
+      "time_s": 0.25125000000000003,
+      "native_residual_N": 1.3689597981842395e-12,
+      "endpoint_minimum_Bernstein_bound": 0.9189027543997582,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.9157465569531766,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 7.014101242478314e-15
+    }
+  ],
+  "dt_s": 0.000625,
+  "final_checkpoint_history_relative_errors": {
+    "u": 0.0,
+    "u_old": 0.0,
+    "v_old": 5.296846529163252e-15,
+    "a_old": 1.6093199412440938e-13
+  },
+  "accepted_prefix_only": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "a3cb85442eb4a1dc6a1af70f9c73005fa0d10b09ffe254e1be0ceac42b0ab437",
+  "original_checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "fields_sha256": "9ad40bd5c1c0f8de5a918e4d5e9f2eab370bdab21f91d6c70e4bbd9e8c0727bb",
+  "inputs_sha256": "d5e2dfd90a39a8fe4f5e411378cd83ab8c53809057b8a43c4e37d6a014265ea6",
+  "executed_source_sha256": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+  "scope": "2 local probe steps with inherited nonzero histories, not a full-cycle reference. The recorded protocol specifies whether time discretization changed. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities and independent canonical-quadrature/UFL displacement norms checked at 2 fixed frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim."
+}

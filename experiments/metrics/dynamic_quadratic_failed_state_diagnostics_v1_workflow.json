@@ -1,0 +1,26 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_failed_state_diagnostics_v1.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_failed_state_diagnostics_v1.json",
+    "max_phase_seconds": 2100.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 2400.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "native_diagnostics",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 188.55443541589193,
+      "sampled_peak_RSS_bytes": 21101772800
+    }
+  ],
+  "active_phase": "finished",
+  "total_wall_seconds": 188.5568805418443,
+  "diagnostics_complete": true,
+  "tangent_checks_passed": true
+}

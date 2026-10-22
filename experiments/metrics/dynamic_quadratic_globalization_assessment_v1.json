@@ -1,0 +1,17 @@
+{
+  "complete": true,
+  "physical_step_recovered": false,
+  "trust_region_control_qualified": false,
+  "failed_control_time_s": 0.275625,
+  "failed_SNES_reason": -4,
+  "failed_native_reason": "DIVERGED_FUNCTION_NANORINF",
+  "failed_control_iterations": 0,
+  "failed_step_test_launched": false,
+  "trust_control_sha256": "567170f5d53d158d2c144ecafe67b229eab7ec34220681ee6750c8d73d6de431",
+  "deformation_diagnostic_sha256": "03226a712421050ed51e6d444d2b713a2defe946c85e27e35f4e74a95add6b9a",
+  "deformation_source_sha256": "7c050ac4b1faec2d5afbec146028d1864e06f197466333c465c4ece35793b88a",
+  "next_protocol": "configs/physics/dynamic_quadratic_mpi_admissible_study_v1.json",
+  "next_protocol_sha256": "8ace9011eadb56edf8f8c222581a923b92bfb20d8f1b3cee33e0d7faf5703883",
+  "rationale": "Trust-region control passed coarse equations but failed the known loaded equation with a nonfinite function evaluation. Its failed-step gate correctly stayed closed. Preserved initial diagnostic states have whole-element positive endpoint/stress determinants; no saved offending trust trial exists,so nonfinite cause cannot be attributed specifically to inversion. Next separate combined protocol uses tight true linear solves and explicit force-decreasing/whole-element-positive backtracking. Root correctness and numerical qualification remain separate.",
+  "scope": "Diagnostic and negative-control evidence. No physical root,trained model,calibration or test result is claimed."
+}

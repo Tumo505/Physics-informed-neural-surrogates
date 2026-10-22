@@ -1,0 +1,72 @@
+{
+  "complete": true,
+  "finished": true,
+  "all_requested_steps_accepted": false,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "9c64303550f0920a82dd975a471791330acbc6112421a98952e803a5d16bf555",
+  "source_sha256": "d072cd911e284650fc1bb3649be4f46defb1f99f566ea98d54c0ed1b9a5cc6d1",
+  "checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "reference_config_sha256": "5725147217290e5bf505a8d9fe7973e4606670f190b0abba8b0ddafc06d95b48",
+  "dt_s": 0.000625,
+  "parallel_ranks": 6,
+  "records": [],
+  "engineering_roots": [],
+  "attempts": [
+    {
+      "step": 440,
+      "time_s": 0.275625,
+      "accepted": false,
+      "SNES_reason": -4,
+      "residual_N": 0.49973384464634063,
+      "nonlinear_iterations": 0,
+      "seconds": 124.67229595803656,
+      "SNES_type": "newtontr",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": null,
+      "whole_element_proof": null,
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "native_residual_N": 0.49973384464634063
+        }
+      ]
+    }
+  ],
+  "scope": "Prospective bounded exact-equation PETSc Newton trust-region control after failed-state force/history/tangent and true linear residual diagnostics passed. Original mesh,dt,Q6,material,loads,histories,strict1e-8N/zero-relative/100Newton acceptance unchanged. Compared with failed EW/backtracking method,globalization changes to newtontr and linear solves tighten to fixedGMRES1e-8relative/1e-12Nabsolute/max3000/EWoff. Trust radius uses coefficientL2 scale max(norm previousu,1micrometre*sqrt(ndof)): initial0.05scale,min1e-12scale,maxscale; thus computational scale is mesh-dependent and separately qualified. Minimum finite native residual among original4 initialization candidates. Whole-element positivity before physical history update. Known coarse2steps and knownloadedR2 controls independently audited before failedstep. No new fullcycle restart or ML training follows a local success.",
+  "resumed_checkpoint_sha256": "ff928a2f009474ab3a885358ceccd05a1570fc4afed7d837a2166d47d02f877f",
+  "previous_history_checkpoint_sha256": "d45b70a590fcdca7f91d56d962a10448e3121ef4e5dfcf2fb5beab576e34322a",
+  "start_step": 440,
+  "initializations": [
+    {
+      "step": 440,
+      "predictor_residuals_N": [
+        1.125168500229324,
+        null,
+        null,
+        0.49973384464634063
+      ],
+      "selected_predictor": 3,
+      "coefficient_L2_scale_m": 37.546721793666045,
+      "trust_region_initial_radius_m": 1.8773360896833022
+    }
+  ],
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "native_residual_N": 0.49973384464634063
+    }
+  ],
+  "failure": "Strict trust-region physical endpoint admission failed",
+  "wall_seconds": 131.7063937918283
+}

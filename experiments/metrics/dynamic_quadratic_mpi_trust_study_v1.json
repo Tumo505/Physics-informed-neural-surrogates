@@ -1,0 +1,18 @@
+{
+  "complete": true,
+  "study_validation_passed": false,
+  "phases": [
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi_trust_coarse_v1.json",
+      "independent_local_audit_passed": true
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi_trust_loaded_control_v1.json",
+      "independent_local_audit_passed": false
+    }
+  ],
+  "scope": "Prospective bounded exact-equation PETSc Newton trust-region control after failed-state force/history/tangent and true linear residual diagnostics passed. Original mesh,dt,Q6,material,loads,histories,strict1e-8N/zero-relative/100Newton acceptance unchanged. Compared with failed EW/backtracking method,globalization changes to newtontr and linear solves tighten to fixedGMRES1e-8relative/1e-12Nabsolute/max3000/EWoff. Trust radius uses coefficientL2 scale max(norm previousu,1micrometre*sqrt(ndof)): initial0.05scale,min1e-12scale,maxscale; thus computational scale is mesh-dependent and separately qualified. Minimum finite native residual among original4 initialization candidates. Whole-element positivity before physical history update. Known coarse2steps and knownloadedR2 controls independently audited before failedstep. No new fullcycle restart or ML training follows a local success.",
+  "wall_seconds": 158.80375429196283,
+  "active_protocol": "finished",
+  "failure": "Qualification/recovery gate failed: configs/physics/dynamic_quadratic_mpi_trust_loaded_control_v1.json"
+}

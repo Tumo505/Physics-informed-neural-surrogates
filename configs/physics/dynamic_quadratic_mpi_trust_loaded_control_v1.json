@@ -1,0 +1,34 @@
+{
+  "parallel_ranks": 6,
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "frozen_source_sha256": {
+    "scripts/probe_parallel_trust_region.py": "d072cd911e284650fc1bb3649be4f46defb1f99f566ea98d54c0ed1b9a5cc6d1",
+    "scripts/run_bounded_trust_region.py": "8818cc8be3a4fd824fdeb35d772db48bfb8dec16875c3798c08f61d03e9fd3f7",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+    "scripts/verify_quadratic_substep_probe.py": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+    "scripts/resolve_quadratic_positivity.py": "01131f0d2ba6377d01be2388b71a6a1b44372b2178f08e3dd041dff7f5149bca",
+    "scripts/combine_quadratic_probe_audits.py": "37979b89d2a9367d230b8be8d4a5e7c1dcb623305c0aef3f6e5cce7bf03bd47a"
+  },
+  "scope": "Prospective bounded exact-equation PETSc Newton trust-region control after failed-state force/history/tangent and true linear residual diagnostics passed. Original mesh,dt,Q6,material,loads,histories,strict1e-8N/zero-relative/100Newton acceptance unchanged. Compared with failed EW/backtracking method,globalization changes to newtontr and linear solves tighten to fixedGMRES1e-8relative/1e-12Nabsolute/max3000/EWoff. Trust radius uses coefficientL2 scale max(norm previousu,1micrometre*sqrt(ndof)): initial0.05scale,min1e-12scale,maxscale; thus computational scale is mesh-dependent and separately qualified. Minimum finite native residual among original4 initialization candidates. Whole-element positivity before physical history update. Known coarse2steps and knownloadedR2 controls independently audited before failedstep. No new fullcycle restart or ML training follows a local success.",
+  "output": "experiments/metrics/dynamic_quadratic_mpi_trust_loaded_control_v1.json",
+  "fields": "experiments/logs/dynamic_quadratic_mpi_trust_loaded_control_v1_fields.npy",
+  "checkpoint": "experiments/logs/dynamic_quadratic_mpi_trust_loaded_control_v1_restart.npz",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_mpi_trust_loaded_control_v1_UNACCEPTED_iterate.npz",
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "reference_config": "configs/physics/dynamic_quadratic_reference_halfstep_ew_third.json",
+  "wall_budget_seconds": 1800,
+  "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_best_predictor_pilot.json",
+  "previous_history_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+  "serial_target_protocol": "configs/physics/dynamic_quadratic_parallel_accepted_prefix.json",
+  "required_audits": [
+    "experiments/metrics/dynamic_quadratic_mpi_trust_coarse_v1_verification.json",
+    "experiments/metrics/dynamic_quadratic_parallel_accepted_prefix_verification_resolved.json"
+  ],
+  "diagnostic_gate": "experiments/metrics/dynamic_quadratic_failed_state_diagnostics_v1.json",
+  "diagnostic_gate_sha256": "cb7b09a98bcd9ef593ae7de7041036a42dfc83b0f3ec48d2a10733674e055c8a"
+}

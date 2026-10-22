@@ -1,0 +1,234 @@
+{
+  "complete": true,
+  "finished": true,
+  "all_requested_steps_accepted": true,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "167a4be0faa799f8903d43562981c44abe0f75f2550284c0dde7d2b4cc9cb847",
+  "source_sha256": "d072cd911e284650fc1bb3649be4f46defb1f99f566ea98d54c0ed1b9a5cc6d1",
+  "checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "reference_config_sha256": "15e5bf12c478ba3a64c60cc6fcefec92e3bb75396e5de92134b16aaf654e4918",
+  "dt_s": 0.000625,
+  "parallel_ranks": 6,
+  "records": [
+    {
+      "step": 400,
+      "time_s": 0.250625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 3.802200917855048e-11,
+      "nonlinear_iterations": 3,
+      "seconds": 2.144481083145365,
+      "SNES_type": "newtontr",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 3.6494754700883147e-13
+    },
+    {
+      "step": 401,
+      "time_s": 0.25125000000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.360458533688329e-12,
+      "nonlinear_iterations": 4,
+      "seconds": 2.1250097919255495,
+      "SNES_type": "newtontr",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 4.659311131360866e-13
+    }
+  ],
+  "engineering_roots": [],
+  "attempts": [
+    {
+      "step": 400,
+      "time_s": 0.250625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 3.802200917855048e-11,
+      "nonlinear_iterations": 3,
+      "seconds": 2.144481083145365,
+      "SNES_type": "newtontr",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 3.6494754700883147e-13,
+      "whole_element_proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9107840806269802,
+          "minimum_parent_Bernstein_bound": 0.9107840806269802,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9056367264483673,
+          "minimum_parent_Bernstein_bound": 0.9056367264483673,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+          "passed": true
+        }
+      },
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "native_residual_N": 0.5158376319780636
+        },
+        {
+          "iteration": 1,
+          "native_residual_N": 0.008039897028327478
+        },
+        {
+          "iteration": 2,
+          "native_residual_N": 8.796959581224117e-06
+        },
+        {
+          "iteration": 3,
+          "native_residual_N": 3.8022009175805696e-11
+        }
+      ]
+    },
+    {
+      "step": 401,
+      "time_s": 0.25125000000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.360458533688329e-12,
+      "nonlinear_iterations": 4,
+      "seconds": 2.1250097919255495,
+      "SNES_type": "newtontr",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 4.659311131360866e-13,
+      "whole_element_proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9189027543997629,
+          "minimum_parent_Bernstein_bound": 0.9189027543997629,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9157465569531756,
+          "minimum_parent_Bernstein_bound": 0.9157465569531756,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+          "passed": true
+        }
+      },
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "native_residual_N": 0.6921257321406162
+        },
+        {
+          "iteration": 1,
+          "native_residual_N": 0.017046347704041443
+        },
+        {
+          "iteration": 2,
+          "native_residual_N": 0.00010164067058991229
+        },
+        {
+          "iteration": 3,
+          "native_residual_N": 1.1419806427598008e-08
+        },
+        {
+          "iteration": 4,
+          "native_residual_N": 1.3604585288781682e-12
+        }
+      ]
+    }
+  ],
+  "scope": "Prospective bounded exact-equation PETSc Newton trust-region control after failed-state force/history/tangent and true linear residual diagnostics passed. Original mesh,dt,Q6,material,loads,histories,strict1e-8N/zero-relative/100Newton acceptance unchanged. Compared with failed EW/backtracking method,globalization changes to newtontr and linear solves tighten to fixedGMRES1e-8relative/1e-12Nabsolute/max3000/EWoff. Trust radius uses coefficientL2 scale max(norm previousu,1micrometre*sqrt(ndof)): initial0.05scale,min1e-12scale,maxscale; thus computational scale is mesh-dependent and separately qualified. Minimum finite native residual among original4 initialization candidates. Whole-element positivity before physical history update. Known coarse2steps and knownloadedR2 controls independently audited before failedstep. No new fullcycle restart or ML training follows a local success.",
+  "start_step": 400,
+  "initializations": [
+    {
+      "step": 400,
+      "predictor_residuals_N": [
+        10.629017596235979,
+        1.1619858823802391,
+        0.5158376319780636,
+        17.783321060186513
+      ],
+      "selected_predictor": 2,
+      "coefficient_L2_scale_m": 2.473619669170012,
+      "trust_region_initial_radius_m": 0.1236809834585006
+    },
+    {
+      "step": 401,
+      "predictor_residuals_N": [
+        10.386148024376032,
+        1.261480396551309,
+        0.6921257321406162,
+        17.450555555916594
+      ],
+      "selected_predictor": 2,
+      "coefficient_L2_scale_m": 2.53052555634602,
+      "trust_region_initial_radius_m": 0.126526277817301
+    }
+  ],
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "native_residual_N": 0.6921257321406162
+    },
+    {
+      "iteration": 1,
+      "native_residual_N": 0.017046347704041443
+    },
+    {
+      "iteration": 2,
+      "native_residual_N": 0.00010164067058991229
+    },
+    {
+      "iteration": 3,
+      "native_residual_N": 1.1419806427598008e-08
+    },
+    {
+      "iteration": 4,
+      "native_residual_N": 1.3604585288781682e-12
+    }
+  ],
+  "probe_checkpoint_sha256": "da1092568f28c29ca102d7be92916c38a768531dec30f849c338a9d6a23743f1",
+  "wall_seconds": 4.55664070812054
+}

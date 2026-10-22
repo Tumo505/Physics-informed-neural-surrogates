@@ -1,0 +1,19 @@
+{
+  "parallel_ranks": 6,
+  "recovery_protocol": "configs/physics/dynamic_quadratic_mpi_history_failed_step_v1.json",
+  "output": "experiments/metrics/dynamic_quadratic_failed_state_diagnostics_v1.json",
+  "direction_seed": 20271022,
+  "finite_difference_steps_m": [
+    1e-07,
+    3e-08,
+    1e-08
+  ],
+  "tangent_relative_tolerance": 0.0001,
+  "native_wall_budget_seconds": 1800,
+  "source_sha256": {
+    "scripts/diagnose_parallel_failed_equation.py": "e2b3d429eaad8edb34ae412fcf8b2f83ccb6018f239c32ad1ff74482a2c253f6",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31"
+  },
+  "scope": "Read-only failed-state diagnostic at exact immutable anchor,converged engineering root,stalled engineering iterate,and exact failed equation at that initialization. Native tangent actions versus centered finite differences in two fixed directions; true linear residuals for tight GMRES/GAMG solves. No nonlinear step,reference,state promotion or training. Directional checks cannot prove full tangent correctness,conditioning or branch existence. Histories and pressures pinned to original recovery provenance. Tolerance1e-4 applies only to finite-difference diagnostic,not physical acceptance."
+}

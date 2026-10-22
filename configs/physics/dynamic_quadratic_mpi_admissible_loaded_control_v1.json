@@ -1,0 +1,42 @@
+{
+  "parallel_ranks": 6,
+  "steps_after_checkpoint": 1,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "frozen_source_sha256": {
+    "scripts/probe_parallel_admissible_newton.py": "d3882efba53d7f60bc71dd35fa51d0a6ba6f2fb3a2fe744e55a46966c4ca5699",
+    "scripts/run_bounded_admissible_newton.py": "6e6b75e54f8980f2214750021a89b9a171e3add8514a83857c370b54713e7106",
+    "src/lv_surrogate/physics/admissible_newton.py": "7d425566d776ec090a17363858973caf2b63b0bbe1d90a502d50b994156012c6",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "scripts/verify_quadratic_substep_probe.py": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+    "scripts/resolve_quadratic_positivity.py": "01131f0d2ba6377d01be2388b71a6a1b44372b2178f08e3dd041dff7f5149bca",
+    "scripts/combine_quadratic_probe_audits.py": "37979b89d2a9367d230b8be8d4a5e7c1dcb623305c0aef3f6e5cce7bf03bd47a"
+  },
+  "scope": "Diagnostic-guided admissibility-aware Armijo Newton control. Native tangent verified at preserved states; tight true linear solves achievable; default trust-region loaded control failed with nonfinite function after initialstate. Exact cached mesh,dt,Q6,material,load,histories and final force1e-8N unchanged. Custom Newton uses assembled true tangent,GMRES/GAMG1e-8relative/1e-12Nabsolute/max3000; independently measured true linear residual must pass. Each trial must decrease exact native force by Armijo constant1e-4 and pass whole-element endpoint/stress positivity; rejected steps halve up to20times and rollback. Custom force target1e-9N; max100custom iterations. A fresh real native SNES at unchanged final equation must confirm positive stopping with zero Newtonupdates; no SNES reason is synthesized. Independent native/field/norm/history/hash/whole-element audits mandatory; no fullcycle or ML claim from a localpass.",
+  "output": "experiments/metrics/dynamic_quadratic_mpi_admissible_loaded_control_v1.json",
+  "fields": "experiments/logs/dynamic_quadratic_mpi_admissible_loaded_control_v1_fields.npy",
+  "checkpoint": "experiments/logs/dynamic_quadratic_mpi_admissible_loaded_control_v1_restart.npz",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_mpi_admissible_loaded_control_v1_UNACCEPTED_iterate.npz",
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "reference_config": "configs/physics/dynamic_quadratic_reference_halfstep_ew_third.json",
+  "wall_budget_seconds": 1800,
+  "resume_probe_protocol": "configs/physics/dynamic_quadratic_third_best_predictor_pilot.json",
+  "previous_history_protocol": "configs/physics/dynamic_quadratic_third_stress_predictor_consecutive.json",
+  "serial_target_protocol": "configs/physics/dynamic_quadratic_parallel_accepted_prefix.json",
+  "required_audits": [
+    "experiments/metrics/dynamic_quadratic_mpi_admissible_coarse_v1_verification.json",
+    "experiments/metrics/dynamic_quadratic_parallel_accepted_prefix_verification_resolved.json"
+  ],
+  "diagnostic_gate": "experiments/metrics/dynamic_quadratic_failed_state_diagnostics_v1.json",
+  "diagnostic_gate_sha256": "cb7b09a98bcd9ef593ae7de7041036a42dfc83b0f3ec48d2a10733674e055c8a",
+  "admissible_newton": {
+    "maximum_custom_newton_iterations": 100,
+    "maximum_backtracks": 20,
+    "custom_absolute_tolerance_N": 1e-09,
+    "armijo_constant": 0.0001
+  },
+  "motivating_failed_control_sha256": "567170f5d53d158d2c144ecafe67b229eab7ec34220681ee6750c8d73d6de431"
+}
