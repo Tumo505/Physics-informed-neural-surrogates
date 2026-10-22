@@ -1,0 +1,26 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_mpi_history_failed_step_v1.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_mpi_history_failed_step_v1.json",
+    "max_phase_seconds": 6300.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 7200.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 5434.853400541935,
+      "sampled_peak_RSS_bytes": 27056865280
+    }
+  ],
+  "active_phase": "stopped",
+  "total_wall_seconds": 5434.854894583812,
+  "local_recovery_verified": false,
+  "failure": "Homotopy did not reach all exact physical endpoints"
+}

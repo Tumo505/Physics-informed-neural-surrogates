@@ -1,0 +1,22 @@
+{
+  "complete": true,
+  "study_validation_passed": false,
+  "phases": [
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi_history_coarse_v1.json",
+      "independent_local_audit_passed": true
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi_history_loaded_control_v1.json",
+      "independent_local_audit_passed": true
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi_history_failed_step_v1.json",
+      "independent_local_audit_passed": false
+    }
+  ],
+  "scope": "Prospective separately qualified MPI6 adaptive history/load homotopy. Replay prior accepted equation at strict force; interpolate only engineering histories/pressure. Roll back failed increments,halve step; no physical history updates before exact fraction1. Whole-element endpoint/stress positivity for every accepted engineering root. Require exact final histories/pressure,positive native SNES and1e-8N,then independent native/norm/history/hash and whole-element audit. No full-cycle restart follows a single recovery; nonlinear robustness and runtime must first be demonstrated over consecutive new equations. Preserve all original failures and20 frozen neural checkpoints.",
+  "wall_seconds": 6358.839519707952,
+  "active_protocol": "finished",
+  "failure": "Qualification/recovery gate failed: configs/physics/dynamic_quadratic_mpi_history_failed_step_v1.json"
+}

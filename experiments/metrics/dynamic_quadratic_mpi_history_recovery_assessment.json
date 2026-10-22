@@ -1,0 +1,41 @@
+{
+  "complete": true,
+  "passed": false,
+  "physical_step_recovered": false,
+  "study_validation_passed": false,
+  "target_step": 441,
+  "target_time_s": 0.27625,
+  "physical_accepted_end_time_s": 0.275625,
+  "total_attempts": 16,
+  "accepted_engineering_roots": 7,
+  "last_accepted_fraction": 0.366729736328125,
+  "last_accepted_recorded_force_N": 9.801886457407259e-11,
+  "last_accepted_SNES_reason": 2,
+  "last_attempt_fraction": 0.3734039306640625,
+  "last_attempt_recorded_force_N": 2.4279063255285456e-05,
+  "last_attempt_SNES_reason": 0,
+  "last_attempt_rejected": true,
+  "stop_reason": "Declared total native recovery wall budget exhausted",
+  "native_wall_seconds": 5425.592871082947,
+  "workflow_wall_seconds": 5434.854894583812,
+  "native_budget_seconds": 5400,
+  "peak_process_tree_RSS_bytes": 27056865280,
+  "native_terminal_diagnostic": "PETSc error101 wraps the Python total-wall-budget exception in the SNES monitor; reason0 is not positive convergence and the last iterate was rejected.",
+  "qualification_controls_passed": [
+    "two coarse archived equations",
+    "one loaded archived R2 equation"
+  ],
+  "conclusion": "Implemented method qualified on controls but failed to recover the next physical equation within the declared budget. A sequence of converged positive intermediate roots does not establish existence, uniqueness, branch connectivity or eventual success at fraction1.",
+  "remaining_gaps": [
+    "A demonstrably robust nonlinear globalization/branch-following protocol at the exact failed equation, with unchanged strict acceptance. Longer wall time alone has no demonstrated success guarantee.",
+    "Consecutive loaded-step reliability and runtime feasibility before any full-cycle restart.",
+    "Full-cycle R2 native/whole-element/hash/norm/history audits and unchanged1% numerical mesh/time/quadrature qualification across geometry/load designs.",
+    "Qualified-reference full-P2 training/gradient/transfer verification, independent finer-reference calibration and untouched frozen final comparison."
+  ],
+  "scope": "Passive idealized-geometry problem. No new physical state, model, calibration or test outcome is claimed; original failed11.8666%/12.3758% mesh and1.5715% Q6 gates preserved.",
+  "evidence_sha256": {
+    "experiments/metrics/dynamic_quadratic_mpi_history_failed_step_v1.json": "c1233cd8f16987e4a7971ab3f70b230088f79a456056f0ab2489efd4e6aeb698",
+    "experiments/metrics/dynamic_quadratic_mpi_history_failed_step_v1_workflow.json": "f951c6ac9a8c2f0cae77b7656b94188ca890b3e04ff70c99b9670d6507685ea7",
+    "experiments/logs/dynamic_quadratic_mpi_history_failed_step_v1_solve.log": "4e6e160a9d2777837baf6b2ec9603c3eda55d462d2ec1e2da063e50b739d5bb8"
+  }
+}
