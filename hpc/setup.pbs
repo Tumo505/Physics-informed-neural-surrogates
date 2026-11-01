@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -N cmbbe_setup
-#PBS -q normal
-#PBS -l software=PBSJobApp
-#PBS -l select=1:ncpus=2:mem=8gb
+#PBS -q workq
+#PBS -l software=test
+#PBS -l select=1:ncpus=4:mem=32gb
 #PBS -l walltime=02:00:00
 #PBS -j oe
 set -uo pipefail

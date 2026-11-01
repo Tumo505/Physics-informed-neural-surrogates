@@ -1,0 +1,52 @@
+{
+  "source_document": "Accessing_the_HPC_v1.41.pdf",
+  "source_document_sha256": "67c5bdd0096328905ba6c32cea2fdd58344820b9f154bcc1afae000f0e67c663",
+  "source_document_created": "2023-05-09",
+  "review_date": "2026-11-01",
+  "cluster_commands_executed_by_agent": false,
+  "offcampus_route": [
+    "ssh.unisa.ac.za",
+    "hpc.unisa.ac.za"
+  ],
+  "current_gw01_identity_unconfirmed": true,
+  "documented_nodes": {
+    "standard": {
+      "cores": 28,
+      "RAM_GB": 256,
+      "queue": "workq"
+    },
+    "fat": {
+      "cores": 64,
+      "RAM_TB": 1,
+      "queue": "fat"
+    },
+    "gpu": {
+      "cores": 28,
+      "host_RAM_GB": 512,
+      "P100_VRAM_GB": 16
+    }
+  },
+  "live_inventory_required": true,
+  "software_labels": {
+    "setup": "test",
+    "custom_application": "unisa"
+  },
+  "new_setup_request": {
+    "queue": "workq",
+    "cpus": 4,
+    "memory_GB": 32
+  },
+  "new_prepare_defaults": {
+    "queue": "workq",
+    "cpus": 28,
+    "memory_GB": 240,
+    "placement": "excl",
+    "initial_MPI_ranks": 12
+  },
+  "resource_policy": "Documented capacity is not live verified. Request larger allocation when measured workload requires it; qualify rank scaling using known-field controls. Retain host-memory, disk and scientific acceptance guards. No multi-node or GPU acceleration claimed.",
+  "checks": {
+    "hpc_registration_tests_passed": 7,
+    "python_compile": true,
+    "shell_syntax": true
+  }
+}

@@ -62,11 +62,11 @@ def test_explicit_environment_package_comparison(tmp_path):
 
 def test_pbs_submissions_include_site_software_and_dependencies(tmp_path):
  import os,subprocess
- run=tmp_path/'run';run.mkdir();atomic(run/'plan.json',dict(run_id='test',job_hours=3,queue='fat',cpus=16,memory_gb=96,software='PBSJobApp'))
+ run=tmp_path/'run';run.mkdir();atomic(run/'plan.json',dict(run_id='test',job_hours=3,queue='fat',cpus=16,memory_gb=96,software='unisa',placement='excl'))
  bindir=tmp_path/'bin';bindir.mkdir();qsub=bindir/'qsub';qsub.write_text('#!/bin/sh\necho 123.server\n');qsub.chmod(0o755)
  env=dict(os.environ,PATH=str(bindir)+os.pathsep+os.environ['PATH'])
  subprocess.run([sys.executable,str(ROOT/'hpc/submit.py'),'--run',str(run),'--jobs','2'],env=env,check=True,capture_output=True,text=True)
  rows=[r for r in read(run) if r['kind']=='job_submission'];assert len(rows)==2
  for row in rows:
-  assert 'software=PBSJobApp' in row['argv'] and row['return_code']==0
+  assert 'software=unisa' in row['argv'] and 'place=excl' in row['argv'] and row['return_code']==0
  assert 'depend=afterok:123.server' in rows[1]['argv']
