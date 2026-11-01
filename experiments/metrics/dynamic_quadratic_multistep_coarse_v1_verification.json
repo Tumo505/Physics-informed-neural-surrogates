@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "passed": true,
+  "full_cycle": false,
+  "records": [
+    {
+      "time_s": 0.251875,
+      "native_residual_N": 1.414990259436822e-12,
+      "endpoint_minimum_Bernstein_bound": 0.9248046556750508,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.9208316257324206,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 1.435778420092537e-16
+    },
+    {
+      "time_s": 0.2525,
+      "native_residual_N": 1.3890294831601972e-12,
+      "endpoint_minimum_Bernstein_bound": 0.9173990661868796,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.9218312940159373,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 1.2496540094451083e-15
+    }
+  ],
+  "dt_s": 0.000625,
+  "final_checkpoint_history_relative_errors": {
+    "u": 0.0,
+    "u_old": 0.0,
+    "v_old": 0.0,
+    "a_old": 0.0
+  },
+  "accepted_prefix_only": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "de57fced4eaeb844befdb20f64c74a1343d399f9f53796ebed63c938f6ffe8c2",
+  "original_checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "fields_sha256": "671ea34b88bd71990a4bb32878e5b8aeae17abf07f33a16808129f64f6afa809",
+  "inputs_sha256": "d5e2dfd90a39a8fe4f5e411378cd83ab8c53809057b8a43c4e37d6a014265ea6",
+  "executed_source_sha256": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+  "scope": "2 local probe steps with inherited nonzero histories, not a full-cycle reference. The recorded protocol specifies whether time discretization changed. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities and independent canonical-quadrature/UFL displacement norms checked at 2 fixed frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim."
+}

@@ -1,0 +1,46 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_cauchy_loaded_control_v1.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_cauchy_loaded_control_v1.json",
+    "max_phase_seconds": 3000.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 4200.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 465.6386859999038,
+      "sampled_peak_RSS_bytes": 26869776384
+    },
+    {
+      "phase": "audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 111.1231574579142,
+      "sampled_peak_RSS_bytes": 10566303744
+    },
+    {
+      "phase": "resolve_positivity",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 18.1963545831386,
+      "sampled_peak_RSS_bytes": 5917032448
+    },
+    {
+      "phase": "compose_audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.032870375085622,
+      "sampled_peak_RSS_bytes": 2850816
+    }
+  ],
+  "active_phase": "finished",
+  "total_wall_seconds": 597.007009458961,
+  "local_recovery_verified": true
+}

@@ -1,0 +1,37 @@
+{
+  "complete": true,
+  "passed_known_field_equivalence": true,
+  "full_cycle_restart_qualified": false,
+  "parallel_ranks": [
+    6,
+    12
+  ],
+  "known_equation_times_s": [
+    0.276875,
+    0.2775
+  ],
+  "baseline_case_seconds": [
+    450.11234845779836,
+    353.3989055000711
+  ],
+  "mpi12_case_seconds": [
+    366.27730512502603,
+    313.63586708297953
+  ],
+  "case_speedups": [
+    1.2288840781553634,
+    1.1267809029206834
+  ],
+  "aggregate_solve_speedup": 1.181785096688863,
+  "native_wall_speedup": 1.1748749200628534,
+  "remaining_steps": 1156,
+  "flat_solve_cost_scenario_hours": 109.16383709339645,
+  "flat_native_wall_cost_scenario_hours": 114.1585063260209,
+  "per_reference_budget_hours": 72,
+  "known_field_max_coefficient_differences_m": [
+    6.599321783484768e-15,
+    8.163513810256762e-15
+  ],
+  "maximum_independent_norm_relative_error": 7.160187248310759e-14,
+  "scope": "Matched known physical equations and same unchanged method/physics,canonical fields,Newtoncounts and independent final checks. Cost scenarios are not ETAs or claims of uniform future cost. Throughput improved but72h full-reference feasibility remains unqualified."
+}

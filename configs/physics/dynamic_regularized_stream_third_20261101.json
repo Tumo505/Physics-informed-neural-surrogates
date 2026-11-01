@@ -1,0 +1,84 @@
+{
+  "config": "configs/physics/dynamic_regularized_stream_third_20261101_reference.json",
+  "source_reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "seed_reference": "cardiac_quadratic_reference_halfstep_mpi6_third_v1",
+  "base_seed_steps": 441,
+  "seed_steps": 458,
+  "parallel_ranks": 12,
+  "per_step_wall_seconds": 1800,
+  "resource_protocol": {
+    "native_hours": 168,
+    "cumulative_pipeline_hours": 192,
+    "per_step_seconds": 1800,
+    "process_tree_RSS_GiB": 30,
+    "free_disk_reserve_GiB": 100,
+    "authorization": "2026-11-01 user instructed continue and complete after disclosed115hremainingversusold72hbudget. Separate prospective longerlocalprotocol;old72hprotocol/negativefindings unchanged. No purchases,pushes,publishing."
+  },
+  "frozen_source_sha256": {
+    "scripts/seed_regularized_reference.py": "82db63aa03452f1344c788a211fd5feac475ca33356feb377d729eeb52b1a7a9",
+    "scripts/generate_regularized_reference.py": "094c9fc4317236a1d06d9c1724f178dccfe9258b9d75ac77f1f71c43b2f7992d",
+    "scripts/audit_regularized_reference.py": "ce7455467f1196b48b9649c14c19dfbd3545b3f7d7554515fe9f72416b0b0b5b",
+    "scripts/run_regularized_full_reference.py": "ea6289d5cca8367990f47e80aa6116eb8c1082a6519e2046c2d8b31ae25dd94c",
+    "scripts/export_parallel_stream_probe.py": "0e907864cc1a5d83210a27af04bba3d2c99f5778ad9e6a9571f03b6780bfd5ab",
+    "scripts/verify_quadratic_substep_probe.py": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+    "scripts/finalize_parallel_reference.py": "188a74a7de5ffec8444242ab8fa95c19e1c661d25c4d57e2a785db940d91896a",
+    "scripts/compare_quadratic_references.py": "a9e90eedd0b6fbf44b7e706189875f439ec84302351cbc6348ebc2698c5b3133",
+    "src/lv_surrogate/physics/durable_reference.py": "b4318ef75995f768c68f430605021d0985b123841f15225777f357a0d0570f28",
+    "src/lv_surrogate/physics/admissible_newton_regularized_forcing.py": "a94f6162b4e9e58f0414f26842e9878e4639ba62d08202befac69669ed28287b",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "src/lv_surrogate/physics/threaded_bernstein.py": "32c29bade91e8ab4a3a4d0b473ac2f4cdf86ac730dff269cd3bf775bf3f19a89",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9"
+  },
+  "admissible_newton": {
+    "maximum_custom_newton_iterations": 100,
+    "maximum_backtracks": 20,
+    "custom_absolute_tolerance_N": 1e-09,
+    "armijo_constant": 0.0001,
+    "initial_regularization": 1.0,
+    "minimum_regularization": 1e-12,
+    "maximum_regularization": 100000000.0
+  },
+  "required_audit_sha256": {
+    "experiments/metrics/dynamic_regularized_stream_journal_qualification.json": "4916d126f9998901245d91437fde5db6ee75685ee4bb56b435b970c1cf16c4a1",
+    "experiments/metrics/dynamic_quadratic_regularized_extended_window_v1_verification_resolved.json": "f41480c10d7c447ca91795f0febd95833a938ac7b97d8577914cff4dfb97d130"
+  },
+  "scope": "Separate qualified regularized Newton/forcing rebuiltGAMG computational protocol,unchanged passiveidealizedphysicalproblem/dt/mesh/Q6/load/material/final1e-8N. Localcontinuationnew168hnative/192hpipelinebudget withdurableexactnativehistorytransactions. Fullnativeaudits/numericalconvergence and downstreamMLvalidation remain separate.",
+  "base_checkpoint": "data/processed/cardiac_quadratic_reference_halfstep_mpi6_third_v1/restart.npz",
+  "required_audits": [
+    "experiments/metrics/dynamic_regularized_stream_coarse_20261101_probe_verification.json"
+  ],
+  "probe_chain": [
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi_admissible_failed_step_v1.json",
+      "audit": "experiments/metrics/dynamic_quadratic_mpi_admissible_failed_step_v1_verification_resolved.json"
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi_admissible_consecutive_v1.json",
+      "audit": "experiments/metrics/dynamic_quadratic_mpi_admissible_consecutive_v1_verification_resolved.json"
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_multistep_window_v1.json",
+      "audit": "experiments/metrics/dynamic_quadratic_multistep_window_v1_verification_resolved.json",
+      "allow_verified_prefix": true
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_regularized_failed_step_v1.json",
+      "audit": "experiments/metrics/dynamic_quadratic_regularized_failed_step_v1_verification_resolved.json"
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_regularized_consecutive_window_v1.json",
+      "audit": "experiments/metrics/dynamic_quadratic_regularized_consecutive_window_v1_verification_resolved.json"
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_regularized_extended_window_v1.json",
+      "audit": "experiments/metrics/dynamic_quadratic_regularized_extended_window_v1_verification_resolved.json"
+    }
+  ],
+  "input_sha256": {
+    "data/processed/cardiac_quadratic_reference_halfstep_mpi6_third_v1/manifest.json": "74dbc18578c030ad3dad2f66b8402465fd3283bb123b80e893e068e08ef3ce7f",
+    "data/processed/cardiac_quadratic_reference_halfstep_mpi6_third_v1/restart.npz": "c65b84aed8d92860a08202e52a11aa600d0f2e6ce32f9157977d942c61e5d38a",
+    "data/processed/cardiac_quadratic_reference_halfstep_mpi6_third_v1/positivity.json": "62bc52964edd930f3510859c780075c685d08964f84cfc30fce8c5a46189f303"
+  }
+}

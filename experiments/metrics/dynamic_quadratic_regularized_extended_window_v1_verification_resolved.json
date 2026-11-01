@@ -1,0 +1,80 @@
+{
+  "complete": true,
+  "passed": true,
+  "full_cycle": false,
+  "records": [
+    {
+      "time_s": 0.284375,
+      "native_residual_N": 7.341764075270934e-12,
+      "endpoint_minimum_Bernstein_bound": 0.0008915710967285705,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.0002408975080490184,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 6.421090419595408e-14,
+      "original_endpoint_unresolved_elements": 54,
+      "original_endpoint_minimum_Bernstein_bound": -0.46033800252297224,
+      "original_stress_unresolved_elements": 53,
+      "original_stress_minimum_Bernstein_bound": -0.47567467632267224
+    },
+    {
+      "time_s": 0.28500000000000003,
+      "native_residual_N": 7.280918427747675e-12,
+      "endpoint_minimum_Bernstein_bound": 0.00042638109255033196,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.00023080813913898892,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 3.945513628095318e-14,
+      "original_endpoint_unresolved_elements": 57,
+      "original_endpoint_minimum_Bernstein_bound": -0.41008590120831034,
+      "original_stress_unresolved_elements": 55,
+      "original_stress_minimum_Bernstein_bound": -0.43026129251146505
+    },
+    {
+      "time_s": 0.285625,
+      "native_residual_N": 7.131102596139632e-12,
+      "endpoint_minimum_Bernstein_bound": 0.0027879321385872835,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.0016886053005158183,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 5.3767784553089265e-14,
+      "original_endpoint_unresolved_elements": 56,
+      "original_endpoint_minimum_Bernstein_bound": -0.41454725163534617,
+      "original_stress_unresolved_elements": 57,
+      "original_stress_minimum_Bernstein_bound": -0.3985961716413346
+    },
+    {
+      "time_s": 0.28625,
+      "native_residual_N": 7.012964218185927e-12,
+      "endpoint_minimum_Bernstein_bound": 0.0019618589813370974,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.0022918779904858586,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 1.4703050113803362e-14,
+      "original_endpoint_unresolved_elements": 53,
+      "original_endpoint_minimum_Bernstein_bound": -0.44150705571974486,
+      "original_stress_unresolved_elements": 56,
+      "original_stress_minimum_Bernstein_bound": -0.43075051109208257
+    }
+  ],
+  "dt_s": 0.000625,
+  "final_checkpoint_history_relative_errors": {
+    "u": 0.0,
+    "u_old": 0.0,
+    "v_old": 0.0,
+    "a_old": 0.0
+  },
+  "accepted_prefix_only": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "967b0c6f92186ddbc686d35236235355b66391b14958cd83f1498a3d6c3a75f0",
+  "original_checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "fields_sha256": "3abb83fce1fba90a4c1afbc5aa1a2a4c78f446858349e3cda22cb3180e220f7c",
+  "inputs_sha256": "932f5f3048514d2714d4922dd10ae6d0a1aef1117fc55f923d5ef66daefc62e3",
+  "executed_source_sha256": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+  "scope": "4 local probe steps with inherited nonzero histories, not a full-cycle reference. The recorded protocol specifies whether time discretization changed. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities and independent canonical-quadrature/UFL displacement norms checked at 4 fixed frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim. Original inconclusive parent bounds retained in the native audit; same-margin subdivision bounds composed here. No continuum, full-cycle or mesh-convergence claim.",
+  "supplemental_positivity": true,
+  "composed_audit_source_sha256": "37979b89d2a9367d230b8be8d4a5e7c1dcb623305c0aef3f6e5cce7bf03bd47a",
+  "audit_input_sha256": {
+    "experiments/metrics/dynamic_quadratic_regularized_extended_window_v1_verification.json": "4e2b01e7cdc826b57a107bc78932f2d12f6bbd9079960415fe106d3727a9907c",
+    "experiments/metrics/dynamic_quadratic_regularized_extended_window_v1_bernstein_refinement.json": "0fb8dfb6d31a1693b4da82909afbd38b9810967183ef28450956c6a1b46db2b8"
+  }
+}

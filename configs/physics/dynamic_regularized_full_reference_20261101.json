@@ -1,0 +1,31 @@
+{
+  "output": "experiments/metrics/dynamic_regularized_full_reference_20261101_workflow.json",
+  "coarse_stream_protocol": "configs/physics/dynamic_regularized_stream_coarse_20261101.json",
+  "full_stream_protocol": "configs/physics/dynamic_regularized_stream_third_20261101.json",
+  "coarse_probe_protocol": "configs/physics/dynamic_regularized_stream_coarse_20261101_probe.json",
+  "coarse_seed_audit": "experiments/metrics/dynamic_regularized_stream_coarse_20261101_seed_audit.json",
+  "coarse_probe_audit": "experiments/metrics/dynamic_regularized_stream_coarse_20261101_probe_verification.json",
+  "full_seed_audit": "experiments/metrics/dynamic_regularized_stream_third_20261101_seed_audit.json",
+  "final_audit": "experiments/metrics/dynamic_regularized_stream_third_20261101_final_audit.json",
+  "mesh_baseline_config": "configs/physics/dynamic_quadratic_reference_halfstep_ew_refined.json",
+  "mesh_comparison_output": "experiments/metrics/dynamic_regularized_R1_R2_fullcycle_20261101_mesh.json",
+  "cumulative_pipeline_hours": 192,
+  "frozen_source_sha256": {
+    "scripts/seed_regularized_reference.py": "82db63aa03452f1344c788a211fd5feac475ca33356feb377d729eeb52b1a7a9",
+    "scripts/generate_regularized_reference.py": "094c9fc4317236a1d06d9c1724f178dccfe9258b9d75ac77f1f71c43b2f7992d",
+    "scripts/audit_regularized_reference.py": "ce7455467f1196b48b9649c14c19dfbd3545b3f7d7554515fe9f72416b0b0b5b",
+    "scripts/run_regularized_full_reference.py": "ea6289d5cca8367990f47e80aa6116eb8c1082a6519e2046c2d8b31ae25dd94c",
+    "scripts/export_parallel_stream_probe.py": "0e907864cc1a5d83210a27af04bba3d2c99f5778ad9e6a9571f03b6780bfd5ab",
+    "scripts/verify_quadratic_substep_probe.py": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+    "scripts/finalize_parallel_reference.py": "188a74a7de5ffec8444242ab8fa95c19e1c661d25c4d57e2a785db940d91896a",
+    "scripts/compare_quadratic_references.py": "a9e90eedd0b6fbf44b7e706189875f439ec84302351cbc6348ebc2698c5b3133",
+    "src/lv_surrogate/physics/durable_reference.py": "b4318ef75995f768c68f430605021d0985b123841f15225777f357a0d0570f28",
+    "src/lv_surrogate/physics/admissible_newton_regularized_forcing.py": "a94f6162b4e9e58f0414f26842e9878e4639ba62d08202befac69669ed28287b",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "src/lv_surrogate/physics/threaded_bernstein.py": "32c29bade91e8ab4a3a4d0b473ac2f4cdf86ac730dff269cd3bf775bf3f19a89",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9"
+  },
+  "scope": "Prospective local192hcumulativepipeline including168hnativecontinuation. Qualifycoarseseedallstateaudit,one-step/stop/restart/secondstep/independentknownfieldaudit beforeseeding458-stateverifiedR2chain. IndependentlyreplayforceatEVERYseedstatebeforecontinuation. Thenrestartable full1600trajectory from458 withqualifiedkernel,strictphysics/positivity/nativecriteria,exactcheckpointjournals,perstep1800s,RSS30GiB/disk100GiB. Finalall1600nativeforces/norm/history/hash/whole-elementauditandR1/R2comparison. No automatictraining/calibration/newtestselection orpublishing;completedcalculationsarenotpassed1%convergence. Preservealloldfailedoutputs,20frozenmodels,passiveidealizedscope,oldtestseparation."
+}

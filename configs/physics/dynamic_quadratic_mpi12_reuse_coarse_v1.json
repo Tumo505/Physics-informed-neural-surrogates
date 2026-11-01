@@ -1,0 +1,38 @@
+{
+  "parallel_ranks": 12,
+  "steps_after_checkpoint": 2,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "frozen_source_sha256": {
+    "src/lv_surrogate/physics/admissible_newton_reuse.py": "6a73d8960aa2cc60de52eda58d06c524256929774ba43d90c0791cce69894752",
+    "scripts/probe_parallel_admissible_reuse.py": "74e11a50be7aa257b48557c0a7a8bc0675af96b5c5edc76278133e663607c53a",
+    "scripts/run_bounded_admissible_reuse.py": "f377139ba581fa46cffe9ccb7078e6fc180d82692223891c2ee6fd5f6ff6f332",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "scripts/verify_quadratic_substep_probe.py": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+    "scripts/resolve_quadratic_positivity.py": "01131f0d2ba6377d01be2388b71a6a1b44372b2178f08e3dd041dff7f5149bca",
+    "scripts/combine_quadratic_probe_audits.py": "37979b89d2a9367d230b8be8d4a5e7c1dcb623305c0aef3f6e5cce7bf03bd47a"
+  },
+  "scope": "Prospective12-rank known-equation throughput variant: same original physics/discretization/histories/load,custom Newton/Armijo/whole-element admission and strict nativefinalacceptance. Persist KSP/GAMG within each physical equation; reuse preconditioner after firstNewton linearization. Fresh true linear residual must meet unchanged max(1.1e-12N,1e-7*rhsnorm); if not,one explicitly recorded rebuild/re-solve with sameGMRES rtol1e-8,atol1e-12N,max3000 perattempt. No approximate update admitted without true residual qualification. Instrument Jassembly,PCsetup,linear solve and fallbackcounts. Same knowncoarse2thenknownloaded2 controls,archivedfield<1nm and independentforce/norm/history/hash/whole-element audits. Native600/2400s,phase900/3000s,workflow1500/4200s,RSS30GiB,disk100GiB,1thread/rank. One combined computational variant,not fullcycle/reference-convergence/ML validation.",
+  "output": "experiments/metrics/dynamic_quadratic_mpi12_reuse_coarse_v1.json",
+  "fields": "experiments/logs/dynamic_quadratic_mpi12_reuse_coarse_v1_fields.npy",
+  "checkpoint": "experiments/logs/dynamic_quadratic_mpi12_reuse_coarse_v1_restart.npz",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_mpi12_reuse_coarse_v1_UNACCEPTED_iterate.npz",
+  "reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+  "qualification_step": 400,
+  "wall_budget_seconds": 600,
+  "required_audits": [
+    "experiments/metrics/dynamic_quadratic_parallel_stream_coarse_qualification_v3_verification.json"
+  ],
+  "diagnostic_gate": "experiments/metrics/dynamic_quadratic_failed_state_diagnostics_v1.json",
+  "diagnostic_gate_sha256": "cb7b09a98bcd9ef593ae7de7041036a42dfc83b0f3ec48d2a10733674e055c8a",
+  "admissible_newton": {
+    "maximum_custom_newton_iterations": 100,
+    "maximum_backtracks": 20,
+    "custom_absolute_tolerance_N": 1e-09,
+    "armijo_constant": 0.0001
+  },
+  "motivating_failed_control_sha256": "567170f5d53d158d2c144ecafe67b229eab7ec34220681ee6750c8d73d6de431"
+}

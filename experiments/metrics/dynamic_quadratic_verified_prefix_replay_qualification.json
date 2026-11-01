@@ -1,0 +1,25 @@
+{
+  "complete": true,
+  "passed": true,
+  "implicit_prefix_consumption_rejected": true,
+  "next_step": 451,
+  "metadata": {
+    "parent_protocol_sha256": "fbfcd7818b211126eef90e2a95a53b5e739b5c10f51b3c378b2abce0ff631406",
+    "parent_output_sha256": "9b5140201a1ea804b7799ba585d0997f56ac54af9496c391c9ff4931fd4f04df",
+    "parent_audit_sha256": "40ac53c17e061ae0750e1fe9e75279a5de91d497372809794400b50554cb5959",
+    "parent_fields_sha256": "862cd360e4288a659ac688ed3b6a0f7e246711e56e66acf84db8e790a18230b9",
+    "parent_checkpoint_sha256": "c1239515749a2e69a2b9a20898fb47c54c625b32acb2d2d3dca26eabb700df4c",
+    "seed_history_sha256": "d698058a5eddc0c289cb3d91860eec435955c4de5467a23e1d93ec28f62b3087",
+    "parent_steps_replayed": 7,
+    "relative_history_errors": {
+      "u_old": 0.0,
+      "v_old": 1.9162098243977564e-16,
+      "a_old": 1.144542341430527e-14
+    },
+    "all_fields_causally_replayed": true,
+    "parent_original_requested_steps_completed": false,
+    "accepted_prefix_only_consumed": true
+  },
+  "source_sha256": "8adce846244c154788a15fb9df5f0144075a41a54af54a0a966790dd2f440722",
+  "scope": "Only the independently verified actual7-state prefix is consumed with explicit permission; original8-stepwindow remainsFAILED. Nativecurrentcheckpoint histories retained aftercausalreplay; immediateprevioushistory recovered. No new physical solve or label generated."
+}

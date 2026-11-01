@@ -1,0 +1,18 @@
+{
+  "protocols": [
+    "configs/physics/dynamic_quadratic_cauchy_coarse_v1.json",
+    "configs/physics/dynamic_quadratic_cauchy_loaded_control_v1.json",
+    "configs/physics/dynamic_quadratic_cauchy_failed_step_v1.json"
+  ],
+  "phase_budgets_seconds": [
+    1200,
+    3000,
+    4200
+  ],
+  "workflow_budgets_seconds": [
+    1800,
+    4200,
+    5400
+  ],
+  "scope": "Prospective Newton-Cauchy safeguard qualification. Known coarse2 then known loaded2 force first custom iteration through residual-model Cauchy branch; reproduce archived fields<1nm and independent native force/norm/history/hash/whole-element audits before exact failed0.2825s equation from explicitly verified7-state prefix. Production Cauchy used only after declared Newton backtracking exhausts. Original physical equations/dt/mesh/Q6/load/history/final1e-8N unchanged; custom1e-9N then fresh real native SNES positive atZEROupdates. Same Armijo1e-4,whole-element admissibility,max100iterations/max20halvings per direction. MPI12,4root proofworkers,1BLAS/OMPthread/rank,RSS30GiB,disk100GiB. No fullcycle restart or study-validation inference. Original8-stepwindow remainsFAILED."
+}

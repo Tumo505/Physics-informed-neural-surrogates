@@ -1,0 +1,36 @@
+{
+  "complete": true,
+  "local_four_step_robustness_passed": true,
+  "full_cycle_passed": false,
+  "numerical_convergence_passed": false,
+  "study_validation_passed": false,
+  "physical_chain_end_s": 0.28625,
+  "physical_chain_endpoints": 458,
+  "required_endpoints": 1600,
+  "remaining_endpoints": 1142,
+  "solve_seconds": [
+    363.5300750419847,
+    361.78811529203085,
+    368.4487576249521,
+    359.90203283401206
+  ],
+  "mean_solve_seconds": 363.4172451982449,
+  "native_wall_seconds": 1495.4245326250093,
+  "independent_forces_N": [
+    7.341764075270934e-12,
+    7.280918427747675e-12,
+    7.131102596139632e-12,
+    7.012964218185927e-12
+  ],
+  "maximum_independent_norm_relative_error": 6.421090419595408e-14,
+  "minimum_endpoint_bound": 0.00042638109255033196,
+  "minimum_stress_bound": 0.00023080813913898892,
+  "flat_remaining_solve_only_hours": 115.28402611566547,
+  "reference_budget_hours": 72,
+  "generous_solve_only_seconds_per_remaining_step_if_all_72h_available": 226.97022767075308,
+  "protocol_sha256": "967b0c6f92186ddbc686d35236235355b66391b14958cd83f1498a3d6c3a75f0",
+  "output_sha256": "224d8bf1e0bb63c460c6ebb5a80105a34c42d6d693c856f1d413853889baf601",
+  "audit_sha256": "f41480c10d7c447ca91795f0febd95833a938ac7b97d8577914cff4dfb97d130",
+  "checkpoint_sha256": "e8bcd7109f3295af0c8b7e7675fe18d534080b9f844afd318d5fbfef44a4a053",
+  "scope": "Localfournewstepvalidationonly. Flatfuturecostis asensitivityscenario,notETA/uniformcostevidence. Evenallocatingall72hto remainingstepsignoringpriorcost/setup/finalaudits doesnotmeetmeasuredrate. No fullreference restartqualified,no blindbudgetextension. Needfasterqualifiedsolver/localresourcesor separatelydeclaredlargerresourceprotocol and full-cycle/numericalvalidation. Onefullreferencewouldnotalonepassnumericalmesh/time/integrationacrossgeometry/loading. 20neuralmodels frozen;newML/fullP2gradienttransfer/independentcalibration/untouchedcomparison gated. Passiveidealizedscope,negativecontrolsandoldtestseparationpreserved."
+}

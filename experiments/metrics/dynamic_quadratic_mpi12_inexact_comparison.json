@@ -1,0 +1,20 @@
+{
+  "complete": true,
+  "known_equation_independent_audits_passed": true,
+  "full_cycle_restart_qualified": false,
+  "case_solve_seconds": [
+    249.96691099996679,
+    208.93213308299892
+  ],
+  "native_wall_seconds": 489.1602782078553,
+  "aggregate_solve_speedup_vs_reuse": 1.26136122658921,
+  "flat_remaining_solve_cost_scenario_hours": 73.67879096665393,
+  "flat_remaining_native_wall_cost_scenario_hours": 78.53740022337232,
+  "remaining_steps": 1156,
+  "reference_budget_hours": 72,
+  "maximum_known_field_difference_m": 1.1921561827998861e-14,
+  "maximum_internal_forcing": 0.0001,
+  "minimum_internal_forcing": 8.729034812052571e-08,
+  "rebuild_fallbacks": 0,
+  "scope": "Knownfield internal-forcing qualification independently passed; finalforce/history/whole-element/norm/hash gates unchanged. Flat cost scenarios are not ETAs or uniformfuturecost assumptions; final audits/setup additional."
+}

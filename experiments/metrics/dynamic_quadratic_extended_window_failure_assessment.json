@@ -1,0 +1,29 @@
+{
+  "complete": true,
+  "original_eight_step_window_passed": false,
+  "physical_failed_step_recovered": false,
+  "accepted_prefix_steps": 7,
+  "last_accepted_physical_time_s": 0.281875,
+  "failed_time_s": 0.28250000000000003,
+  "failed_step": 451,
+  "failure": "No admissible force-decreasing trial within declared backtracking ceiling",
+  "failed_force_N": 0.03915972678272948,
+  "failed_recorded_SNES_reason": 2,
+  "failed_recorded_SNES_is_stale_from_previous_endpoint": true,
+  "new_native_confirmation_executed_for_failed_step": false,
+  "failed_linear_KSP_reason": 2,
+  "failed_linear_true_relative_residual": 3.652714385057008e-05,
+  "failed_internal_forcing": 3.7696298557048854e-05,
+  "failed_backtracking_trials": 21,
+  "minimum_tested_alpha": 9.5367431640625e-07,
+  "minimum_trial_force_N": 0.03918048001432731,
+  "native_wall_seconds": 1817.8452996250708,
+  "native_budget_seconds": 3600,
+  "source_sha256": {
+    "experiments/metrics/dynamic_quadratic_multistep_window_v1.json": "9b5140201a1ea804b7799ba585d0997f56ac54af9496c391c9ff4931fd4f04df",
+    "experiments/logs/dynamic_quadratic_multistep_window_v1_UNACCEPTED_iterate.npz": "10f34bc6c2add2f0c3230245f6537036b1d6c8c42b807b160ea08103b9043f82",
+    "experiments/logs/dynamic_quadratic_multistep_window_v1_fields.npy": "862cd360e4288a659ac688ed3b6a0f7e246711e56e66acf84db8e790a18230b9",
+    "experiments/logs/dynamic_quadratic_multistep_window_v1_restart.npz": "c1239515749a2e69a2b9a20898fb47c54c625b32acb2d2d3dca26eabb700df4c"
+  },
+  "scope": "Window failure due to exhausted admissible force-decreasing backtracking,not native wall exhaustion. A stale positive SNES reason in rejected record is not a convergence certificate; errorflag/residual prevented promotion. Seven accepted prefix states require independent prefix-only audit;the8-stepwindow remains failed. No fold,nonexistence or physical instability is established."
+}

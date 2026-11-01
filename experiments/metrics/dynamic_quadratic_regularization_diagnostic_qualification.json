@@ -1,0 +1,10 @@
+{
+  "complete": true,
+  "passed": true,
+  "diagnostic_output_sha256": "0db2919db34a28a3cd0a62d7a4fcc0d148b79a4b1a74c996621d56d54b32d320",
+  "protocol_sha256": "db824465fbd4bc5a1da60ddd28556ada0ed273519930613eaa1c7ca14ada57b6",
+  "native_force_N": 0.03915972678272948,
+  "best_fullstep_force_N": 0.016203478302164325,
+  "physical_step_recovered": false,
+  "scope": "Read-only source/input hashes, native force replay and three true-qualified shifted direction probes completed. mu1 full-step force decrease about58.6% withwhole-element proofs supports separately fixed nonlinearcontrolstudy; no root,physicalstep or scientificvalidation pass."
+}

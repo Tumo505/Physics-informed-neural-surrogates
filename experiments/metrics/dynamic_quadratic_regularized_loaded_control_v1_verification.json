@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "passed": false,
+  "full_cycle": false,
+  "records": [
+    {
+      "time_s": 0.276875,
+      "native_residual_N": 7.401331398974176e-12,
+      "endpoint_minimum_Bernstein_bound": -0.6886266302173694,
+      "endpoint_unresolved_elements": 38,
+      "stress_minimum_Bernstein_bound": -0.6405134897946494,
+      "stress_unresolved_elements": 35,
+      "independent_L2_norm_relative_error": 7.033738025383825e-14
+    },
+    {
+      "time_s": 0.2775,
+      "native_residual_N": 7.551222172555846e-12,
+      "endpoint_minimum_Bernstein_bound": -0.7495001931684615,
+      "endpoint_unresolved_elements": 40,
+      "stress_minimum_Bernstein_bound": -0.7278099987277428,
+      "stress_unresolved_elements": 38,
+      "independent_L2_norm_relative_error": 7.261113669697941e-14
+    }
+  ],
+  "dt_s": 0.000625,
+  "final_checkpoint_history_relative_errors": {
+    "u": 0.0,
+    "u_old": 0.0,
+    "v_old": 0.0,
+    "a_old": 0.0
+  },
+  "accepted_prefix_only": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "3d5cc7721e56795929ea645e5c1fd7ca3e5587dc9ef93099926698dc64bb129d",
+  "original_checkpoint_sha256": "2b4583ba0a4ec0f9284a0ae40ba5ae1e11d1936fcc373289c9994e154ed5e59c",
+  "fields_sha256": "37e05c115597bb317af989f19bd69b58c2c434b50e1b63573af1b4e660f8991a",
+  "inputs_sha256": "932f5f3048514d2714d4922dd10ae6d0a1aef1117fc55f923d5ef66daefc62e3",
+  "executed_source_sha256": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+  "scope": "2 local probe steps with inherited nonzero histories, not a full-cycle reference. The recorded protocol specifies whether time discretization changed. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities and independent canonical-quadrature/UFL displacement norms checked at 2 fixed frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim."
+}

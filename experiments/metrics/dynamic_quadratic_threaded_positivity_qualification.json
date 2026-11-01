@@ -1,0 +1,2228 @@
+{
+  "complete": true,
+  "passed": true,
+  "records": [
+    {
+      "time_s": 0.276875,
+      "serial_seconds": 8.338963250163943,
+      "threaded_seconds": 2.4613380418159068,
+      "speedup": 3.3879796714195693,
+      "semantic_checks_passed": true,
+      "serial_proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.0029151697836302566,
+          "minimum_parent_Bernstein_bound": -0.6886266302018759,
+          "original_unresolved_elements": 38,
+          "refined_elements": [
+            {
+              "element": 224400,
+              "classification": "positive_bound",
+              "lower_bound": 0.10564487980911041,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 224408,
+              "classification": "positive_bound",
+              "lower_bound": 0.12640641570382788,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506698,
+              "classification": "positive_bound",
+              "lower_bound": 0.12326170241501133,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506699,
+              "classification": "positive_bound",
+              "lower_bound": 0.23867566898804826,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506707,
+              "classification": "positive_bound",
+              "lower_bound": 0.26976026870166514,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506708,
+              "classification": "positive_bound",
+              "lower_bound": 0.037548733714610094,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 539137,
+              "classification": "positive_bound",
+              "lower_bound": 0.3410864190749259,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 539138,
+              "classification": "positive_bound",
+              "lower_bound": 0.3657780056771884,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 826435,
+              "classification": "positive_bound",
+              "lower_bound": 0.08092069271161068,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826442,
+              "classification": "positive_bound",
+              "lower_bound": 0.04478200015631845,
+              "leaf_tetrahedra": 5,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826444,
+              "classification": "positive_bound",
+              "lower_bound": 0.06749918100141311,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826562,
+              "classification": "positive_bound",
+              "lower_bound": 0.030237134985609926,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826563,
+              "classification": "positive_bound",
+              "lower_bound": 0.029268413273550287,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 850371,
+              "classification": "positive_bound",
+              "lower_bound": 0.044109108212530335,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 931905,
+              "classification": "positive_bound",
+              "lower_bound": 0.36777496511639063,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 931906,
+              "classification": "positive_bound",
+              "lower_bound": 0.34686494173758065,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 947968,
+              "classification": "positive_bound",
+              "lower_bound": 0.17419831142080033,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1002705,
+              "classification": "positive_bound",
+              "lower_bound": 0.10328834144690874,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002729,
+              "classification": "positive_bound",
+              "lower_bound": 0.11153193993253846,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002731,
+              "classification": "positive_bound",
+              "lower_bound": 0.10762661213873828,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1034877,
+              "classification": "positive_bound",
+              "lower_bound": 0.5041981650896215,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103874,
+              "classification": "positive_bound",
+              "lower_bound": 0.20776736257455963,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103875,
+              "classification": "positive_bound",
+              "lower_bound": 0.13643962321161845,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103876,
+              "classification": "positive_bound",
+              "lower_bound": 0.21670727675451817,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103877,
+              "classification": "positive_bound",
+              "lower_bound": 0.5317431092293157,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103882,
+              "classification": "positive_bound",
+              "lower_bound": 0.1619138735362835,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103883,
+              "classification": "positive_bound",
+              "lower_bound": 0.07806550939930323,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103884,
+              "classification": "positive_bound",
+              "lower_bound": 0.16544017604000483,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103889,
+              "classification": "positive_bound",
+              "lower_bound": 0.2768063182983499,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103897,
+              "classification": "positive_bound",
+              "lower_bound": 0.2530138607268857,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103905,
+              "classification": "positive_bound",
+              "lower_bound": 0.18889365489336796,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107849,
+              "classification": "positive_bound",
+              "lower_bound": 0.021914733481582793,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107850,
+              "classification": "positive_bound",
+              "lower_bound": 0.010902993456653548,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107851,
+              "classification": "positive_bound",
+              "lower_bound": 0.09093266102198955,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107854,
+              "classification": "positive_bound",
+              "lower_bound": 0.22816195112072646,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107855,
+              "classification": "positive_bound",
+              "lower_bound": 0.0648790905944378,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107857,
+              "classification": "positive_bound",
+              "lower_bound": 0.10583413132346248,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107873,
+              "classification": "positive_bound",
+              "lower_bound": 0.030893742091499532,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            }
+          ],
+          "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.001943668967126635,
+          "minimum_parent_Bernstein_bound": -0.6405134897849388,
+          "original_unresolved_elements": 35,
+          "refined_elements": [
+            {
+              "element": 224400,
+              "classification": "positive_bound",
+              "lower_bound": 0.1109247884765282,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 224408,
+              "classification": "positive_bound",
+              "lower_bound": 0.13361476010752546,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506698,
+              "classification": "positive_bound",
+              "lower_bound": 0.12508482173632607,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506699,
+              "classification": "positive_bound",
+              "lower_bound": 0.24111654238513136,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506707,
+              "classification": "positive_bound",
+              "lower_bound": 0.27421676911562076,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506708,
+              "classification": "positive_bound",
+              "lower_bound": 0.03768273891045798,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 539137,
+              "classification": "positive_bound",
+              "lower_bound": 0.34435487723893954,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 539138,
+              "classification": "positive_bound",
+              "lower_bound": 0.36669010969555915,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 826435,
+              "classification": "positive_bound",
+              "lower_bound": 0.09648007521585494,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826442,
+              "classification": "positive_bound",
+              "lower_bound": 0.02151784239177454,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826562,
+              "classification": "positive_bound",
+              "lower_bound": 0.04552916165879736,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826563,
+              "classification": "positive_bound",
+              "lower_bound": 0.042905300403543345,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 850371,
+              "classification": "positive_bound",
+              "lower_bound": 0.04470313720461583,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 931905,
+              "classification": "positive_bound",
+              "lower_bound": 0.3707732613847994,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 931906,
+              "classification": "positive_bound",
+              "lower_bound": 0.34990469834299964,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 947968,
+              "classification": "positive_bound",
+              "lower_bound": 0.17506563191056423,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1002705,
+              "classification": "positive_bound",
+              "lower_bound": 0.003977481615281775,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1002729,
+              "classification": "positive_bound",
+              "lower_bound": 0.11248139894176956,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002731,
+              "classification": "positive_bound",
+              "lower_bound": 0.10799206099826533,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1034877,
+              "classification": "positive_bound",
+              "lower_bound": 0.5067478318478835,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103874,
+              "classification": "positive_bound",
+              "lower_bound": 0.2229100083924498,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103875,
+              "classification": "positive_bound",
+              "lower_bound": 0.14689334080045532,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103876,
+              "classification": "positive_bound",
+              "lower_bound": 0.2187503352444422,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103882,
+              "classification": "positive_bound",
+              "lower_bound": 0.16753815652283033,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103883,
+              "classification": "positive_bound",
+              "lower_bound": 0.0923023019587963,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103884,
+              "classification": "positive_bound",
+              "lower_bound": 0.18352954260780519,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103889,
+              "classification": "positive_bound",
+              "lower_bound": 0.2894360388829622,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103905,
+              "classification": "positive_bound",
+              "lower_bound": 0.19954662959680547,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107849,
+              "classification": "positive_bound",
+              "lower_bound": 0.02322723659788456,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107850,
+              "classification": "positive_bound",
+              "lower_bound": 0.011441550060243527,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107851,
+              "classification": "positive_bound",
+              "lower_bound": 0.0924208457640367,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107854,
+              "classification": "positive_bound",
+              "lower_bound": 0.23220134932860237,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107855,
+              "classification": "positive_bound",
+              "lower_bound": 0.06596270519826974,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107857,
+              "classification": "positive_bound",
+              "lower_bound": 0.10884567124162003,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107873,
+              "classification": "positive_bound",
+              "lower_bound": 0.03240298124438659,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            }
+          ],
+          "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+          "passed": true
+        }
+      },
+      "threaded_proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.0029151697836302566,
+          "minimum_parent_Bernstein_bound": -0.6886266302018759,
+          "original_unresolved_elements": 38,
+          "refined_elements": [
+            {
+              "element": 224400,
+              "classification": "positive_bound",
+              "lower_bound": 0.10564487980911041,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 224408,
+              "classification": "positive_bound",
+              "lower_bound": 0.12640641570382788,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506698,
+              "classification": "positive_bound",
+              "lower_bound": 0.12326170241501133,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506699,
+              "classification": "positive_bound",
+              "lower_bound": 0.23867566898804826,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506707,
+              "classification": "positive_bound",
+              "lower_bound": 0.26976026870166514,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506708,
+              "classification": "positive_bound",
+              "lower_bound": 0.037548733714610094,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 539137,
+              "classification": "positive_bound",
+              "lower_bound": 0.3410864190749259,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 539138,
+              "classification": "positive_bound",
+              "lower_bound": 0.3657780056771884,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 826435,
+              "classification": "positive_bound",
+              "lower_bound": 0.08092069271161068,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826442,
+              "classification": "positive_bound",
+              "lower_bound": 0.04478200015631845,
+              "leaf_tetrahedra": 5,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826444,
+              "classification": "positive_bound",
+              "lower_bound": 0.06749918100141311,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826562,
+              "classification": "positive_bound",
+              "lower_bound": 0.030237134985609926,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826563,
+              "classification": "positive_bound",
+              "lower_bound": 0.029268413273550287,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 850371,
+              "classification": "positive_bound",
+              "lower_bound": 0.044109108212530335,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 931905,
+              "classification": "positive_bound",
+              "lower_bound": 0.36777496511639063,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 931906,
+              "classification": "positive_bound",
+              "lower_bound": 0.34686494173758065,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 947968,
+              "classification": "positive_bound",
+              "lower_bound": 0.17419831142080033,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1002705,
+              "classification": "positive_bound",
+              "lower_bound": 0.10328834144690874,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002729,
+              "classification": "positive_bound",
+              "lower_bound": 0.11153193993253846,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002731,
+              "classification": "positive_bound",
+              "lower_bound": 0.10762661213873828,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1034877,
+              "classification": "positive_bound",
+              "lower_bound": 0.5041981650896215,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103874,
+              "classification": "positive_bound",
+              "lower_bound": 0.20776736257455963,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103875,
+              "classification": "positive_bound",
+              "lower_bound": 0.13643962321161845,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103876,
+              "classification": "positive_bound",
+              "lower_bound": 0.21670727675451817,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103877,
+              "classification": "positive_bound",
+              "lower_bound": 0.5317431092293157,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103882,
+              "classification": "positive_bound",
+              "lower_bound": 0.1619138735362835,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103883,
+              "classification": "positive_bound",
+              "lower_bound": 0.07806550939930323,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103884,
+              "classification": "positive_bound",
+              "lower_bound": 0.16544017604000483,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103889,
+              "classification": "positive_bound",
+              "lower_bound": 0.2768063182983499,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103897,
+              "classification": "positive_bound",
+              "lower_bound": 0.2530138607268857,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103905,
+              "classification": "positive_bound",
+              "lower_bound": 0.18889365489336796,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107849,
+              "classification": "positive_bound",
+              "lower_bound": 0.021914733481582793,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107850,
+              "classification": "positive_bound",
+              "lower_bound": 0.010902993456653548,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107851,
+              "classification": "positive_bound",
+              "lower_bound": 0.09093266102198955,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107854,
+              "classification": "positive_bound",
+              "lower_bound": 0.22816195112072646,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107855,
+              "classification": "positive_bound",
+              "lower_bound": 0.0648790905944378,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107857,
+              "classification": "positive_bound",
+              "lower_bound": 0.10583413132346248,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107873,
+              "classification": "positive_bound",
+              "lower_bound": 0.030893742091499532,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            }
+          ],
+          "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+          "passed": true,
+          "evaluation_workers": 4,
+          "disjoint_cells_total": 1128000
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.001943668967126635,
+          "minimum_parent_Bernstein_bound": -0.6405134897849388,
+          "original_unresolved_elements": 35,
+          "refined_elements": [
+            {
+              "element": 224400,
+              "classification": "positive_bound",
+              "lower_bound": 0.1109247884765282,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 224408,
+              "classification": "positive_bound",
+              "lower_bound": 0.13361476010752546,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506698,
+              "classification": "positive_bound",
+              "lower_bound": 0.12508482173632607,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506699,
+              "classification": "positive_bound",
+              "lower_bound": 0.24111654238513136,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506707,
+              "classification": "positive_bound",
+              "lower_bound": 0.27421676911562076,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506708,
+              "classification": "positive_bound",
+              "lower_bound": 0.03768273891045798,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 539137,
+              "classification": "positive_bound",
+              "lower_bound": 0.34435487723893954,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 539138,
+              "classification": "positive_bound",
+              "lower_bound": 0.36669010969555915,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 826435,
+              "classification": "positive_bound",
+              "lower_bound": 0.09648007521585494,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826442,
+              "classification": "positive_bound",
+              "lower_bound": 0.02151784239177454,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826562,
+              "classification": "positive_bound",
+              "lower_bound": 0.04552916165879736,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826563,
+              "classification": "positive_bound",
+              "lower_bound": 0.042905300403543345,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 850371,
+              "classification": "positive_bound",
+              "lower_bound": 0.04470313720461583,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 931905,
+              "classification": "positive_bound",
+              "lower_bound": 0.3707732613847994,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 931906,
+              "classification": "positive_bound",
+              "lower_bound": 0.34990469834299964,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 947968,
+              "classification": "positive_bound",
+              "lower_bound": 0.17506563191056423,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1002705,
+              "classification": "positive_bound",
+              "lower_bound": 0.003977481615281775,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1002729,
+              "classification": "positive_bound",
+              "lower_bound": 0.11248139894176956,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002731,
+              "classification": "positive_bound",
+              "lower_bound": 0.10799206099826533,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1034877,
+              "classification": "positive_bound",
+              "lower_bound": 0.5067478318478835,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103874,
+              "classification": "positive_bound",
+              "lower_bound": 0.2229100083924498,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103875,
+              "classification": "positive_bound",
+              "lower_bound": 0.14689334080045532,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103876,
+              "classification": "positive_bound",
+              "lower_bound": 0.2187503352444422,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103882,
+              "classification": "positive_bound",
+              "lower_bound": 0.16753815652283033,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103883,
+              "classification": "positive_bound",
+              "lower_bound": 0.0923023019587963,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103884,
+              "classification": "positive_bound",
+              "lower_bound": 0.18352954260780519,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103889,
+              "classification": "positive_bound",
+              "lower_bound": 0.2894360388829622,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103905,
+              "classification": "positive_bound",
+              "lower_bound": 0.19954662959680547,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107849,
+              "classification": "positive_bound",
+              "lower_bound": 0.02322723659788456,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107850,
+              "classification": "positive_bound",
+              "lower_bound": 0.011441550060243527,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107851,
+              "classification": "positive_bound",
+              "lower_bound": 0.0924208457640367,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107854,
+              "classification": "positive_bound",
+              "lower_bound": 0.23220134932860237,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107855,
+              "classification": "positive_bound",
+              "lower_bound": 0.06596270519826974,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107857,
+              "classification": "positive_bound",
+              "lower_bound": 0.10884567124162003,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107873,
+              "classification": "positive_bound",
+              "lower_bound": 0.03240298124438659,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            }
+          ],
+          "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+          "passed": true,
+          "evaluation_workers": 4,
+          "disjoint_cells_total": 1128000
+        }
+      }
+    },
+    {
+      "time_s": 0.2775,
+      "serial_seconds": 8.443685667123646,
+      "threaded_seconds": 2.450334416003898,
+      "speedup": 3.445931956052734,
+      "semantic_checks_passed": true,
+      "serial_proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.00082412735746128,
+          "minimum_parent_Bernstein_bound": -0.7495001931567413,
+          "original_unresolved_elements": 40,
+          "refined_elements": [
+            {
+              "element": 224400,
+              "classification": "positive_bound",
+              "lower_bound": 0.09602463337841272,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 224408,
+              "classification": "positive_bound",
+              "lower_bound": 0.11475236575586638,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506698,
+              "classification": "positive_bound",
+              "lower_bound": 0.11788011386283626,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506699,
+              "classification": "positive_bound",
+              "lower_bound": 0.23151537784039933,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506707,
+              "classification": "positive_bound",
+              "lower_bound": 0.25911867698159385,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506708,
+              "classification": "positive_bound",
+              "lower_bound": 0.03698131292797216,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 539137,
+              "classification": "positive_bound",
+              "lower_bound": 0.3333404965558473,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 539138,
+              "classification": "positive_bound",
+              "lower_bound": 0.3591324116491561,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 826435,
+              "classification": "positive_bound",
+              "lower_bound": 0.04473422449372272,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826442,
+              "classification": "positive_bound",
+              "lower_bound": 0.010151233030550544,
+              "leaf_tetrahedra": 5,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826444,
+              "classification": "positive_bound",
+              "lower_bound": 0.028908265606914646,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826562,
+              "classification": "positive_bound",
+              "lower_bound": 0.017475185058564935,
+              "leaf_tetrahedra": 7,
+              "maximum_depth": 6
+            },
+            {
+              "element": 826563,
+              "classification": "positive_bound",
+              "lower_bound": 0.02478390874162388,
+              "leaf_tetrahedra": 7,
+              "maximum_depth": 6
+            },
+            {
+              "element": 850371,
+              "classification": "positive_bound",
+              "lower_bound": 0.04240151398456776,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 931905,
+              "classification": "positive_bound",
+              "lower_bound": 0.36025361524599275,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 931906,
+              "classification": "positive_bound",
+              "lower_bound": 0.33919354794311163,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 947968,
+              "classification": "positive_bound",
+              "lower_bound": 0.17194565228937309,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1002705,
+              "classification": "positive_bound",
+              "lower_bound": 0.12031032515130424,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002729,
+              "classification": "positive_bound",
+              "lower_bound": 0.11837977728480265,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002731,
+              "classification": "positive_bound",
+              "lower_bound": 0.11034871193315748,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1034877,
+              "classification": "positive_bound",
+              "lower_bound": 0.49727703253165734,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103874,
+              "classification": "positive_bound",
+              "lower_bound": 0.179143232194532,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103875,
+              "classification": "positive_bound",
+              "lower_bound": 0.11567798275455905,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103876,
+              "classification": "positive_bound",
+              "lower_bound": 0.2158037411964845,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103877,
+              "classification": "positive_bound",
+              "lower_bound": 0.5226292114028667,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103882,
+              "classification": "positive_bound",
+              "lower_bound": 0.14919353045128536,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103883,
+              "classification": "positive_bound",
+              "lower_bound": 0.05554456459600887,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103884,
+              "classification": "positive_bound",
+              "lower_bound": 0.12818838636913743,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103889,
+              "classification": "positive_bound",
+              "lower_bound": 0.2485183183219225,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103897,
+              "classification": "positive_bound",
+              "lower_bound": 0.23196697066957706,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103905,
+              "classification": "positive_bound",
+              "lower_bound": 0.16322839490528762,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103930,
+              "classification": "positive_bound",
+              "lower_bound": 0.4359997368607693,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107849,
+              "classification": "positive_bound",
+              "lower_bound": 0.0187242714940421,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107850,
+              "classification": "positive_bound",
+              "lower_bound": 0.008605289316434062,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107851,
+              "classification": "positive_bound",
+              "lower_bound": 0.08677524174496876,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107854,
+              "classification": "positive_bound",
+              "lower_bound": 0.21972295116367935,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107855,
+              "classification": "positive_bound",
+              "lower_bound": 0.06234700065947499,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107857,
+              "classification": "positive_bound",
+              "lower_bound": 0.09598653931211898,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107873,
+              "classification": "positive_bound",
+              "lower_bound": 0.029152046768095186,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1112266,
+              "classification": "positive_bound",
+              "lower_bound": 0.0954547652291259,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            }
+          ],
+          "polynomial_reconstruction_max_abs_error": 8.881784197001252e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.0016509367321449555,
+          "minimum_parent_Bernstein_bound": -0.7278099987136717,
+          "original_unresolved_elements": 38,
+          "refined_elements": [
+            {
+              "element": 224400,
+              "classification": "positive_bound",
+              "lower_bound": 0.09980400759567537,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 224408,
+              "classification": "positive_bound",
+              "lower_bound": 0.11927318256545698,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506698,
+              "classification": "positive_bound",
+              "lower_bound": 0.12003002463379187,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506699,
+              "classification": "positive_bound",
+              "lower_bound": 0.23437505438752848,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506707,
+              "classification": "positive_bound",
+              "lower_bound": 0.26334383890327007,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506708,
+              "classification": "positive_bound",
+              "lower_bound": 0.03719551599285781,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 539137,
+              "classification": "positive_bound",
+              "lower_bound": 0.3363974426323808,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 539138,
+              "classification": "positive_bound",
+              "lower_bound": 0.36198231627552246,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 826435,
+              "classification": "positive_bound",
+              "lower_bound": 0.058957212385369995,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826442,
+              "classification": "positive_bound",
+              "lower_bound": 0.023505711832161658,
+              "leaf_tetrahedra": 5,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826444,
+              "classification": "positive_bound",
+              "lower_bound": 0.04089652846354315,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826562,
+              "classification": "positive_bound",
+              "lower_bound": 0.008625037828798199,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826563,
+              "classification": "positive_bound",
+              "lower_bound": 0.00810658643179335,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 850371,
+              "classification": "positive_bound",
+              "lower_bound": 0.04308105501423659,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 931905,
+              "classification": "positive_bound",
+              "lower_bound": 0.36321898740251557,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 931906,
+              "classification": "positive_bound",
+              "lower_bound": 0.3422014386888892,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 947968,
+              "classification": "positive_bound",
+              "lower_bound": 0.1728267237184562,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1002705,
+              "classification": "positive_bound",
+              "lower_bound": 0.11265768240127783,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002729,
+              "classification": "positive_bound",
+              "lower_bound": 0.1126308582777566,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002731,
+              "classification": "positive_bound",
+              "lower_bound": 0.10571596790199139,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1034877,
+              "classification": "positive_bound",
+              "lower_bound": 0.4999479491373273,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103874,
+              "classification": "positive_bound",
+              "lower_bound": 0.19058416577210213,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103875,
+              "classification": "positive_bound",
+              "lower_bound": 0.12390071744363314,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103876,
+              "classification": "positive_bound",
+              "lower_bound": 0.2174777204193974,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103877,
+              "classification": "positive_bound",
+              "lower_bound": 0.52612752912561,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103882,
+              "classification": "positive_bound",
+              "lower_bound": 0.15410059857781078,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103883,
+              "classification": "positive_bound",
+              "lower_bound": 0.06408449154441143,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103884,
+              "classification": "positive_bound",
+              "lower_bound": 0.14199294591336198,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103889,
+              "classification": "positive_bound",
+              "lower_bound": 0.2595309049280188,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103897,
+              "classification": "positive_bound",
+              "lower_bound": 0.24002636526302157,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103905,
+              "classification": "positive_bound",
+              "lower_bound": 0.17331831185817692,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107849,
+              "classification": "positive_bound",
+              "lower_bound": 0.01999064981604587,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107850,
+              "classification": "positive_bound",
+              "lower_bound": 0.009521399117309176,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107851,
+              "classification": "positive_bound",
+              "lower_bound": 0.08843366993659363,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107854,
+              "classification": "positive_bound",
+              "lower_bound": 0.22308574293661576,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107855,
+              "classification": "positive_bound",
+              "lower_bound": 0.0633534323943116,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107857,
+              "classification": "positive_bound",
+              "lower_bound": 0.09992489293259821,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107873,
+              "classification": "positive_bound",
+              "lower_bound": 0.029848634225247084,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            }
+          ],
+          "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+          "passed": true
+        }
+      },
+      "threaded_proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.00082412735746128,
+          "minimum_parent_Bernstein_bound": -0.7495001931567413,
+          "original_unresolved_elements": 40,
+          "refined_elements": [
+            {
+              "element": 224400,
+              "classification": "positive_bound",
+              "lower_bound": 0.09602463337841272,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 224408,
+              "classification": "positive_bound",
+              "lower_bound": 0.11475236575586638,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506698,
+              "classification": "positive_bound",
+              "lower_bound": 0.11788011386283626,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506699,
+              "classification": "positive_bound",
+              "lower_bound": 0.23151537784039933,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506707,
+              "classification": "positive_bound",
+              "lower_bound": 0.25911867698159385,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506708,
+              "classification": "positive_bound",
+              "lower_bound": 0.03698131292797216,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 539137,
+              "classification": "positive_bound",
+              "lower_bound": 0.3333404965558473,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 539138,
+              "classification": "positive_bound",
+              "lower_bound": 0.3591324116491561,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 826435,
+              "classification": "positive_bound",
+              "lower_bound": 0.04473422449372272,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826442,
+              "classification": "positive_bound",
+              "lower_bound": 0.010151233030550544,
+              "leaf_tetrahedra": 5,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826444,
+              "classification": "positive_bound",
+              "lower_bound": 0.028908265606914646,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826562,
+              "classification": "positive_bound",
+              "lower_bound": 0.017475185058564935,
+              "leaf_tetrahedra": 7,
+              "maximum_depth": 6
+            },
+            {
+              "element": 826563,
+              "classification": "positive_bound",
+              "lower_bound": 0.02478390874162388,
+              "leaf_tetrahedra": 7,
+              "maximum_depth": 6
+            },
+            {
+              "element": 850371,
+              "classification": "positive_bound",
+              "lower_bound": 0.04240151398456776,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 931905,
+              "classification": "positive_bound",
+              "lower_bound": 0.36025361524599275,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 931906,
+              "classification": "positive_bound",
+              "lower_bound": 0.33919354794311163,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 947968,
+              "classification": "positive_bound",
+              "lower_bound": 0.17194565228937309,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1002705,
+              "classification": "positive_bound",
+              "lower_bound": 0.12031032515130424,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002729,
+              "classification": "positive_bound",
+              "lower_bound": 0.11837977728480265,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002731,
+              "classification": "positive_bound",
+              "lower_bound": 0.11034871193315748,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1034877,
+              "classification": "positive_bound",
+              "lower_bound": 0.49727703253165734,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103874,
+              "classification": "positive_bound",
+              "lower_bound": 0.179143232194532,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103875,
+              "classification": "positive_bound",
+              "lower_bound": 0.11567798275455905,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103876,
+              "classification": "positive_bound",
+              "lower_bound": 0.2158037411964845,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103877,
+              "classification": "positive_bound",
+              "lower_bound": 0.5226292114028667,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103882,
+              "classification": "positive_bound",
+              "lower_bound": 0.14919353045128536,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103883,
+              "classification": "positive_bound",
+              "lower_bound": 0.05554456459600887,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103884,
+              "classification": "positive_bound",
+              "lower_bound": 0.12818838636913743,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103889,
+              "classification": "positive_bound",
+              "lower_bound": 0.2485183183219225,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103897,
+              "classification": "positive_bound",
+              "lower_bound": 0.23196697066957706,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103905,
+              "classification": "positive_bound",
+              "lower_bound": 0.16322839490528762,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103930,
+              "classification": "positive_bound",
+              "lower_bound": 0.4359997368607693,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107849,
+              "classification": "positive_bound",
+              "lower_bound": 0.0187242714940421,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107850,
+              "classification": "positive_bound",
+              "lower_bound": 0.008605289316434062,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107851,
+              "classification": "positive_bound",
+              "lower_bound": 0.08677524174496876,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107854,
+              "classification": "positive_bound",
+              "lower_bound": 0.21972295116367935,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107855,
+              "classification": "positive_bound",
+              "lower_bound": 0.06234700065947499,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107857,
+              "classification": "positive_bound",
+              "lower_bound": 0.09598653931211898,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107873,
+              "classification": "positive_bound",
+              "lower_bound": 0.029152046768095186,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1112266,
+              "classification": "positive_bound",
+              "lower_bound": 0.0954547652291259,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            }
+          ],
+          "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+          "passed": true,
+          "evaluation_workers": 4,
+          "disjoint_cells_total": 1128000
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.0016509367321449555,
+          "minimum_parent_Bernstein_bound": -0.7278099987136717,
+          "original_unresolved_elements": 38,
+          "refined_elements": [
+            {
+              "element": 224400,
+              "classification": "positive_bound",
+              "lower_bound": 0.09980400759567537,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 224408,
+              "classification": "positive_bound",
+              "lower_bound": 0.11927318256545698,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506698,
+              "classification": "positive_bound",
+              "lower_bound": 0.12003002463379187,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506699,
+              "classification": "positive_bound",
+              "lower_bound": 0.23437505438752848,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506707,
+              "classification": "positive_bound",
+              "lower_bound": 0.26334383890327007,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 506708,
+              "classification": "positive_bound",
+              "lower_bound": 0.03719551599285781,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 539137,
+              "classification": "positive_bound",
+              "lower_bound": 0.3363974426323808,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 539138,
+              "classification": "positive_bound",
+              "lower_bound": 0.36198231627552246,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 826435,
+              "classification": "positive_bound",
+              "lower_bound": 0.058957212385369995,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826442,
+              "classification": "positive_bound",
+              "lower_bound": 0.023505711832161658,
+              "leaf_tetrahedra": 5,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826444,
+              "classification": "positive_bound",
+              "lower_bound": 0.04089652846354315,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 826562,
+              "classification": "positive_bound",
+              "lower_bound": 0.008625037828798199,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 826563,
+              "classification": "positive_bound",
+              "lower_bound": 0.00810658643179335,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 850371,
+              "classification": "positive_bound",
+              "lower_bound": 0.04308105501423659,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 931905,
+              "classification": "positive_bound",
+              "lower_bound": 0.36321898740251557,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 931906,
+              "classification": "positive_bound",
+              "lower_bound": 0.3422014386888892,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 947968,
+              "classification": "positive_bound",
+              "lower_bound": 0.1728267237184562,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1002705,
+              "classification": "positive_bound",
+              "lower_bound": 0.11265768240127783,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002729,
+              "classification": "positive_bound",
+              "lower_bound": 0.1126308582777566,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1002731,
+              "classification": "positive_bound",
+              "lower_bound": 0.10571596790199139,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1034877,
+              "classification": "positive_bound",
+              "lower_bound": 0.4999479491373273,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103874,
+              "classification": "positive_bound",
+              "lower_bound": 0.19058416577210213,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103875,
+              "classification": "positive_bound",
+              "lower_bound": 0.12390071744363314,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103876,
+              "classification": "positive_bound",
+              "lower_bound": 0.2174777204193974,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103877,
+              "classification": "positive_bound",
+              "lower_bound": 0.52612752912561,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103882,
+              "classification": "positive_bound",
+              "lower_bound": 0.15410059857781078,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103883,
+              "classification": "positive_bound",
+              "lower_bound": 0.06408449154441143,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103884,
+              "classification": "positive_bound",
+              "lower_bound": 0.14199294591336198,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103889,
+              "classification": "positive_bound",
+              "lower_bound": 0.2595309049280188,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103897,
+              "classification": "positive_bound",
+              "lower_bound": 0.24002636526302157,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1103905,
+              "classification": "positive_bound",
+              "lower_bound": 0.17331831185817692,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107849,
+              "classification": "positive_bound",
+              "lower_bound": 0.01999064981604587,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107850,
+              "classification": "positive_bound",
+              "lower_bound": 0.009521399117309176,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107851,
+              "classification": "positive_bound",
+              "lower_bound": 0.08843366993659363,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107854,
+              "classification": "positive_bound",
+              "lower_bound": 0.22308574293661576,
+              "leaf_tetrahedra": 3,
+              "maximum_depth": 2
+            },
+            {
+              "element": 1107855,
+              "classification": "positive_bound",
+              "lower_bound": 0.0633534323943116,
+              "leaf_tetrahedra": 4,
+              "maximum_depth": 3
+            },
+            {
+              "element": 1107857,
+              "classification": "positive_bound",
+              "lower_bound": 0.09992489293259821,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            },
+            {
+              "element": 1107873,
+              "classification": "positive_bound",
+              "lower_bound": 0.029848634225247084,
+              "leaf_tetrahedra": 2,
+              "maximum_depth": 1
+            }
+          ],
+          "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+          "passed": true,
+          "evaluation_workers": 4,
+          "disjoint_cells_total": 1128000
+        }
+      }
+    }
+  ],
+  "source_sha256": {
+    "scripts/qualify_threaded_positivity.py": "721310be0f95aa8fdc83d7b60235eb38d28c7ff1006fb41cbe9de1acfa4b691d",
+    "src/lv_surrogate/physics/threaded_bernstein.py": "32c29bade91e8ab4a3a4d0b473ac2f4cdf86ac730dff269cd3bf775bf3f19a89",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9"
+  },
+  "scope": "Same disjoint union of all tetrahedra,same float64 cubic Bernstein polynomial,margin1e-9,maxdepth12,longest-edge subdivision. Global cell IDs,unresolved parent counts,positive bounds and refinement topology match serial known-state proofs. Parallelism changes evaluation schedule only. Not interval arithmetic or a full-cycle/numerical convergence claim."
+}

@@ -1,0 +1,18 @@
+{
+  "complete": true,
+  "study_validation_passed": false,
+  "phases": [
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi12_reuse_coarse_v1.json",
+      "independent_local_audit_passed": true
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi12_reuse_loaded_control_v1.json",
+      "independent_local_audit_passed": true
+    }
+  ],
+  "scope": "Prospective12-rank known-equation throughput variant: same original physics/discretization/histories/load,custom Newton/Armijo/whole-element admission and strict nativefinalacceptance. Persist KSP/GAMG within each physical equation; reuse preconditioner after firstNewton linearization. Fresh true linear residual must meet unchanged max(1.1e-12N,1e-7*rhsnorm); if not,one explicitly recorded rebuild/re-solve with sameGMRES rtol1e-8,atol1e-12N,max3000 perattempt. No approximate update admitted without true residual qualification. Instrument Jassembly,PCsetup,linear solve and fallbackcounts. Same knowncoarse2thenknownloaded2 controls,archivedfield<1nm and independentforce/norm/history/hash/whole-element audits. Native600/2400s,phase900/3000s,workflow1500/4200s,RSS30GiB,disk100GiB,1thread/rank. One combined computational variant,not fullcycle/reference-convergence/ML validation.",
+  "wall_seconds": 767.5708062921185,
+  "active_protocol": "finished",
+  "all_local_gates_passed": true
+}

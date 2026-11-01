@@ -1,0 +1,17 @@
+{
+  "complete": true,
+  "known_equation_independent_audits_passed": true,
+  "full_cycle_restart_qualified": false,
+  "case_solve_seconds": [
+    216.99964362499304,
+    168.27217354206368
+  ],
+  "native_wall_seconds": 406.7251282501966,
+  "aggregate_solve_speedup_vs_serial_proof": 1.1911046270067132,
+  "flat_remaining_solve_cost_scenario_hours": 61.857530645155215,
+  "flat_remaining_native_wall_cost_scenario_hours": 65.3019789246149,
+  "remaining_steps": 1156,
+  "reference_budget_hours": 72,
+  "maximum_known_field_difference_m": 1.1921887088650607e-14,
+  "scope": "Two matched known equations independently passed. Flat-cost scenarios exclude full-reference setup/final audit and are not ETAs or uniform-cost assumptions. Promising runtime supports an extended bounded new-state window,not immediate fullcycle restart."
+}

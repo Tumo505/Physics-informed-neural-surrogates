@@ -1,0 +1,15 @@
+{
+  "protocols": [
+    "configs/physics/dynamic_quadratic_mpi12_admissible_coarse_v1.json",
+    "configs/physics/dynamic_quadratic_mpi12_admissible_loaded_control_v1.json"
+  ],
+  "phase_budgets_seconds": [
+    900,
+    3000
+  ],
+  "workflow_budgets_seconds": [
+    1500,
+    4200
+  ],
+  "scope": "Prospective MPI12 throughput/equivalence control,not new trajectory generation. Same frozen admissibleNewton implementation,mesh/physics/dt/Q6/histories/load/tolerances,1thread/rank. Repartition exact cached serialmesh/fibers; bijective canonical map mandatory. Two known coarse targets qualify12-rank execution; then same two independently verified loadedR2equations0.276875/0.2775s reproduce archived fields<1nm and pass independent native/norm/history/hash/whole-element checks. Compare actual per-equation cost/Newton/KSP counts with6ranks; do not infer uniform fullcycle scaling. RSS30GiB,disk100GiB,knownloadednative2400s/phase3000s/workflow4200s. No fullcycle restart or ML changes."
+}

@@ -1,0 +1,19 @@
+{
+  "complete": true,
+  "consecutive_pilot_passed": true,
+  "full_cycle_restart_qualified": false,
+  "last_physical_time_s": 0.2775,
+  "completed_physical_steps_in_traced_chain": 444,
+  "remaining_steps": 1156,
+  "measured_consecutive_solve_seconds": [
+    450.11234845779836,
+    353.3989055000711
+  ],
+  "measured_native_wall_seconds": 835.3617259159219,
+  "flat_mean_step_cost_scenario_hours": 129.00819577434683,
+  "flat_native_wall_per_step_scenario_hours": 134.12196599427855,
+  "per_reference_budget_hours": 72,
+  "maximum_average_seconds_per_remaining_step_before_audits": 224.22145328719722,
+  "scope": "Two consecutive loaded equations with native/independent hash,norm,history,whole-element checks passed. Flat cost scenarios are not ETAs or assumptions of uniform future cost. Audit/setup costs are additional. No numerical convergence or full-cycle restart qualification follows.",
+  "next_bounded_experiment": "12-local-rank known-equation throughput/equivalence control,after a12-rank coarse known-field qualification; identical frozen physics/solver/acceptance,30GiB resourceguard."
+}

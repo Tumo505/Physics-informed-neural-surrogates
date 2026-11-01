@@ -1,0 +1,18 @@
+{
+  "complete": true,
+  "study_validation_passed": false,
+  "phases": [
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi12_threaded_coarse_v1.json",
+      "independent_local_audit_passed": true
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_mpi12_threaded_loaded_control_v1.json",
+      "independent_local_audit_passed": true
+    }
+  ],
+  "scope": "Prospective known-field qualification: same verifiedMPI12 adaptive-inexact reusableGAMG admissibleNewton,physics/discretization/history/load/final1e-8N and alltrue linear/Armijo/whole-element/freshnativeZEROupdate gates. Only whole-element evaluation schedule changes: rank0disjoint-cell Bernstein/subdivision with4NumPythreads while otherMPIrankswait; samepolynomial,margin1e-9,depth12,globalcellIDs,refinementtopology,bounds. Head-to-head serial proofsemantic checks already passed on knownloaded2states. Keep1BLAS/OMPthread perMPIrank,4proofworkers only during rootaudit(on18-corehost). Knowncoarse2thenknownloaded2 independently audit serialnativeforce/norm/history/hash/whole-element and archivedfields<1nm. Native600/2400s,phase900/3000s,workflow1500/4200s,RSS30GiB,disk100GiB. No physical newtrajectory/fullcycle/numerical/MLpass follows thiscontrol.",
+  "wall_seconds": 567.7174614581745,
+  "active_protocol": "finished",
+  "all_local_gates_passed": true
+}

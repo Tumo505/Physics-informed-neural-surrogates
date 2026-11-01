@@ -1,0 +1,26 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_cauchy_failed_step_v1.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_cauchy_failed_step_v1.json",
+    "max_phase_seconds": 4200.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 5400.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 3617.162661709124,
+      "sampled_peak_RSS_bytes": 29203267584
+    }
+  ],
+  "active_phase": "stopped",
+  "total_wall_seconds": 3617.1763252920937,
+  "local_recovery_verified": false,
+  "failure": "Admissible Newton did not reach all exact physical endpoints"
+}

@@ -1,0 +1,36 @@
+{
+  "complete": true,
+  "study_validation_passed": false,
+  "protocol": "configs/physics/dynamic_regularized_full_reference_20261101.json",
+  "protocol_sha256": "e5997dbeaabcaab3ac19d93b3b40466410371011acb8329d0dd3e6e8f32f4ac0",
+  "phases": [
+    {
+      "phase": "coarse_seed",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.0265151250005147,
+      "sampled_peak_RSS_bytes": 1835008
+    },
+    {
+      "phase": "coarse_seed_all_native_audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 38.50004283399994,
+      "sampled_peak_RSS_bytes": 706674688
+    },
+    {
+      "phase": "coarse_first_step",
+      "return_code": 1,
+      "stop_reason": null,
+      "wall_seconds": 2.040176624999731,
+      "sampled_peak_RSS_bytes": 606208
+    }
+  ],
+  "scope": "Prospective local192hcumulativepipeline including168hnativecontinuation. Qualifycoarseseedallstateaudit,one-step/stop/restart/secondstep/independentknownfieldaudit beforeseeding458-stateverifiedR2chain. IndependentlyreplayforceatEVERYseedstatebeforecontinuation. Thenrestartable full1600trajectory from458 withqualifiedkernel,strictphysics/positivity/nativecriteria,exactcheckpointjournals,perstep1800s,RSS30GiB/disk100GiB. Finalall1600nativeforces/norm/history/hash/whole-elementauditandR1/R2comparison. No automatictraining/calibration/newtestselection orpublishing;completedcalculationsarenotpassed1%convergence. Preservealloldfailedoutputs,20frozenmodels,passiveidealizedscope,oldtestseparation.",
+  "active_phase": "stopped",
+  "total_wall_seconds": 42.571225041000616,
+  "active_phase_wall_seconds": 0.03471149999950285,
+  "sampled_active_RSS_bytes": 606208,
+  "reference_native_validated": false,
+  "failure": "coarse_first_step: 1"
+}

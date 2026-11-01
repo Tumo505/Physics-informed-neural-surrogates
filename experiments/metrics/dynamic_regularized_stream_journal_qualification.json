@@ -1,0 +1,28 @@
+{
+  "complete": true,
+  "passed": true,
+  "records": [
+    {
+      "crash_point": "journal_before_rotation",
+      "passed": true,
+      "exact_native_checkpoint_preserved": true
+    },
+    {
+      "crash_point": "old_rotated",
+      "passed": true,
+      "exact_native_checkpoint_preserved": true
+    },
+    {
+      "crash_point": "checkpoint_rotated",
+      "passed": true,
+      "exact_native_checkpoint_preserved": true
+    },
+    {
+      "crash_point": "positivity_written",
+      "passed": true,
+      "exact_native_checkpoint_preserved": true
+    }
+  ],
+  "source_sha256": "b4318ef75995f768c68f430605021d0985b123841f15225777f357a0d0570f28",
+  "scope": "Transaction fault injection with real qualified coarse endpoint/native histories. No physical solve,synthetic SNES reason or regenerated history. Does not qualify full reference mechanics."
+}

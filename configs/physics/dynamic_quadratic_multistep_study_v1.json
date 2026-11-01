@@ -1,0 +1,15 @@
+{
+  "protocols": [
+    "configs/physics/dynamic_quadratic_multistep_coarse_v1.json",
+    "configs/physics/dynamic_quadratic_multistep_window_v1.json"
+  ],
+  "phase_budgets_seconds": [
+    900,
+    4200
+  ],
+  "workflow_budgets_seconds": [
+    1500,
+    5400
+  ],
+  "scope": "Prospective hash-linked multi-step restart qualification and eight-new-step loaded robustness window. Causally replay everyparentfield from hashedseed,verify nativefinalhistories and immediateprevioushistories before initialization. Firsttwo archivedcoarseequations at0.251875/0.2525s qualify native continuation from actual2-step parent;onlythen attempt8newR2states0.278125through0.2825s from independentlyverified0.2775s source. Samefrozen MPI12/threaded-Bernstein/adaptive-inexact/reusableGAMG/ArmijoadmissibleNewton,originalphysics/dt/Q6/mesh/load/histories/FINAL1e-8N/nativepositiveSNES atZEROupdates aftercustom1e-9Ngoal. All8states must independentlypass force/norm/history/hash/whole-element audits;prefixnotcompletewindow. Nativewindow3600s/phase4200s/workflow5400s,RSS30GiB,disk100GiB. No automatic fullcycle restart or ML training;assess robustness/runtime before a separately fixed fullreference protocol."
+}

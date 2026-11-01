@@ -1,0 +1,46 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_mpi12_admissible_loaded_control_v1.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_mpi12_admissible_loaded_control_v1.json",
+    "max_phase_seconds": 3000.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 4200.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 721.7066252909135,
+      "sampled_peak_RSS_bytes": 26962444288
+    },
+    {
+      "phase": "audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 113.14795712498017,
+      "sampled_peak_RSS_bytes": 10613112832
+    },
+    {
+      "phase": "resolve_positivity",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 18.189704041928053,
+      "sampled_peak_RSS_bytes": 5916868608
+    },
+    {
+      "phase": "compose_audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.035755957942456,
+      "sampled_peak_RSS_bytes": 1998848
+    }
+  ],
+  "active_phase": "finished",
+  "total_wall_seconds": 855.0991617089603,
+  "local_recovery_verified": true
+}

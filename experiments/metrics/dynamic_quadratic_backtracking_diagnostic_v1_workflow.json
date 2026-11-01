@@ -1,0 +1,33 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_backtracking_diagnostic_v1.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_backtracking_diagnostic_v1.json",
+    "max_phase_seconds": 1800.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 3300.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "wait_existing_prefix_audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 84.91152795800008,
+      "sampled_peak_RSS_bytes": 18104320
+    },
+    {
+      "phase": "native_diagnostics",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 115.9010353749618,
+      "sampled_peak_RSS_bytes": 27933523968
+    }
+  ],
+  "active_phase": "finished",
+  "total_wall_seconds": 200.817375541199,
+  "diagnostics_complete": true,
+  "descent_diagnostics_complete": true
+}

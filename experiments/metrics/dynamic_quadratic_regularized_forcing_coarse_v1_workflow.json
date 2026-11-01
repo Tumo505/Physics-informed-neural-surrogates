@@ -1,0 +1,32 @@
+{
+  "complete": true,
+  "full_cycle_validated": false,
+  "protocol": "configs/physics/dynamic_quadratic_regularized_forcing_coarse_v1.json",
+  "limits": {
+    "protocol": "configs/physics/dynamic_quadratic_regularized_forcing_coarse_v1.json",
+    "max_phase_seconds": 1200.0,
+    "max_rss_gib": 30,
+    "min_free_disk_gib": 100,
+    "max_workflow_seconds": 1800.0,
+    "resume": false
+  },
+  "phases": [
+    {
+      "phase": "solve",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 14.150244250020478,
+      "sampled_peak_RSS_bytes": 4627349504
+    },
+    {
+      "phase": "audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.041438542015385,
+      "sampled_peak_RSS_bytes": 606208
+    }
+  ],
+  "active_phase": "finished",
+  "total_wall_seconds": 16.19529516599141,
+  "local_recovery_verified": true
+}

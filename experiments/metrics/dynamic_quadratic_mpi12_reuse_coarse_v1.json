@@ -1,0 +1,482 @@
+{
+  "complete": true,
+  "finished": true,
+  "all_requested_steps_accepted": true,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "895ad29c0ad74b79a7301a9db500764baec588b216adbab2a39b302250a25c28",
+  "source_sha256": "74e11a50be7aa257b48557c0a7a8bc0675af96b5c5edc76278133e663607c53a",
+  "checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "reference_config_sha256": "15e5bf12c478ba3a64c60cc6fcefec92e3bb75396e5de92134b16aaf654e4918",
+  "dt_s": 0.000625,
+  "parallel_ranks": 12,
+  "records": [
+    {
+      "step": 400,
+      "time_s": 0.250625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 3.804678523378357e-11,
+      "nonlinear_iterations": 0,
+      "seconds": 2.1248676660470665,
+      "SNES_type": "newtonls",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 3.649476554290487e-13
+    },
+    {
+      "step": 401,
+      "time_s": 0.25125000000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.334749617061196e-12,
+      "nonlinear_iterations": 0,
+      "seconds": 2.295751583063975,
+      "SNES_type": "newtonls",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 4.659308962956521e-13
+    }
+  ],
+  "engineering_roots": [],
+  "attempts": [
+    {
+      "step": 400,
+      "time_s": 0.250625,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 3.804678523378357e-11,
+      "nonlinear_iterations": 0,
+      "seconds": 2.1248676660470665,
+      "SNES_type": "newtonls",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 3.649476554290487e-13,
+      "whole_element_proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9107840806269794,
+          "minimum_parent_Bernstein_bound": 0.9107840806269794,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9056367264483693,
+          "minimum_parent_Bernstein_bound": 0.9056367264483693,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+          "passed": true
+        }
+      },
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "native_residual_N": 3.8046785220985106e-11
+        }
+      ]
+    },
+    {
+      "step": 401,
+      "time_s": 0.25125000000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.334749617061196e-12,
+      "nonlinear_iterations": 0,
+      "seconds": 2.295751583063975,
+      "SNES_type": "newtonls",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 4.659308962956521e-13,
+      "whole_element_proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9189027543997563,
+          "minimum_parent_Bernstein_bound": 0.9189027543997563,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9157465569531754,
+          "minimum_parent_Bernstein_bound": 0.9157465569531754,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+          "passed": true
+        }
+      },
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "native_residual_N": 1.3347495933394475e-12
+        }
+      ]
+    }
+  ],
+  "scope": "Prospective12-rank known-equation throughput variant: same original physics/discretization/histories/load,custom Newton/Armijo/whole-element admission and strict nativefinalacceptance. Persist KSP/GAMG within each physical equation; reuse preconditioner after firstNewton linearization. Fresh true linear residual must meet unchanged max(1.1e-12N,1e-7*rhsnorm); if not,one explicitly recorded rebuild/re-solve with sameGMRES rtol1e-8,atol1e-12N,max3000 perattempt. No approximate update admitted without true residual qualification. Instrument Jassembly,PCsetup,linear solve and fallbackcounts. Same knowncoarse2thenknownloaded2 controls,archivedfield<1nm and independentforce/norm/history/hash/whole-element audits. Native600/2400s,phase900/3000s,workflow1500/4200s,RSS30GiB,disk100GiB,1thread/rank. One combined computational variant,not fullcycle/reference-convergence/ML validation.",
+  "start_step": 400,
+  "initializations": [
+    {
+      "step": 400,
+      "predictor_residuals_N": [
+        10.629017596235979,
+        1.1619858823802391,
+        0.5158376319780636,
+        17.783321060186513
+      ],
+      "selected_predictor": 2
+    },
+    {
+      "step": 401,
+      "predictor_residuals_N": [
+        10.386148024376038,
+        1.2614803965513723,
+        0.692125732140677,
+        17.45055555591661
+      ],
+      "selected_predictor": 2
+    }
+  ],
+  "admissible_solves": [
+    {
+      "step": 400,
+      "custom_newton_steps": [
+        {
+          "iteration": 0,
+          "initial_force_N": 0.5158376319780636,
+          "KSP_reason": 2,
+          "KSP_iterations": 43,
+          "linear_true_residual_N": 4.579985814315839e-09,
+          "linear_true_relative_residual": 8.878735343044158e-09,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.00803989707409511,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null
+            }
+          ],
+          "J_assembly_seconds": 0.1938807498663664,
+          "PC_setup_seconds": 0.21587849990464747,
+          "linear_solve_seconds": 0.17628704104572535,
+          "preconditioner_reuse_requested": false,
+          "rebuild_fallback": null,
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9107840099270268,
+              "minimum_parent_Bernstein_bound": 0.9107840099270268,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9056366882655821,
+              "minimum_parent_Bernstein_bound": 0.9056366882655821,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true
+            }
+          }
+        },
+        {
+          "iteration": 1,
+          "initial_force_N": 0.00803989707409511,
+          "KSP_reason": 2,
+          "KSP_iterations": 39,
+          "linear_true_residual_N": 7.838323798848705e-11,
+          "linear_true_relative_residual": 9.749283761485105e-09,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 8.796959623924349e-06,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null
+            }
+          ],
+          "J_assembly_seconds": 0.14749841601587832,
+          "PC_setup_seconds": 2.291053533554077e-06,
+          "linear_solve_seconds": 0.15719741699285805,
+          "preconditioner_reuse_requested": true,
+          "rebuild_fallback": null,
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9107840805993719,
+              "minimum_parent_Bernstein_bound": 0.9107840805993719,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9056367264328476,
+              "minimum_parent_Bernstein_bound": 0.9056367264328476,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true
+            }
+          }
+        },
+        {
+          "iteration": 2,
+          "initial_force_N": 8.796959623924349e-06,
+          "KSP_reason": 3,
+          "KSP_iterations": 31,
+          "linear_true_residual_N": 8.920021752900776e-13,
+          "linear_true_relative_residual": 1.0139891660570711e-07,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 3.804678521790236e-11,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null
+            }
+          ],
+          "J_assembly_seconds": 0.15264658303931355,
+          "PC_setup_seconds": 2.2919848561286926e-06,
+          "linear_solve_seconds": 0.12420112499967217,
+          "preconditioner_reuse_requested": true,
+          "rebuild_fallback": null,
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9107840806269794,
+              "minimum_parent_Bernstein_bound": 0.9107840806269794,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9056367264483693,
+              "minimum_parent_Bernstein_bound": 0.9056367264483693,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true
+            }
+          }
+        }
+      ],
+      "custom_force_N": 3.804678523324518e-11,
+      "custom_iterations": 3
+    },
+    {
+      "step": 401,
+      "custom_newton_steps": [
+        {
+          "iteration": 0,
+          "initial_force_N": 0.692125732140677,
+          "KSP_reason": 2,
+          "KSP_iterations": 43,
+          "linear_true_residual_N": 5.686062118466179e-09,
+          "linear_true_relative_residual": 8.215360091987545e-09,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.01704634769206361,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null
+            }
+          ],
+          "J_assembly_seconds": 0.18042158288881183,
+          "PC_setup_seconds": 0.21226250007748604,
+          "linear_solve_seconds": 0.17423254088498652,
+          "preconditioner_reuse_requested": false,
+          "rebuild_fallback": null,
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9188777736570629,
+              "minimum_parent_Bernstein_bound": 0.9188777736570629,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9157471551842395,
+              "minimum_parent_Bernstein_bound": 0.9157471551842395,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 3.3306690738754696e-16,
+              "passed": true
+            }
+          }
+        },
+        {
+          "iteration": 1,
+          "initial_force_N": 0.01704634769206361,
+          "KSP_reason": 2,
+          "KSP_iterations": 39,
+          "linear_true_residual_N": 1.5308937313345342e-10,
+          "linear_true_relative_residual": 8.98077264989311e-09,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.00010164066606955247,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null
+            }
+          ],
+          "J_assembly_seconds": 0.14672083291225135,
+          "PC_setup_seconds": 1.915963366627693e-06,
+          "linear_solve_seconds": 0.15651583392173052,
+          "preconditioner_reuse_requested": true,
+          "rebuild_fallback": null,
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9189027493266804,
+              "minimum_parent_Bernstein_bound": 0.9189027493266804,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9157465569477501,
+              "minimum_parent_Bernstein_bound": 0.9157465569477501,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 3.3306690738754696e-16,
+              "passed": true
+            }
+          }
+        },
+        {
+          "iteration": 2,
+          "initial_force_N": 0.00010164066606955247,
+          "KSP_reason": 3,
+          "KSP_iterations": 35,
+          "linear_true_residual_N": 7.312637738892574e-13,
+          "linear_true_relative_residual": 7.194598404036976e-09,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 1.1419746726121994e-08,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null
+            }
+          ],
+          "J_assembly_seconds": 0.13964724983088672,
+          "PC_setup_seconds": 1.708976924419403e-06,
+          "linear_solve_seconds": 0.13976008305326104,
+          "preconditioner_reuse_requested": true,
+          "rebuild_fallback": null,
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.918902754399748,
+              "minimum_parent_Bernstein_bound": 0.918902754399748,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 3.3306690738754696e-16,
+              "passed": true
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9157465569531784,
+              "minimum_parent_Bernstein_bound": 0.9157465569531784,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true
+            }
+          }
+        },
+        {
+          "iteration": 3,
+          "initial_force_N": 1.1419746726121994e-08,
+          "KSP_reason": 3,
+          "KSP_iterations": 11,
+          "linear_true_residual_N": 8.358733567949885e-13,
+          "linear_true_relative_residual": 7.319543741569834e-05,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 1.334749517963491e-12,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null
+            }
+          ],
+          "J_assembly_seconds": 0.15960404090583324,
+          "PC_setup_seconds": 2.0421575754880905e-06,
+          "linear_solve_seconds": 0.0451170839369297,
+          "preconditioner_reuse_requested": true,
+          "rebuild_fallback": null,
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9189027543997563,
+              "minimum_parent_Bernstein_bound": 0.9189027543997563,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9157465569531754,
+              "minimum_parent_Bernstein_bound": 0.9157465569531754,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true
+            }
+          }
+        }
+      ],
+      "custom_force_N": 1.3347494467074266e-12,
+      "custom_iterations": 4
+    }
+  ],
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "native_residual_N": 1.3347495933394475e-12
+    }
+  ],
+  "probe_checkpoint_sha256": "38b27a9b3c3044ec793e47668b8292af2fc18b2eb52ad51c3d26068393a3dabc",
+  "wall_seconds": 4.963537707924843
+}

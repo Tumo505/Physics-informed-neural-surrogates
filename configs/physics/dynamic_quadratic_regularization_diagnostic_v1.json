@@ -1,0 +1,22 @@
+{
+  "parallel_ranks": 12,
+  "failed_protocol": "configs/physics/dynamic_quadratic_multistep_window_v1.json",
+  "required_prefix_audit": "experiments/metrics/dynamic_quadratic_multistep_window_v1_verification_resolved.json",
+  "output": "experiments/metrics/dynamic_quadratic_regularization_diagnostic_v1.json",
+  "maximum_trial_halvings": 12,
+  "native_wall_budget_seconds": 1200,
+  "source_sha256": {
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/threaded_bernstein.py": "32c29bade91e8ab4a3a4d0b473ac2f4cdf86ac730dff269cd3bf775bf3f19a89",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "scripts/diagnose_parallel_regularization.py": "8aa5b42356ac7921a4e1c244f3566475e209942020b075e436af809916e92677",
+    "scripts/run_bounded_regularization_diagnostic.py": "014a77ad127945cb112e487752a9c70da1b1871b684c58e1736f49e5e6c70d2f"
+  },
+  "scope": "Prospective read-only diagonal-scaled regularized Newton direction sweep at original immutable rejected0.2825s iterate. Solve (J+muD)delta=-F with D=max(abs(diagJ),1e-12maxabsdiagJ) and fixed mu1e-4/1e-2/1. True shifted linear residual must pass max1.1e-12N/1e-7relative before exact unmodified force Armijo/whole-element positivity probes. No physical timestep/history update,no labels,no nonlinear recovery or condition-number claim. Original residual/J/physics/load/dt/mesh/Q6/final criteria unchanged. This is a direction diagnostic,not a PETSc TS run or qualified production method. Native1200s/outer1500s/workflow1800s,RSS30GiB,disk100GiB.",
+  "diagonal_regularization_factors": [
+    0.0001,
+    0.01,
+    1.0
+  ]
+}

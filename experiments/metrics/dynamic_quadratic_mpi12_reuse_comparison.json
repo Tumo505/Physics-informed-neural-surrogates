@@ -1,0 +1,27 @@
+{
+  "complete": true,
+  "passed_known_equation_equivalence": true,
+  "full_cycle_restart_qualified": false,
+  "baseline_solve_seconds": [
+    366.27730512502603,
+    313.63586708297953
+  ],
+  "reuse_solve_seconds": [
+    320.11348045803607,
+    258.72398066706955
+  ],
+  "aggregate_solve_speedup": 1.174618468691428,
+  "native_wall_seconds": 609.0669341250323,
+  "flat_remaining_solve_cost_scenario_hours": 92.93557014730862,
+  "flat_remaining_native_wall_cost_scenario_hours": 97.78907997896351,
+  "remaining_steps": 1156,
+  "per_reference_budget_hours": 72,
+  "profile": {
+    "total_J_seconds": 122.7566281252075,
+    "total_PC_setup_seconds": 19.63415379007347,
+    "total_linear_solve_seconds": 252.57737062708475,
+    "rebuild_fallbacks": 0
+  },
+  "max_known_field_difference_m": 8.365216071920534e-15,
+  "scope": "Matched known equations;independent force,norm,history,hash,whole-element checks passed. Profiling phases overlap only within their explicitly timed native calls; remaining wall includes residual/proof/data movement. Flat scenarios are not ETAs or a uniform-cost assumption. Original physical1e-8N and1%numerical gates unchanged."
+}

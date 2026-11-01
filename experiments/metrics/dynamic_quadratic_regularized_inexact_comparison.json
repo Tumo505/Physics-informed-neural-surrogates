@@ -1,0 +1,49 @@
+{
+  "complete": true,
+  "numerical_equivalence_passed": true,
+  "throughput_improved": false,
+  "matched_known_case_comparison": [
+    {
+      "protocol": "dynamic_quadratic_regularized_consecutive_window_v1",
+      "solve_seconds": [
+        494.0596170000499,
+        448.16522641602205
+      ],
+      "native_wall_seconds": 964.1286431670305,
+      "custom_iterations": [
+        13,
+        12
+      ],
+      "KSP_iterations": 2197,
+      "linear_seconds": 508.09964971098816,
+      "rebuild_fallbacks": 0,
+      "maximum_field_difference_m": 0,
+      "independent_native_forces_N": [
+        7.29466053383324e-12,
+        7.3132744263463e-12
+      ]
+    },
+    {
+      "protocol": "dynamic_quadratic_regularized_inexact_loaded_control_v1",
+      "solve_seconds": [
+        618.0394626249908,
+        597.7326042500208
+      ],
+      "native_wall_seconds": 1237.1083621669677,
+      "custom_iterations": [
+        13,
+        12
+      ],
+      "KSP_iterations": 3795,
+      "linear_seconds": 798.9176747040474,
+      "rebuild_fallbacks": 0,
+      "maximum_field_difference_m": 3.7861098804714555e-14,
+      "independent_native_forces_N": [
+        7.395445833171616e-12,
+        7.385128793723706e-12
+      ]
+    }
+  ],
+  "candidate_to_baseline_solve_time_ratio": 1.290320538001507,
+  "scope": "Matched known cases with identical13/12nonlineariterations and preservedphysicalcriteria. Combinedforcing+PCreuse slowedmeasuredKrylovandwalltime;retainnegativefinding. These sequential measurements are not randomized hardwarebenchmarks. Tight rebuilt-PC reference remainsselected. Isolate reuse contribution using separate fixedadaptiveforcingwithPCrebuild control beforeanychoice; no newphysicalstates/ML/fullcycleclaim."
+}

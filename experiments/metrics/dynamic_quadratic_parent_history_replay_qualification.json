@@ -1,0 +1,46 @@
+{
+  "complete": true,
+  "passed": true,
+  "records": [
+    {
+      "parent": "dynamic_quadratic_mpi12_threaded_coarse_v1",
+      "next_step": 402,
+      "metadata": {
+        "parent_protocol_sha256": "463d2546bc9467ca5cef72270a22063f2c3d1265863c9586a5a73f82480cd6fb",
+        "parent_output_sha256": "95565e299308ea394c051e0a02d9c26e2a069a656af70ee9ce357488f9f4c207",
+        "parent_audit_sha256": "14a8348b1bd0a73067a39709c087c9cc1ef9c5808536575333082e3f5f63d4cd",
+        "parent_fields_sha256": "3e1492b094d4d3ec55ecb034fcce3fe8968ed676767fc4bf52497f242a3b87c7",
+        "parent_checkpoint_sha256": "deb965abc2c78b838a93598051b8dcea0dc0a8c6f576be36987e7dc07fa5a15e",
+        "seed_history_sha256": "f9051d5678aab61ada7797193a0b7e9f41b23335e09aa00d7edfa5ce506940cb",
+        "parent_steps_replayed": 2,
+        "relative_history_errors": {
+          "u_old": 0.0,
+          "v_old": 3.2786268956261023e-15,
+          "a_old": 6.976524030936505e-14
+        },
+        "all_fields_causally_replayed": true
+      }
+    },
+    {
+      "parent": "dynamic_quadratic_mpi_admissible_consecutive_v1",
+      "next_step": 444,
+      "metadata": {
+        "parent_protocol_sha256": "6609a80c82e53be8f23fd0921a2fa2fd24cd7b6c18ff4875da12319e8ed57bf9",
+        "parent_output_sha256": "d0feea24b275b1e92bbc3d0e675919e265c0a09c3549521917760813ee51c538",
+        "parent_audit_sha256": "2ca630e9103d0045d69c29cce6f9a3b4523daaf86aedc36de18606847618af2d",
+        "parent_fields_sha256": "5ac36323f11cc6c0f6479647d2b00ac85eea046137e44af4d5fe805517530a02",
+        "parent_checkpoint_sha256": "d698058a5eddc0c289cb3d91860eec435955c4de5467a23e1d93ec28f62b3087",
+        "seed_history_sha256": "3ee291f0e380c0cc171c2c931805d1e5def3656d609584df35eb4ba449c1ce2f",
+        "parent_steps_replayed": 2,
+        "relative_history_errors": {
+          "u_old": 0.0,
+          "v_old": 3.7285553496443613e-14,
+          "a_old": 1.370196367956896e-12
+        },
+        "all_fields_causally_replayed": true
+      }
+    }
+  ],
+  "source_sha256": "7f99d87f83c3e4018fb7c725509c7e280033698d9a23a0d7673bde2f039b67c2",
+  "scope": "Hash-linked independent parent audit plus causal Newmark replay of every parentfield; final histories match nativecheckpoint,previous histories refer to immediately preceding physical state. Read-only initialization qualification,not a new physical solve or fullcycle/numerical validation."
+}

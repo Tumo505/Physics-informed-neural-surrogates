@@ -1,0 +1,19 @@
+{
+  "complete": true,
+  "independently_verified": true,
+  "matched_time_ratio": 0.8029642085026008,
+  "solve_seconds": [
+    391.2935571250273,
+    365.2792685000459
+  ],
+  "reference_solve_seconds": [
+    494.0596170000499,
+    448.16522641602205
+  ],
+  "KSP_iterations": 1447,
+  "linear_seconds": 340.7212324148277,
+  "maximum_field_difference_m": 1.1709383462843448e-17,
+  "independent_audit_sha256": "cb90e3f706b359fa0566a56c894437d1832fe1c3da43c867755cdb9cdf5a97f2",
+  "flat_remaining_solve_hours": 120.42117474532415,
+  "scope": "Sequentialmatchedknownpair,notrandomizedhardwarebenchmark. Forcingwithoutreuse fasterthan tightbaseline andcombinedreuse;no finalforcechange. Flatremainingcostexceeds72h/referenceandnotETA. Separateboundedlargernewstepwindow required;no fullcyclerestartqualified."
+}

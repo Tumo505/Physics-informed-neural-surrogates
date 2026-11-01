@@ -1,0 +1,15 @@
+{
+  "protocols": [
+    "configs/physics/dynamic_quadratic_regularized_extended_coarse_v1.json",
+    "configs/physics/dynamic_quadratic_regularized_extended_window_v1.json"
+  ],
+  "phase_budgets_seconds": [
+    1200,
+    3000
+  ],
+  "workflow_budgets_seconds": [
+    1800,
+    4200
+  ],
+  "scope": "Prospective bounded extendedNEW-state robustness/runtime window for separatelyknownfieldqualified adaptiveforcing+rebuiltGAMG regularizedNewton. Samefrozensources/physicalequations/dt/mesh/Q6/load/histories/FINAL1e-8N/custom1e-9N+freshnativepositiveSNESZEROupdates/Armijo+whole-elementacceptedtrials. Firstknowncoarse2 .254375/.255 from2-stepparent,then FOUR NEW R2states .284375through.28625 fromverified2stepnativeparent .28375. Hash-linked allparentcausalreplay required. All4newendpoints and independentserialforce/norm/history/hash/whole-elementaudits/subdivision/composition required;prefixnotcompletewindow. Native900/2400s,phase1200/3000s,workflow1800/4200s,RSS30GiB,disk100GiB. Justifiedby20%knowncasespeedgain;remainingflat120hsolve-onlyscenarioexceeds72hreferencebudget. Thislimitedwindowmeasuresrobustness/costvariation;notfullcyclerestartorclaimofuniformfuturecost. No ML/calibration/finaltestreadinesspass."
+}

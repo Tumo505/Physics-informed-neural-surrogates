@@ -1,0 +1,53 @@
+{
+  "complete": true,
+  "recovery_passed": false,
+  "study_validation_passed": false,
+  "physical_chain_end_s": 0.281875,
+  "physical_chain_endpoints": 451,
+  "total_required_endpoints": 1600,
+  "failed_target_s": 0.2825,
+  "custom_iterations_accepted": 79,
+  "last_accepted_custom_force_N": 0.03268874008711444,
+  "last_accepted_force_to_final_tolerance_ratio": 3268874.008711444,
+  "Cauchy_steps": 26,
+  "Newton_steps": 53,
+  "native_wall_seconds": 3604.163008667063,
+  "workflow_wall_seconds": 3617.1763252920937,
+  "sampled_peak_RSS_bytes": 29203267584,
+  "terminal_attempt": {
+    "step": 451,
+    "time_s": 0.28250000000000003,
+    "accepted": false,
+    "SNES_reason": 0,
+    "residual_N": null,
+    "nonlinear_iterations": 0,
+    "seconds": 3595.194505542051,
+    "SNES_type": "newtonls",
+    "KSP_type": "gmres",
+    "PC_type": "gamg",
+    "KSP_tolerances": [
+      1e-05,
+      1e-50,
+      10000.0,
+      10000
+    ],
+    "EW_effective": false,
+    "failure": "Admissible Newton wall budget exhausted",
+    "positivity_failure": null,
+    "known_field_max_difference_m": null,
+    "whole_element_proof": null,
+    "iteration_history": []
+  },
+  "terminal_displacement_coefficients_finite": true,
+  "unchanged_physical_histories": {
+    "u_old": true,
+    "v_old": true,
+    "a_old": true
+  },
+  "terminal_checkpoint_sha256": "4ace5f2c244ba6fb5020adeb50003b8933edd64431a51b8c5e0d54eccc6033af",
+  "protocol_sha256": "77ed250dfaffeea4c51b7516258bcc48551561f341c46e1431c87790cd31714c",
+  "output_sha256": "dbdaf3a5beed905770d4543ff7d0b52e9ae60885f10801a5371294c18f406e71",
+  "workflow_sha256": "ba9d2bd91cb4362f1730267f430446f5b7396480fc99d75edea1975be4e3bde7",
+  "frozen_sources_unchanged": true,
+  "scope": "Last accepted custom iterate force is NOT the terminal trial force. Budget interruption left an unaccepted trial checkpoint with finite displacement but no finite recorded terminal force. No fresh SNES convergence,no physical endpoint,no final norm/positivity qualification claimed. Accepted custom trials had online proofs only. Original failed outputs and independently qualified seven-state prefix retained. Full-cycle convergence,1% mesh/time/integration qualification across geometries/loadings,fullP2 gradient/transfer,new train/validation-selected models,independent calibration,and untouched final comparison remain unpassed. More wall time alone is unsupported; a separately fixed and qualified nonlinear method is needed before further full-reference work. No root existence,condition-number or physical-instability inference."
+}

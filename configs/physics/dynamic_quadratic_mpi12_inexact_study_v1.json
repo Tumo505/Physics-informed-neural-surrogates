@@ -1,0 +1,15 @@
+{
+  "protocols": [
+    "configs/physics/dynamic_quadratic_mpi12_inexact_coarse_v1.json",
+    "configs/physics/dynamic_quadratic_mpi12_inexact_loaded_control_v1.json"
+  ],
+  "phase_budgets_seconds": [
+    900,
+    3000
+  ],
+  "workflow_budgets_seconds": [
+    1500,
+    4200
+  ],
+  "scope": "Separate prospective inexact-linear forcing qualification after measured MPI12-reuse controls passed but exceeded fullreference runtime scenario. Internal GMRES eta=min(1e-4,max(1e-8,1e-4*sqrt(current_native_force/initial_native_force)));atol1e-12N/max3000perattempt. Actual true linear residual must meet max(1.1e-12N,1.1eta*rhsnorm),otherwise one recordedGAMGrebuild/re-solve;persistPCwithinphysicalequation. This changes ONLY declared internal computational forcing; original physics/discretization/history/load and FINAL1e-8N/zero-relative/nativepositiveSNES acceptance remain fixed. Samecustom1e-9Ngoal,Armijo1e-4+whole-elementpositive trials,max100Newton/20backtracks,and freshnativeSNESZEROupdateconfirmation. Instrument allforcing,lineartrueerrors,KSP/J/PCtimes/fallbacks. Firstknowncoarse2 thenknownloadedR2twoequations reproduce archivedfields<1nm and independentlypass nativeforce/norm/history/hash/whole-element audits. Native600/2400s,phase900/3000s,workflow1500/4200s,RSS30GiB,disk100GiB,12ranks1thread. No fullcycle/numerical/MLpass inferred from local control."
+}

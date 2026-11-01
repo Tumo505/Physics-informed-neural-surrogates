@@ -1,0 +1,16 @@
+{
+  "parallel_ranks": 12,
+  "failed_protocol": "configs/physics/dynamic_quadratic_multistep_window_v1.json",
+  "required_prefix_audit": "experiments/metrics/dynamic_quadratic_multistep_window_v1_verification_resolved.json",
+  "output": "experiments/metrics/dynamic_quadratic_backtracking_diagnostic_v1.json",
+  "maximum_trial_halvings": 30,
+  "native_wall_budget_seconds": 900,
+  "source_sha256": {
+    "scripts/diagnose_parallel_backtracking.py": "2395ddae4ad0955ba3d81ec055fc465c445159c067567805082294c41b9006f0",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/threaded_bernstein.py": "32c29bade91e8ab4a3a4d0b473ac2f4cdf86ac730dff269cd3bf775bf3f19a89",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31"
+  },
+  "scope": "Read-only diagnostic at rejected0.2825s iterate after independent7-step-prefix audit. Reassemble exact native force/J,tight true-qualified Newton direction and linearized-residual Cauchy direction;test finite force-decreasing/whole-element-positive trial steps without physical history update or labelpromotion. Direction amplification and descent probes are not tangent condition numbers,root-existence/uniqueness or physical-instability proofs. No nonlinear recovery is claimed;originalfailedwindow8steppass remainsfalse."
+}

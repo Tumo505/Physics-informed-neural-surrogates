@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "passed": true,
+  "full_cycle": false,
+  "records": [
+    {
+      "time_s": 0.250625,
+      "native_residual_N": 3.256771779780053e-10,
+      "endpoint_minimum_Bernstein_bound": 0.9107840806272479,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.9056367264485118,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 2.6495668192613595e-15
+    },
+    {
+      "time_s": 0.25125000000000003,
+      "native_residual_N": 3.9748230715420366e-10,
+      "endpoint_minimum_Bernstein_bound": 0.9189027543971686,
+      "endpoint_unresolved_elements": 0,
+      "stress_minimum_Bernstein_bound": 0.9157465569534176,
+      "stress_unresolved_elements": 0,
+      "independent_L2_norm_relative_error": 2.089306753090937e-15
+    }
+  ],
+  "dt_s": 0.000625,
+  "final_checkpoint_history_relative_errors": {
+    "u": 0.0,
+    "u_old": 0.0,
+    "v_old": 3.75412269954071e-15,
+    "a_old": 1.2748628170353907e-13
+  },
+  "accepted_prefix_only": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "927e019b896072e682fe91a1f77beace8d70dfd794fa32f536578266d961d476",
+  "original_checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "fields_sha256": "d108f9d858402d87f767179266a0316319ae2af4008426955775d8969d9e7140",
+  "inputs_sha256": "d5e2dfd90a39a8fe4f5e411378cd83ab8c53809057b8a43c4e37d6a014265ea6",
+  "executed_source_sha256": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+  "scope": "2 local probe steps with inherited nonzero histories, not a full-cycle reference. The recorded protocol specifies whether time discretization changed. All native forces are independently reassembled; P2 coordinate/component maps match native space. Endpoint/stress whole-element cubic Bernstein bounds checked with1e-9 float64 margin; random polynomial identities and independent canonical-quadrature/UFL displacement norms checked at 2 fixed frames. Not an interval-arithmetic proof, mesh-convergence or continuum claim."
+}

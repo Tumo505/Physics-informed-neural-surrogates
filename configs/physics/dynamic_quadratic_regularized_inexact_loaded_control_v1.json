@@ -1,0 +1,46 @@
+{
+  "parallel_ranks": 12,
+  "steps_after_checkpoint": 2,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "frozen_source_sha256": {
+    "src/lv_surrogate/physics/threaded_bernstein.py": "32c29bade91e8ab4a3a4d0b473ac2f4cdf86ac730dff269cd3bf775bf3f19a89",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "scripts/verify_quadratic_substep_probe.py": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+    "scripts/resolve_quadratic_positivity.py": "01131f0d2ba6377d01be2388b71a6a1b44372b2178f08e3dd041dff7f5149bca",
+    "scripts/combine_quadratic_probe_audits.py": "37979b89d2a9367d230b8be8d4a5e7c1dcb623305c0aef3f6e5cce7bf03bd47a",
+    "src/lv_surrogate/physics/probe_history_replay_prefix.py": "8adce846244c154788a15fb9df5f0144075a41a54af54a0a966790dd2f440722",
+    "src/lv_surrogate/physics/admissible_newton_regularized_inexact.py": "5331153d5d5757b5195b1222560ac0619226b96d9be64edaaccc3e4e718e6aee",
+    "scripts/probe_parallel_regularized_inexact.py": "cfcbff1dcc34a08046257dda747a460f1708ea20966765a6b420d2c719679937",
+    "scripts/run_bounded_regularized_inexact.py": "eda3867cbada5ca668f426c821974aa1998df87341edf14d6cf59845677d03f8"
+  },
+  "scope": "Prospective known-field throughput/equivalence control for separately qualified regularizedNewton. Only internal linear forcing eta=min1e-4max1e-8(1e-4sqrt(force/initialforce)) and GAMGreusewithinphysicalequation change;true shiftedresidual<=max1.1e-12N/1.1eta*rhsnorm mandatory;one recordedrebuild/re-solveifneeded,failedlineardirectionneveradmitted. Regularizationmeritpolicy,Armijo,whole-elementpositiveacceptedtrials,custom1e-9NthenfreshnativepositiveSNESZEROupdates,FINAL1e-8N,physics/dt/mesh/Q6/history/load unchanged. Knowncoarse2thenknownR2twoequations .283125/.28375 reproducearchivedfields<1nm withindependentserialforce/norm/history/hash/whole-elementaudits. No newphysicalstates/fullcyclerestart. Native900/2400s,phase1200/3000s,workflow1800/4200s,RSS30GiB,disk100GiB.",
+  "output": "experiments/metrics/dynamic_quadratic_regularized_inexact_loaded_control_v1.json",
+  "fields": "experiments/logs/dynamic_quadratic_regularized_inexact_loaded_control_v1_fields.npy",
+  "checkpoint": "experiments/logs/dynamic_quadratic_regularized_inexact_loaded_control_v1_restart.npz",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_regularized_inexact_loaded_control_v1_UNACCEPTED_iterate.npz",
+  "reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "reference_config": "configs/physics/dynamic_quadratic_reference_halfstep_ew_third.json",
+  "wall_budget_seconds": 2400,
+  "resume_probe_protocol": "configs/physics/dynamic_quadratic_regularized_failed_step_v1.json",
+  "required_audits": [
+    "experiments/metrics/dynamic_quadratic_regularized_failed_step_v1_verification_resolved.json"
+  ],
+  "diagnostic_gate": "experiments/metrics/dynamic_quadratic_failed_state_diagnostics_v1.json",
+  "diagnostic_gate_sha256": "cb7b09a98bcd9ef593ae7de7041036a42dfc83b0f3ec48d2a10733674e055c8a",
+  "admissible_newton": {
+    "maximum_custom_newton_iterations": 100,
+    "maximum_backtracks": 20,
+    "custom_absolute_tolerance_N": 1e-09,
+    "armijo_constant": 0.0001,
+    "initial_regularization": 1.0,
+    "minimum_regularization": 1e-12,
+    "maximum_regularization": 100000000.0
+  },
+  "motivating_failed_control_sha256": "567170f5d53d158d2c144ecafe67b229eab7ec34220681ee6750c8d73d6de431",
+  "required_parent_audit": "experiments/metrics/dynamic_quadratic_regularized_failed_step_v1_verification_resolved.json",
+  "serial_target_protocol": "configs/physics/dynamic_quadratic_regularized_consecutive_window_v1.json"
+}

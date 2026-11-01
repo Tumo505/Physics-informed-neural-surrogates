@@ -1,0 +1,15 @@
+{
+  "protocols": [
+    "configs/physics/dynamic_quadratic_regularized_forcing_coarse_v1.json",
+    "configs/physics/dynamic_quadratic_regularized_forcing_loaded_control_v1.json"
+  ],
+  "phase_budgets_seconds": [
+    1200,
+    3000
+  ],
+  "workflow_budgets_seconds": [
+    1800,
+    4200
+  ],
+  "scope": "Prospective one-factor known-field ablation: adaptiveinternalforcingeta1e-4to1e-8 with GAMG REBUILT everyiteration,compared to completedcombinedforcing+reuse andtightrebuiltPCcontrols. Allmuadaptation,lineartruechecks/fallback,exactforceArmijo/whole-elementpositivity,custom1e-9NthenfreshnativepositiveSNESZEROupdates,FINAL1e-8N,physics/dt/mesh/Q6/history/load unchanged. Firstknowncoarse2thenreproduceknownR2pair.283125/.28375witharchivedfield<1nm andindependentserialforce/norm/history/hash/whole-elementaudits/subdivision preservingparents. Native900/2400s,phase1200/3000s,workflow1800/4200s,RSS30GiB,disk100GiB. No newphysicalstates/fullcycle/MLclaim. Tests forcing withoutreuse aftercombinedvariant increasedKSPiterations2197to3795andwas29%slower;selectedtightbaselineunchangedpendingqualification."
+}

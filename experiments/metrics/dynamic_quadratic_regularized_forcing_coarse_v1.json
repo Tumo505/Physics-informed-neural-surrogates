@@ -1,0 +1,1121 @@
+{
+  "complete": true,
+  "finished": true,
+  "all_requested_steps_accepted": true,
+  "full_cycle": false,
+  "changed_time_discretization": false,
+  "protocol_sha256": "bc89c8375ecb20d63a5532cbcc84e283a5d6cf0d730dce7a15927ba0334b3509",
+  "source_sha256": "3c19bdb0bea007457d204105de2e4e1a25a8b3d1ab80e00a966db951be30f1fe",
+  "checkpoint_sha256": "3e44f51be9c1bd9b5f5f9809e56ad18687e3d1326521b50f4a85aa292380f54c",
+  "reference_config_sha256": "15e5bf12c478ba3a64c60cc6fcefec92e3bb75396e5de92134b16aaf654e4918",
+  "dt_s": 0.000625,
+  "parallel_ranks": 12,
+  "records": [
+    {
+      "step": 404,
+      "time_s": 0.253125,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 6.25184164167787e-10,
+      "nonlinear_iterations": 0,
+      "seconds": 4.095007458003238,
+      "SNES_type": "newtonls",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 1.1100599606184147e-12
+    },
+    {
+      "step": 405,
+      "time_s": 0.25375000000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.9734022817220644e-12,
+      "nonlinear_iterations": 0,
+      "seconds": 4.233223083021585,
+      "SNES_type": "newtonls",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 1.3969971013327864e-12
+    }
+  ],
+  "engineering_roots": [],
+  "attempts": [
+    {
+      "step": 404,
+      "time_s": 0.253125,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 6.25184164167787e-10,
+      "nonlinear_iterations": 0,
+      "seconds": 4.095007458003238,
+      "SNES_type": "newtonls",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 1.1100599606184147e-12,
+      "whole_element_proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.9018307752394469,
+          "minimum_parent_Bernstein_bound": 0.9018307752394469,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+          "passed": true,
+          "evaluation_workers": 4,
+          "disjoint_cells_total": 17625
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.9070555172968926,
+          "minimum_parent_Bernstein_bound": 0.9070555172968926,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+          "passed": true,
+          "evaluation_workers": 4,
+          "disjoint_cells_total": 17625
+        }
+      },
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "native_residual_N": 6.25184164219669e-10
+        }
+      ]
+    },
+    {
+      "step": 405,
+      "time_s": 0.25375000000000003,
+      "accepted": true,
+      "SNES_reason": 2,
+      "residual_N": 1.9734022817220644e-12,
+      "nonlinear_iterations": 0,
+      "seconds": 4.233223083021585,
+      "SNES_type": "newtonls",
+      "KSP_type": "gmres",
+      "PC_type": "gamg",
+      "KSP_tolerances": [
+        1e-08,
+        1e-12,
+        10000.0,
+        3000
+      ],
+      "EW_effective": false,
+      "failure": null,
+      "positivity_failure": null,
+      "known_field_max_difference_m": 1.3969971013327864e-12,
+      "whole_element_proof": {
+        "endpoint": {
+          "minimum_Bernstein_bound": 0.8842537357337911,
+          "minimum_parent_Bernstein_bound": 0.8842537357337911,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+          "passed": true,
+          "evaluation_workers": 4,
+          "disjoint_cells_total": 17625
+        },
+        "stress": {
+          "minimum_Bernstein_bound": 0.890259137163918,
+          "minimum_parent_Bernstein_bound": 0.890259137163918,
+          "original_unresolved_elements": 0,
+          "refined_elements": [],
+          "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+          "passed": true,
+          "evaluation_workers": 4,
+          "disjoint_cells_total": 17625
+        }
+      },
+      "iteration_history": [
+        {
+          "iteration": 0,
+          "native_residual_N": 1.9734022434680145e-12
+        }
+      ]
+    }
+  ],
+  "scope": "Prospective one-factor known-field ablation: adaptiveinternalforcingeta1e-4to1e-8 with GAMG REBUILT everyiteration,compared to completedcombinedforcing+reuse andtightrebuiltPCcontrols. Allmuadaptation,lineartruechecks/fallback,exactforceArmijo/whole-elementpositivity,custom1e-9NthenfreshnativepositiveSNESZEROupdates,FINAL1e-8N,physics/dt/mesh/Q6/history/load unchanged. Firstknowncoarse2thenreproduceknownR2pair.283125/.28375witharchivedfield<1nm andindependentserialforce/norm/history/hash/whole-elementaudits/subdivision preservingparents. Native900/2400s,phase1200/3000s,workflow1800/4200s,RSS30GiB,disk100GiB. No newphysicalstates/fullcycle/MLclaim. Tests forcing withoutreuse aftercombinedvariant increasedKSPiterations2197to3795andwas29%slower;selectedtightbaselineunchangedpendingqualification.",
+  "resumed_checkpoint_sha256": "0bbcfe4e3a3ffa1f89ef81b98645526a225fa7da628646d73356f7eaadeaa4a2",
+  "parent_history_replay": {
+    "parent_protocol_sha256": "867f3c9f024747843ca9da03214bac6058a1f138fb9aca0e5702e8593be8464d",
+    "parent_output_sha256": "89e70c7c91785b0dd4ec0fc2c2e109cde6e1cbdccc47f9968c8bfeb97d480f03",
+    "parent_audit_sha256": "35db857b00a4e3080779d7416ab68ad689ee2694f4a8dd4bd8aed8a128b03c15",
+    "parent_fields_sha256": "be539e59d3b6e4b3dda32e5ef5005d8fc6d1fd4bb34d0e314a1109faa9f4f500",
+    "parent_checkpoint_sha256": "0bbcfe4e3a3ffa1f89ef81b98645526a225fa7da628646d73356f7eaadeaa4a2",
+    "seed_history_sha256": "deb965abc2c78b838a93598051b8dcea0dc0a8c6f576be36987e7dc07fa5a15e",
+    "parent_steps_replayed": 2,
+    "relative_history_errors": {
+      "u_old": 0.0,
+      "v_old": 2.0490135328245894e-16,
+      "a_old": 2.0992255660627747e-15
+    },
+    "all_fields_causally_replayed": true,
+    "parent_original_requested_steps_completed": true,
+    "accepted_prefix_only_consumed": false
+  },
+  "start_step": 404,
+  "initializations": [
+    {
+      "step": 404,
+      "predictor_residuals_N": [
+        9.121310398013707,
+        1.408086269065904,
+        1.249563611463528,
+        15.482326375485203
+      ],
+      "selected_predictor": 2
+    },
+    {
+      "step": 405,
+      "predictor_residuals_N": [
+        8.642026157561535,
+        1.3473988611926238,
+        1.4332219746513613,
+        14.670999710618815
+      ],
+      "selected_predictor": 1
+    }
+  ],
+  "admissible_solves": [
+    {
+      "step": 404,
+      "custom_newton_steps": [
+        {
+          "iteration": 0,
+          "linear_forcing": 0.0001,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 1.249563611463528,
+          "regularization": 1.0,
+          "KSP_reason": 2,
+          "KSP_iterations": 4,
+          "true_shifted_linear_residual_N": 8.34391104058859e-05,
+          "true_shifted_linear_relative_residual": 6.677460006070392e-05,
+          "linear_seconds": 0.2412704579764977,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.700666885861639,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 1.001139694819614
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9017040991359605,
+              "minimum_parent_Bernstein_bound": 0.9017040991359605,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9069571215924951,
+              "minimum_parent_Bernstein_bound": 0.9069571215924951,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.25
+        },
+        {
+          "iteration": 1,
+          "linear_forcing": 7.488185797294836e-05,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.700666885861639,
+          "regularization": 0.25,
+          "KSP_reason": 2,
+          "KSP_iterations": 6,
+          "true_shifted_linear_residual_N": 3.105860034394376e-05,
+          "true_shifted_linear_relative_residual": 4.432719880253755e-05,
+          "linear_seconds": 0.0679617909481749,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.37304930248433354,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 1.0021203206497546
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9017529414278689,
+              "minimum_parent_Bernstein_bound": 0.9017529414278689,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9069868600266685,
+              "minimum_parent_Bernstein_bound": 0.9069868600266685,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.0625
+        },
+        {
+          "iteration": 2,
+          "linear_forcing": 5.4639149592076766e-05,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.37304930248433354,
+          "regularization": 0.0625,
+          "KSP_reason": 2,
+          "KSP_iterations": 12,
+          "true_shifted_linear_residual_N": 1.0495351039717079e-05,
+          "true_shifted_linear_relative_residual": 2.8133951651492066e-05,
+          "linear_seconds": 0.08779220801079646,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.19673105341722205,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 1.001047317267569
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.901831360354664,
+              "minimum_parent_Bernstein_bound": 0.901831360354664,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9070379830602479,
+              "minimum_parent_Bernstein_bound": 0.9070379830602479,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.015625
+        },
+        {
+          "iteration": 3,
+          "linear_forcing": 3.967868529515962e-05,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.19673105341722205,
+          "regularization": 0.015625,
+          "KSP_reason": 2,
+          "KSP_iterations": 18,
+          "true_shifted_linear_residual_N": 7.785764603463545e-06,
+          "true_shifted_linear_relative_residual": 3.9575676885904233e-05,
+          "linear_seconds": 0.11279849999118596,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.08471495011877826,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9999985746601424
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9018302695247965,
+              "minimum_parent_Bernstein_bound": 0.9018302695247965,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9070444497196632,
+              "minimum_parent_Bernstein_bound": 0.9070444497196632,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.00390625
+        },
+        {
+          "iteration": 4,
+          "linear_forcing": 2.603759364515606e-05,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.08471495011877826,
+          "regularization": 0.00390625,
+          "KSP_reason": 2,
+          "KSP_iterations": 24,
+          "true_shifted_linear_residual_N": 1.7413315316078068e-06,
+          "true_shifted_linear_relative_residual": 2.0555185704132477e-05,
+          "linear_seconds": 0.1360932500101626,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.019874148070776625,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9999997906608348
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9018199543919486,
+              "minimum_parent_Bernstein_bound": 0.9018199543919486,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9070451891182194,
+              "minimum_parent_Bernstein_bound": 0.9070451891182194,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.0009765625
+        },
+        {
+          "iteration": 5,
+          "linear_forcing": 1.261145154981409e-05,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.019874148070776625,
+          "regularization": 0.0009765625,
+          "KSP_reason": 2,
+          "KSP_iterations": 29,
+          "true_shifted_linear_residual_N": 1.9698278884573456e-07,
+          "true_shifted_linear_relative_residual": 9.911508566014072e-06,
+          "linear_seconds": 0.15497120801592246,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.0017547072819596929,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 1.0000010757677809
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9018280725626835,
+              "minimum_parent_Bernstein_bound": 0.9018280725626835,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.907053326778015,
+              "minimum_parent_Bernstein_bound": 0.907053326778015,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.000244140625
+        },
+        {
+          "iteration": 6,
+          "linear_forcing": 3.7473404790164605e-06,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.001754707281959693,
+          "regularization": 0.000244140625,
+          "KSP_reason": 2,
+          "KSP_iterations": 33,
+          "true_shifted_linear_residual_N": 5.222545357011145e-09,
+          "true_shifted_linear_relative_residual": 2.9763057409658093e-06,
+          "linear_seconds": 0.16950858302880079,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 4.6327324849239656e-05,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 1.000000039655245
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9018306386609944,
+              "minimum_parent_Bernstein_bound": 0.9018306386609944,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9070554093672416,
+              "minimum_parent_Bernstein_bound": 0.9070554093672416,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 6.103515625e-05
+        },
+        {
+          "iteration": 7,
+          "linear_forcing": 6.088908202185484e-07,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 4.632732484923963e-05,
+          "regularization": 6.103515625e-05,
+          "KSP_reason": 2,
+          "KSP_iterations": 37,
+          "true_shifted_linear_residual_N": 2.7100848021762266e-11,
+          "true_shifted_linear_relative_residual": 5.849862496907604e-07,
+          "linear_seconds": 0.18648595898412168,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 3.320688440644515e-07,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 1.0000000002106741
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9018307736381702,
+              "minimum_parent_Bernstein_bound": 0.9018307736381702,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9070555160217215,
+              "minimum_parent_Bernstein_bound": 0.9070555160217215,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 1.52587890625e-05
+        },
+        {
+          "iteration": 8,
+          "linear_forcing": 5.15507372114284e-08,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 3.3206884406457914e-07,
+          "regularization": 1.52587890625e-05,
+          "KSP_reason": 3,
+          "KSP_iterations": 34,
+          "true_shifted_linear_residual_N": 7.435936317426788e-13,
+          "true_shifted_linear_relative_residual": 2.2392755148027926e-06,
+          "linear_seconds": 0.17514537501847371,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 6.251841642812853e-10,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9999999999868914
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.9018307752394469,
+              "minimum_parent_Bernstein_bound": 0.9018307752394469,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.9070555172968926,
+              "minimum_parent_Bernstein_bound": 0.9070555172968926,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 3.814697265625e-06
+        }
+      ],
+      "custom_force_N": 6.251841643145561e-10,
+      "custom_iterations": 9
+    },
+    {
+      "step": 405,
+      "custom_newton_steps": [
+        {
+          "iteration": 0,
+          "linear_forcing": 0.0001,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 1.3473988611926238,
+          "regularization": 1.0,
+          "KSP_reason": 2,
+          "KSP_iterations": 4,
+          "true_shifted_linear_residual_N": 8.72116267575954e-05,
+          "true_shifted_linear_relative_residual": 6.472591692737645e-05,
+          "linear_seconds": 0.23002358298981562,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.8994222507468106,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9973010101832691
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.8884493469051683,
+              "minimum_parent_Bernstein_bound": 0.8884493469051683,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.8926744084644109,
+              "minimum_parent_Bernstein_bound": 0.8926744084644109,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.25
+        },
+        {
+          "iteration": 1,
+          "linear_forcing": 8.17021952465018e-05,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.8994222507468106,
+          "regularization": 0.25,
+          "KSP_reason": 2,
+          "KSP_iterations": 6,
+          "true_shifted_linear_residual_N": 4.3107040009524596e-05,
+          "true_shifted_linear_relative_residual": 4.7927477860072784e-05,
+          "linear_seconds": 0.06607029098086059,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.6506231999626972,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9965626018135625
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.8879446841327167,
+              "minimum_parent_Bernstein_bound": 0.8879446841327167,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.8923772348695721,
+              "minimum_parent_Bernstein_bound": 0.8923772348695721,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.0625
+        },
+        {
+          "iteration": 2,
+          "linear_forcing": 6.948909964905004e-05,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.6506231999626972,
+          "regularization": 0.0625,
+          "KSP_reason": 2,
+          "KSP_iterations": 11,
+          "true_shifted_linear_residual_N": 4.12216036649424e-05,
+          "true_shifted_linear_relative_residual": 6.335710695115974e-05,
+          "linear_seconds": 0.08361537504242733,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.4786273183809353,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9974398300813473
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.8874934588226636,
+              "minimum_parent_Bernstein_bound": 0.8874934588226636,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.8921379747302279,
+              "minimum_parent_Bernstein_bound": 0.8921379747302279,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.015625
+        },
+        {
+          "iteration": 3,
+          "linear_forcing": 5.9600602979758936e-05,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.4786273183809353,
+          "regularization": 0.015625,
+          "KSP_reason": 2,
+          "KSP_iterations": 17,
+          "true_shifted_linear_residual_N": 2.845440588850667e-05,
+          "true_shifted_linear_relative_residual": 5.945002467631832e-05,
+          "linear_seconds": 0.10687920899363235,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.2665080528141846,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9986348905230081
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.8861331081563563,
+              "minimum_parent_Bernstein_bound": 0.8861331081563563,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.8913672540640913,
+              "minimum_parent_Bernstein_bound": 0.8913672540640913,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.00390625
+        },
+        {
+          "iteration": 4,
+          "linear_forcing": 4.447409097638422e-05,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.2665080528141846,
+          "regularization": 0.00390625,
+          "KSP_reason": 2,
+          "KSP_iterations": 22,
+          "true_shifted_linear_residual_N": 1.1382732682418079e-05,
+          "true_shifted_linear_relative_residual": 4.271065193798994e-05,
+          "linear_seconds": 0.12745374999940395,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.07480285956746216,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9995222458944781
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.8848239365649735,
+              "minimum_parent_Bernstein_bound": 0.8848239365649735,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.8906035867169438,
+              "minimum_parent_Bernstein_bound": 0.8906035867169438,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.0009765625
+        },
+        {
+          "iteration": 5,
+          "linear_forcing": 2.3561938182254107e-05,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.07480285956746216,
+          "regularization": 0.0009765625,
+          "KSP_reason": 2,
+          "KSP_iterations": 26,
+          "true_shifted_linear_residual_N": 1.726648641939293e-06,
+          "true_shifted_linear_relative_residual": 2.3082655555194212e-05,
+          "linear_seconds": 0.142288584029302,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.007336155252387881,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9999441044847143
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.8843238437374004,
+              "minimum_parent_Bernstein_bound": 0.8843238437374004,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.8903025999369218,
+              "minimum_parent_Bernstein_bound": 0.8903025999369218,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 0.000244140625
+        },
+        {
+          "iteration": 6,
+          "linear_forcing": 7.378807301041847e-06,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.007336155252387881,
+          "regularization": 0.000244140625,
+          "KSP_reason": 2,
+          "KSP_iterations": 31,
+          "true_shifted_linear_residual_N": 3.5947984923411913e-08,
+          "true_shifted_linear_relative_residual": 4.9001123458655034e-06,
+          "linear_seconds": 0.16306416603038087,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 0.00020428988997675738,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9999987411756792
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.8842564071799326,
+              "minimum_parent_Bernstein_bound": 0.8842564071799326,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.8902608300436663,
+              "minimum_parent_Bernstein_bound": 0.8902608300436663,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 6.103515625e-05
+        },
+        {
+          "iteration": 7,
+          "linear_forcing": 1.2313325193447918e-06,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 0.000204289889976757,
+          "regularization": 6.103515625e-05,
+          "KSP_reason": 2,
+          "KSP_iterations": 35,
+          "true_shifted_linear_residual_N": 2.441713001994987e-10,
+          "true_shifted_linear_relative_residual": 1.1952196960274401e-06,
+          "linear_seconds": 0.1788219579611905,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 1.5014619436881785e-06,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9999999936872768
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.8842537631357144,
+              "minimum_parent_Bernstein_bound": 0.8842537631357144,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.8902591548622272,
+              "minimum_parent_Bernstein_bound": 0.8902591548622272,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 4.440892098500626e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 1.52587890625e-05
+        },
+        {
+          "iteration": 8,
+          "linear_forcing": 1.0556235649188079e-07,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 1.5014619436880676e-06,
+          "regularization": 1.52587890625e-05,
+          "KSP_reason": 3,
+          "KSP_iterations": 37,
+          "true_shifted_linear_residual_N": 8.666534911832634e-13,
+          "true_shifted_linear_relative_residual": 5.772064319222684e-07,
+          "linear_seconds": 0.18739316699793562,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 2.853809087697115e-09,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9999999999857168
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.8842537358059124,
+              "minimum_parent_Bernstein_bound": 0.8842537358059124,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 7.771561172376096e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.8902591372113353,
+              "minimum_parent_Bernstein_bound": 0.8902591372113353,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 3.814697265625e-06
+        },
+        {
+          "iteration": 9,
+          "linear_forcing": 1e-08,
+          "reuse_requested": false,
+          "rebuild_fallback": null,
+          "initial_force_N": 2.8538090870415823e-09,
+          "regularization": 3.814697265625e-06,
+          "KSP_reason": 3,
+          "KSP_iterations": 22,
+          "true_shifted_linear_residual_N": 6.975875600502823e-13,
+          "true_shifted_linear_relative_residual": 0.0002444408643934344,
+          "linear_seconds": 0.12689600000157952,
+          "trials": [
+            {
+              "alpha": 1.0,
+              "native_force_N": 1.973402258973303e-12,
+              "armijo_passed": true,
+              "whole_element_admissible": true,
+              "positivity_failure": null,
+              "actual_to_predicted_merit_ratio": 0.9999998230713198
+            }
+          ],
+          "accepted_whole_element_proof": {
+            "endpoint": {
+              "minimum_Bernstein_bound": 0.8842537357337911,
+              "minimum_parent_Bernstein_bound": 0.8842537357337911,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 5.551115123125783e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            },
+            "stress": {
+              "minimum_Bernstein_bound": 0.890259137163918,
+              "minimum_parent_Bernstein_bound": 0.890259137163918,
+              "original_unresolved_elements": 0,
+              "refined_elements": [],
+              "polynomial_reconstruction_max_abs_error": 6.661338147750939e-16,
+              "passed": true,
+              "evaluation_workers": 4,
+              "disjoint_cells_total": 17625
+            }
+          },
+          "accepted_custom_update": true,
+          "next_regularization": 9.5367431640625e-07
+        }
+      ],
+      "custom_force_N": 1.973402297144462e-12,
+      "custom_iterations": 10
+    }
+  ],
+  "last_iteration_history": [
+    {
+      "iteration": 0,
+      "native_residual_N": 1.9734022434680145e-12
+    }
+  ],
+  "probe_checkpoint_sha256": "e46a6525604bf0cf058cf2083fec2c42a8b8cb4e925dc60bf7381469f28d25dc",
+  "wall_seconds": 8.784592082956806
+}

@@ -1,0 +1,69 @@
+{
+  "complete": true,
+  "passed": true,
+  "physical_step_generated": false,
+  "original_audit_passed": false,
+  "original_pointwise_tolerance_unchanged": true,
+  "all_458_previous_native_force_checks_passed": true,
+  "source_prefix_fields_sha256": "24597ebc6e4f98bfcb311f568de1404624e8e28e4d6f8f82871786eaa19993a8",
+  "native_replay_checkpoint_sha256": "b1a42f3139315fd391e93daf503403567b19dcdb5c898acbabd7139e5c47e23b",
+  "original_checkpoint_sha256": "42749f4c9382ffe1f93eb4e67c670b014200c83856409863b3142ab39278c58c",
+  "failed_audit_sha256": "2e53572990da6b86ae8e4930ae8043c321fbbd9d11b55a031ec68eb998539d5d",
+  "positivity_sha256": "19037d205343e0cbac9706aa4acec6a4867e5e848244ce34cc5ae69a7cadda79",
+  "protocol_sha256": "f0ccc27bf65733381ff64bf0d17e72697d4242ae3964970fe8a3764a24fa782d",
+  "source_sha256": "61f1d0c02c09980482364c34a7cf0638b0b5f500ccc4146c57e580bf24c9b0ea",
+  "history_differences": {
+    "u": {
+      "maximum_absolute_difference": 0.0,
+      "relative_L2_difference": 0.0
+    },
+    "u_old": {
+      "maximum_absolute_difference": 0.0,
+      "relative_L2_difference": 0.0
+    },
+    "v_old": {
+      "maximum_absolute_difference": 6.786238238021269e-14,
+      "relative_L2_difference": 1.3871794116352915e-13
+    },
+    "a_old": {
+      "maximum_absolute_difference": 5.427756022413632e-10,
+      "relative_L2_difference": 1.0965809848546093e-11
+    }
+  },
+  "repeated_independent_force_checks": [
+    {
+      "step": 0,
+      "native_residual_N": 2.252058575997937e-09
+    },
+    {
+      "step": 65,
+      "native_residual_N": 6.1397920488213415e-12
+    },
+    {
+      "step": 130,
+      "native_residual_N": 7.644086414273999e-09
+    },
+    {
+      "step": 195,
+      "native_residual_N": 2.161242868579025e-09
+    },
+    {
+      "step": 261,
+      "native_residual_N": 4.30365862330559e-12
+    },
+    {
+      "step": 326,
+      "native_residual_N": 1.579845023022751e-09
+    },
+    {
+      "step": 391,
+      "native_residual_N": 1.0217096036176497e-10
+    },
+    {
+      "step": 457,
+      "native_residual_N": 7.034968518657318e-12
+    }
+  ],
+  "wall_seconds": 273.84575720799967,
+  "scope": "Original full-seed audit remainsFAILED at pointwisehistorycomparison;all458nativeforces/normsandwhole-elementproofs passed. Separate prospective canonicalhistorycandidate serialized from actualserialnative_update_fields replayofunchanged458physicalfields,notNumPyrecurrence,journalrepairornewphysicalsolve. Originalcheckpoint/fields/SNESrecords retained. Candidatecannotbeuseduntilnewseparateprotocol/nativeallstateauditpassesunchangedpointwisetolerance;no relaxationorfullreference/studyclaim."
+}

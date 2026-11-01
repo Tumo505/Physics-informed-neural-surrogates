@@ -1,0 +1,15 @@
+{
+  "protocols": [
+    "configs/physics/dynamic_quadratic_regularized_inexact_coarse_v1.json",
+    "configs/physics/dynamic_quadratic_regularized_inexact_loaded_control_v1.json"
+  ],
+  "phase_budgets_seconds": [
+    1200,
+    3000
+  ],
+  "workflow_budgets_seconds": [
+    1800,
+    4200
+  ],
+  "scope": "Prospective known-field throughput/equivalence control for separately qualified regularizedNewton. Only internal linear forcing eta=min1e-4max1e-8(1e-4sqrt(force/initialforce)) and GAMGreusewithinphysicalequation change;true shiftedresidual<=max1.1e-12N/1.1eta*rhsnorm mandatory;one recordedrebuild/re-solveifneeded,failedlineardirectionneveradmitted. Regularizationmeritpolicy,Armijo,whole-elementpositiveacceptedtrials,custom1e-9NthenfreshnativepositiveSNESZEROupdates,FINAL1e-8N,physics/dt/mesh/Q6/history/load unchanged. Knowncoarse2thenknownR2twoequations .283125/.28375 reproducearchivedfields<1nm withindependentserialforce/norm/history/hash/whole-elementaudits. No newphysicalstates/fullcyclerestart. Native900/2400s,phase1200/3000s,workflow1800/4200s,RSS30GiB,disk100GiB."
+}

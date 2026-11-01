@@ -1,0 +1,26 @@
+{
+  "name": "cardiac_regularized_stream_third_20261101_v3_v1",
+  "dt_s": 0.000625,
+  "duration_s": 1.0,
+  "displacement_degree": 2,
+  "refinement_level": 2,
+  "geometry_scales": [
+    1.0,
+    1.0
+  ],
+  "amplitude": 1.0,
+  "timing_scale": 1.0,
+  "quadrature_degree": 6,
+  "checkpoint_interval": 10,
+  "native_solver": "gamg",
+  "scope": "Separate qualified regularized Newton/forcing rebuiltGAMG computational protocol,unchanged passiveidealizedphysicalproblem/dt/mesh/Q6/load/material/final1e-8N. Localcontinuationnew168hnative/192hpipelinebudget withdurableexactnativehistorytransactions. Fullnativeaudits/numericalconvergence and downstreamMLvalidation remain separate. v2 fixes non-root audit=None initialization found before any physical update by v1 coarse streaming control; v1 evidence retained. v3 separately qualifies canonicalnativehistorycandidate fromread-onlyreplay;originalv2pointwisehistoryaudit/checkpoint remainsfailedandpreserved. Originalhistorytolerance unchanged.",
+  "nonlinear_absolute_tolerance_N": 1e-08,
+  "nonlinear_relative_tolerance": 0.0,
+  "allow_direct_fallback": false,
+  "maximum_newton_iterations": 100,
+  "mumps_memory_limit_MB": 20000,
+  "inexact_newton": true,
+  "linear_maximum_iterations": 3000,
+  "gmres_restart": 200,
+  "save_nonlinear_checkpoint": true
+}

@@ -1,0 +1,18 @@
+{
+  "complete": true,
+  "study_validation_passed": false,
+  "phases": [
+    {
+      "protocol": "configs/physics/dynamic_quadratic_regularized_consecutive_coarse_v1.json",
+      "independent_local_audit_passed": true
+    },
+    {
+      "protocol": "configs/physics/dynamic_quadratic_regularized_consecutive_window_v1.json",
+      "independent_local_audit_passed": true
+    }
+  ],
+  "scope": "Separately fixed two-consecutive-step robustness test of qualified regularizedNewton,unchanged numericalkernel/sourcehashes/physics/dt/mesh/Q6/history/load/final1e-8N. Firstknowncoarse continuation .253125/.25375 mustindependentlyreproducearchivedfields,then TWO NEW R2equations .283125/.28375 from independentlyrecovered .2825 hash-linked nativehistories. Fullparent causalhistoryreplay mustpass. Eachendpoint freshnativepositiveSNESZEROupdates aftercustom1e-9N plusindependentserialforce/norm/history/hash/whole-element/subdivision audits. Bothstepsrequired,prefixnotcompletedpilot. Native900/2400s,phase1200/3000s,workflow1800/4200s,RSS30GiB,disk100GiB. No fullreference restart: separatelyassess measuredrobustness/runtimeversus72hbudgetincludingremaining1148states and audits. Localpassnotfullcycle,numericalorMLvalidation.",
+  "wall_seconds": 1123.863896541996,
+  "active_protocol": "finished",
+  "all_local_gates_passed": true
+}

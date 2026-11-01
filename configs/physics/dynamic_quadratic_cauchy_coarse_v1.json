@@ -1,0 +1,44 @@
+{
+  "parallel_ranks": 12,
+  "steps_after_checkpoint": 2,
+  "timestep_divisor": 1,
+  "absolute_tolerance_N": 1e-08,
+  "relative_tolerance": 0.0,
+  "frozen_source_sha256": {
+    "src/lv_surrogate/physics/threaded_bernstein.py": "32c29bade91e8ab4a3a4d0b473ac2f4cdf86ac730dff269cd3bf775bf3f19a89",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "scripts/verify_quadratic_substep_probe.py": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+    "scripts/resolve_quadratic_positivity.py": "01131f0d2ba6377d01be2388b71a6a1b44372b2178f08e3dd041dff7f5149bca",
+    "scripts/combine_quadratic_probe_audits.py": "37979b89d2a9367d230b8be8d4a5e7c1dcb623305c0aef3f6e5cce7bf03bd47a",
+    "scripts/probe_parallel_admissible_cauchy.py": "e1dd8f4cc2c0c293264a594556bd9003549eb9f494bd8959dae6d2aab4217d2c",
+    "scripts/run_bounded_admissible_cauchy.py": "38956eb1aed6ed83bfbf7280b7232a56b1c8d418c0d7572cf992f6ecba917096",
+    "src/lv_surrogate/physics/admissible_newton_cauchy.py": "a708ec67044531c80e8de4a09efda598748c33c7eed722107b62be9f83d03d82",
+    "src/lv_surrogate/physics/probe_history_replay_prefix.py": "8adce846244c154788a15fb9df5f0144075a41a54af54a0a966790dd2f440722"
+  },
+  "scope": "Prospective Newton-Cauchy safeguard qualification. Known coarse2 then known loaded2 force first custom iteration through residual-model Cauchy branch; reproduce archived fields<1nm and independent native force/norm/history/hash/whole-element audits before exact failed0.2825s equation from explicitly verified7-state prefix. Production Cauchy used only after declared Newton backtracking exhausts. Original physical equations/dt/mesh/Q6/load/history/final1e-8N unchanged; custom1e-9N then fresh real native SNES positive atZEROupdates. Same Armijo1e-4,whole-element admissibility,max100iterations/max20halvings per direction. MPI12,4root proofworkers,1BLAS/OMPthread/rank,RSS30GiB,disk100GiB. No fullcycle restart or study-validation inference. Original8-stepwindow remainsFAILED.",
+  "output": "experiments/metrics/dynamic_quadratic_cauchy_coarse_v1.json",
+  "fields": "experiments/logs/dynamic_quadratic_cauchy_coarse_v1_fields.npy",
+  "checkpoint": "experiments/logs/dynamic_quadratic_cauchy_coarse_v1_restart.npz",
+  "iterate_checkpoint": "experiments/logs/dynamic_quadratic_cauchy_coarse_v1_UNACCEPTED_iterate.npz",
+  "reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+  "wall_budget_seconds": 900,
+  "required_audits": [
+    "experiments/metrics/dynamic_quadratic_verified_prefix_replay_qualification.json",
+    "experiments/metrics/dynamic_quadratic_multistep_window_v1_verification_resolved.json"
+  ],
+  "diagnostic_gate": "experiments/metrics/dynamic_quadratic_failed_state_diagnostics_v1.json",
+  "diagnostic_gate_sha256": "cb7b09a98bcd9ef593ae7de7041036a42dfc83b0f3ec48d2a10733674e055c8a",
+  "admissible_newton": {
+    "maximum_custom_newton_iterations": 100,
+    "maximum_backtracks": 20,
+    "custom_absolute_tolerance_N": 1e-09,
+    "armijo_constant": 0.0001,
+    "force_cauchy_first_iteration": true
+  },
+  "motivating_failed_control_sha256": "567170f5d53d158d2c144ecafe67b229eab7ec34220681ee6750c8d73d6de431",
+  "resume_probe_protocol": "configs/physics/dynamic_quadratic_mpi12_threaded_coarse_v1.json",
+  "required_parent_audit": "experiments/metrics/dynamic_quadratic_mpi12_threaded_coarse_v1_verification.json",
+  "known_complete_reference": true
+}

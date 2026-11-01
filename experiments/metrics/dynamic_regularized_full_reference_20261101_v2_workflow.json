@@ -1,0 +1,71 @@
+{
+  "complete": true,
+  "study_validation_passed": false,
+  "protocol": "configs/physics/dynamic_regularized_full_reference_20261101_v2.json",
+  "protocol_sha256": "9f13b9f2030c935c49b073cb699a307a680920e9901abd0a7b78f38e695bdf5a",
+  "phases": [
+    {
+      "phase": "coarse_seed",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.0264135420002276,
+      "sampled_peak_RSS_bytes": 2441216
+    },
+    {
+      "phase": "coarse_seed_all_native_audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 34.445253207999485,
+      "sampled_peak_RSS_bytes": 720568320
+    },
+    {
+      "phase": "coarse_first_step",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 6.083007875000476,
+      "sampled_peak_RSS_bytes": 3863412736
+    },
+    {
+      "phase": "coarse_restart_step",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 6.071023958000296,
+      "sampled_peak_RSS_bytes": 3924525056
+    },
+    {
+      "phase": "coarse_export",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 2.034756541999741,
+      "sampled_peak_RSS_bytes": 2277376
+    },
+    {
+      "phase": "coarse_independent_probe_audit",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 8.107618750000256,
+      "sampled_peak_RSS_bytes": 982876160
+    },
+    {
+      "phase": "full_seed",
+      "return_code": 0,
+      "stop_reason": null,
+      "wall_seconds": 56.74173016700024,
+      "sampled_peak_RSS_bytes": 20851048448
+    },
+    {
+      "phase": "full_seed_all_native_audit",
+      "return_code": 1,
+      "stop_reason": null,
+      "wall_seconds": 2365.2525593749997,
+      "sampled_peak_RSS_bytes": 17665130496
+    }
+  ],
+  "scope": "Prospective local192hcumulativepipeline including168hnativecontinuation. Qualifycoarseseedallstateaudit,one-step/stop/restart/secondstep/independentknownfieldaudit beforeseeding458-stateverifiedR2chain. IndependentlyreplayforceatEVERYseedstatebeforecontinuation. Thenrestartable full1600trajectory from458 withqualifiedkernel,strictphysics/positivity/nativecriteria,exactcheckpointjournals,perstep1800s,RSS30GiB/disk100GiB. Finalall1600nativeforces/norm/history/hash/whole-elementauditandR1/R2comparison. No automatictraining/calibration/newtestselection orpublishing;completedcalculationsarenotpassed1%convergence. Preservealloldfailedoutputs,20frozenmodels,passiveidealizedscope,oldtestseparation. v2 fixes non-root audit=None initialization found before any physical update by v1 coarse streaming control; v1 evidence retained.",
+  "active_phase": "stopped",
+  "total_wall_seconds": 2480.7729977500003,
+  "active_phase_wall_seconds": 2363.241578833,
+  "sampled_active_RSS_bytes": 17214619648,
+  "reference_native_validated": false,
+  "failure": "full_seed_all_native_audit: 1"
+}

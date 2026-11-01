@@ -1,0 +1,9 @@
+{
+  "stream_protocol": "configs/physics/dynamic_regularized_stream_coarse_20261101_v3.json",
+  "reference": "cardiac_quadratic_reference_halfstep_ew_coarse_v1",
+  "qualification_step": 400,
+  "steps_after_checkpoint": 2,
+  "output": "experiments/metrics/dynamic_regularized_stream_coarse_20261101_v3_probe.json",
+  "fields": "experiments/logs/dynamic_regularized_stream_coarse_20261101_v3_probe_fields.npy",
+  "checkpoint": "experiments/logs/dynamic_regularized_stream_coarse_20261101_v3_probe_restart.npz"
+}

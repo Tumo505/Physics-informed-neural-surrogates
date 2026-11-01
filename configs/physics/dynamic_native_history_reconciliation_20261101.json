@@ -1,0 +1,22 @@
+{
+  "parallel_ranks": 1,
+  "failed_protocol": "configs/physics/dynamic_quadratic_multistep_window_v1.json",
+  "required_prefix_audit": "experiments/metrics/dynamic_quadratic_multistep_window_v1_verification_resolved.json",
+  "output": "experiments/metrics/dynamic_native_history_reconciliation_20261101.json",
+  "maximum_trial_halvings": 12,
+  "native_wall_budget_seconds": 1200,
+  "source_sha256": {
+    "scripts/reconcile_native_reference_history.py": "61f1d0c02c09980482364c34a7cf0638b0b5f500ccc4146c57e580bf24c9b0ea",
+    "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31"
+  },
+  "scope": "Prospective read-only diagonal-scaled regularized Newton direction sweep at original immutable rejected0.2825s iterate. Solve (J+muD)delta=-F with D=max(abs(diagJ),1e-12maxabsdiagJ) and fixed mu1e-4/1e-2/1. True shifted linear residual must pass max1.1e-12N/1e-7relative before exact unmodified force Armijo/whole-element positivity probes. No physical timestep/history update,no labels,no nonlinear recovery or condition-number claim. Original residual/J/physics/load/dt/mesh/Q6/final criteria unchanged. This is a direction diagnostic,not a PETSc TS run or qualified production method. Native1200s/outer1500s/workflow1800s,RSS30GiB,disk100GiB.",
+  "diagonal_regularization_factors": [
+    0.0001,
+    0.01,
+    1.0
+  ],
+  "reference": "cardiac_regularized_stream_third_20261101_v2_v1",
+  "failed_audit": "experiments/metrics/dynamic_regularized_stream_third_20261101_v2_seed_audit.json",
+  "canonical_checkpoint": "experiments/logs/dynamic_native_history_reconciliation_20261101_restart.npz"
+}
