@@ -53,7 +53,7 @@ def test_environment_freeze_changes_when_package_metadata_changes(tmp_path):
 def test_explicit_environment_package_comparison(tmp_path):
  from check_environment_locks import check
  (tmp_path/'hpc').mkdir();(tmp_path/'.hpc/setup-records').mkdir(parents=True)
- for name in ['native','modern']:
+ for name in ['native','modern','tools']:
   (tmp_path/f'hpc/{name}-linux64-glibc217.lock').write_text('@EXPLICIT\nhttps://example.test/a.conda#digest\n')
   (tmp_path/f'.hpc/setup-records/{name}-installed.lock').write_text('# installed prefix\n@EXPLICIT\nhttps://example.test/a.conda\n')
  check(tmp_path)
@@ -62,11 +62,42 @@ def test_explicit_environment_package_comparison(tmp_path):
 
 def test_pbs_submissions_include_site_software_and_dependencies(tmp_path):
  import os,subprocess
- run=tmp_path/'run';run.mkdir();atomic(run/'plan.json',dict(run_id='test',job_hours=3,queue='fat',cpus=16,memory_gb=96,software='unisa',placement='excl'))
+ run=tmp_path/'run';run.mkdir();atomic(run/'plan.json',dict(run_id='test',job_hours=3,queue='fat',cpus=16,memory_gb=96,software='PBSJobApp',placement='excl'))
  bindir=tmp_path/'bin';bindir.mkdir();qsub=bindir/'qsub';qsub.write_text('#!/bin/sh\necho 123.server\n');qsub.chmod(0o755)
  env=dict(os.environ,PATH=str(bindir)+os.pathsep+os.environ['PATH'])
  subprocess.run([sys.executable,str(ROOT/'hpc/submit.py'),'--run',str(run),'--jobs','2'],env=env,check=True,capture_output=True,text=True)
  rows=[r for r in read(run) if r['kind']=='job_submission'];assert len(rows)==2
  for row in rows:
-  assert 'software=unisa' in row['argv'] and 'place=excl' in row['argv'] and row['return_code']==0
+  assert 'software=PBSJobApp' in row['argv'] and 'place=excl' in row['argv'] and row['return_code']==0
  assert 'depend=afterok:123.server' in rows[1]['argv']
+
+def test_single_launch_queues_setup_and_slices_once(tmp_path,monkeypatch):
+ from launch import launch
+ (tmp_path/'experiments/manifests').mkdir(parents=True)
+ (tmp_path/'data/processed/source').mkdir(parents=True)
+ for name in ['restart.npz','displacement_coefficients.npy']:(tmp_path/'data/processed/source'/name).write_bytes(b'fixture')
+ atomic(tmp_path/'experiments/manifests/hpc_migration_snapshot.json',dict(complete=True,reference='source',files={'data/processed/source/restart.npz':'fixture'}))
+ calls=[]
+ import subprocess
+ def fake_run(argv,**kwargs):
+  calls.append(argv)
+  return subprocess.CompletedProcess(argv,0,str(len(calls))+'.pbs\n','')
+ monkeypatch.setattr('launch.subprocess.run',fake_run)
+ monkeypatch.setattr('launch.subprocess.check_output',lambda *a,**k:'frozencommit\n')
+ directory=launch(tmp_path,'fixture',jobs=3)
+ assert len(calls)==4
+ for i,command in enumerate(calls[1:],1):
+  assert 'depend=afterok:'+str(i)+'.pbs' in command
+  assert 'select=1:ncpus=28:mem=240gb' in command
+ first=(directory/'slice-001.pbs').read_text();assert 'hpc/prepare.py' in first and 'hpc/run.py' in first
+ assert 'hpc/prepare.py' not in (directory/'slice-002.pbs').read_text()
+ assert '.hpc/tools/bin' in first and 'frozencommit' in first
+ with pytest.raises(FileExistsError):launch(tmp_path,'fixture',jobs=3)
+ assert len(calls)==4
+
+def test_single_launch_requires_transferred_data(tmp_path):
+ from launch import launch
+ (tmp_path/'experiments/manifests').mkdir(parents=True)
+ atomic(tmp_path/'experiments/manifests/hpc_migration_snapshot.json',dict(complete=True,reference='missing',files={}))
+ with pytest.raises(SystemExit,match='Transfer the preserved experiment data'):launch(tmp_path,'fixture')
+ assert not(tmp_path/'.hpc/launches/fixture').exists()

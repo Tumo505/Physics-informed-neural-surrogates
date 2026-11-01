@@ -17,13 +17,15 @@ if [[ ! -x .tools/bin/micromamba ]]; then
 fi
 .tools/bin/micromamba --version
 getconf GNU_LIBC_VERSION
-for pair in 'native .fenics' 'modern .hpc/modern'; do
+for pair in 'native .fenics' 'modern .hpc/modern' 'tools .hpc/tools'; do
   read -r kind prefix <<< "$pair"
   if [[ ! -d "$prefix/conda-meta" ]]; then
     .tools/bin/micromamba create --yes --prefix "$PWD/$prefix" --file "hpc/$kind-linux64-glibc217.lock"
   fi
   .tools/bin/micromamba list --prefix "$PWD/$prefix" --explicit > ".hpc/setup-records/$kind-installed.lock"
 done
+export PATH="$PWD/.hpc/tools/bin:$PATH"
+git --version
 if [[ ! -e .venv ]]; then ln -s .hpc/modern .venv; fi
 .venv/bin/python hpc/check_environment_locks.py
 .venv/bin/python -m pip install --no-deps --no-build-isolation -e .

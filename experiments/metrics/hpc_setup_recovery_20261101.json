@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-01",
+  "evidence_sha256": "0af166b25ae26d1e7775b001f8af9346647fa772dacf37b53a90deecf3d154e8",
+  "observed_setup": {
+    "pbs_job_id": "1489873.pbs",
+    "exit_code": 127,
+    "wall_seconds": 230,
+    "stage": "external dependency retrieval",
+    "error": "git: command not found",
+    "environment_lock_comparison_passed": true,
+    "scientific_pipeline_started": false
+  },
+  "repair": {
+    "git_version": "2.47.1",
+    "separate_linux_tools_lock": true,
+    "preserves_existing_native_and_modern_locks": true,
+    "previous_job_logs_preserved": true
+  },
+  "unattended_scope": "One setup submission and eight afterok-linked 24-hour reference/audit slices by default. Data transfer required. Scientific failure, budget exhaustion, readiness blockers and absent downstream executors are not retried or bypassed.",
+  "checks": {
+    "registration_tests_passed": 9,
+    "python_compile_passed": true,
+    "shell_syntax_passed": true,
+    "cluster_repair_executed": false
+  }
+}
