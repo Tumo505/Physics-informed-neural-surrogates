@@ -1,0 +1,15 @@
+{
+  "scope": "Execution coverage and explicit scientific blockers, not a declaration of study completion.",
+  "stages": [
+    {"stage": "environment_and_provenance", "executor": "hpc/bootstrap.sh", "status": "implemented; cluster execution pending"},
+    {"stage": "platform_force_history_maps_and_known_field_reproduction", "executor": "hpc/run.py", "status": "implemented; must pass on cluster"},
+    {"stage": "remaining_R2_reference_and_every_state_native_audit", "executor": "hpc/run.py", "status": "implemented; checkpointed PBS slices"},
+    {"stage": "full_cycle_R1_R2_mesh_comparison", "executor": "hpc/run.py", "status": "implemented; 1% criterion may fail"},
+    {"stage": "mesh_time_quadrature_across_geometries_and_loadings", "executor": null, "status": "requires qualified settings and additional controlled references; existing failures retained"},
+    {"stage": "new_full_P2_network_gradient_and_transfer", "executor": null, "status": "coarse/lifted checks are insufficient; new full-P2 qualification required"},
+    {"stage": "qualified_matched_full_and_limited_five_seed_training", "executor": null, "status": "qualified full-P2 data/trainer executor not yet available; old P1/inspected-test study is not substituted"},
+    {"stage": "independent_finer_reference_calibration", "executor": null, "status": "requires new independent calibration references and frozen selected models"},
+    {"stage": "untouched_frozen_final_comparison", "executor": null, "status": "requires preceding reference/model/calibration freezes"},
+    {"stage": "registered_results_and_evidence_driven_manuscript", "executor": "hpc/manuscript.py", "status": "implemented; missing results explicitly pending and author review required"}
+  ]
+}

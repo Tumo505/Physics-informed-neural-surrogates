@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -N cmbbe_setup
+#PBS -q normal
+#PBS -l select=1:ncpus=2:mem=8gb
+#PBS -l walltime=02:00:00
+#PBS -j oe
+set -uo pipefail
+cd "$PBS_O_WORKDIR" || exit 2
+mkdir -p .hpc/logs
+started=$(date +%s)
+bash hpc/bootstrap.sh > ".hpc/logs/setup-${PBS_JOBID}.log" 2>&1
+result=$?
+finished=$(date +%s)
+printf '{"pbs_job_id":"%s","exit_code":%s,"wall_seconds":%s}\n' "$PBS_JOBID" "$result" "$((finished-started))" > ".hpc/setup-result-${PBS_JOBID}.json"
+cp ".hpc/setup-result-${PBS_JOBID}.json" .hpc/setup-result.json
+exit "$result"

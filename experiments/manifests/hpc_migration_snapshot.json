@@ -1,0 +1,38 @@
+{
+  "complete": true,
+  "reference": "cardiac_regularized_stream_third_20261101_v3_v1",
+  "source_reference": "cardiac_quadratic_reference_halfstep_ew_third_v1",
+  "source_stream_protocol": "configs/physics/dynamic_regularized_stream_third_20261101_v3.json",
+  "source_config": "configs/physics/dynamic_regularized_stream_third_20261101_v3_reference.json",
+  "accepted_steps": 476,
+  "n_steps": 1600,
+  "last_time_s": 0.2975,
+  "prefix_fields_sha256": "4e40ccb185750474c2a46899d7fb24af0032a2dd7ab4da3264f2d8647b150e51",
+  "files": {
+    "data/processed/cardiac_regularized_stream_third_20261101_v3_v1/manifest.json": "753adaed45856aeff0e902951d3b9907dbfcc59b93654887e5f55f28ddfbb651",
+    "data/processed/cardiac_regularized_stream_third_20261101_v3_v1/restart.npz": "4e9a543660c0f8fdaf193c7f14fa011fec6f0be92c2b1b0cdcf7047597b233e8",
+    "data/processed/cardiac_regularized_stream_third_20261101_v3_v1/positivity.json": "76583dbda59248a39f5c0d70f1cdf9b1e0358ae89f217b898dc56a3d933ce99f",
+    "data/processed/cardiac_regularized_stream_third_20261101_v3_v1/inputs.npz": "932f5f3048514d2714d4922dd10ae6d0a1aef1117fc55f923d5ef66daefc62e3"
+  },
+  "numerical_sources": {
+    "scripts/seed_regularized_reference.py": "f3ba4e2303353016ce04660715c91cc707a8348b01d23f3209ae4d16287eb681",
+    "scripts/generate_regularized_reference.py": "df9a6da2797af45c22e17b093caa7e8065bdeaee8a6572eb29a8bd50710bc717",
+    "scripts/audit_regularized_reference.py": "ce7455467f1196b48b9649c14c19dfbd3545b3f7d7554515fe9f72416b0b0b5b",
+    "scripts/run_regularized_full_reference.py": "ea6289d5cca8367990f47e80aa6116eb8c1082a6519e2046c2d8b31ae25dd94c",
+    "scripts/export_parallel_stream_probe.py": "0e907864cc1a5d83210a27af04bba3d2c99f5778ad9e6a9571f03b6780bfd5ab",
+    "scripts/verify_quadratic_substep_probe.py": "9cf34fec2321d454185f4c2a962f32746cf6b7cb50046d6643325d1458b21437",
+    "scripts/finalize_parallel_reference.py": "188a74a7de5ffec8444242ab8fa95c19e1c661d25c4d57e2a785db940d91896a",
+    "scripts/compare_quadratic_references.py": "a9e90eedd0b6fbf44b7e706189875f439ec84302351cbc6348ebc2698c5b3133",
+    "src/lv_surrogate/physics/durable_reference.py": "b4318ef75995f768c68f430605021d0985b123841f15225777f357a0d0570f28",
+    "src/lv_surrogate/physics/admissible_newton_regularized_forcing.py": "a94f6162b4e9e58f0414f26842e9878e4639ba62d08202befac69669ed28287b",
+    "src/lv_surrogate/physics/parallel_fem.py": "52d432c3b8c810180e1603634a4b7305ed24c547a6811896bf8cdeaa80b84c44",
+    "src/lv_surrogate/physics/reference_fem.py": "2dc1f2fbcefad6ab1f24e9cc55646fbf6298625c7165d0f8ec894eeef23e523c",
+    "src/lv_surrogate/physics/quadratic_solver.py": "e67f519d7ec99e74429db8e897160a2bb313ec78ad7e3844d00e93f4173d7a31",
+    "src/lv_surrogate/physics/threaded_bernstein.py": "32c29bade91e8ab4a3a4d0b473ac2f4cdf86ac730dff269cd3bf775bf3f19a89",
+    "src/lv_surrogate/physics/bernstein.py": "c1052c6742ba2c9431b8892657490c820a2477cf3eb38b50f38e268813da2ac9",
+    "scripts/verify_native_history_reconciliation.py": "7a6411571abbb969c23b0576102a6df10668831f8ebf6b0f478fb0c3fa661419"
+  },
+  "native_platform": "original macOS; Linux qualification still required",
+  "no_active_generation_lock": true,
+  "scope": "Stopped accepted chain only. No new scientific qualification implied; strict cluster force/norm/history/maps/provenance and known-field reproduction must pass before continuation. Preserve original histories and failure records."
+}

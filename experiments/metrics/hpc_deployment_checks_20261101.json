@@ -1,0 +1,44 @@
+{
+  "complete": true,
+  "cluster_execution_performed": false,
+  "local_checks": {
+    "python_syntax": "passed",
+    "shell_syntax": "passed",
+    "registration_and_resource_policy_tests": 6,
+    "linux64_glibc217_dependency_resolution": "passed dry-run only"
+  },
+  "hpc_native_runtime": {
+    "python": "3.11.18",
+    "dolfin": "2019.1.0",
+    "petsc": "3.22.3",
+    "petsc4py": "3.22.4"
+  },
+  "original_native_petsc": "3.25.6 on macOS; numerical equivalence must be established on cluster",
+  "manuscript": "reports/manuscript.md (explicitly requested, automatically updated, excluded from publication)",
+  "source_sha256": {
+    "hpc/check_environment_locks.py": "27c5f22568d5e0cbbfa263220f385b8d72186666a5b59ff020e4c39ab8a89e27",
+    "hpc/manuscript.py": "306e720feb9b154bffacc982d8d460a63ee0cf6a6643293efa36b79134d91ff0",
+    "hpc/migration_snapshot.py": "3496bc3d4b21fd18908d352d7a60636a15ada214eda1da5a20951a56aa9a2c1c",
+    "hpc/platform_native.py": "1d7b49edd1ed53f973386370057d28797f92172af75be517dacb5f8d5ac8c438",
+    "hpc/policy.py": "9e814498861d64eebbebf44733338a26abbaeb5a27b183ac9779dd03cdeec9e0",
+    "hpc/preflight_native.py": "04dac8da977f9bb928d8366aaf46942f4e3baefab195bc282a45fb7d21368689",
+    "hpc/prepare.py": "c4c98994dce19929763ae9eb1fbff1a7e08963abaf601f68b3b96ee15476fdaf",
+    "hpc/probe_native.py": "c0a8051d0286999d619a97a4e8af4cd5db5dd5000abec89d17790fe8e04484b0",
+    "hpc/quadrature.py": "896d8f8507a5fd0f8da58dfd7900bea218fd87ac2f11ac098bf85324bbd2ea3f",
+    "hpc/registry.py": "08c9ed1a9f643dacea3943a890ab178ab0f44f3b11d452807e6178f06dfdb473",
+    "hpc/run.py": "574474860e36c41116ad9e4ce8e48a8b0aed2dcd1177ce848a905321f503a9ec",
+    "hpc/status.py": "a49eab0d31ed90906c9375b85b3080d2a5c836444ae23e563e05fbe4de386d04",
+    "hpc/submit.py": "a6fea4a34eedb685da2461c3d51b3bf0c6bc7712c2c4954ba9c079ed4e2fdaf6",
+    "hpc/verify_probe_native.py": "65d0d6b98aaafc4dfb8e08e0f4f43332a81d749799a8c17d77cf9d9625e4d056",
+    "hpc/bootstrap.sh": "a7e807a036b6d6e236975a61f4ef1b58392bd060ff224e2a3d19fb19c2e1da07",
+    "hpc/setup.pbs": "fb5f1155b9675268b8701a5d014e8697b420412e03b72cb73d0c7c329ca68990",
+    "tests/test_hpc_registration.py": "9c865e44fca1b0a23c047b6c37f28926a9de4e8e472464177d3bea32978797aa"
+  },
+  "limitations": [
+    "No access to or execution on the user cluster has occurred.",
+    "PBS account/queue/node memory/wall-time allocations remain site-specific.",
+    "Full study is not yet an end-to-end executable: unresolved reference/gradient/transfer/full-P2 training/calibration/final-test stages remain explicitly blocked.",
+    "Tesla P100 is not used by this CPU/MPI FE pipeline. GPU neural training requires separate supported environment and qualified actual network gradients."
+  ],
+  "modern_cpu_runtime": "Python3.12.16,NumPy2.2.6,PyTorch2.5.1 CPU; no CUDA environment claimed"
+}

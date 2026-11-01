@@ -25,3 +25,7 @@ experiments/metrics/*.npz
 experiments/metrics/dynamic_quadratic_controlled_*_pipeline.json
 experiments/metrics/dynamic_quadratic_validation_*_pipeline.json
 experiments/metrics/*_bernstein_pilot.json
+
+# Cluster-local environments, run ledgers and the explicitly requested draft.
+.hpc/
+experiments/hpc/
