@@ -11,6 +11,9 @@ export MAMBA_ROOT_PREFIX="$PWD/.hpc/mamba"
 export XDG_CACHE_HOME="$PWD/.hpc/cache"
 export MPLCONFIGDIR="$PWD/.hpc/cache/matplotlib"
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
+history=".hpc/setup-history/${PBS_JOBID:-manual-$(date -u +%Y%m%dT%H%M%SZ)}"
+mkdir -p "$history"
+if [[ -d .hpc/setup-records && ! -e "$history/before" ]]; then cp -R .hpc/setup-records "$history/before"; fi
 if [[ ! -x .tools/bin/micromamba ]]; then
   curl --fail --location https://micro.mamba.pm/api/micromamba/linux-64/latest --output .hpc/micromamba.tar.bz2
   tar -xjf .hpc/micromamba.tar.bz2 -C .tools bin/micromamba
@@ -24,6 +27,13 @@ for pair in 'native .fenics' 'modern .hpc/modern' 'tools .hpc/tools'; do
   fi
   .tools/bin/micromamba list --prefix "$PWD/$prefix" --explicit > ".hpc/setup-records/$kind-installed.lock"
 done
+# A distinct runtime adds import dependencies without changing the failed run's prefix.
+if [[ ! -d .hpc/native-v2/conda-meta ]]; then
+  .tools/bin/micromamba create --yes --prefix "$PWD/.hpc/native-v2" --file hpc/native-linux64-glibc217.lock
+fi
+.tools/bin/micromamba list --prefix "$PWD/.hpc/native-v2" --explicit > .hpc/setup-records/native-v2-installed.lock
+.tools/bin/micromamba run -p "$PWD/.hpc/native-v2" python -m pip install --no-deps --require-hashes --report .hpc/setup-records/native-v2-python-install.json -r hpc/native-python-addons.lock
+.tools/bin/micromamba run -p "$PWD/.hpc/native-v2" python hpc/check_native_addons.py > .hpc/setup-records/native-v2-python-check.json
 export PATH="$PWD/.hpc/tools/bin:$PATH"
 git --version
 if [[ ! -e .venv ]]; then ln -s .hpc/modern .venv; fi
@@ -39,7 +49,8 @@ for entry in 'cardiac_benchmark https://github.com/finsberg/cardiac_benchmark.gi
   fi
   [[ "$(git -C "$parent/$name" rev-parse HEAD)" == "$revision" ]] || { echo "Wrong external revision: $name" >&2; exit 2; }
 done
-.tools/bin/micromamba run -p "$PWD/.fenics" python hpc/preflight_native.py > .hpc/setup-records/native-preflight.json
+.tools/bin/micromamba run -p "$PWD/.hpc/native-v2" python hpc/preflight_native.py > .hpc/setup-records/native-preflight.json
 .venv/bin/python -c 'import sys,numpy,scipy,matplotlib,h5py,torch; print(sys.version); print("torch",torch.__version__,"CUDA available",torch.cuda.is_available())' > .hpc/setup-records/modern-preflight.txt
 .venv/bin/python hpc/registry.py setup --root "$PWD"
+cp -R .hpc/setup-records "$history/after"
 echo 'Environment installed. Native numerical equivalence must still pass on the compute node.'

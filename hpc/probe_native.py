@@ -39,6 +39,10 @@ def main():
 
 if __name__=='__main__':
  try:main()
+ except SystemExit as exc:
+  if exc.code in (None,0):raise
+  MPI.COMM_WORLD.Abort(1)
+  raise
  except BaseException:
   import traceback
   traceback.print_exc();MPI.COMM_WORLD.Abort(1)

@@ -56,6 +56,7 @@ def test_explicit_environment_package_comparison(tmp_path):
  for name in ['native','modern','tools']:
   (tmp_path/f'hpc/{name}-linux64-glibc217.lock').write_text('@EXPLICIT\nhttps://example.test/a.conda#digest\n')
   (tmp_path/f'.hpc/setup-records/{name}-installed.lock').write_text('# installed prefix\n@EXPLICIT\nhttps://example.test/a.conda\n')
+ (tmp_path/'.hpc/setup-records/native-v2-installed.lock').write_text((tmp_path/'.hpc/setup-records/native-installed.lock').read_text())
  check(tmp_path)
  (tmp_path/'.hpc/setup-records/native-installed.lock').write_text('https://example.test/unexpected.conda\n')
  with pytest.raises(AssertionError):check(tmp_path)
@@ -150,3 +151,49 @@ def test_status_preserves_initialized_scientific_blocker(tmp_path):
  atomic(run/'state.json',state)
  result,_,initialized=read_status(tmp_path,'experiments/hpc/test')
  assert initialized and result==state
+
+def test_native_python_addons_close_dependencies_without_replacing_fe_packages():
+ from packaging.requirements import Requirement
+ from packaging.utils import canonicalize_name
+ original=json.loads((ROOT/'hpc/native-linux64-glibc217-resolution.json').read_text())['packages']
+ additions=json.loads((ROOT/'hpc/native-python-addons-resolution.json').read_text())['packages']
+ old={canonicalize_name(x['name']):x['version'] for x in original}
+ new={canonicalize_name(x['name']):x['version'] for x in additions}
+ assert not(old.keys() & new.keys()) and new['meshio']=='5.3.5'
+ versions={**old,**new}
+ for package in additions:
+  assert package['wheel'].endswith('-py3-none-any.whl')
+  assert ('--hash=sha256:'+package['sha256']) in (ROOT/'hpc/native-python-addons.lock').read_text()
+  for item in package['requires_dist']:
+   requirement=Requirement(item)
+   if requirement.marker and not requirement.marker.evaluate({'python_version':'3.11','python_full_version':'3.11.18','extra':''}):continue
+   assert versions[canonicalize_name(requirement.name)] in requirement.specifier
+
+def test_native_addon_installed_file_tamper_detection(tmp_path,monkeypatch):
+ import base64,hashlib,types
+ import check_native_addons as checker
+ (tmp_path/'hpc').mkdir();payload=tmp_path/'fixture.py';payload.write_bytes(b'original')
+ atomic(tmp_path/'hpc/native-python-addons-resolution.json',dict(packages=[dict(name='fixture',version='1.0',sha256='wheel-fixture')]))
+ recorded=base64.urlsafe_b64encode(hashlib.sha256(payload.read_bytes()).digest()).rstrip(b'=').decode()
+ file=types.SimpleNamespace(hash=types.SimpleNamespace(mode='sha256',value=recorded))
+ distribution=types.SimpleNamespace(version='1.0',files=[file],locate_file=lambda _:payload)
+ monkeypatch.setattr(checker,'distribution',lambda _:distribution)
+ assert checker.check(tmp_path)[0]['verified_files']==1
+ payload.write_bytes(b'changed')
+ with pytest.raises(AssertionError,match='hash mismatch'):checker.check(tmp_path)
+
+def test_mpi_probe_help_exits_cleanly_but_bad_cli_still_aborts():
+ import ast,types
+ source=ast.parse((ROOT/'hpc/probe_native.py').read_text())
+ guard=next(n for n in reversed(source.body) if isinstance(n,ast.If))
+ for exit_code in [0,2]:
+  calls=[]
+  def main():raise SystemExit(exit_code)
+  def abort(code):calls.append(code);raise RuntimeError('fixture MPI abort')
+  ns=dict(__name__='__main__',main=main,MPI=types.SimpleNamespace(COMM_WORLD=types.SimpleNamespace(Abort=abort)))
+  if exit_code==0:
+   with pytest.raises(SystemExit) as exc:exec(compile(ast.Module(body=[guard],type_ignores=[]),'probe CLI fixture','exec'),ns)
+   assert exc.value.code==0 and not calls
+  else:
+   with pytest.raises(RuntimeError,match='fixture MPI abort'):exec(compile(ast.Module(body=[guard],type_ignores=[]),'probe CLI fixture','exec'),ns)
+   assert calls==[1]
