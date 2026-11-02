@@ -1,10 +1,11 @@
 """One gateway submission: repaired setup, then dependency-linked reference/audit slices."""
 import argparse,json,re,shlex,subprocess,sys
 from pathlib import Path
-from registry import atomic,event
+from registry import atomic,event,sha
+from followup_budget import prior_budget
 ROOT=Path(__file__).resolve().parents[1]
 
-def launch(root,run_id,*,queue='workq',cpus=28,ranks=12,memory_gb=240,hours=24,jobs=8,account=None):
+def launch(root,run_id,*,queue='workq',cpus=28,ranks=12,memory_gb=240,hours=24,jobs=8,account=None,prior_run=None):
  root=Path(root).resolve()
  assert re.fullmatch('[A-Za-z0-9_-]+',run_id),'Use letters, digits, underscores and hyphens in run ID'
  assert 1<=jobs<=10 and 1<=hours<=168 and 1<=ranks<=cpus and memory_gb>=64
@@ -13,11 +14,12 @@ def launch(root,run_id,*,queue='workq',cpus=28,ranks=12,memory_gb=240,hours=24,j
  required=[*snapshot['files'],f"data/processed/{snapshot['reference']}/displacement_coefficients.npy"]
  missing=[x for x in required if not(root/x).is_file()]
  if missing:raise SystemExit('Transfer the preserved experiment data before launch. Missing: '+', '.join(missing))
+ budget=prior_budget(root,prior_run,sha(root/'experiments/manifests/hpc_migration_snapshot.json'))
  assert not(root/'experiments/hpc'/run_id).exists(),'Existing run must not be re-launched'
  directory=root/'.hpc/launches'/run_id
  directory.mkdir(parents=True,exist_ok=False) # Atomic duplicate-submission protection.
  revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
- settings=dict(run_id=run_id,queue=queue,cpus=cpus,ranks=ranks,memory_gb=memory_gb,hours=hours,jobs=jobs,account=account,source_commit=revision)
+ settings=dict(run_id=run_id,queue=queue,cpus=cpus,ranks=ranks,memory_gb=memory_gb,hours=hours,jobs=jobs,account=account,prior_resource_evidence=budget,source_commit=revision)
  atomic(directory/'launch.json',settings)
  def submit(argv,role):
   result=subprocess.run(argv,cwd=root,text=True,capture_output=True)
@@ -32,6 +34,7 @@ def launch(root,run_id,*,queue='workq',cpus=28,ranks=12,memory_gb=240,hours=24,j
  dependency=submit(setup+[str(root/'hpc/setup.pbs')],'setup')
  prepare=[str(root/'.venv/bin/python'),'hpc/prepare.py','--run-id',run_id,'--queue',queue,'--cpus',str(cpus),'--ranks',str(ranks),'--memory-gb',str(memory_gb),'--hours',str(hours),'--software','PBSJobApp','--placement','excl']
  if account:prepare+=['--account',account]
+ if prior_run:prepare+=['--prior-run',prior_run]
  run='experiments/hpc/'+run_id
  for index in range(1,jobs+1):
   script=directory/f'slice-{index:03d}.pbs'
@@ -49,5 +52,5 @@ def launch(root,run_id,*,queue='workq',cpus=28,ranks=12,memory_gb=240,hours=24,j
  return directory
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--run-id',required=True);p.add_argument('--queue',default='workq');p.add_argument('--cpus',type=int,default=28);p.add_argument('--ranks',type=int,default=12);p.add_argument('--memory-gb',type=int,default=240);p.add_argument('--hours',type=int,default=24);p.add_argument('--jobs',type=int,default=8);p.add_argument('--account');a=p.parse_args();launch(ROOT,**vars(a))
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--run-id',required=True);p.add_argument('--queue',default='workq');p.add_argument('--cpus',type=int,default=28);p.add_argument('--ranks',type=int,default=12);p.add_argument('--memory-gb',type=int,default=240);p.add_argument('--hours',type=int,default=24);p.add_argument('--jobs',type=int,default=8);p.add_argument('--account');p.add_argument('--prior-run');a=p.parse_args();launch(ROOT,**vars(a))
 if __name__=='__main__':main()

@@ -32,7 +32,7 @@ def host_memory():
  if 'MemAvailable' not in values:values['MemAvailable']=values.get('MemFree',0)
  return values
 
-def execute(phase,cmd,max_seconds,outputs=(),generation=False):
+def execute(phase,cmd,max_seconds,outputs=(),generation=False,audit_chunk=False):
  if interrupted or deadline-time.monotonic()<max_seconds+300:raise Paused('Insufficient reserved PBS time to start '+phase)
  if state['cumulative_seconds']+max_seconds>plan['cumulative_pipeline_budget_hours']*3600:raise Rejected('Declared cumulative pipeline budget cannot accommodate '+phase)
  attempt=state['attempts'].get(phase,0)+1;state['attempts'][phase]=attempt;state['phase']=phase;state['status']='running';persist();attemptdir=run/phase/f'attempt-{attempt:03d}';attemptdir.mkdir(parents=True);log=attemptdir/'command.log';event(run,'stage_started',phase=phase,argv=cmd,pbs_job_id=os.environ['PBS_JOBID'],attempt=attempt);render(P,run);start=time.monotonic();peak=0;pause_reason=None;code=None
@@ -62,28 +62,46 @@ def execute(phase,cmd,max_seconds,outputs=(),generation=False):
   code=child.wait()
  elapsed=time.monotonic()-start
  if generation:state['generation_seconds']+=elapsed
- artifact(P,run,log,'executed command log');event(run,'stage_finished' if code==0 and not pause_reason else 'stage_interrupted' if pause_reason else 'stage_failed',phase=phase,attempt=attempt,return_code=code,reason=pause_reason,wall_seconds=elapsed,sampled_peak_RSS_bytes=peak,pbs_job_id=os.environ['PBS_JOBID']);persist()
+ artifact(P,run,log,'executed command log');event(run,('audit_chunk_finished' if audit_chunk else 'stage_finished') if code==0 and not pause_reason else 'stage_interrupted' if pause_reason else 'stage_failed',phase=phase,attempt=attempt,return_code=code,reason=pause_reason,wall_seconds=elapsed,sampled_peak_RSS_bytes=peak,pbs_job_id=os.environ['PBS_JOBID']);persist()
  if pause_reason:
-  if pause_reason in ['declared stage wall budget','100 GiB free-disk reserve'] or not generation:raise Rejected('Interrupted non-resumable stage/resource bound: '+pause_reason+'; preserved attempt requires a separately declared follow-up')
+  if pause_reason in ['declared stage wall budget','100 GiB free-disk reserve'] or not (generation or audit_chunk):raise Rejected('Interrupted non-resumable stage/resource bound: '+pause_reason+'; preserved attempt requires a separately declared follow-up')
   raise Paused(pause_reason)
  if code:raise Rejected(f'{phase} exited {code}; inspect {log.relative_to(P)}')
  for path,role in outputs:
   result=json.loads((P/path).read_text()) if str(path).endswith('.json') else None
   artifact(P,run,path,role)
-  if result is not None and ('passed' in result) and not result['passed']:raise Rejected(phase+' scientific gate failed')
- state['completed_phases'].append(phase);persist();render(P,run)
+  if audit_chunk:
+   assert result is not None and result.get('chunk_passed'),'Audit chunk did not pass'
+   assert result['audit_complete']==bool(result['passed'])==bool(result['complete']),'Partial audit promoted inconsistently'
+  elif result is not None and ('passed' in result) and not result['passed']:raise Rejected(phase+' scientific gate failed')
+ if not audit_chunk:state['completed_phases'].append(phase)
+ persist();render(P,run)
 
 def path(name):return str((run/name).relative_to(P))
 def next_output(phase,name):
  # Every interrupted audit gets a new output ID; no existing result is overwritten.
  attempt=state['attempts'].get(phase,0)+1;directory=run/phase/f'attempt-{attempt:03d}';return str((directory/name).relative_to(P))
 def completed(phase):return phase in state['completed_phases']
+def audit_phase(phase,mode):
+ while not completed(phase):
+  out=next_output(phase,'result.json')
+  command=native+['hpc/platform_native_chunked.py','--spec',spec,'--mode',mode,'--output',out,'--checkpoint-root',path(phase+'/checkpoints'),'--max-steps','64']
+  execute(phase,command,7200,[(out,'Checkpointed audit chunk; full-audit status explicit')],audit_chunk=True)
+  result=json.loads((P/out).read_text());state['audit_progress']=dict(phase=phase,checked_steps=result['checked_steps'],total_steps=result['total_steps'],audit_complete=result['audit_complete']);event(run,'audit_progress',**state['audit_progress']);persist();render(P,run)
+  if result['audit_complete']:
+   state.setdefault('audit_outputs',{})[phase]=out
+   if mode=='platform':
+    artifact(P,run,plan['canonical_checkpoint'],'separate native-consistent platform restart');artifact(P,run,plan['known_start_checkpoint'],'native known-case starting histories');state['platform_output']=out
+   state['completed_phases'].append(phase);persist();return out
+
 
 event(run,'job_started',**meta);state['status']='running';persist();render(P,run)
 try:
  if state.get('status_before') in ['failed','blocked'] or state.get('terminal_rejection'):raise Rejected('Previous scientific rejection remains unresolved; do not retry this run')
+ if not completed('audit_resume_control'):
+  out=next_output('audit_resume_control','result.json');execute('audit_resume_control',modern+['hpc/qualify_audit_resume.py','--spec',spec,'--output',out],7200,[(out,'Known-prefix native audit stop/restart qualification')])
  if not completed('platform'):
-  out=next_output('platform','result.json');execute('platform',native+['hpc/platform_native.py','--spec',spec,'--mode','platform','--output',out],7200,[(out,'platform force/maps/history qualification'),(plan['canonical_checkpoint'],'separate native-consistent platform restart'),(plan['known_start_checkpoint'],'native known-case starting histories')]);state['platform_output']=out;persist()
+  out=audit_phase('platform','platform')
  if not completed('known_probe'):
   out=next_output('known_probe','result.json');f=out.replace('result.json','fields.npy');cp=out.replace('result.json','checkpoint.npz');execute('known_probe',mpi+['hpc/probe_native.py','--spec',spec,'--output',out,'--fields',f,'--checkpoint',cp],3600,[(out,'known-field MPI qualification'),(f,'actual known-case MPI coefficient fields'),(cp,'actual native known-case endpoint histories')]);state.update(probe_output=out,probe_fields=f,probe_checkpoint=cp);persist()
  if not completed('known_probe_independent'):
@@ -92,7 +110,7 @@ try:
   original=json.loads((P/snapshot['source_stream_protocol']).read_text());p=dict(original);p.update(config=plan['config'],seed_reference=snapshot['reference'],source_reference=snapshot['source_reference'],base_seed_steps=snapshot['accepted_steps'],seed_steps=snapshot['accepted_steps'],base_checkpoint=plan['canonical_checkpoint'],probe_chain=[],expected_source_prefix_sha256=snapshot['prefix_fields_sha256'],parallel_ranks=plan['ranks'],allowed_qualification_stops=list(range(snapshot['accepted_steps']+1,snapshot['n_steps']+1)),required_audits=[],required_audit_sha256={state['platform_output']:sha(P/state['platform_output']),state['probe_verification']:sha(P/state['probe_verification'])},input_sha256={**snapshot['files'],plan['canonical_checkpoint']:sha(P/plan['canonical_checkpoint'])},frozen_source_sha256=snapshot['numerical_sources'])
   p['resource_protocol']=dict(native_hours=168,cumulative_pipeline_hours=192,per_step_seconds=1800,process_tree_RSS_GiB=.8*plan['memory_gb'],free_disk_reserve_GiB=100,scope='Separate registered PBS protocol; original laptop protocol unchanged.');state['stream_protocol']=path('stream-protocol.json');atomic(P/state['stream_protocol'],p);persist();execute('seed',modern+['scripts/seed_regularized_reference.py','--protocol',state['stream_protocol']],1800)
  if not completed('seed_audit'):
-  out=next_output('seed_audit','result.json');execute('seed_audit',native+['hpc/platform_native.py','--spec',spec,'--mode','seed','--output',out],7200,[(out,'independent full inherited-prefix qualification')]);m=json.loads((root/'manifest.json').read_text());m['prefix_independent_native_audit_passed']=True;m['prefix_native_audit']=out;atomic(root/'manifest.json',m)
+  out=audit_phase('seed_audit','seed');m=json.loads((root/'manifest.json').read_text());m['prefix_independent_native_audit_passed']=True;m['prefix_native_audit']=out;atomic(root/'manifest.json',m)
  while not completed('reference'):
   m=json.loads((root/'manifest.json').read_text());assert not(root/'failure.json').exists(),'Native failure output retained; never auto-retry'
   if m['complete']:
@@ -106,7 +124,7 @@ try:
   phase=f'reference_{i:06d}';execute(phase,mpi+['scripts/generate_regularized_reference.py','--protocol',state['stream_protocol'],'--qualification-stop',str(i+steps)],steps*plan['per_step_seconds']+300,generation=True)
  if not completed('positivity_summary'):execute('positivity_summary',modern+['scripts/finalize_parallel_reference.py','--protocol',state['stream_protocol']],1800)
  if not completed('final_audit'):
-  out=next_output('final_audit','result.json');execute('final_audit',native+['hpc/platform_native.py','--spec',spec,'--mode','final','--output',out],18*3600,[(out,'final every-state independent native validation')])
+  out=audit_phase('final_audit','final')
  if not completed('mesh_comparison'):
   out=next_output('mesh_comparison','result.json');execute('mesh_comparison',native+['scripts/compare_quadratic_references.py','--config-a','configs/physics/dynamic_quadratic_reference_halfstep_ew_refined.json','--config-b',plan['config'],'--output',out],8*3600,[(out,'full-cycle R1/R2 sensitivity, not continuum truth')]);state['mesh_comparison']=out;persist()
   comparison=json.loads((P/out).read_text())

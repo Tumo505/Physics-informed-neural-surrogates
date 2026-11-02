@@ -7,9 +7,9 @@ from petsc4py import PETSc
 from mpi4py import MPI
 import meshio
 p=PETSc.PC().create();assert hasattr(p,'setReusePreconditioner');p.destroy()
-modules=['lv_surrogate.physics.reference_fem','lv_surrogate.physics.parallel_fem','lv_surrogate.physics.admissible_newton_regularized_forcing','lv_surrogate.physics.threaded_bernstein','platform_native','probe_native']
+modules=['lv_surrogate.physics.reference_fem','lv_surrogate.physics.parallel_fem','lv_surrogate.physics.admissible_newton_regularized_forcing','lv_surrogate.physics.threaded_bernstein','platform_native','probe_native','platform_native_chunked','audit_checkpoint']
 for name in modules:importlib.import_module(name)
-entrypoints=['hpc/platform_native.py','hpc/probe_native.py','hpc/verify_probe_native.py','scripts/generate_regularized_reference.py','scripts/compare_quadratic_references.py']
+entrypoints=['hpc/platform_native.py','hpc/platform_native_chunked.py','hpc/qualify_audit_resume.py','hpc/probe_native.py','hpc/verify_probe_native.py','scripts/generate_regularized_reference.py','scripts/compare_quadratic_references.py']
 checks=[]
 for name in entrypoints:
  result=subprocess.run([sys.executable,str(P/name),'--help'],cwd=P,text=True,capture_output=True)

@@ -1,0 +1,65 @@
+{
+  "python": "3.11.17 (main, Oct 13 2026, 16:38:53) [Clang 21.1.8 ]",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "dolfin": "2019.1.0",
+  "meshio": "5.3.5",
+  "petsc": [
+    3,
+    25,
+    6
+  ],
+  "mpi": "MPICH Version:      5.0.1\nMPICH Release date: Fri Apr 10 09:45:31 AM CDT 2026\nMPICH ABI:          18:1:6\nMPICH Device:       ch4:ofi\nMPICH configure:    --prefix=/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics --disable-doc --disable-dependency-tracking --enable-cxx --enable-fortran --enable-f08 --enable-mpi-abi --with-wrapper-dl-type=none --disable-static --with-device=ch4:ofi --with-libfabric=/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics --with-hwloc=/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics --with-yaksa=embedded --with-pm=hydra:gforker\nMPICH CC:           arm64-apple-darwin20.0.0-clang -I/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics/include -ftree-vectorize -fPIC -fstack-protector-strong -O2 -pipe -isystem /Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics/include -fdebug-prefix-map=/Users/runner/miniforge3/conda-bld/bld/rattler-build_mpich_1787142051/work=/usr/local/src/conda/mpich-5.0.1 -fdebug-prefix-map=/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics=/usr/local/src/conda-prefix -ftree-vectorize -fPIC -fstack-protector-strong -O2 -pipe -fno-merge-constants -isystem /Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics/include -fdebug-prefix-map=/Users/runner/miniforge3/conda-bld/bld/rattler-build_mpich_1787142051/work=/usr/local/src/conda/mpich-5.0.1 -fdebug-prefix-map=/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics=/usr/local/src/conda-prefix -fno-common    -O2\nMPICH CXX:          arm64-apple-darwin20.0.0-clang++ -I/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics/include -ftree-vectorize -fPIC -fstack-protector-strong -O2 -pipe -stdlib=libc++ -fvisibility-inlines-hidden -fmessage-length=0 -isystem /Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics/include -fdebug-prefix-map=/Users/runner/miniforge3/conda-bld/bld/rattler-build_mpich_1787142051/work=/usr/local/src/conda/mpich-5.0.1 -fdebug-prefix-map=/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics=/usr/local/src/conda-prefix -O2\nMPICH F77:          arm64-apple-darwin20.0.0-gfortran -I/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics/include -march=armv8.3-a -ftree-vectorize -fPIC -fno-stack-protector -O2 -pipe -fno-merge-constants -isystem /Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics/include -I/Users/runner/miniforge3/conda-bld/bld/rattler-build_mpich_1787142051/build_env/include -fdebug-prefix-map=/Users/runner/miniforge3/conda-bld/bld/rattler-build_mpich_1787142051/work=/usr/local/src/conda/mpich-5.0.1 -fdebug-prefix-map=/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics=/usr/local/src/conda-prefix -O2\nMPICH FC:           arm64-apple-darwin20.0.0-gfortran -I/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics/include -march=armv8.3-a -ftree-vectorize -fPIC -fno-stack-protector -O2 -pipe -fno-merge-constants -isystem /Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics/include -I/Users/runner/miniforge3/conda-bld/bld/rattler-build_mpich_1787142051/build_env/include -fdebug-prefix-map=/Users/runner/miniforge3/conda-bld/bld/rattler-build_mpich_1787142051/work=/usr/local/src/conda/mpich-5.0.1 -fdebug-prefix-map=/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/.fenics=/usr/local/src/conda-prefix -O2\nMPICH features:     threadcomm\n",
+  "single_rank": true,
+  "import_checks": [
+    "lv_surrogate.physics.reference_fem",
+    "lv_surrogate.physics.parallel_fem",
+    "lv_surrogate.physics.admissible_newton_regularized_forcing",
+    "lv_surrogate.physics.threaded_bernstein",
+    "platform_native",
+    "probe_native",
+    "platform_native_chunked",
+    "audit_checkpoint"
+  ],
+  "entrypoint_checks": [
+    {
+      "path": "hpc/platform_native.py",
+      "return_code": 0,
+      "stdout_sha256": "9d0c8d27bfbc6d57f54f1d27bda837be032e49b9797d07af95dfe9551daa9a6d"
+    },
+    {
+      "path": "hpc/platform_native_chunked.py",
+      "return_code": 0,
+      "stdout_sha256": "78f2526d326853b6cd7e488173c3ab412ba033837b3052538736a1d2572e1970"
+    },
+    {
+      "path": "hpc/qualify_audit_resume.py",
+      "return_code": 0,
+      "stdout_sha256": "5ba4a6e2601ea5da76fc8da7b6ba1510a9bb508a961be8f52eae49a6a372e43a"
+    },
+    {
+      "path": "hpc/probe_native.py",
+      "return_code": 0,
+      "stdout_sha256": "8f87cb24320f8925451b27977f6a18ad65af940d0a31eb864f54eb13f6430ae1"
+    },
+    {
+      "path": "hpc/verify_probe_native.py",
+      "return_code": 0,
+      "stdout_sha256": "69123e645b24113fe485d15e6586df44199a4aa955522e5bfb232d9c8d964b1f"
+    },
+    {
+      "path": "scripts/generate_regularized_reference.py",
+      "return_code": 0,
+      "stdout_sha256": "9d6084ca52e24fb723d95323241a70c8f12e2000bbffe66f74878f55c5d3eccf"
+    },
+    {
+      "path": "scripts/compare_quadratic_references.py",
+      "return_code": 0,
+      "stdout_sha256": "e72f61d1e9f0d5396e799d7b1ad64902d463926967f8575d073f513e74d47d77"
+    }
+  ],
+  "mesh_generation_requested": false,
+  "gmsh_available": false,
+  "scope": "macOS import/CLI smoke only. No mesh construction, FE solve, audit-state qualification or physical history advance.",
+  "linux_checkpointed_audit_qualified": false
+}

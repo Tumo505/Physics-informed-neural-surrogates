@@ -1,0 +1,48 @@
+{
+  "record_date": "2026-11-03",
+  "evidence_source": "User-pasted blocked status, command log and partial result summary",
+  "preserved_failed_run": "cmbbe-pbs-04",
+  "observed": {
+    "phase": "platform",
+    "checked_steps": 160,
+    "total_steps": 476,
+    "complete": false,
+    "passed": false,
+    "last_step": 159,
+    "last_time_s": 0.1,
+    "last_native_force_N": 2.3429415807976786e-09,
+    "driver_wall_seconds": 7201.439759980887,
+    "generation_seconds": 0.0,
+    "termination": "declared stage wall budget"
+  },
+  "flat_scenario_including_startup": {
+    "seconds_per_reported_state": 45.00899849988055,
+    "full476_hours": 5.951189801650872,
+    "scope": "Arithmetic scenario including startup/JIT, not ETA or qualified throughput"
+  },
+  "new_followup": {
+    "run_id": "cmbbe-pbs-05",
+    "prior_run_argument": "cmbbe-pbs-04",
+    "max_states_per_audit_chunk": 64,
+    "wall_ceiling_per_chunk_seconds": 7200,
+    "immutable_hash_linked_actual_native_checkpoints": true,
+    "required_native_control": "Four known loaded-tail states 472..475 after causal native history replay: uninterrupted versus 2+2 stopped/resumed; exact nonzero native histories, native force/norm/field/proof checks and nonzero loading.",
+    "old_partial_result_reused_as_full_pass": false,
+    "old_partial_histories_unavailable": true,
+    "spent_seconds_carried_from_prior": 7201.439759980887,
+    "native_hours": 168,
+    "cumulative_hours": 192,
+    "force_tolerance_N": 1e-08,
+    "history_rtol": 1e-07,
+    "history_atol": 1e-10,
+    "full_phase_pass_only_after_all_requested_states": true,
+    "old_partial_audit_continued_directly": false,
+    "fresh_full_audit_required": true
+  },
+  "validation": {
+    "local_tests_passed": 27,
+    "macos_import_cli_checks_passed": true,
+    "Linux_native_resume_control_passed": false,
+    "study_validation_passed": false
+  }
+}
