@@ -1,0 +1,54 @@
+{
+  "record_date": "2026-11-02",
+  "evidence_source": "user-supplied terminal transcript",
+  "evidence_sha256": "dfe19a31234f79d655e0a8d5e7c5aa232d6b20c7476ad099e6a0b73ba3bf93f5",
+  "run_id": "cmbbe-pbs-02",
+  "transfer_summaries": [
+    {
+      "sent_bytes": 131322156909,
+      "received_bytes": 46436,
+      "total_logical_bytes": 368153679984,
+      "tree": "data/"
+    },
+    {
+      "sent_bytes": 8274984073,
+      "received_bytes": 24192,
+      "total_logical_bytes": 8676846414,
+      "tree": "experiments/logs/"
+    }
+  ],
+  "transfer_errors_observed": [
+    "experiments/checkpoints/ transfer: SSH Broken pipe; rsync unexpected end of file/io_read errors; SSH child exit status 255"
+  ],
+  "setup_job_id": "1489880.pbs",
+  "reference_slice_job_ids": [
+    "1489881.pbs",
+    "1489882.pbs",
+    "1489883.pbs",
+    "1489884.pbs",
+    "1489885.pbs",
+    "1489886.pbs",
+    "1489887.pbs",
+    "1489888.pbs"
+  ],
+  "requested_resources": {
+    "queue": "workq",
+    "cpus": 28,
+    "memory_GB": 240,
+    "MPI_ranks": 12,
+    "slices": 8,
+    "hours_per_slice": 24
+  },
+  "confirmed": "Launcher accepted required file presence and reported all nine successful scheduler submissions.",
+  "not_yet_verified": [
+    "post-repair setup exit code",
+    "remote data hashes",
+    "platform/native scientific qualification",
+    "current running/queued job states",
+    "reference completion",
+    "numerical convergence",
+    "study validation"
+  ],
+  "agent_remote_access": false,
+  "checkpoint_transfer_status": "Incomplete; resumable directory transfer required. Do not relaunch existing scheduler chain."
+}
