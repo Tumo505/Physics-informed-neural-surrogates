@@ -1,0 +1,30 @@
+{
+  "record_date": "2026-11-02",
+  "evidence_source": "User-pasted hpc/status.py output",
+  "failed_run_id": "cmbbe-pbs-02",
+  "observed": {
+    "status": "blocked",
+    "phase": "platform",
+    "completed_phases": [],
+    "cumulative_seconds": 0.4546753093600273,
+    "generation_seconds": 0.0,
+    "attempts": {
+      "platform": 1
+    },
+    "terminal_rejection": true,
+    "error": "File exists: platform/attempt-001"
+  },
+  "cause": "Output path planning created the attempt directory; execute then attempted exclusive creation of the same directory.",
+  "repair": "Output planning only returns the future path. execute retains sole ownership of exclusive directory creation. Existing results are not overwritten.",
+  "checks": {
+    "local_hpc_tests_passed": 10,
+    "regression_scope": "Actual driver planning/execution functions exercised together with a fixture backend; no native scientific pass claimed",
+    "python_compile_passed": true
+  },
+  "recovery": {
+    "original_run_preserved": true,
+    "new_run_id": "cmbbe-pbs-03",
+    "cluster_execution_of_fix": false,
+    "physics_or_acceptance_criteria_changed": false
+  }
+}

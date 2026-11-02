@@ -76,7 +76,7 @@ def execute(phase,cmd,max_seconds,outputs=(),generation=False):
 def path(name):return str((run/name).relative_to(P))
 def next_output(phase,name):
  # Every interrupted audit gets a new output ID; no existing result is overwritten.
- attempt=state['attempts'].get(phase,0)+1;directory=run/phase/f'attempt-{attempt:03d}';directory.mkdir(parents=True,exist_ok=True);return str((directory/name).relative_to(P))
+ attempt=state['attempts'].get(phase,0)+1;directory=run/phase/f'attempt-{attempt:03d}';return str((directory/name).relative_to(P))
 def completed(phase):return phase in state['completed_phases']
 
 event(run,'job_started',**meta);state['status']='running';persist();render(P,run)

@@ -101,3 +101,30 @@ def test_single_launch_requires_transferred_data(tmp_path):
  atomic(tmp_path/'experiments/manifests/hpc_migration_snapshot.json',dict(complete=True,reference='missing',files={}))
  with pytest.raises(SystemExit,match='Transfer the preserved experiment data'):launch(tmp_path,'fixture')
  assert not(tmp_path/'.hpc/launches/fixture').exists()
+
+def test_driver_output_planning_and_execution_share_one_directory(tmp_path,monkeypatch):
+ """Exercise actual driver functions together, replacing only the native backend."""
+ import ast,time,types
+ monkeypatch.setenv('PBS_JOBID','fixture.pbs')
+ source=ast.parse((ROOT/'hpc/run.py').read_text())
+ selected=[n for n in source.body if isinstance(n,(ast.FunctionDef,ast.ClassDef)) and n.name in ['execute','next_output','Paused','Rejected']]
+ run=tmp_path/'experiments/hpc/fixture';run.mkdir(parents=True)
+ state=dict(attempts={},completed_phases=[],cumulative_seconds=0)
+ class NativeFixture:
+  def __init__(self,cmd,**kw):
+   # A backend fixture supplies a result; scientific qualification is not asserted.
+   Path(cmd[0]).write_text('{"passed": true, "scope": "test fixture"}')
+  def poll(self):return 0
+  def wait(self):return 0
+ ns=dict(P=tmp_path,run=run,state=state,plan=dict(cumulative_pipeline_budget_hours=1),interrupted=False,deadline=time.monotonic()+10000,time=time,env={},os=__import__('os'),subprocess=types.SimpleNamespace(Popen=NativeFixture,STDOUT=-2),event=lambda *a,**k:None,render=lambda *a,**k:None,persist=lambda:None,artifact=lambda *a,**k:None,json=json)
+ exec(compile(ast.Module(body=selected,type_ignores=[]),'driver fixture','exec'),ns)
+ out=ns['next_output']('platform','result.json')
+ assert not(tmp_path/out).parent.exists() # Planning must have no filesystem side effects.
+ assert ns['next_output']('platform','result.json')==out
+ ns['execute']('platform',[str(tmp_path/out)],10,[(out,'test result')])
+ assert state['completed_phases']==['platform'] and state['attempts']['platform']==1
+ assert (tmp_path/out).is_file() and (tmp_path/out).with_name('command.log').is_file()
+ previous=(tmp_path/out).read_bytes()
+ next_out=ns['next_output']('platform','result.json')
+ assert 'attempt-002' in next_out and not(tmp_path/next_out).parent.exists()
+ assert (tmp_path/out).read_bytes()==previous
