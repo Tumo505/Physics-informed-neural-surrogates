@@ -128,3 +128,25 @@ def test_driver_output_planning_and_execution_share_one_directory(tmp_path,monke
  next_out=ns['next_output']('platform','result.json')
  assert 'attempt-002' in next_out and not(tmp_path/next_out).parent.exists()
  assert (tmp_path/out).read_bytes()==previous
+
+def test_status_before_first_reference_slice_is_not_failure(tmp_path):
+ from status import read_status
+ launch=tmp_path/'.hpc/launches/test';launch.mkdir(parents=True)
+ event(launch,'job_submission',role='setup',return_code=0,stdout='123.pbs',stderr='')
+ event(launch,'job_submission',role='reference_slice_1',return_code=0,stdout='124.pbs',stderr='')
+ result,events,initialized=read_status(tmp_path,'experiments/hpc/test')
+ assert result['status']=='awaiting_initialization' and not initialized
+ assert result['scientific_progress'] is None and len(result['submitted_jobs'])==2
+ assert not(tmp_path/'experiments/hpc/test').exists()
+ atomic(tmp_path/'.hpc/setup-result-123.pbs.json',dict(exit_code=0))
+ result,_,_=read_status(tmp_path,'experiments/hpc/test');assert result['status']=='awaiting_initialization'
+ atomic(tmp_path/'.hpc/setup-result-123.pbs.json',dict(exit_code=127))
+ result,_,_=read_status(tmp_path,'experiments/hpc/test');assert result['status']=='setup_failed'
+
+def test_status_preserves_initialized_scientific_blocker(tmp_path):
+ from status import read_status
+ run=tmp_path/'experiments/hpc/test';run.mkdir(parents=True)
+ state=dict(status='blocked',blockers=['fixture negative scientific result'])
+ atomic(run/'state.json',state)
+ result,_,initialized=read_status(tmp_path,'experiments/hpc/test')
+ assert initialized and result==state

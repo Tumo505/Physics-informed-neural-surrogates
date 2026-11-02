@@ -1,0 +1,27 @@
+{
+  "record_date": "2026-11-02",
+  "run_id": "cmbbe-pbs-03",
+  "source_commit_on_cluster": "f3ee8e4",
+  "evidence_source": "User-pasted successful launch and immediate status traceback",
+  "setup_job_id": "1489891.pbs",
+  "reference_slice_job_ids": [
+    "1489892.pbs",
+    "1489893.pbs",
+    "1489894.pbs",
+    "1489895.pbs",
+    "1489896.pbs",
+    "1489897.pbs",
+    "1489898.pbs",
+    "1489899.pbs"
+  ],
+  "confirmed": "All nine scheduler submissions succeeded. state.json was absent when checked immediately afterward.",
+  "unconfirmed": [
+    "current scheduler states",
+    "setup exit code",
+    "first reference initialization",
+    "native qualification"
+  ],
+  "status_display_fix": "Before run initialization, read the registered launch ledger and any matching setup result; report awaiting initialization rather than raising FileNotFoundError. Preserve actual setup failures and initialized scientific blockers.",
+  "local_tests_passed": 12,
+  "active_cluster_sources_modified": false
+}
