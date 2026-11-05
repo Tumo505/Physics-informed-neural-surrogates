@@ -1,0 +1,101 @@
+{
+  "date": "2026-11-05",
+  "scope": "Implemented distinct bounded fixed-field proof benchmark. No full-scale benchmark has run locally or on the cluster on behalf of the agent.",
+  "parent_profile": "cmbbe-profile-01",
+  "user_supplied_completed_profile": {
+    "job_id": "1490216.pbs",
+    "diagnostic_complete": true,
+    "wall_seconds": 2644.99915323779,
+    "rank_reports_received": 12,
+    "recorded_custom_iterations": 7,
+    "recorded_linear_seconds": 118.17691189795732,
+    "last_recorded_accepted_force_N": 0.006683388574211979,
+    "terminal_force_N": null,
+    "root_outcome": "solver_timeout",
+    "root_call_inclusive_seconds": {
+      "probe_main": 2501.09,
+      "proof_pair": 1609.52,
+      "nonlinear_positive": 1428.28,
+      "mesh_read": 381.45,
+      "FE_assembly": 356.02,
+      "PETSc_KSP_solve": 117.81
+    },
+    "timing_caveat": "Inclusive rows overlap and rank times overlap; thread lock waiting identifies root wait for proof workers, not a demonstrated deadlock. Root profiling does not resolve worker internals."
+  },
+  "protocol": {
+    "fixed_case": "First known archived equation at source step474 and prior archived step473, linked to passed476-state native audit and canonical native start checkpoint",
+    "workers": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "counterbalanced_order": [
+      4,
+      1,
+      2,
+      8,
+      16,
+      16,
+      8,
+      2,
+      1,
+      4
+    ],
+    "repetitions_per_count": 2,
+    "BLAS_OMP_threads": 1,
+    "MPI_ranks": 0,
+    "processes": 1,
+    "PBS_cpus": 28,
+    "PBS_memory_GB": 240,
+    "PBS_hours": 3,
+    "outer_seconds": 7200,
+    "single_case_seconds": 900,
+    "host_reserve_GiB": 12,
+    "process_tree_RSS_fraction_limit": 0.8,
+    "disk_reserve_GiB": 100,
+    "cumulative_budget": "Carry completed profile cumulative seconds; original192h cap unchanged",
+    "criteria": {
+      "alpha_f": 0.4,
+      "chunk": 8192,
+      "positive_margin": 1e-09,
+      "max_subdivision_depth": 12,
+      "float64": true,
+      "topology": "Same refined element IDs, classifications, leaf counts and subdivision depths as archived proof and4-worker baseline",
+      "bound_comparison_roundoff": {
+        "rtol": 1e-12,
+        "atol": 1e-12
+      },
+      "reconstruction": "Original random-point identity check unchanged; chunk-boundary-dependent reconstruction errors need not be equal, each must be<=1e-11"
+    },
+    "worker_attribution": "Separate cProfile stage with serialized shards for portable profiler support; excluded from all concurrent timing comparisons. Timed runs also record per-shard wall/thread CPU and whole-pair process CPU usage.",
+    "automatic_solver_or_worker_policy_change": false,
+    "automatic_reference_restart": false,
+    "physical_states_generated": 0
+  },
+  "local_validation": {
+    "pytest_passed": 38,
+    "command": ".venv/bin/python -m pytest -q tests/test_hpc_proof_benchmark.py tests/test_hpc_probe_profile.py tests/test_hpc_registration.py",
+    "real_algorithms_on_tiny_synthetic_fields": "Curved P2 polynomial with det(F)=(x-.5)^2+.1*y+.01 requiring subdivision; identical proof semantics across1/2/4/8/16workers; negative determinant field and modified topology rejected; full10case worker protocol and attribution tested",
+    "submission": "One job, duplicate ID rejection, parent hashes unchanged, measured prior bottleneck required, cumulative budget carried",
+    "compilation": "passed",
+    "native_Mac_Python_CLI_import": "passed via .fenics/bin/python; no FE/MPI imports or physical solves",
+    "Linux_cluster_execution": "pending"
+  },
+  "frozen_sources_modified": false,
+  "code_sha256": {
+    "hpc/proof_benchmark.py": "9f9c58673a3554e2d20d7c4f470d52da0c073364f597868498aad3fd46be4df0",
+    "hpc/submit_proof_benchmark.py": "e6d11d5bd5fd5f57538d8d5f3346c05a25f4a86c2c9f59a290a67e37708ea5de",
+    "tests/test_hpc_proof_benchmark.py": "cc6383f6fd3300b559695a163e43bc4cbf2a9f719327f3efc5aab6e155b73599"
+  },
+  "unchanged_gates": {
+    "full_reference": "blocked",
+    "mesh_1percent_failure": 11.8666,
+    "validation_mesh_1percent_failure": 12.3758,
+    "Q6_integration_1percent_failure": 1.5715,
+    "models_frozen": 20,
+    "fullP2_gradient_transfer_ML_independent_calibration_untouched_final": "blocked",
+    "passive_idealized_scope": true
+  }
+}
