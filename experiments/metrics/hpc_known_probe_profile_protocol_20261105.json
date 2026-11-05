@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-05",
+  "scope": "Implementation and local synthetic checks only; profiling has not run on the cluster.",
+  "parent_run": "cmbbe-pbs-05",
+  "user_supplied_parent_evidence": {
+    "platform_states_audited": 476,
+    "platform_audit_passed": true,
+    "audit_resume_control_passed": true,
+    "known_probe_completed_equations": 0,
+    "custom_iterations_recorded": 7,
+    "recorded_linear_seconds": 116.45017981156707,
+    "last_recorded_accepted_force_N": 0.006683388054023546,
+    "terminal_force_N": null,
+    "native_generation_seconds": 0,
+    "cumulative_seconds": 34433.33496615663,
+    "failure": "Regularized Newton wall budget exhausted at unchanged 1800-second per-equation limit"
+  },
+  "source_attachment_sha256": "18dabaedea8f5ef3c6386489f494ce606199e6a355b1eb094693511de6f127a1",
+  "diagnostic_protocol": {
+    "physical_new_states": 0,
+    "equations": "Only first known equation; stop before history advance",
+    "per_equation_seconds": 1800,
+    "outer_seconds": 3600,
+    "pbs_hours": 2,
+    "cpus": 28,
+    "ranks": 12,
+    "memory_gb": 240,
+    "host_reserve_GiB": 12,
+    "process_tree_RSS_limit_fraction": 0.8,
+    "disk_reserve_GiB": 100,
+    "solver_and_physics_changes": false,
+    "cumulative_budget_carried": true,
+    "automatic_reference_restart": false,
+    "profiling": "Per-rank cProfile call self/cumulative elapsed seconds, original solver trace, exact terminal owned native function arrays with canonical IDs and SHA-256; full rank evidence may be incomplete after hard termination. Inclusive rows and ranks overlap; worker thread internals not profiled, root wall time includes waits; overhead included."
+  },
+  "validation": {
+    "pytest_passed": 33,
+    "command": ".venv/bin/python -m pytest -q tests/test_hpc_probe_profile.py tests/test_hpc_registration.py",
+    "compilation": "passed",
+    "CLI_help": "passed for both new entry points without native FE imports",
+    "native_cluster_execution": "pending",
+    "local_FE_solves": 0
+  },
+  "code_sha256": {
+    "hpc/profile_report.py": "be17cb9d09eaab4efa8994ea93045dfb12436793801ccc86876c8d1249d892be",
+    "hpc/profile_probe_native.py": "fa0036ae36a653fdd2563a2c1d76ab5d036b79a3ac6a7c83698486635e906ba1",
+    "hpc/submit_probe_profile.py": "02a602f4fbafca26b56f3f3b2f9d96d671ed94cf9b00458b7bd7eca95a70d97b",
+    "tests/test_hpc_probe_profile.py": "f2a7eba917d4177b4242c4f980f5e10f2adbc63dce48162659021699c6dc6307"
+  },
+  "unchanged_gates": {
+    "mesh_percent": 11.8666,
+    "validation_mesh_percent": 12.3758,
+    "Q6_integration_percent": 1.5715,
+    "threshold_percent": 1,
+    "models_frozen": 20,
+    "full_reference_and_numerical_validation": "blocked",
+    "full_P2_gradient_transfer_ML_calibration_untouched_final": "blocked"
+  }
+}
