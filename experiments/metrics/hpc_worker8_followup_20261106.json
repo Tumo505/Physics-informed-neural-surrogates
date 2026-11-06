@@ -1,0 +1,119 @@
+{
+  "date": "2026-11-06",
+  "scope": "Evidence-justified eight-worker solver qualification and automatic supported reference stages. Full study completion is not claimed.",
+  "completed_cluster_benchmark": {
+    "source": "User-pasted cluster outputs; not a downloaded copy of the cluster result JSON",
+    "run": "cmbbe-proof-01",
+    "job_id": "1490233.pbs",
+    "complete": true,
+    "proof_benchmark_passed": true,
+    "stop_reason": null,
+    "wall_seconds": 3560.287171687931,
+    "pair_seconds_by_workers": {
+      "1": [
+        428.157,
+        428.535
+      ],
+      "2": [
+        344.723,
+        336.105
+      ],
+      "4": [
+        255.917,
+        252.011
+      ],
+      "8": [
+        211.72,
+        211.41
+      ],
+      "16": [
+        212.045,
+        209.347
+      ]
+    },
+    "median_pair_seconds": {
+      "1": 428.346,
+      "2": 340.414,
+      "4": 253.964,
+      "8": 211.565,
+      "16": 210.696
+    },
+    "eight_vs_four_relative_reduction": 0.1669488588933865,
+    "sixteen_vs_eight_relative_reduction": 0.0041074846973743195,
+    "criteria": "Archived whole-element proof semantics unchanged; strict margin1e-9, deterministic subdivision, no physical states generated"
+  },
+  "followup_protocol": {
+    "proof_workers": 8,
+    "MPI_ranks": 12,
+    "PBS_CPUs": 28,
+    "PBS_memory_GB": 240,
+    "PBS_hours_per_slice": 24,
+    "maximum_dependent_slices": 8,
+    "setup_reinstallation": false,
+    "one_submission": true,
+    "reuse_platform_audit": "Only actual476-state passed audit, restart-control provenance and saved native checkpoints with exact registered hashes; no failed solver outputs consumed as passed",
+    "custom_solver_seconds_per_equation": 1800,
+    "known_pair_outer_phase_seconds": 5400,
+    "known_pair_outer_rationale": "Two unchanged1800s custom solves plus measured input hashing/mesh initialization and initial/final proofs. Not a solve-budget extension.",
+    "serial_known_pair_audit_seconds": 1800,
+    "native_generation_hours": 168,
+    "cumulative_pipeline_hours": 192,
+    "spent_resource_policy": "Carry actual completed benchmark cumulative_seconds; no reset",
+    "host_memory_reserve_GiB": 12,
+    "process_tree_RSS_fraction": 0.8,
+    "disk_reserve_GiB": 100,
+    "order": [
+      "known2 with eight proof workers",
+      "independent serial force/norm/history/hash/whole-element audit of both",
+      "same476-state physical seed under a new reference name",
+      "every-state seeded prefix audit",
+      "checkpointed continuation to1600",
+      "whole-element summary",
+      "every1600-state independent audit",
+      "R1/R2 full-cycle mesh comparison",
+      "qualified follow-up readiness gate"
+    ],
+    "on_failure": "Stop afterok chain, retain last exact checkpoint/journals/terminal owned native functions/traces/reasons/resources. No automatic retry, tolerance relaxation or budget extension.",
+    "frozen_original_sources_modified": false,
+    "physics_mesh_dt_load_history_force_criteria_changed": false
+  },
+  "local_validation": {
+    "pytest_passed": 51,
+    "command": ".venv/bin/python -m pytest -q tests/test_hpc_worker8.py tests/test_hpc_proof_benchmark.py tests/test_hpc_probe_profile.py tests/test_hpc_registration.py",
+    "scope": "Pure protocol and small synthetic proof checks only; no FE solve or new physical label",
+    "native_cluster_qualification": "pending",
+    "source_freeze": "Original hpc/run.py, probe_native.py, verifier, physics kernels and all earlier protocols preserved",
+    "compilation": "passed",
+    "CLI_help": "passed, including locked native Mac Python without importing FE/MPI"
+  },
+  "code_sha256": {
+    "hpc/launch_worker8.py": "d95ba5f472efbab29a9bbae8b3129d751d44f141dcfd9e3171165ecdb79d64c5",
+    "hpc/run_worker8.py": "c451169229aa25775b9f02215434123a7c3a40e7bd23882ae481a0dbdb9c3ae7",
+    "hpc/worker8_native.py": "6fd5fdf0c6600360d7eee86f5f0b56986ce83daace0c9234dc509e95d592ce8d",
+    "hpc/worker8_gates.py": "116c927681114587deabfe2cfcce455816b6a6de6af86200abf6f95d5008614a",
+    "tests/test_hpc_worker8.py": "b50518ff0a272d59346f7742a2ce507c1b116d5a77b1bbe5357ea536ebc6d9ae",
+    "scripts/plot_hpc_proof_workers.py": "794787b7e0f9a405a6c176b6a3140eab3763fa825534c657a16bc3f22d3b062e"
+  },
+  "remaining_scientific_gates": {
+    "verified_physical_states": 476,
+    "reference_total_states": 1600,
+    "cluster_new_states_generated": 0,
+    "known_worker8_solver_pass": "pending",
+    "full_cycle_reference": "incomplete",
+    "mesh_1percent_failed_percent": 11.8666,
+    "validation_mesh_1percent_failed_percent": 12.3758,
+    "Q6_integration_1percent_failed_percent": 1.5715,
+    "qualified_geometry_load_mesh_time_quadrature_controls": "incomplete",
+    "full_P2_network_gradient_transfer": "incomplete",
+    "qualified_five_seed_matched_training_executor": "not yet implemented/qualified",
+    "independent_calibration_executor": "not yet implemented/qualified",
+    "untouched_final_executor": "not yet implemented/qualified",
+    "original_models_frozen": 20,
+    "scope": "passive idealized mechanics; old inspected test fields excluded from new selection"
+  },
+  "manuscript": "Existing authorized manuscript generator retains pending results and author text; no Markdown is published",
+  "figure_sha256": {
+    "reports/figures/hpc_proof_worker_benchmark.png": "17e0419b4e8c8f33a83adb84d36dd71b0c748509dc7c238f1072c2dde5c1baf5",
+    "reports/figures/hpc_proof_worker_benchmark.svg": "71c849c56c46a582d80710b29211740b3cfe397c6af6b00e0e6e98d34cb9a512"
+  }
+}
