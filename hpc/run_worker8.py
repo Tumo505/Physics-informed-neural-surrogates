@@ -14,7 +14,22 @@ try:
  assert sha(P/plan['config'])==plan['reference_config_sha256'],'Reference configuration changed'
  for f,h in plan['inherited_evidence_sha256'].items():assert sha(P/f)==h,'Inherited passing evidence changed: '+f
  for prefix,digest in plan['environment_sha256'].items():assert environment_fingerprint(P/prefix)==digest,'Runtime environment changed after freeze: '+prefix
- assert sha(P/plan['snapshot'])==plan['snapshot_sha256'];snapshot=json.loads((P/plan['snapshot']).read_text());root=P/'data/processed'/plan['target_name'];spec=str((run/'plan.json').relative_to(P));native=[str(P/'.tools/bin/micromamba'),'run','-p',str(P/plan.get('native_prefix','.fenics')),'python'];mpi=native[:-1]+['mpiexec','-n',str(plan['ranks']),'python'];modern=[str(P/'.venv/bin/python')];env=os.environ.copy();env['PATH']=str(P/'.hpc/tools/bin')+os.pathsep+env.get('PATH','');env.update(OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',NUMEXPR_NUM_THREADS='1',HYDRA_LAUNCHER='fork',FI_PROVIDER='tcp',CUDA_VISIBLE_DEVICES='',MAMBA_ROOT_PREFIX=str(P/'.hpc/mamba'),XDG_CACHE_HOME=str(P/'.hpc/cache'),DIJITSO_CACHE_DIR=str(P/'.hpc/fenics-cache'),MPLCONFIGDIR=str(P/'.hpc/cache/matplotlib'));env.pop('FI_TCP_IFACE',None)
+ assert sha(P/plan['snapshot'])==plan['snapshot_sha256']
+ snapshot=json.loads((P/plan['snapshot']).read_text())
+ root=P/'data/processed'/plan['target_name']
+ spec=str((run/'plan.json').relative_to(P))
+ native=[str(P/'.tools/bin/micromamba'),'--no-rc','run','-r',str(P/'.hpc/mamba'),
+         '-p',str(P/plan.get('native_prefix','.fenics')),'python']
+ mpi=native[:-1]+['mpiexec','-n',str(plan['ranks']),'python']
+ modern=[str(P/'.venv/bin/python')]
+ env=os.environ.copy()
+ env['PATH']=str(P/'.hpc/tools/bin')+os.pathsep+env.get('PATH','')
+ env.update(OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',
+            NUMEXPR_NUM_THREADS='1',HYDRA_LAUNCHER='fork',FI_PROVIDER='tcp',
+            CUDA_VISIBLE_DEVICES='',XDG_CACHE_HOME=str(P/'.hpc/cache'),
+            DIJITSO_CACHE_DIR=str(P/'.hpc/fenics-cache'),MPLCONFIGDIR=str(P/'.hpc/cache/matplotlib'))
+ for key in ('FI_TCP_IFACE','CONDARC','MAMBARC','CONDA_PREFIX','CONDA_DEFAULT_ENV','CONDA_SHLVL'):
+  env.pop(key,None)
 except BaseException as exc:
  state.update(status='blocked',phase='preflight',terminal_rejection=True,blockers=[str(exc)],cumulative_seconds=prior+time.monotonic()-job_start)
  atomic(run/'state.json',state)
@@ -120,9 +135,12 @@ try:
  if not completed('known_probe_independent'):
   out=next_output('known_probe_independent','result.json');execute('known_probe_independent',native+['hpc/verify_probe_native.py','--spec',spec,'--probe',state['probe_output'],'--fields',state['probe_fields'],'--checkpoint',state['probe_checkpoint'],'--output',out],plan['stage_seconds']['known_probe_independent'],[(out,'independent serial known-case verification')]);state['probe_verification']=out;persist()
  if not completed('seed'):
-  known_gate(P,state['probe_output'],state['probe_verification'],state['probe_fields'],state['probe_checkpoint'])
+  known_gate(P,state['probe_output'],state['probe_verification'],state['probe_fields'],
+             state['probe_checkpoint'],implementation=plan['worker_policy'].get('implementation','legacy'))
   original=json.loads((P/snapshot['source_stream_protocol']).read_text());p=dict(original);p.update(config=plan['config'],seed_reference=snapshot['reference'],source_reference=snapshot['source_reference'],base_seed_steps=snapshot['accepted_steps'],seed_steps=snapshot['accepted_steps'],base_checkpoint=plan['canonical_checkpoint'],probe_chain=[],expected_source_prefix_sha256=snapshot['prefix_fields_sha256'],parallel_ranks=plan['ranks'],allowed_qualification_stops=list(range(snapshot['accepted_steps']+1,snapshot['n_steps']+1)),required_audits=[],required_audit_sha256={state['platform_output']:sha(P/state['platform_output']),state['probe_verification']:sha(P/state['probe_verification'])},input_sha256={**snapshot['files'],plan['canonical_checkpoint']:sha(P/plan['canonical_checkpoint'])},frozen_source_sha256=snapshot['numerical_sources'])
   p['worker_policy']=dict(plan['worker_policy'],known_verification=state['probe_verification'],known_verification_sha256=sha(P/state['probe_verification']),known_probe=state['probe_output'],known_fields=state['probe_fields'],known_checkpoint=state['probe_checkpoint']);p['required_audits']=[state['probe_verification']];p['frozen_source_sha256']=dict(snapshot['numerical_sources'],**{f:sha(P/f) for f in ['hpc/worker8_native.py','hpc/worker8_gates.py']})
+  if p['worker_policy'].get('implementation')=='cofactor':
+   p['frozen_source_sha256']['hpc/cofactor_proof.py']=plan['scientific_sources']['hpc/cofactor_proof.py']
   p['resource_protocol']=dict(native_hours=168,cumulative_pipeline_hours=192,per_step_seconds=1800,process_tree_RSS_GiB=.8*plan['memory_gb'],free_disk_reserve_GiB=100,proof_workers=8,scope='Separate registered PBS protocol; original laptop protocol unchanged.');state['stream_protocol']=path('stream-protocol.json');atomic(P/state['stream_protocol'],p);persist();execute('seed',modern+['scripts/seed_regularized_reference.py','--protocol',state['stream_protocol']],1800)
  if not completed('seed_audit'):
   out=audit_phase('seed_audit','seed');m=json.loads((root/'manifest.json').read_text());m['prefix_independent_native_audit_passed']=True;m['prefix_native_audit']=out;atomic(root/'manifest.json',m)

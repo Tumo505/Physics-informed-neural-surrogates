@@ -11,16 +11,27 @@ from pathlib import Path
 P = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(P / 'src'), str(P / 'hpc')]
 from registry import atomic, sha
-from worker8_gates import known_gate
+from worker8_gates import cofactor_benchmark_gate, known_gate
 
 
-def install(module):
-    original = module.ThreadedBernsteinAudit
-    class EightWorkerAudit(original):
+def install(module, implementation='legacy'):
+    assert implementation in ('legacy', 'cofactor')
+    audit_class = module.ThreadedBernsteinAudit
+    if implementation == 'cofactor':
+        from cofactor_proof import CofactorBernsteinAudit
+        audit_class = CofactorBernsteinAudit
+
+    class EightWorkerAudit(audit_class):
         def __init__(self, *args, **kwargs):
             assert kwargs.get('workers', 8) == 8, 'Only the fixed eight-worker policy is admitted'
             kwargs['workers'] = 8
             super().__init__(*args, **kwargs)
+
+        def pair(self, *args, **kwargs):
+            proof = super().pair(*args, **kwargs)
+            if implementation == 'cofactor':
+                proof['proof_implementation'] = implementation
+            return proof
     module.ThreadedBernsteinAudit = EightWorkerAudit
 
 
@@ -30,6 +41,10 @@ def check_policy(root, spec, generation=False):
     assert sha(root / policy['benchmark_summary']) == policy['benchmark_summary_sha256']
     benchmark = json.loads((root / policy['benchmark_summary']).read_text())
     assert benchmark['complete'] and benchmark['proof_benchmark_passed']
+    implementation = policy.get('implementation', 'legacy')
+    assert implementation in ('legacy', 'cofactor')
+    if implementation == 'cofactor':
+        cofactor_benchmark_gate(benchmark, policy['benchmark_steps'])
     if generation:
         path = root / policy['known_verification']
         assert sha(path) == policy['known_verification_sha256']
@@ -38,7 +53,7 @@ def check_policy(root, spec, generation=False):
         assert len(verification['records']) == 2
         assert all(0 <= row['native_residual_N'] < 1e-8 for row in verification['records'])
         known_gate(root, policy['known_probe'], policy['known_verification'],
-                   policy['known_fields'], policy['known_checkpoint'])
+                   policy['known_fields'], policy['known_checkpoint'], implementation=implementation)
 
 
 def main():
@@ -60,7 +75,7 @@ def main():
     error = comm.bcast(error, root=0)
     assert error is None, error
     import lv_surrogate.physics.threaded_bernstein as threaded
-    install(threaded)
+    install(threaded, spec['worker_policy'].get('implementation', 'legacy'))
     if args.mode == 'generate':
         sys.argv = ['generate_regularized_reference.py', *forwarded]
         # Original durable journal/checkpoint kernel and its failure handling.

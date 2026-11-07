@@ -35,7 +35,7 @@ def benchmark_fixture(root):
            canonical_checkpoint='experiments/hpc/original/canonical.npz',
            ranks=12, cpus=28, memory_gb=240, queue='workq', software='PBSJobApp',
            cumulative_pipeline_budget_hours=192, native_generation_budget_hours=168,
-           per_step_seconds=1800, segment_steps=4, environment_sha256={}))
+           per_step_seconds=1800, segment_steps=4, environment_sha256={}, native_prefix='.hpc/native-v2'))
     atomic(original / 'audit.json', dict(complete=True, passed=True, audit_complete=True,
            checked_steps=476, total_steps=476,
            records=[dict(native_residual_N=5e-12) for _ in range(476)]))
@@ -96,6 +96,37 @@ def test_partial_or_tampered_or_unjustified_benchmark_cannot_release_solver(tmp_
     artifact(tmp_path, parent, parent / 'result.json', 'Synthetic incomplete counterexample')
     with pytest.raises(AssertionError):
         launcher.parent_evidence(tmp_path, parent)
+
+
+def test_cofactor_launch_requires_registered_comparison_and_carries_spent_time(tmp_path, monkeypatch):
+    parent = benchmark_fixture(tmp_path)
+    cofactor = parent.parent / 'cofactor'
+    cofactor.mkdir()
+    atomic(cofactor / 'plan.json', dict(snapshot_sha256=sha(tmp_path / 'snapshot.json'),
+           native_prefix='.hpc/native-v2', environment_sha256={}, workers=8, fixed_steps=[474, 475],
+           cumulative_seconds_before=43227.,
+           frozen={str((parent / 'summary.json').relative_to(tmp_path)):sha(parent / 'summary.json')}))
+    atomic(cofactor / 'summary.json', dict(complete=True, proof_benchmark_passed=True, stop_reason=None,
+           reference_continuation_allowed=False, physical_new_state_generated=False, cumulative_seconds=43755.,
+           records=[dict(step=i, proof_agreement=True, pair_seconds=dict(legacy=212., cofactor=3.2))
+                    for i in [474, 475]]))
+    for step in [474, 475]:
+        for variant in ['legacy', 'cofactor']:
+            path = cofactor / f'proof-{step}-{variant}.json'
+            atomic(path, dict(scope='Synthetic proof fixture'))
+            artifact(tmp_path, cofactor, path, 'Synthetic proof fixture')
+    for name in ['plan.json', 'summary.json']:
+        artifact(tmp_path, cofactor, cofactor / name, 'Synthetic comparison fixture')
+    monkeypatch.setattr(launcher, 'assert_idle', lambda root: '')
+    monkeypatch.setattr(launcher.subprocess, 'check_output', lambda *a, **k: 'fixture-revision\n')
+    run, plan = launcher.prepare(tmp_path, 'candidate', 'benchmark', 'cofactor')
+    assert plan['worker_policy']['implementation'] == 'cofactor'
+    assert plan['worker_policy']['benchmark_summary_sha256'] == sha(cofactor / 'summary.json')
+    state = json.loads((run / 'state.json').read_text())
+    assert state['cumulative_seconds'] == 43755. and state['phase'] == 'known_probe'
+    atomic(cofactor / 'proof-475-cofactor.json', dict(changed=True))
+    with pytest.raises(AssertionError, match='changed artifact'):
+        launcher.prepare(tmp_path, 'reject', 'benchmark', 'cofactor')
 
 
 def test_dependency_chain_is_one_submission_and_never_submits_setup(tmp_path, monkeypatch):
@@ -162,13 +193,37 @@ def test_generation_policy_does_not_accept_benchmark_as_solver_qualification(tmp
     with pytest.raises(AssertionError):check_policy(tmp_path, spec)
 
 
-def test_fixed_worker_factory_preserves_original_geometry_and_criteria():
+def test_cofactor_generation_requires_native_and_independent_proof_evidence(tmp_path):
+    probe, independent = known_fixture(tmp_path)
+    benchmark = dict(complete=True, proof_benchmark_passed=True, stop_reason=None,
+                     reference_continuation_allowed=False, physical_new_state_generated=False,
+                     records=[dict(step=i, proof_agreement=True, pair_seconds=dict(legacy=212., cofactor=3.2))
+                              for i in [474, 475]])
+    atomic(tmp_path / 'comparison.json', benchmark)
+    policy = dict(workers=8, per_step_seconds=1800, implementation='cofactor', benchmark_steps=[474, 475],
+                  benchmark_summary='comparison.json', benchmark_summary_sha256=sha(tmp_path / 'comparison.json'),
+                  known_probe='probe.json', known_verification='independent.json',
+                  known_fields='fields.npy', known_checkpoint='checkpoint.npz',
+                  known_verification_sha256=sha(tmp_path / 'independent.json'))
+    with pytest.raises(AssertionError, match='Missing cofactor probe proof'):
+        check_policy(tmp_path, dict(worker_policy=policy), generation=True)
+    for row in probe['records']:
+        row['whole_element_proof']['proof_implementation'] = 'cofactor'
+    atomic(tmp_path / 'probe.json', probe)
+    independent['probe_sha256'] = sha(tmp_path / 'probe.json')
+    atomic(tmp_path / 'independent.json', independent)
+    policy['known_verification_sha256'] = sha(tmp_path / 'independent.json')
+    check_policy(tmp_path, dict(worker_policy=policy), generation=True)
+
+
+@pytest.mark.parametrize('implementation', ['legacy', 'cofactor'])
+def test_fixed_worker_factory_preserves_original_geometry_and_criteria(implementation):
     from lv_surrogate.physics.threaded_bernstein import ThreadedBernsteinAudit
     from test_hpc_proof_benchmark import curved_fixture
     from proof_benchmark import same_proof
     arrays, u = curved_fixture()
     module = SimpleNamespace(ThreadedBernsteinAudit=ThreadedBernsteinAudit)
-    install(module)
+    install(module, implementation)
     original = ThreadedBernsteinAudit(arrays)
     followup = module.ThreadedBernsteinAudit(arrays)
     try:
@@ -176,7 +231,10 @@ def test_fixed_worker_factory_preserves_original_geometry_and_criteria():
         assert original.margin == followup.margin == 1e-9
         assert original.chunk == followup.chunk == 8192
         assert original.max_depth == followup.max_depth == 12
-        same_proof(original.pair(u,u), followup.pair(u,u))
+        actual = followup.pair(u,u)
+        same_proof(original.pair(u,u), actual)
+        if implementation == 'cofactor':
+            assert actual['proof_implementation'] == 'cofactor'
         with pytest.raises(AssertionError):module.ThreadedBernsteinAudit(arrays, workers=16)
     finally:
         original.close();followup.close()
@@ -225,7 +283,7 @@ def test_actual_seed_branch_rejects_success_flag_with_bad_native_force(tmp_path)
     branch = next(node for top in tree.body if isinstance(top, ast.Try)
                   for node in top.body if isinstance(node, ast.If)
                   and ast.unparse(node.test) == "not completed('seed')")
-    ns = dict(P=tmp_path, completed=lambda phase: False, known_gate=known_gate,
+    ns = dict(P=tmp_path, completed=lambda phase: False, known_gate=known_gate, plan={'worker_policy': {}},
               state=dict(probe_output='probe.json', probe_verification='independent.json',
                          probe_fields='fields.npy', probe_checkpoint='checkpoint.npz'))
     with pytest.raises(AssertionError):

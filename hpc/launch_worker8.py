@@ -14,6 +14,7 @@ sys.path.insert(0, str(P / 'hpc'))
 from registry import atomic, artifact, event, read, sha
 from submit_probe_profile import assert_idle, registered
 from manuscript import render
+from worker8_gates import cofactor_benchmark_gate
 
 
 def parent_evidence(root, parent):
@@ -71,9 +72,43 @@ def parent_evidence(root, parent):
     return original_plan, original_state, elapsed, bindings, rows
 
 
-def prepare(root, run_id, parent_id):
+def prepare(root, run_id, parent_id, cofactor_id=None):
     parent = root / 'experiments/hpc' / parent_id
     source, inherited, elapsed, bindings, timings = parent_evidence(root, parent)
+    benchmark_summary = parent / 'summary.json'
+    implementation = 'legacy'
+    if cofactor_id is not None:
+        cofactor = root / 'experiments/hpc' / cofactor_id
+        for name in ('plan.json', 'summary.json'):
+            registered(root, cofactor, cofactor / name)
+        comparison = json.loads((cofactor / 'plan.json').read_text())
+        assert comparison['snapshot_sha256'] == source['snapshot_sha256']
+        assert comparison['native_prefix'] == source['native_prefix']
+        assert comparison['environment_sha256'] == source['environment_sha256']
+        assert comparison['workers'] == 8
+        for path, digest in comparison['frozen'].items():
+            assert sha(root / path) == digest, 'Cofactor benchmark input changed: ' + path
+        assert comparison['frozen'][str(benchmark_summary.relative_to(root))] == sha(benchmark_summary)
+        benchmark_summary = cofactor / 'summary.json'
+        result = json.loads(benchmark_summary.read_text())
+        snapshot = json.loads((root / source['snapshot']).read_text())
+        steps = list(range(snapshot['accepted_steps'] - 2, snapshot['accepted_steps']))
+        cofactor_benchmark_gate(result, steps)
+        assert comparison['fixed_steps'] == steps
+        assert result['cumulative_seconds'] >= comparison['cumulative_seconds_before'] >= elapsed
+        elapsed = result['cumulative_seconds']
+        assert elapsed + 5400 < source['cumulative_pipeline_budget_hours'] * 3600
+        for step in steps:
+            for name in ('legacy', 'cofactor'):
+                proof = cofactor / f'proof-{step}-{name}.json'
+                registered(root, cofactor, proof)
+                bindings[str(proof.relative_to(root))] = sha(proof)
+        for path in (cofactor / 'plan.json', benchmark_summary, cofactor / 'events.jsonl'):
+            bindings[str(path.relative_to(root))] = sha(path)
+        for path, digest in comparison['frozen'].items():
+            assert bindings.get(path, digest) == digest, 'Conflicting inherited evidence: ' + path
+            bindings[path] = digest
+        implementation = 'cofactor'
     assert_idle(root)
     run = root / 'experiments/hpc' / run_id
     assert not (root / 'data/processed' / ('cardiac_hpc_' + run_id)).exists(), 'Existing target retained'
@@ -81,7 +116,7 @@ def prepare(root, run_id, parent_id):
     snapshot = json.loads((root / source['snapshot']).read_text())
     config = json.loads((root / snapshot['source_config']).read_text())
     config['name'] = 'cardiac_hpc_' + run_id
-    config['scope'] = 'Separate eight-proof-worker MPI reference follow-up; unchanged physics and final1e-8N. '
+    config['scope'] = f'Eight-proof-worker MPI reference follow-up using {implementation} proofs and final1e-8N.'
     config_path = run / 'reference-config.json'
     atomic(config_path, config)
     sources = dict(source['scientific_sources'])
@@ -92,16 +127,17 @@ def prepare(root, run_id, parent_id):
                 reference_config_sha256=sha(config_path),
                 source_commit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(),
                 inherited_evidence_sha256=bindings, benchmark_pair_medians=timings,
-                prior_resource_evidence=dict(parent_run=parent_id, cumulative_seconds=elapsed,
+                prior_resource_evidence=dict(parent_run=cofactor_id or parent_id, cumulative_seconds=elapsed,
                                              generation_seconds=0),
                 scientific_sources=sources,
                 stage_seconds=dict(known_probe=5400, known_probe_independent=1800),
                 stage_budget_rationale='The known pair contains two unchanged1800s custom solves plus measured '
                                       'input hashing/mesh read and initial/final proof checks. The5400s outer '
                                       'phase bound does not extend either solve or the192h cumulative budget.',
-                worker_policy=dict(workers=8, per_step_seconds=1800,
-                                   benchmark_summary=str((parent / 'summary.json').relative_to(root)),
-                                   benchmark_summary_sha256=sha(parent / 'summary.json')),
+                worker_policy=dict(workers=8, per_step_seconds=1800, implementation=implementation,
+                                   benchmark_summary=str(benchmark_summary.relative_to(root)),
+                                   benchmark_summary_sha256=sha(benchmark_summary),
+                                   **({'benchmark_steps': steps} if implementation == 'cofactor' else {})),
                 scope='Distinct eight-worker known-pair qualification, independent serial native audit, '
                       'then seed/seed audit and bounded reference continuation only on success. '
                       'The full476-state platform audit is reused by exact provenance/input/source hashes. '
@@ -119,14 +155,14 @@ def prepare(root, run_id, parent_id):
     artifact(root, run, run / 'plan.json', 'Immutable eight-worker follow-up plan')
     artifact(root, run, config_path, 'Same physical reference configuration; separate output name')
     artifact(root, run, root / inherited['platform_output'], 'Inherited full476-state passing native platform audit')
-    artifact(root, run, parent / 'summary.json', 'Passing fixed-field worker benchmark')
+    artifact(root, run, benchmark_summary, 'Passing fixed-field proof benchmark')
     render(root, run)
     return run, plan
 
 
-def launch(root, run_id, parent_id, jobs=8):
+def launch(root, run_id, parent_id, jobs=8, cofactor_id=None):
     assert 1 <= jobs <= 8
-    run, plan = prepare(root, run_id, parent_id)
+    run, plan = prepare(root, run_id, parent_id, cofactor_id)
     dependency = None
     for index in range(1, jobs + 1):
         script = run / f'job-{index:03d}.pbs'
@@ -159,10 +195,11 @@ if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--run-id', required=True)
     ap.add_argument('--parent-run', default='cmbbe-proof-01')
+    ap.add_argument('--cofactor-run')
     ap.add_argument('--jobs', type=int, default=8)
     args = ap.parse_args()
-    for value in [args.run_id, args.parent_run]:
+    for value in [args.run_id, args.parent_run, *([args.cofactor_run] if args.cofactor_run else [])]:
         assert re.fullmatch('[A-Za-z0-9_-]+', value), 'Invalid run ID'
     with (P / '.hpc/profile-submission.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        launch(P, args.run_id, args.parent_run, args.jobs)
+        launch(P, args.run_id, args.parent_run, args.jobs, args.cofactor_run)
