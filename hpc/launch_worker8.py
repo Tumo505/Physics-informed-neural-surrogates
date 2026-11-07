@@ -72,7 +72,7 @@ def parent_evidence(root, parent):
     return original_plan, original_state, elapsed, bindings, rows
 
 
-def prepare(root, run_id, parent_id, cofactor_id=None):
+def prepare(root, run_id, parent_id, cofactor_id=None, startup_failure_id=None):
     parent = root / 'experiments/hpc' / parent_id
     source, inherited, elapsed, bindings, timings = parent_evidence(root, parent)
     benchmark_summary = parent / 'summary.json'
@@ -109,6 +109,29 @@ def prepare(root, run_id, parent_id, cofactor_id=None):
             assert bindings.get(path, digest) == digest, 'Conflicting inherited evidence: ' + path
             bindings[path] = digest
         implementation = 'cofactor'
+    resource_parent = cofactor_id or parent_id
+    if startup_failure_id is not None:
+        assert implementation == 'cofactor', 'Startup recovery requires the same cofactor benchmark'
+        failed = root / 'experiments/hpc' / startup_failure_id
+        log = failed / 'known_probe/attempt-001/command.log'
+        for path in (failed / 'plan.json', log):
+            registered(root, failed, path)
+        failed_plan = json.loads((failed / 'plan.json').read_text())
+        failed_state = json.loads((failed / 'state.json').read_text())
+        assert failed_plan['snapshot_sha256'] == source['snapshot_sha256']
+        assert failed_plan['worker_policy']['implementation'] == implementation
+        assert failed_plan['worker_policy']['benchmark_summary_sha256'] == sha(benchmark_summary)
+        assert failed_state['status'] == 'blocked' and failed_state['terminal_rejection']
+        assert failed_state['phase'] == 'known_probe' and failed_state['attempts']['known_probe'] == 1
+        assert failed_state['generation_seconds'] == 0 and 'known_probe' not in failed_state['completed_phases']
+        assert 'Could not find DOLFIN pkg-config file' in log.read_text()
+        assert not (log.parent / 'result.json').exists(), 'A probe result requires separate review'
+        assert elapsed <= failed_state['cumulative_seconds']
+        elapsed = failed_state['cumulative_seconds']
+        assert elapsed + 5580 < source['cumulative_pipeline_budget_hours'] * 3600
+        for path in (failed / 'plan.json', failed / 'state.json', failed / 'events.jsonl', log):
+            bindings[str(path.relative_to(root))] = sha(path)
+        resource_parent = startup_failure_id
     assert_idle(root)
     run = root / 'experiments/hpc' / run_id
     assert not (root / 'data/processed' / ('cardiac_hpc_' + run_id)).exists(), 'Existing target retained'
@@ -127,7 +150,7 @@ def prepare(root, run_id, parent_id, cofactor_id=None):
                 reference_config_sha256=sha(config_path),
                 source_commit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(),
                 inherited_evidence_sha256=bindings, benchmark_pair_medians=timings,
-                prior_resource_evidence=dict(parent_run=cofactor_id or parent_id, cumulative_seconds=elapsed,
+                prior_resource_evidence=dict(parent_run=resource_parent, cumulative_seconds=elapsed,
                                              generation_seconds=0),
                 scientific_sources=sources,
                 stage_seconds=dict(known_probe=5400, known_probe_independent=1800),
@@ -160,9 +183,9 @@ def prepare(root, run_id, parent_id, cofactor_id=None):
     return run, plan
 
 
-def launch(root, run_id, parent_id, jobs=8, cofactor_id=None):
+def launch(root, run_id, parent_id, jobs=8, cofactor_id=None, startup_failure_id=None):
     assert 1 <= jobs <= 8
-    run, plan = prepare(root, run_id, parent_id, cofactor_id)
+    run, plan = prepare(root, run_id, parent_id, cofactor_id, startup_failure_id)
     dependency = None
     for index in range(1, jobs + 1):
         script = run / f'job-{index:03d}.pbs'
@@ -196,10 +219,11 @@ if __name__ == '__main__':
     ap.add_argument('--run-id', required=True)
     ap.add_argument('--parent-run', default='cmbbe-proof-01')
     ap.add_argument('--cofactor-run')
+    ap.add_argument('--startup-failure-run')
     ap.add_argument('--jobs', type=int, default=8)
     args = ap.parse_args()
-    for value in [args.run_id, args.parent_run, *([args.cofactor_run] if args.cofactor_run else [])]:
-        assert re.fullmatch('[A-Za-z0-9_-]+', value), 'Invalid run ID'
+    for value in (args.run_id, args.parent_run, args.cofactor_run, args.startup_failure_run):
+        assert value is None or re.fullmatch('[A-Za-z0-9_-]+', value), 'Invalid run ID'
     with (P / '.hpc/profile-submission.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        launch(P, args.run_id, args.parent_run, args.jobs, args.cofactor_run)
+        launch(P, args.run_id, args.parent_run, args.jobs, args.cofactor_run, args.startup_failure_run)

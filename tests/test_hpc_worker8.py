@@ -124,6 +124,19 @@ def test_cofactor_launch_requires_registered_comparison_and_carries_spent_time(t
     assert plan['worker_policy']['benchmark_summary_sha256'] == sha(cofactor / 'summary.json')
     state = json.loads((run / 'state.json').read_text())
     assert state['cumulative_seconds'] == 43755. and state['phase'] == 'known_probe'
+    state.update(status='blocked', terminal_rejection=True, attempts={'known_probe': 1},
+                 cumulative_seconds=43771.)
+    atomic(run / 'state.json', state)
+    log = run / 'known_probe/attempt-001/command.log'
+    log.parent.mkdir(parents=True)
+    log.write_text('RuntimeError: Could not find DOLFIN pkg-config file.')
+    artifact(tmp_path, run, log, 'Synthetic startup failure')
+    retry, retry_plan = launcher.prepare(tmp_path, 'startup-recovery', 'benchmark', 'cofactor', 'candidate')
+    assert json.loads((retry / 'state.json').read_text())['cumulative_seconds'] == 43771.
+    assert retry_plan['inherited_evidence_sha256'][str(log.relative_to(tmp_path))] == sha(log)
+    atomic(log.parent / 'result.json', {})
+    with pytest.raises(AssertionError, match='requires separate review'):
+        launcher.prepare(tmp_path, 'has-results', 'benchmark', 'cofactor', 'candidate')
     atomic(cofactor / 'proof-475-cofactor.json', dict(changed=True))
     with pytest.raises(AssertionError, match='changed artifact'):
         launcher.prepare(tmp_path, 'reject', 'benchmark', 'cofactor')

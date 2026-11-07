@@ -18,8 +18,9 @@ try:
  snapshot=json.loads((P/plan['snapshot']).read_text())
  root=P/'data/processed'/plan['target_name']
  spec=str((run/'plan.json').relative_to(P))
+ native_prefix=P/plan.get('native_prefix','.fenics')
  native=[str(P/'.tools/bin/micromamba'),'--no-rc','run','-r',str(P/'.hpc/mamba'),
-         '-p',str(P/plan.get('native_prefix','.fenics')),'python']
+         '-p',str(native_prefix),'python']
  mpi=native[:-1]+['mpiexec','-n',str(plan['ranks']),'python']
  modern=[str(P/'.venv/bin/python')]
  env=os.environ.copy()
@@ -30,6 +31,10 @@ try:
             DIJITSO_CACHE_DIR=str(P/'.hpc/fenics-cache'),MPLCONFIGDIR=str(P/'.hpc/cache/matplotlib'))
  for key in ('FI_TCP_IFACE','CONDARC','MAMBARC','CONDA_PREFIX','CONDA_DEFAULT_ENV','CONDA_SHLVL'):
   env.pop(key,None)
+ pkgconfig_paths=os.pathsep.join(str(native_prefix/path) for path in ('lib/pkgconfig','share/pkgconfig'))
+ env.update(PKG_CONFIG=str(native_prefix/'bin/pkg-config'),PKG_CONFIG_PATH=pkgconfig_paths,
+            PKG_CONFIG_LIBDIR=pkgconfig_paths)
+ env.pop('PKG_CONFIG_SYSROOT_DIR',None)
 except BaseException as exc:
  state.update(status='blocked',phase='preflight',terminal_rejection=True,blockers=[str(exc)],cumulative_seconds=prior+time.monotonic()-job_start)
  atomic(run/'state.json',state)
@@ -126,6 +131,10 @@ def audit_phase(phase,mode):
 event(run,'job_started',**meta);state['status']='running';persist();render(P,run)
 try:
  if state.get('status_before') in ['failed','blocked'] or state.get('terminal_rejection'):raise Rejected('Previous scientific rejection remains unresolved; do not retry this run')
+ if not completed('native_preflight'):
+  smoke=("import pkgconfig; print('DOLFIN pkg-config:', pkgconfig.modversion('dolfin'), flush=True); "
+         "import dolfin; print('DOLFIN import:', dolfin.__version__, flush=True)")
+  execute('native_preflight',native+['-c',smoke],180)
  if not completed('audit_resume_control'):
   out=next_output('audit_resume_control','result.json');execute('audit_resume_control',modern+['hpc/qualify_audit_resume.py','--spec',spec,'--output',out],7200,[(out,'Known-prefix native audit stop/restart qualification')])
  if not completed('platform'):
