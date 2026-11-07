@@ -91,13 +91,16 @@ def submit(run, parent, failed):
     atomic(run / 'state.json', dict(status='submitted', phase='cofactor_benchmark', generation_seconds=0,
                                    cumulative_seconds=elapsed, blockers=[]))
     artifact(P, run, run / 'plan.json', 'Immutable cofactor benchmark protocol')
-    command = [str(P / '.tools/bin/micromamba'), 'run', '-p', str(P / plan['native_prefix']),
+    command = [str(P / '.tools/bin/micromamba'), '--no-rc', 'run',
+               '-r', str(P / '.hpc/mamba'), '-p', str(P / plan['native_prefix']),
                'python', 'hpc/benchmark_cofactor.py', 'execute', '--run-id', run.name]
     script = run / 'job.pbs'
     script.write_text('#!/bin/bash\nset -euo pipefail\ncd ' + shlex.quote(str(P)) +
-                      '\nexport OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 '
-                      'NUMEXPR_NUM_THREADS=1 CUDA_VISIBLE_DEVICES=""\nexport MAMBA_ROOT_PREFIX=' +
-                      shlex.quote(str(P / '.hpc/mamba')) + '\nexec ' + shlex.join(command) + '\n')
+                      '\n# Isolate startup from the gateway\'s inherited site Conda configuration.\n'
+                      'unset CONDARC MAMBARC CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_SHLVL\n'
+                      'export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 '
+                      'NUMEXPR_NUM_THREADS=1 CUDA_VISIBLE_DEVICES=""\n'
+                      'exec ' + shlex.join(command) + '\n')
     args = ['qsub', '-N', 'lv_cofactor', '-q', plan['queue'], '-l',
             f"select=1:ncpus={plan['cpus']}:mem={plan['memory_gb']}gb",
             '-l', 'walltime=01:00:00', '-l', 'place=excl', '-l', 'software=' + plan['software'],
