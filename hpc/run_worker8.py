@@ -24,12 +24,12 @@ try:
  mpi=native[:-1]+['mpiexec','-n',str(plan['ranks']),'python']
  modern=[str(P/'.venv/bin/python')]
  env=os.environ.copy()
- env['PATH']=str(P/'.hpc/tools/bin')+os.pathsep+env.get('PATH','')
+ env['PATH']=os.pathsep.join((str(native_prefix/'bin'),str(P/'.hpc/tools/bin'),'/usr/bin','/bin'))
  env.update(OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',
             NUMEXPR_NUM_THREADS='1',HYDRA_LAUNCHER='fork',FI_PROVIDER='tcp',
             CUDA_VISIBLE_DEVICES='',XDG_CACHE_HOME=str(P/'.hpc/cache'),
             DIJITSO_CACHE_DIR=str(P/'.hpc/fenics-cache'),MPLCONFIGDIR=str(P/'.hpc/cache/matplotlib'))
- for key in ('FI_TCP_IFACE','CONDARC','MAMBARC','CONDA_PREFIX','CONDA_DEFAULT_ENV','CONDA_SHLVL'):
+ for key in ('FI_TCP_IFACE','CONDARC','MAMBARC','CONDA_PREFIX','CONDA_DEFAULT_ENV','CONDA_SHLVL','BASH_ENV','ENV'):
   env.pop(key,None)
  pkgconfig_paths=os.pathsep.join(str(native_prefix/path) for path in ('lib/pkgconfig','share/pkgconfig'))
  env.update(PKG_CONFIG=str(native_prefix/'bin/pkg-config'),PKG_CONFIG_PATH=pkgconfig_paths,
@@ -71,7 +71,7 @@ def execute(phase,cmd,max_seconds,outputs=(),generation=False,audit_chunk=False)
   child=subprocess.Popen(cmd,cwd=P,env=env,stdout=f,stderr=subprocess.STDOUT,start_new_session=True)
   try:
    while child.poll() is None:
-    rows=[tuple(map(int,x.split())) for x in subprocess.check_output(['ps','-axo','pid=,ppid=,rss='],text=True).splitlines() if x.strip()];tree={child.pid}
+    rows=[tuple(map(int,x.split())) for x in subprocess.check_output(['ps','-axo','pid=,ppid=,rss='],text=True,env=env).splitlines() if x.strip()];tree={child.pid}
     while True:
      found={pid for pid,parent,rss in rows if parent in tree}
      if found<=tree:break
@@ -134,7 +134,7 @@ try:
  if not completed('native_preflight'):
   smoke=("import pkgconfig; print('DOLFIN pkg-config:', pkgconfig.modversion('dolfin'), flush=True); "
          "import dolfin; print('DOLFIN import:', dolfin.__version__, flush=True)")
-  execute('native_preflight',native+['-c',smoke],180)
+  execute('native_preflight',mpi+['-c',smoke],180)
  if not completed('audit_resume_control'):
   out=next_output('audit_resume_control','result.json');execute('audit_resume_control',modern+['hpc/qualify_audit_resume.py','--spec',spec,'--output',out],7200,[(out,'Known-prefix native audit stop/restart qualification')])
  if not completed('platform'):

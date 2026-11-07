@@ -134,6 +134,20 @@ def test_cofactor_launch_requires_registered_comparison_and_carries_spent_time(t
     retry, retry_plan = launcher.prepare(tmp_path, 'startup-recovery', 'benchmark', 'cofactor', 'candidate')
     assert json.loads((retry / 'state.json').read_text())['cumulative_seconds'] == 43771.
     assert retry_plan['inherited_evidence_sha256'][str(log.relative_to(tmp_path))] == sha(log)
+    retry_state = json.loads((retry / 'state.json').read_text())
+    retry_state.update(status='blocked', phase='native_preflight', terminal_rejection=True,
+                       attempts={'native_preflight': 1}, cumulative_seconds=43774.)
+    atomic(retry / 'state.json', retry_state)
+    preflight = retry / 'native_preflight/attempt-001/command.log'
+    preflight.parent.mkdir(parents=True)
+    preflight.write_text('/usr/bin/env: bash: Transport endpoint is not connected\n'
+                         'pkgconfig.pkgconfig.PackageNotFoundError: dolfin not found\n')
+    artifact(tmp_path, retry, preflight, 'Synthetic preflight PATH failure')
+    recovered, recovered_plan = launcher.prepare(tmp_path, 'path-recovery', 'benchmark', 'cofactor',
+                                                  'startup-recovery')
+    assert json.loads((recovered / 'state.json').read_text())['cumulative_seconds'] == 43774.
+    for path in (log, preflight):
+        assert recovered_plan['inherited_evidence_sha256'][str(path.relative_to(tmp_path))] == sha(path)
     atomic(log.parent / 'result.json', {})
     with pytest.raises(AssertionError, match='requires separate review'):
         launcher.prepare(tmp_path, 'has-results', 'benchmark', 'cofactor', 'candidate')

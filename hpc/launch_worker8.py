@@ -113,22 +113,32 @@ def prepare(root, run_id, parent_id, cofactor_id=None, startup_failure_id=None):
     if startup_failure_id is not None:
         assert implementation == 'cofactor', 'Startup recovery requires the same cofactor benchmark'
         failed = root / 'experiments/hpc' / startup_failure_id
-        log = failed / 'known_probe/attempt-001/command.log'
+        failed_state = json.loads((failed / 'state.json').read_text())
+        phase = failed_state['phase']
+        assert phase in ('known_probe', 'native_preflight'), 'Startup recovery requires a startup-stage failure'
+        log = failed / phase / 'attempt-001/command.log'
         for path in (failed / 'plan.json', log):
             registered(root, failed, path)
         failed_plan = json.loads((failed / 'plan.json').read_text())
-        failed_state = json.loads((failed / 'state.json').read_text())
         assert failed_plan['snapshot_sha256'] == source['snapshot_sha256']
         assert failed_plan['worker_policy']['implementation'] == implementation
         assert failed_plan['worker_policy']['benchmark_summary_sha256'] == sha(benchmark_summary)
         assert failed_state['status'] == 'blocked' and failed_state['terminal_rejection']
-        assert failed_state['phase'] == 'known_probe' and failed_state['attempts']['known_probe'] == 1
+        assert failed_state['attempts'][phase] == 1
         assert failed_state['generation_seconds'] == 0 and 'known_probe' not in failed_state['completed_phases']
-        assert 'Could not find DOLFIN pkg-config file' in log.read_text()
+        error = log.read_text()
+        if phase == 'native_preflight':
+            assert 'known_probe' not in failed_state['attempts']
+            assert '/usr/bin/env: bash: Transport endpoint is not connected' in error and 'dolfin not found' in error
+        else:
+            assert 'Could not find DOLFIN pkg-config file' in error
         assert not (log.parent / 'result.json').exists(), 'A probe result requires separate review'
         assert elapsed <= failed_state['cumulative_seconds']
         elapsed = failed_state['cumulative_seconds']
         assert elapsed + 5580 < source['cumulative_pipeline_budget_hours'] * 3600
+        for path, digest in failed_plan['inherited_evidence_sha256'].items():
+            assert bindings.get(path, digest) == digest and sha(root / path) == digest
+            bindings[path] = digest
         for path in (failed / 'plan.json', failed / 'state.json', failed / 'events.jsonl', log):
             bindings[str(path.relative_to(root))] = sha(path)
         resource_parent = startup_failure_id
@@ -190,7 +200,7 @@ def launch(root, run_id, parent_id, jobs=8, cofactor_id=None, startup_failure_id
     for index in range(1, jobs + 1):
         script = run / f'job-{index:03d}.pbs'
         script.write_text('#!/bin/bash\nset -euo pipefail\ncd ' + shlex.quote(str(root)) +
-                          '\nexport PATH="$PWD/.hpc/tools/bin:$PATH"\nexec .venv/bin/python '
+                          '\nexport PATH="$PWD/.hpc/tools/bin:/usr/bin:/bin"\nexec .venv/bin/python '
                           'hpc/run_worker8.py --run ' + shlex.quote(str(run.relative_to(root))) +
                           ' --slice-seconds 86400\n')
         command = ['qsub', '-N', 'lv_worker8', '-q', plan['queue'], '-l',
