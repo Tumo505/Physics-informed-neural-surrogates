@@ -72,13 +72,16 @@ def submit(run, parent, previous=None):
     assert manifest['prefix_independent_native_audit_passed']
     cumulative_seconds = state['cumulative_seconds']
     policy = 'band_half'
+    reuse_jacobian = False
     scope = 'Half reduction only in the observed regularization band.'
     if previous is not None:
         for name in ('plan.json', 'summary.json'):
             registered(P, previous, previous / name)
         prior_plan, prior_result = (load(previous / name) for name in ('plan.json', 'summary.json'))
         assert prior_plan['parent_run'] == parent.name and prior_plan['target_name'] == source['target_name']
-        assert prior_plan.get('regularization_policy', 'band_half') == 'band_half'
+        prior_policy = prior_plan.get('regularization_policy', 'band_half')
+        assert prior_policy in ('band_half', 'two_good_steps')
+        assert not prior_plan.get('reuse_jacobian', False)
         for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz'):
             assert prior_plan['frozen'][str(path.relative_to(P))] == sha(path)
         assert prior_result['reference_continuation_allowed'] is False
@@ -86,13 +89,22 @@ def submit(run, parent, previous=None):
         assert not prior_result['physical_new_state_generated']
         assert 'Regularized Newton wall budget exhausted' in prior_result['stop_reason']
         previous_trace = load(previous / 'trace.json')
-        check_followup(previous_trace)
+        if prior_policy == 'band_half':
+            check_followup(previous_trace)
+        else:
+            timings = prior_result['phase_seconds_rank0']
+            assembly = timings['jacobian_assembly']
+            assert assembly > .5 * sum(timings.values()), 'Jacobian assembly must dominate measured time'
+            assert previous_trace['step'] == 550 and previous_trace['regularization_policy'] == prior_policy
+            reuse_jacobian = True
         assert len(previous_trace['custom_newton_steps']) == prior_result['accepted_custom_iterations']
         assert previous_trace['custom_newton_steps'][-1]['trials'][-1]['native_force_N'] == prior_result['last_accepted_custom_force_N']
         cumulative_seconds = prior_result['cumulative_seconds']
         assert cumulative_seconds >= state['cumulative_seconds']
         policy = 'two_good_steps'
         scope = 'Halve regularization after two consecutive good full steps at the same shift.'
+    if reuse_jacobian:
+        scope += ' Reuse the Jacobian for one update after a good full step, with a fresh rebuild on rejection.'
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -120,7 +132,7 @@ def submit(run, parent, previous=None):
         assert sha(P / path) == digest, 'Changed input or source: ' + path
     plan = dict(source, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
-                regularization_policy=policy, previous_recovery=previous.name if previous else None,
+                regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
                 scope=f'One equation from checkpoint 550. {scope} 1800 s solver cap. Candidate fields only.')
     run.mkdir()
     atomic(run / 'plan.json', plan)
@@ -299,7 +311,8 @@ def execute(run):
         try:
             solve(problem, adapter, history, audit,
                   dict(stream['admissible_newton'], wall_budget_seconds=1800), trace, persist,
-                  policy=trace['regularization_policy'], timings=timings)
+                  policy=trace['regularization_policy'], timings=timings,
+                  reuse_jacobian=plan.get('reuse_jacobian', False))
         except Exception as exc:
             cause = exc.__cause__
             local_error = f'{type(exc).__name__}: {exc}' + (f' caused by {cause}' if cause else '')
@@ -345,6 +358,10 @@ def execute(run):
                     if row.get('accepted_custom_update')]
         result.update(regularization_policy=trace.get('regularization_policy'),
                       phase_seconds_rank0=trace.get('phase_seconds_rank0', {}),
+                      reused_jacobian_updates=sum(row.get('jacobian_reused', False)
+                                                  for row in trace['custom_newton_steps']
+                                                  if row.get('accepted_custom_update')),
+                      jacobian_reuse_rejections=len(trace.get('jacobian_reuse_rejections', [])),
                       accepted_custom_iterations=len(accepted),
                       last_accepted_custom_force_N=accepted[-1]['native_force_N'] if accepted else None)
         result.update(complete=True, wall_seconds=time.monotonic()-started,
