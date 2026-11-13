@@ -53,7 +53,8 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None):
+    assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
     assert_idle(P)
     registered(P, parent, parent / 'plan.json')
     source, state = (load(parent / name) for name in ('plan.json', 'state.json'))
@@ -81,7 +82,7 @@ def submit(run, parent, previous=None):
         assert prior_plan['parent_run'] == parent.name and prior_plan['target_name'] == source['target_name']
         prior_policy = prior_plan.get('regularization_policy', 'band_half')
         assert prior_policy in ('band_half', 'two_good_steps')
-        assert not prior_plan.get('reuse_jacobian', False)
+        assert bool(prior_plan.get('reuse_jacobian', False)) == compare_shifts
         for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz'):
             assert prior_plan['frozen'][str(path.relative_to(P))] == sha(path)
         assert prior_result['reference_continuation_allowed'] is False
@@ -89,7 +90,12 @@ def submit(run, parent, previous=None):
         assert not prior_result['physical_new_state_generated']
         assert 'Regularized Newton wall budget exhausted' in prior_result['stop_reason']
         previous_trace = load(previous / 'trace.json')
-        if prior_policy == 'band_half':
+        if compare_shifts:
+            assert prior_policy == 'two_good_steps' and not prior_plan.get('compare_shifts')
+            assert prior_result['reused_jacobian_updates'] > 0
+            assert len(previous_trace['custom_newton_steps']) >= 28
+            reuse_jacobian = True
+        elif prior_policy == 'band_half':
             check_followup(previous_trace)
         else:
             timings = prior_result['phase_seconds_rank0']
@@ -105,6 +111,8 @@ def submit(run, parent, previous=None):
         scope = 'Halve regularization after two consecutive good full steps at the same shift.'
     if reuse_jacobian:
         scope += ' Reuse the Jacobian for one update after a good full step, with a fresh rebuild on rejection.'
+    if compare_shifts:
+        scope = 'Replay 28 Newton updates, then compare three fresh directions from the same field.'
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -130,7 +138,7 @@ def submit(run, parent, previous=None):
             frozen[str(path.relative_to(P))] = sha(path)
     for path, digest in frozen.items():
         assert sha(P / path) == digest, 'Changed input or source: ' + path
-    plan = dict(source, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
+    plan = dict(source, queue=queue or source['queue'], compare_shifts=compare_shifts, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
                 regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
                 scope=f'One equation from checkpoint 550. {scope} 1800 s solver cap. Candidate fields only.')
@@ -308,11 +316,12 @@ def execute(run):
         persist()
         solve_started = time.monotonic()
         local_error = None
+        comparison = plan.get('compare_shifts', False)
         try:
             solve(problem, adapter, history, audit,
                   dict(stream['admissible_newton'], wall_budget_seconds=1800), trace, persist,
                   policy=trace['regularization_policy'], timings=timings,
-                  reuse_jacobian=plan.get('reuse_jacobian', False))
+                  reuse_jacobian=plan.get('reuse_jacobian', False), stop_after=28 if comparison else None)
         except Exception as exc:
             cause = exc.__cause__
             local_error = f'{type(exc).__name__}: {exc}' + (f' caused by {cause}' if cause else '')
@@ -320,35 +329,79 @@ def execute(run):
         on_root(persist)
         if any(errors):
             raise RuntimeError(next(error for error in errors if error))
-        before = adapter.gather('u')
-        problem.solver.solve()
-        field = adapter.gather('u')
-        force = float(residual(problem).norm('l2'))
-        snes = problem.solver._snes
-        assert 0 <= force < 1e-8 and snes.getConvergedReason() > 0 and snes.getIterationNumber() == 0
-        assert not snes.getUseEW() and snes.getKSP().getType() == 'gmres'
-        assert snes.getKSP().getPC().getType() == 'gamg'
-        solve_seconds = comm.allreduce(time.monotonic() - solve_started, op=MPI.MAX)
+        if comparison:
+            common = comm.bcast(adapter.gather('u'), root=0)
+            common_force = float(residual(problem).norm('l2'))
+            assert len(trace['custom_newton_steps']) == 28 and common_force > 1e-9
+            assert np.isfinite(common_force)
 
-        def verify_candidate():
-            np.testing.assert_array_equal(before, field)
-            cofactor = audit.pair(field, old)
-            audit.close()
-            legacy = ThreadedBernsteinAudit(arrays, workers=8)
-            try:
-                proof = legacy.pair(field, old)
-            finally:
-                legacy.close()
-            same_proof(proof, cofactor)
-            atomic(run / 'proof.json', proof)
-            path = run / 'candidate.npz'
-            np.savez_compressed(path, accepted=False, step=step, time_s=time_s, u=field, **history)
-            for output in (path, run / 'proof.json', run / 'trace.json'):
-                artifact(P, run, output, 'Recovery probe output, no reference admission')
+            def save_common():
+                path = run / 'comparison-iterate.npy'
+                np.save(path, common, allow_pickle=False)
+                artifact(P, run, path, 'Shared Newton iterate for shift comparison')
+            on_root(save_common)
+            result['common_force_N'] = common_force
+            result['comparison_complete'] = False
+            result['shift_comparison'] = []
+            for shift in (.0078125, .015625, .03125):
+                adapter.assign('u', common)
+                trial_started = time.monotonic()
+                remaining = comm.allreduce(1800 - (trial_started - solve_started), op=MPI.MIN)
+                if remaining <= 0:
+                    raise RuntimeError('Shared 1800 s solver budget exhausted before all shifts were tested')
+                trial = {}
+                solve(problem, adapter, history, audit,
+                      dict(stream['admissible_newton'], initial_regularization=shift,
+                           wall_budget_seconds=remaining), trial, lambda: None,
+                      policy=trace['regularization_policy'], stop_after=1)
+                seconds = comm.allreduce(time.monotonic() - trial_started, op=MPI.MAX)
+                force_after = float(residual(problem).norm('l2'))
+                if rank == 0:
+                    row = trial['custom_newton_steps'][0]
+                    accepted = row['accepted_custom_update'] if 'accepted_custom_update' in row else False
+                    result['shift_comparison'].append(dict(
+                        shift=shift, seconds=seconds, accepted=accepted, force_N=force_after,
+                        reduction_N_per_second=(common_force-force_after)/seconds if accepted else None,
+                        direction=row))
+                on_root(lambda: atomic(run / 'comparison-progress.json', result))
+            result['comparison_complete'] = True
 
-        on_root(verify_candidate)
-        result.update(passed=True, native_force_N=force, SNES_reason=int(snes.getConvergedReason()),
-                      native_updates=0, solve_seconds=solve_seconds, proof_agreement=True)
+            def register_comparison():
+                path = run / 'comparison-progress.json'
+                atomic(path, result)
+                artifact(P, run, path, 'Measured shift comparison')
+
+            on_root(register_comparison)
+        else:
+            before = adapter.gather('u')
+            problem.solver.solve()
+            field = adapter.gather('u')
+            force = float(residual(problem).norm('l2'))
+            snes = problem.solver._snes
+            assert 0 <= force < 1e-8 and snes.getConvergedReason() > 0 and snes.getIterationNumber() == 0
+            assert not snes.getUseEW() and snes.getKSP().getType() == 'gmres'
+            assert snes.getKSP().getPC().getType() == 'gamg'
+            solve_seconds = comm.allreduce(time.monotonic() - solve_started, op=MPI.MAX)
+
+            def verify_candidate():
+                np.testing.assert_array_equal(before, field)
+                cofactor = audit.pair(field, old)
+                audit.close()
+                legacy = ThreadedBernsteinAudit(arrays, workers=8)
+                try:
+                    proof = legacy.pair(field, old)
+                finally:
+                    legacy.close()
+                same_proof(proof, cofactor)
+                atomic(run / 'proof.json', proof)
+                path = run / 'candidate.npz'
+                np.savez_compressed(path, accepted=False, step=step, time_s=time_s, u=field, **history)
+                for output in (path, run / 'proof.json', run / 'trace.json'):
+                    artifact(P, run, output, 'Recovery probe output, no reference admission')
+
+            on_root(verify_candidate)
+            result.update(passed=True, native_force_N=force, SNES_reason=int(snes.getConvergedReason()),
+                          native_updates=0, solve_seconds=solve_seconds, proof_agreement=True)
     except Exception as exc:
         result['stop_reason'] = f'{type(exc).__name__}: {exc}'
         if rank == 0:
@@ -375,7 +428,7 @@ def execute(run):
     comm.Barrier()
     if lock is not None:
         lock.close()
-    return 0 if result['passed'] else 2
+    return 0 if result['passed'] or result.get('comparison_complete') else 2
 
 
 if __name__ == '__main__':
@@ -384,6 +437,8 @@ if __name__ == '__main__':
     parser.add_argument('--run-id', required=True)
     parser.add_argument('--parent-run', default='cmbbe-cofactor-ref-03')
     parser.add_argument('--previous-recovery')
+    parser.add_argument('--compare-shifts', action='store_true')
+    parser.add_argument('--queue')
     args = parser.parse_args()
     for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
@@ -392,6 +447,7 @@ if __name__ == '__main__':
         with (P / '.hpc/profile-submission.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             submit(directory / args.run_id, directory / args.parent_run,
-                   directory / args.previous_recovery if args.previous_recovery else None)
+                   directory / args.previous_recovery if args.previous_recovery else None,
+                   compare_shifts=args.compare_shifts, queue=args.queue)
     else:
         raise SystemExit(execute(directory / args.run_id))

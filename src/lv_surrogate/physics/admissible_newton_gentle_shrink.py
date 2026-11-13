@@ -6,7 +6,7 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
  def measured(name, function, *args):
@@ -72,6 +72,11 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
    continue
   if not qualified:
    if rank==0:record['custom_newton_steps'].append(sr);persist()
+   if stop_after == 1:
+    A.setDiagonal(diag);A.assemble()
+    for v in (diag,scale,shifted,b,delta,true):v.destroy()
+    if ksp is not None:ksp.destroy()
+    return
    raise RuntimeError('Shifted linear direction failed true residual qualification')
   direction=canonical(delta);A.setDiagonal(diag);A.assemble();jdelta=b.duplicate();A.mult(delta,jdelta);model=b.duplicate();accepted=False
   for power in range(1 if reused else options['maximum_backtracks']+1):
@@ -108,5 +113,8 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   sr.update(accepted_custom_update=accepted,next_regularization=mu,good_full_steps_at_shift=good_full_steps)
   if rank==0:record['custom_newton_steps'].append(sr);persist();print('REGULARIZED NEWTON',iteration,norm,force,accepted,mu,flush=True)
   for v in [diag,scale,shifted,b,delta,true,jdelta,model]:v.destroy()
-  if not accepted and mu>=options['maximum_regularization']:raise RuntimeError('Regularization ceiling without admissible descent')
+  if stop_after != 1 and not accepted and mu>=options['maximum_regularization']:raise RuntimeError('Regularization ceiling without admissible descent')
   iteration += 1
+  if stop_after is not None and iteration == stop_after:
+   if ksp is not None:ksp.destroy()
+   return
