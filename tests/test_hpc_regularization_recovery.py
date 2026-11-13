@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'hpc'))
-from probe_regularization_recovery import check_trace
+from probe_regularization_recovery import check_followup, check_trace
 
 
 @pytest.fixture
@@ -36,3 +36,36 @@ def test_different_timeout_mechanism_is_rejected(timeout_trace, row, trial, key,
     timeout_trace['custom_newton_steps'][row]['trials'][trial][key] = value
     with pytest.raises(AssertionError):
         check_trace(timeout_trace)
+
+
+def test_two_good_steps_hold_shift_after_backtracking():
+    from lv_surrogate.physics.regularization_recovery_policy import update_shift
+
+    def advance(mu, count, full_step, ratio):
+        return update_shift(mu, count, accepted=True, full_step=full_step,
+                            ratio=ratio, minimum=1e-9, maximum=1.)
+
+    mu, count = advance(.0078125, 0, False, .78)
+    assert (mu, count) == (.03125, 0)
+    mu, count = advance(mu, count, True, .97)
+    assert (mu, count) == (.03125, 1)
+    assert advance(mu, count, True, .98) == (.015625, 0)
+    assert advance(mu, count, True, .6) == (.03125, 0)
+    assert advance(mu, count, True, .086) == (.125, 0)
+
+
+def test_followup_accepts_observed_cycle_ending_in_a_poor_full_step(timeout_trace):
+    steps = timeout_trace['custom_newton_steps']
+    for low, high in zip(steps[::2], steps[1::2]):
+        low.update(regularization=.0078125, next_regularization=.03125)
+        high.update(regularization=.03125, next_regularization=.0078125)
+    steps[-2]['trials'] = [dict(alpha=1., armijo_passed=True,
+                               whole_element_admissible=True,
+                               actual_to_predicted_merit_ratio=.086)]
+    timeout_trace['custom_newton_steps'] = [
+        row for low, high in zip(steps[::2], steps[1::2]) for row in (high, low)
+    ]
+    check_followup(timeout_trace)
+    steps[-2]['trials'][0]['actual_to_predicted_merit_ratio'] = .5
+    with pytest.raises(AssertionError):
+        check_followup(timeout_trace)

@@ -36,7 +36,24 @@ def check_trace(trace):
         assert high['trials'][-1]['actual_to_predicted_merit_ratio'] > .75
 
 
-def submit(run, parent):
+def check_followup(trace):
+    rows = trace['custom_newton_steps'][-8:]
+    assert trace['step'] == 550 and len(rows) == 8
+    for high, low in zip(rows[::2], rows[1::2]):
+        assert high['regularization'] == low['next_regularization'] == .03125
+        assert low['regularization'] == high['next_regularization'] == .0078125
+        assert high['accepted_custom_update'] and low['accepted_custom_update']
+        high_trial, low_trial = high['trials'][-1], low['trials'][-1]
+        assert high_trial['alpha'] == 1 and high_trial['whole_element_admissible']
+        assert high_trial['actual_to_predicted_merit_ratio'] > .75
+        assert low_trial['whole_element_admissible']
+        if low_trial['alpha'] < 1:
+            assert low['trials'][0]['alpha'] == 1 and not low['trials'][0]['armijo_passed']
+        else:
+            assert low_trial['actual_to_predicted_merit_ratio'] < .25
+
+
+def submit(run, parent, previous=None):
     assert_idle(P)
     registered(P, parent, parent / 'plan.json')
     source, state = (load(parent / name) for name in ('plan.json', 'state.json'))
@@ -53,7 +70,30 @@ def submit(run, parent):
     manifest = load(data / 'manifest.json')
     assert manifest['completed_steps'] == 550 and manifest['n_steps'] == 1600
     assert manifest['prefix_independent_native_audit_passed']
-    assert state['cumulative_seconds'] + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
+    cumulative_seconds = state['cumulative_seconds']
+    policy = 'band_half'
+    scope = 'Half reduction only in the observed regularization band.'
+    if previous is not None:
+        for name in ('plan.json', 'summary.json'):
+            registered(P, previous, previous / name)
+        prior_plan, prior_result = (load(previous / name) for name in ('plan.json', 'summary.json'))
+        assert prior_plan['parent_run'] == parent.name and prior_plan['target_name'] == source['target_name']
+        assert prior_plan.get('regularization_policy', 'band_half') == 'band_half'
+        for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz'):
+            assert prior_plan['frozen'][str(path.relative_to(P))] == sha(path)
+        assert prior_result['reference_continuation_allowed'] is False
+        assert prior_result['complete'] and not prior_result['passed'] and prior_result['step'] == 550
+        assert not prior_result['physical_new_state_generated']
+        assert 'Regularized Newton wall budget exhausted' in prior_result['stop_reason']
+        previous_trace = load(previous / 'trace.json')
+        check_followup(previous_trace)
+        assert len(previous_trace['custom_newton_steps']) == prior_result['accepted_custom_iterations']
+        assert previous_trace['custom_newton_steps'][-1]['trials'][-1]['native_force_N'] == prior_result['last_accepted_custom_force_N']
+        cumulative_seconds = prior_result['cumulative_seconds']
+        assert cumulative_seconds >= state['cumulative_seconds']
+        policy = 'two_good_steps'
+        scope = 'Halve regularization after two consecutive good full steps at the same shift.'
+    assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
     frozen[source['snapshot']] = source['snapshot_sha256']
@@ -70,17 +110,23 @@ def submit(run, parent):
                  data / 'step_journal/000549.json', Path(__file__).resolve(),
                  P / 'src/lv_surrogate/physics/admissible_newton_gentle_shrink.py'):
         frozen[str(path.relative_to(P))] = sha(path)
+    policy_path = P / 'src/lv_surrogate/physics/regularization_recovery_policy.py'
+    frozen[str(policy_path.relative_to(P))] = sha(policy_path)
+    if previous is not None:
+        for name in ('plan.json', 'summary.json', 'trace.json'):
+            path = previous / name
+            frozen[str(path.relative_to(P))] = sha(path)
     for path, digest in frozen.items():
         assert sha(P / path) == digest, 'Changed input or source: ' + path
     plan = dict(source, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
-                cumulative_seconds_before=state['cumulative_seconds'], generation_seconds_before=state['generation_seconds'],
-                scope='One known failed equation from durable checkpoint 550. Half reduction only in the observed '
-                      'regularization band. 1800 s solver cap. Candidate fields only, no history advance or admission.')
+                cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
+                regularization_policy=policy, previous_recovery=previous.name if previous else None,
+                scope=f'One equation from checkpoint 550. {scope} 1800 s solver cap. Candidate fields only.')
     run.mkdir()
     atomic(run / 'plan.json', plan)
     atomic(run / 'state.json', dict(status='submitted', phase='recovery_probe', blockers=[],
                                    generation_seconds=state['generation_seconds'],
-                                   cumulative_seconds=state['cumulative_seconds']))
+                                   cumulative_seconds=cumulative_seconds))
     artifact(P, run, run / 'plan.json', 'State-551 recovery probe protocol')
     prefix = P / plan['native_prefix']
     pkgconfig = f'{prefix}/lib/pkgconfig:{prefix}/share/pkgconfig'
@@ -239,8 +285,12 @@ def execute(run):
             raise RuntimeError('No whole-element-admissible initializer')
         trace.update(time_s=time_s, selected_predictor=choice)
 
+        timings = {}
+        trace['regularization_policy'] = plan.get('regularization_policy', 'band_half')
+
         def persist():
             if rank == 0:
+                trace['phase_seconds_rank0'] = timings.copy()
                 atomic(run / 'trace.json', trace)
 
         persist()
@@ -248,11 +298,13 @@ def execute(run):
         local_error = None
         try:
             solve(problem, adapter, history, audit,
-                  dict(stream['admissible_newton'], wall_budget_seconds=1800), trace, persist)
+                  dict(stream['admissible_newton'], wall_budget_seconds=1800), trace, persist,
+                  policy=trace['regularization_policy'], timings=timings)
         except Exception as exc:
             cause = exc.__cause__
             local_error = f'{type(exc).__name__}: {exc}' + (f' caused by {cause}' if cause else '')
         errors = comm.allgather(local_error)
+        on_root(persist)
         if any(errors):
             raise RuntimeError(next(error for error in errors if error))
         before = adapter.gather('u')
@@ -291,7 +343,9 @@ def execute(run):
     if rank == 0:
         accepted = [row['trials'][-1] for row in trace['custom_newton_steps']
                     if row.get('accepted_custom_update')]
-        result.update(accepted_custom_iterations=len(accepted),
+        result.update(regularization_policy=trace.get('regularization_policy'),
+                      phase_seconds_rank0=trace.get('phase_seconds_rank0', {}),
+                      accepted_custom_iterations=len(accepted),
                       last_accepted_custom_force_N=accepted[-1]['native_force_N'] if accepted else None)
         result.update(complete=True, wall_seconds=time.monotonic()-started,
                       cumulative_seconds=plan['cumulative_seconds_before']+time.monotonic()-started)
@@ -312,13 +366,15 @@ if __name__ == '__main__':
     parser.add_argument('action', choices=['submit', 'execute'])
     parser.add_argument('--run-id', required=True)
     parser.add_argument('--parent-run', default='cmbbe-cofactor-ref-03')
+    parser.add_argument('--previous-recovery')
     args = parser.parse_args()
-    for name in (args.run_id, args.parent_run):
+    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
     directory = P / 'experiments/hpc'
     if args.action == 'submit':
         with (P / '.hpc/profile-submission.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            submit(directory / args.run_id, directory / args.parent_run)
+            submit(directory / args.run_id, directory / args.parent_run,
+                   directory / args.previous_recovery if args.previous_recovery else None)
     else:
         raise SystemExit(execute(directory / args.run_id))
