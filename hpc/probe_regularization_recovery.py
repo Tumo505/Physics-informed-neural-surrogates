@@ -53,8 +53,9 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None, *, compare_shifts=False, queue=None):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None):
     assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
+    assert resume is None or compare_shifts, "Use --compare-shifts with --resume-comparison"
     assert_idle(P)
     registered(P, parent, parent / 'plan.json')
     source, state = (load(parent / name) for name in ('plan.json', 'state.json'))
@@ -113,6 +114,27 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None):
         scope += ' Reuse the Jacobian for one update after a good full step, with a fresh rebuild on rejection.'
     if compare_shifts:
         scope = 'Replay 28 Newton updates, then compare three fresh directions from the same field.'
+    resume_paths = []
+    saved_iterate = None
+    if resume is not None:
+        iterate = resume / 'comparison-iterate.npy'
+        registered(P, resume, iterate)
+        registered(P, resume, resume / 'plan.json')
+        resume_plan = load(resume / 'plan.json')
+        assert resume_plan['compare_shifts'] and not resume_plan.get('saved_iterate')
+        assert resume_plan['previous_recovery'] == previous.name
+        for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz'):
+            assert resume_plan['frozen'][str(path.relative_to(P))] == sha(path)
+        replay = load(resume / 'trace.json')
+        assert replay['step'] == 550 and len(replay['custom_newton_steps']) == 28
+        expected_force = replay['custom_newton_steps'][-1]['trials'][-1]['native_force_N']
+        log_path = resume / 'pbs.log'
+        match = re.search(r'job killed: walltime (\d+) exceeded limit 3600', log_path.read_text())
+        assert match, 'Expected the PBS walltime termination record'
+        cumulative_seconds += int(match.group(1))
+        resume_paths = [iterate, resume / 'plan.json', resume / 'trace.json', resume / 'events.jsonl', log_path]
+        saved_iterate = str(iterate.relative_to(P))
+        scope = 'Compare three fresh directions from the saved displacement field.'
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -136,9 +158,12 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None):
         for name in ('plan.json', 'summary.json', 'trace.json'):
             path = previous / name
             frozen[str(path.relative_to(P))] = sha(path)
+    for path in resume_paths:
+        frozen[str(path.relative_to(P))] = sha(path)
     for path, digest in frozen.items():
         assert sha(P / path) == digest, 'Changed input or source: ' + path
-    plan = dict(source, queue=queue or source['queue'], compare_shifts=compare_shifts, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
+    plan = dict(source, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
+                saved_iterate_force_N=expected_force if resume else None, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
                 regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
                 scope=f'One equation from checkpoint 550. {scope} 1800 s solver cap. Candidate fields only.')
@@ -284,26 +309,38 @@ def execute(run):
         old, dt = history['u_old'], cfg['dt_s']
         alpha = float(problem.parameters['alpha_f'])
         assert alpha == .4
-        guesses = [old, old + dt*history['v_old'], old + dt*history['v_old'] + .5*dt**2*history['a_old'],
-                   (alpha*previous + (1-alpha)*old - alpha*old)/(1-alpha)]
-        forces = []
-        for guess in guesses:
-            adapter.assign('u', guess)
-            forces.append(float(residual(problem).norm('l2')))
-        for choice in sorted((i for i in range(4) if np.isfinite(forces[i])), key=forces.__getitem__):
-            def predictor_error():
-                try:
-                    audit.pair(guesses[choice], old)
-                except Exception as exc:
-                    return str(exc)
-                return None
-            error = comm.bcast(on_root(predictor_error), root=0)
-            if error is None:
-                adapter.assign('u', guesses[choice])
-                break
+        if plan.get('saved_iterate'):
+            def load_iterate():
+                field = np.load(P / plan['saved_iterate'], allow_pickle=False)
+                assert field.shape == old.shape and np.isfinite(field).all()
+                return field
+
+            saved = comm.bcast(on_root(load_iterate), root=0)
+            adapter.assign('u', saved)
+            saved_force = float(residual(problem).norm('l2'))
+            np.testing.assert_allclose(saved_force, plan['saved_iterate_force_N'], rtol=1e-5, atol=1e-12)
+            trace.update(time_s=time_s, saved_iterate=plan['saved_iterate'])
         else:
-            raise RuntimeError('No whole-element-admissible initializer')
-        trace.update(time_s=time_s, selected_predictor=choice)
+            guesses = [old, old + dt*history['v_old'], old + dt*history['v_old'] + .5*dt**2*history['a_old'],
+                       (alpha*previous + (1-alpha)*old - alpha*old)/(1-alpha)]
+            forces = []
+            for guess in guesses:
+                adapter.assign('u', guess)
+                forces.append(float(residual(problem).norm('l2')))
+            for choice in sorted((i for i in range(4) if np.isfinite(forces[i])), key=forces.__getitem__):
+                def predictor_error():
+                    try:
+                        audit.pair(guesses[choice], old)
+                    except Exception as exc:
+                        return str(exc)
+                    return None
+                error = comm.bcast(on_root(predictor_error), root=0)
+                if error is None:
+                    adapter.assign('u', guesses[choice])
+                    break
+            else:
+                raise RuntimeError('No whole-element-admissible initializer')
+            trace.update(time_s=time_s, selected_predictor=choice)
 
         timings = {}
         trace['regularization_policy'] = plan.get('regularization_policy', 'band_half')
@@ -318,10 +355,11 @@ def execute(run):
         local_error = None
         comparison = plan.get('compare_shifts', False)
         try:
-            solve(problem, adapter, history, audit,
-                  dict(stream['admissible_newton'], wall_budget_seconds=1800), trace, persist,
-                  policy=trace['regularization_policy'], timings=timings,
-                  reuse_jacobian=plan.get('reuse_jacobian', False), stop_after=28 if comparison else None)
+            if not plan.get('saved_iterate'):
+                solve(problem, adapter, history, audit,
+                      dict(stream['admissible_newton'], wall_budget_seconds=1800), trace, persist,
+                      policy=trace['regularization_policy'], timings=timings,
+                      reuse_jacobian=plan.get('reuse_jacobian', False), stop_after=28 if comparison else None)
         except Exception as exc:
             cause = exc.__cause__
             local_error = f'{type(exc).__name__}: {exc}' + (f' caused by {cause}' if cause else '')
@@ -332,7 +370,11 @@ def execute(run):
         if comparison:
             common = comm.bcast(adapter.gather('u'), root=0)
             common_force = float(residual(problem).norm('l2'))
-            assert len(trace['custom_newton_steps']) == 28 and common_force > 1e-9
+            def check_common():
+                assert plan.get('saved_iterate') or len(trace['custom_newton_steps']) == 28
+
+            on_root(check_common)
+            assert common_force > 1e-9
             assert np.isfinite(common_force)
 
             def save_common():
@@ -439,8 +481,9 @@ if __name__ == '__main__':
     parser.add_argument('--previous-recovery')
     parser.add_argument('--compare-shifts', action='store_true')
     parser.add_argument('--queue')
+    parser.add_argument('--resume-comparison')
     args = parser.parse_args()
-    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery)):
+    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
     directory = P / 'experiments/hpc'
     if args.action == 'submit':
@@ -448,6 +491,7 @@ if __name__ == '__main__':
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             submit(directory / args.run_id, directory / args.parent_run,
                    directory / args.previous_recovery if args.previous_recovery else None,
-                   compare_shifts=args.compare_shifts, queue=args.queue)
+                   compare_shifts=args.compare_shifts, queue=args.queue,
+                   resume=directory / args.resume_comparison if args.resume_comparison else None)
     else:
         raise SystemExit(execute(directory / args.run_id))
