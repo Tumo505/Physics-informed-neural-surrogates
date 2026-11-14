@@ -91,7 +91,9 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
     adapter.assign('u',candidate);accepted=True
     reuse_next = reuse_jacobian and not reused and power == 0 and ratio is not None and ratio > .75
     if rank==0:sr['accepted_whole_element_proof']=proof
-    if policy == 'two_good_steps':
+    if policy == 'fixed_shift':
+     pass
+    elif policy == 'two_good_steps':
      mu, good_full_steps = update_shift(
       mu, good_full_steps, accepted=True, full_step=power == 0, ratio=ratio,
       minimum=options['minimum_regularization'], maximum=options['maximum_regularization'])
@@ -107,6 +109,11 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
     record.setdefault('jacobian_reuse_rejections',[]).append(dict(sr,reason='full trial rejected'))
     persist()
    continue
+  if not accepted and policy == 'fixed_shift':
+   if rank==0:
+    record['custom_newton_steps'].append(dict(sr,accepted_custom_update=False))
+    persist()
+   raise RuntimeError('Fixed shift produced no admissible descent')
   if not accepted:
    mu=min(options['maximum_regularization'],mu*10)
    good_full_steps=0

@@ -53,9 +53,10 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None):
     assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
     assert resume is None or compare_shifts, "Use --compare-shifts with --resume-comparison"
+    assert fixed_from is None or (previous is None and not compare_shifts)
     assert_idle(P)
     registered(P, parent, parent / 'plan.json')
     source, state = (load(parent / name) for name in ('plan.json', 'state.json'))
@@ -135,6 +136,27 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         resume_paths = [iterate, resume / 'plan.json', resume / 'trace.json', resume / 'events.jsonl', log_path]
         saved_iterate = str(iterate.relative_to(P))
         scope = 'Compare three fresh directions from the saved displacement field.'
+    fixed_shift = None
+    if fixed_from is not None:
+        for name in ('plan.json', 'summary.json', 'comparison-iterate.npy'):
+            registered(P, fixed_from, fixed_from / name)
+            resume_paths.append(fixed_from / name)
+        comparison_plan = load(fixed_from / 'plan.json')
+        comparison = load(fixed_from / 'summary.json')
+        assert comparison_plan['compare_shifts'] and comparison_plan['parent_run'] == parent.name
+        assert comparison['complete'] and comparison['comparison_complete'] and comparison['step'] == 550
+        for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz'):
+            assert comparison_plan['frozen'][str(path.relative_to(P))] == sha(path)
+        rows = [row for row in comparison['shift_comparison'] if row['accepted']]
+        fixed_shift = max(rows, key=lambda row: row['reduction_N_per_second'])['shift']
+        saved_iterate = str((fixed_from / 'comparison-iterate.npy').relative_to(P))
+        assert (P / comparison_plan['saved_iterate']).is_file()
+        assert sha(P / saved_iterate) == sha(P / comparison_plan['saved_iterate'])
+        expected_force = comparison['common_force_N']
+        cumulative_seconds = comparison['cumulative_seconds']
+        assert cumulative_seconds >= state['cumulative_seconds']
+        policy = 'fixed_shift'
+        scope = 'Four fresh Newton updates at the best measured fixed shift.'
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -163,7 +185,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
     for path, digest in frozen.items():
         assert sha(P / path) == digest, 'Changed input or source: ' + path
     plan = dict(source, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
-                saved_iterate_force_N=expected_force if resume else None, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
+                saved_iterate_force_N=expected_force if saved_iterate else None, fixed_shift=fixed_shift, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
                 regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
                 scope=f'One equation from checkpoint 550. {scope} 1800 s solver cap. Candidate fields only.')
@@ -354,12 +376,16 @@ def execute(run):
         solve_started = time.monotonic()
         local_error = None
         comparison = plan.get('compare_shifts', False)
+        fixed_shift = plan.get('fixed_shift')
+        options = dict(stream['admissible_newton'], wall_budget_seconds=1800)
+        if fixed_shift is not None:
+            options['initial_regularization'] = fixed_shift
         try:
-            if not plan.get('saved_iterate'):
+            if not plan.get('saved_iterate') or fixed_shift is not None:
                 solve(problem, adapter, history, audit,
-                      dict(stream['admissible_newton'], wall_budget_seconds=1800), trace, persist,
+                      options, trace, persist,
                       policy=trace['regularization_policy'], timings=timings,
-                      reuse_jacobian=plan.get('reuse_jacobian', False), stop_after=28 if comparison else None)
+                      reuse_jacobian=plan.get('reuse_jacobian', False), stop_after=28 if comparison else 4 if fixed_shift is not None else None)
         except Exception as exc:
             cause = exc.__cause__
             local_error = f'{type(exc).__name__}: {exc}' + (f' caused by {cause}' if cause else '')
@@ -367,7 +393,21 @@ def execute(run):
         on_root(persist)
         if any(errors):
             raise RuntimeError(next(error for error in errors if error))
-        if comparison:
+        if fixed_shift is not None:
+            final_force = float(residual(problem).norm('l2'))
+
+            def record_fixed_result():
+                rows = trace['custom_newton_steps']
+                assert all(row['accepted_custom_update'] for row in rows)
+                assert len(rows) == 4 or final_force < options['custom_absolute_tolerance_N']
+                result.update(fixed_shift=fixed_shift, fixed_probe_complete=True,
+                              initial_force_N=saved_force, final_force_N=final_force,
+                              solve_seconds=time.monotonic() - solve_started)
+                artifact(P, run, run / 'trace.json', 'Fixed shift probe trace')
+
+            on_root(record_fixed_result)
+            result['fixed_probe_complete'] = True
+        elif comparison:
             common = comm.bcast(adapter.gather('u'), root=0)
             common_force = float(residual(problem).norm('l2'))
             def check_common():
@@ -470,7 +510,7 @@ def execute(run):
     comm.Barrier()
     if lock is not None:
         lock.close()
-    return 0 if result['passed'] or result.get('comparison_complete') else 2
+    return 0 if result['passed'] or result.get('comparison_complete') or result.get('fixed_probe_complete') else 2
 
 
 if __name__ == '__main__':
@@ -482,8 +522,9 @@ if __name__ == '__main__':
     parser.add_argument('--compare-shifts', action='store_true')
     parser.add_argument('--queue')
     parser.add_argument('--resume-comparison')
+    parser.add_argument('--fixed-from-comparison')
     args = parser.parse_args()
-    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison)):
+    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
     directory = P / 'experiments/hpc'
     if args.action == 'submit':
@@ -492,6 +533,7 @@ if __name__ == '__main__':
             submit(directory / args.run_id, directory / args.parent_run,
                    directory / args.previous_recovery if args.previous_recovery else None,
                    compare_shifts=args.compare_shifts, queue=args.queue,
-                   resume=directory / args.resume_comparison if args.resume_comparison else None)
+                   resume=directory / args.resume_comparison if args.resume_comparison else None,
+                   fixed_from=directory / args.fixed_from_comparison if args.fixed_from_comparison else None)
     else:
         raise SystemExit(execute(directory / args.run_id))
