@@ -6,7 +6,7 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
  def measured(name, function, *args):
@@ -34,6 +34,7 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
  record['custom_newton_steps']=[]
  iteration = 0
  reuse_next = False
+ previous_fresh_shift = None
  while True:
   reused = reuse_next
   reuse_next = False
@@ -54,15 +55,50 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   b=df.as_backend_type(R).vec().copy();b.scale(-1);delta=b.duplicate();delta.set(0.)
   if ksp is None:
    ksp=PETSc.KSP().create(A.comm);ksp.setType('gmres');ksp.setGMRESRestart(200);ksp.getPC().setType('gamg');ksp.setNormType(PETSc.KSP.NormType.UNPRECONDITIONED);ksp.setMonitor(lambda k,it,r:budget())
-  ksp.setOperators(A);ksp.setTolerances(rtol=eta,atol=1e-12,max_it=3000);ksp.getPC().setReusePreconditioner(False)
-  tick=time.perf_counter();measured('ksp_solve',ksp.solve,b,delta);true=b.duplicate();A.mult(delta,true);true.axpy(-1,b)
-  fallback=None
-  limit=max(1.1e-12,1.1*eta*norm)
-  if not reused and (ksp.getConvergedReason()<=0 or true.norm()>limit):
-   fallback=dict(first_KSP_reason=int(ksp.getConvergedReason()),first_iterations=int(ksp.getIterationNumber()),first_true_residual_N=float(true.norm()))
-   delta.set(0.);ksp.getPC().setReusePreconditioner(False);measured('ksp_setup',ksp.setUp);measured('ksp_solve',ksp.solve,b,delta);A.mult(delta,true);true.axpy(-1,b)
-  sr=dict(iteration=iteration,linear_forcing=eta,reuse_requested=False,jacobian_reused=reused,rebuild_fallback=fallback,initial_force_N=norm,regularization=mu,KSP_reason=int(ksp.getConvergedReason()),KSP_iterations=int(ksp.getIterationNumber()),true_shifted_linear_residual_N=float(true.norm()),true_shifted_linear_relative_residual=float(true.norm()/norm),linear_seconds=time.perf_counter()-tick,trials=[])
-  qualified=ksp.getConvergedReason()>0 and true.norm()<=limit
+  reuse_pc = reuse_gamg and reused and previous_fresh_shift == mu
+  ksp.setOperators(A)
+  ksp.setTolerances(rtol=eta,atol=1e-12,max_it=3000)
+  true = b.duplicate()
+  limit = max(1.1e-12,1.1*eta*norm)
+
+  def linear_attempt(reuse):
+   budget()
+   ksp.getPC().setReusePreconditioner(reuse)
+   delta.set(0.)
+   setup_started = time.perf_counter()
+   measured('ksp_setup',ksp.setUp)
+   setup_seconds = time.perf_counter()-setup_started
+   budget()
+   solve_started = time.perf_counter()
+   measured('ksp_solve',ksp.solve,b,delta)
+   solve_seconds = time.perf_counter()-solve_started
+   A.mult(delta,true)
+   true.axpy(-1,b)
+   residual_norm = float(true.norm())
+   reason = int(ksp.getConvergedReason())
+   return dict(reuse=reuse,setup_seconds=setup_seconds,solve_seconds=solve_seconds,
+               reason=reason,iterations=int(ksp.getIterationNumber()),
+               true_residual_N=residual_norm if np.isfinite(residual_norm) else None,
+               qualified=reason>0 and residual_norm<=limit)
+
+  tick = time.perf_counter()
+  first = linear_attempt(reuse_pc)
+  attempts = [first]
+  fallback = None
+  if not first['qualified'] and (not reused or reuse_pc):
+   fallback = dict(first_KSP_reason=first['reason'],first_iterations=first['iterations'],
+                   first_true_residual_N=first['true_residual_N'])
+   attempts.append(linear_attempt(False))
+  last = attempts[-1]
+  previous_fresh_shift = mu if not reused and last['qualified'] else None
+  true_force = last['true_residual_N']
+  sr=dict(iteration=iteration,linear_forcing=eta,reuse_requested=reuse_pc,
+          jacobian_reused=reused,rebuild_fallback=fallback,initial_force_N=norm,
+          regularization=mu,KSP_reason=last['reason'],KSP_iterations=last['iterations'],
+          true_shifted_linear_residual_N=true_force,
+          true_shifted_linear_relative_residual=true_force/norm if true_force is not None else None,
+          linear_seconds=time.perf_counter()-tick,linear_attempts=attempts,trials=[])
+  qualified=last['qualified']
   if not qualified and reused:
    A.setDiagonal(diag);A.assemble()
    for v in (diag,scale,shifted,b,delta,true):v.destroy()

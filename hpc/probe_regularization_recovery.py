@@ -53,12 +53,13 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None):
     assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
     assert resume is None or compare_shifts, "Use --compare-shifts with --resume-comparison"
     assert fixed_from is None or (previous is None and not compare_shifts)
     assert predictors_after is None or all(x is None for x in (previous, resume, fixed_from)) and not compare_shifts
     assert solve_from_screen is None or (previous is None and resume is None and fixed_from is None and predictors_after is None and not compare_shifts)
+    assert reuse_gamg_after is None or solve_from_screen is not None
     assert_idle(P)
     registered(P, parent, parent / 'plan.json')
     source, state = (load(parent / name) for name in ('plan.json', 'state.json'))
@@ -192,6 +193,22 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         policy = 'two_good_steps'
         reuse_jacobian = True
         scope = 'Solve from the screened half-increment predictor with the Jacobian reuse policy.'
+    if reuse_gamg_after is not None:
+        for name in ('plan.json', 'summary.json', 'trace.json'):
+            if name != 'trace.json':
+                registered(P, reuse_gamg_after, reuse_gamg_after / name)
+            resume_paths.append(reuse_gamg_after / name)
+        baseline_plan = load(reuse_gamg_after / 'plan.json')
+        baseline = load(reuse_gamg_after / 'summary.json')
+        assert baseline_plan['screened_force_N'] == screened_force
+        assert baseline_plan['reuse_jacobian'] and not baseline_plan.get('reuse_gamg')
+        assert baseline['complete'] and not baseline['passed'] and baseline['step'] == 550
+        assert 'Regularized Newton wall budget exhausted' in baseline['stop_reason']
+        for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz'):
+            assert baseline_plan['frozen'][str(path.relative_to(P))] == sha(path)
+        assert baseline['cumulative_seconds'] >= cumulative_seconds
+        cumulative_seconds = baseline['cumulative_seconds']
+        scope += ' Reuse GAMG for one unchanged-shift Jacobian reuse update.'
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -219,7 +236,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         frozen[str(path.relative_to(P))] = sha(path)
     for path, digest in frozen.items():
         assert sha(P / path) == digest, 'Changed input or source: ' + path
-    plan = dict(source, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
+    plan = dict(source, reuse_gamg=reuse_gamg_after is not None, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
                 saved_iterate_force_N=expected_force if saved_iterate else None, fixed_shift=fixed_shift, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
                 regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
@@ -455,7 +472,8 @@ def execute(run):
                     solve(problem, adapter, history, audit,
                           options, trace, persist,
                           policy=trace['regularization_policy'], timings=timings,
-                          reuse_jacobian=plan.get('reuse_jacobian', False), stop_after=28 if comparison else 4 if fixed_shift is not None else None)
+                          reuse_jacobian=plan.get('reuse_jacobian', False),
+                          reuse_gamg=plan.get('reuse_gamg', False), stop_after=28 if comparison else 4 if fixed_shift is not None else None)
             except Exception as exc:
                 cause = exc.__cause__
                 local_error = f'{type(exc).__name__}: {exc}' + (f' caused by {cause}' if cause else '')
@@ -564,6 +582,12 @@ def execute(run):
         if plan.get('screened_force_N') is not None:
             result.update(selected_predictor=trace.get('selected_predictor'),
                           initial_force_N=trace.get('initial_force_N'))
+        if plan.get('reuse_gamg'):
+            attempts = [row['linear_attempts'] for row in
+                        trace['custom_newton_steps'] + trace.get('jacobian_reuse_rejections', [])
+                        if row.get('reuse_requested')]
+            result.update(gamg_reuse_attempts=len(attempts),
+                          gamg_reuse_rebuilds=sum(len(group) > 1 for group in attempts))
         result.update(regularization_policy=trace.get('regularization_policy'),
                       phase_seconds_rank0=trace.get('phase_seconds_rank0', {}),
                       reused_jacobian_updates=sum(row.get('jacobian_reused', False)
@@ -598,8 +622,9 @@ if __name__ == '__main__':
     parser.add_argument('--fixed-from-comparison')
     parser.add_argument('--screen-predictors-after')
     parser.add_argument('--solve-from-screen')
+    parser.add_argument('--reuse-gamg-after')
     args = parser.parse_args()
-    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen)):
+    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
     directory = P / 'experiments/hpc'
     if args.action == 'submit':
@@ -611,6 +636,7 @@ if __name__ == '__main__':
                    resume=directory / args.resume_comparison if args.resume_comparison else None,
                    fixed_from=directory / args.fixed_from_comparison if args.fixed_from_comparison else None,
                    predictors_after=directory / args.screen_predictors_after if args.screen_predictors_after else None,
-                   solve_from_screen=directory / args.solve_from_screen if args.solve_from_screen else None)
+                   solve_from_screen=directory / args.solve_from_screen if args.solve_from_screen else None,
+                   reuse_gamg_after=directory / args.reuse_gamg_after if args.reuse_gamg_after else None)
     else:
         raise SystemExit(execute(directory / args.run_id))
