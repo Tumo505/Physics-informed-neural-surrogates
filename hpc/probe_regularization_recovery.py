@@ -53,7 +53,7 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None, serialization_after=None):
     assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
     assert resume is None or compare_shifts, "Use --compare-shifts with --resume-comparison"
     assert fixed_from is None or (previous is None and not compare_shifts)
@@ -227,6 +227,27 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         cumulative_seconds += int(match.group(1))
         resume_paths.extend((diagnose_after / 'plan.json', interrupted_log, interrupted_trace))
         scope += ' Instrument the first two Newton updates and stop before PBS walltime.'
+    if serialization_after is not None:
+        assert diagnose_after is not None
+        for name in ('plan.json', 'summary.json'):
+            path = serialization_after / name
+            registered(P, serialization_after, path)
+            resume_paths.append(path)
+        failed_plan = load(serialization_after / 'plan.json')
+        failed_result = load(serialization_after / 'summary.json')
+        assert failed_plan['log_phases'] and failed_plan['reuse_gamg']
+        assert failed_plan['target_name'] == source['target_name']
+        assert failed_plan['cumulative_seconds_before'] == cumulative_seconds
+        assert failed_plan['screened_force_N'] == screened_force
+        assert failed_result['complete'] and not failed_result['passed'] and failed_result['step'] == 550
+        assert failed_result['stop_reason'] == 'RuntimeError: TypeError: Object of type bool is not JSON serializable'
+        assert failed_result['accepted_custom_iterations'] == 2
+        assert failed_result['gamg_reuse_attempts'] == 1 and failed_result['gamg_reuse_rebuilds'] == 0
+        for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz',
+                     diagnose_after / 'plan.json'):
+            assert failed_plan['frozen'][str(path.relative_to(P))] == sha(path)
+        assert failed_result['cumulative_seconds'] > cumulative_seconds
+        cumulative_seconds = failed_result['cumulative_seconds']
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -664,8 +685,9 @@ if __name__ == '__main__':
     parser.add_argument('--solve-from-screen')
     parser.add_argument('--reuse-gamg-after')
     parser.add_argument('--diagnose-gamg-after')
+    parser.add_argument('--retry-serialization-after')
     args = parser.parse_args()
-    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after, args.diagnose_gamg_after)):
+    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after, args.diagnose_gamg_after, args.retry_serialization_after)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
     directory = P / 'experiments/hpc'
     if args.action == 'submit':
@@ -679,6 +701,7 @@ if __name__ == '__main__':
                    predictors_after=directory / args.screen_predictors_after if args.screen_predictors_after else None,
                    solve_from_screen=directory / args.solve_from_screen if args.solve_from_screen else None,
                    reuse_gamg_after=directory / args.reuse_gamg_after if args.reuse_gamg_after else None,
-                   diagnose_after=directory / args.diagnose_gamg_after if args.diagnose_gamg_after else None)
+                   diagnose_after=directory / args.diagnose_gamg_after if args.diagnose_gamg_after else None,
+                   serialization_after=directory / args.retry_serialization_after if args.retry_serialization_after else None)
     else:
         raise SystemExit(execute(directory / args.run_id))

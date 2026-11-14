@@ -59,7 +59,7 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   b=df.as_backend_type(R).vec().copy();b.scale(-1);delta=b.duplicate();delta.set(0.)
   if ksp is None:
    ksp=PETSc.KSP().create(A.comm);ksp.setType('gmres');ksp.setGMRESRestart(200);ksp.getPC().setType('gamg');ksp.setNormType(PETSc.KSP.NormType.UNPRECONDITIONED);ksp.setMonitor(lambda k,it,r:budget())
-  reuse_pc = reuse_gamg and reused and previous_fresh_shift == mu
+  reuse_pc = bool(reuse_gamg and reused and previous_fresh_shift == mu)
   ksp.setOperators(A)
   ksp.setTolerances(rtol=eta,atol=1e-12,max_it=3000)
   true = b.duplicate()
@@ -85,7 +85,7 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
    return dict(reuse=reuse,setup_seconds=setup_seconds,solve_seconds=solve_seconds,
                reason=reason,iterations=int(ksp.getIterationNumber()),
                true_residual_N=residual_norm if np.isfinite(residual_norm) else None,
-               qualified=reason>0 and residual_norm<=limit)
+               qualified=bool(reason>0 and residual_norm<=limit))
 
   tick = time.perf_counter()
   first = linear_attempt(reuse_pc)
@@ -131,7 +131,7 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
    sr['trials'].append(dict(alpha=alpha,native_force_N=force if np.isfinite(force) else None,armijo_passed=armijo,whole_element_admissible=valid,positivity_failure=error,actual_to_predicted_merit_ratio=ratio))
    if valid:
     adapter.assign('u',candidate);accepted=True
-    reuse_next = reuse_jacobian and not reused and power == 0 and ratio is not None and ratio > .75
+    reuse_next = bool(reuse_jacobian and not reused and power == 0 and ratio is not None and ratio > .75)
     if rank==0:sr['accepted_whole_element_proof']=proof
     if policy == 'fixed_shift':
      pass
