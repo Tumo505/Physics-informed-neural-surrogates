@@ -22,6 +22,8 @@ HPC = ROOT / 'experiments/hpc'
 START = 551
 PBS_SECONDS = 3600
 WORK_SECONDS = 3000
+TIMEOUT = 'Regularized Newton wall budget exhausted'
+FAILURE_FILES = ('failure.json', 'UNACCEPTED_iterate.npz')
 
 
 def load(path):
@@ -42,6 +44,18 @@ def check_checkpoint(target, count):
     return manifest, digest
 
 
+def failure_evidence(parent, target, state):
+    phase = state['phase']
+    assert phase == 'reference_000547' and state['attempts'][phase] == 1
+    log = parent / phase / 'attempt-001/command.log'
+    registered(ROOT, parent, log)
+    assert f'RuntimeError: {TIMEOUT}' in log.read_text(), 'Expected registered Newton timeout'
+    marker = target / 'failure.json'
+    if marker.exists():
+        assert TIMEOUT in load(marker)['error'], 'A different failure marker requires review'
+    return log, {name: sha(target / name) for name in FAILURE_FILES if (target / name).exists()}
+
+
 def submit(run, recovery):
     with (ROOT / '.hpc/profile-submission.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -59,7 +73,6 @@ def prepare_and_submit(run, recovery):
     registered(ROOT, parent, parent / 'plan.json')
     parent_state = load(parent / 'state.json')
     assert parent_state['status'] == 'blocked' and parent_state['terminal_rejection']
-    assert parent_state['phase'] == 'reference_000547'
     target = ROOT / 'data/processed' / source['target_name']
     manifest, digest = check_checkpoint(target, START)
     admission = manifest['steps'][-1]['recovery_admission']
@@ -74,12 +87,9 @@ def prepare_and_submit(run, recovery):
     assert sha(protocol_path) == source['frozen'][str(protocol_path.relative_to(ROOT))]
     assert protocol['parallel_ranks'] == source['ranks'] == 12
     assert {552, 553} <= set(protocol['allowed_qualification_stops'])
-    old_failure = target / 'failure.json'
-    assert 'Regularized Newton wall budget exhausted' in load(old_failure)['error']
-    archive_names = [name for name in ('failure.json', 'UNACCEPTED_iterate.npz')
-                     if (target / name).exists()]
+    failure_log, archived_failure = failure_evidence(parent, target, parent_state)
     frozen = dict(source['scientific_sources'], **source['inherited_evidence_sha256'])
-    for path in (*evidence, protocol_path, ROOT / source['config'], target / 'inputs.npz',
+    for path in (*evidence, failure_log, protocol_path, ROOT / source['config'], target / 'inputs.npz',
                  parent / 'state.json', Path(__file__).resolve()):
         frozen[str(path.relative_to(ROOT))] = sha(path)
     assert manifest['config_sha256'] == frozen[source['config']]
@@ -94,7 +104,7 @@ def prepare_and_submit(run, recovery):
                 parent_run=parent.name, recovery_run=recovery.name, queue='nvidia',
                 stream_protocol=str(protocol_path.relative_to(ROOT)), start_restart_sha256=digest,
                 start_manifest_sha256=sha(target / 'manifest.json'),
-                archived_failure={name: sha(target / name) for name in archive_names},
+                archived_failure=archived_failure,
                 scope='Two production states through separate PBS jobs. The inherited terminal run '
                       'is retained. Production beyond this restart and timing qualification requires review.')
     atomic(run / 'plan.json', plan)
@@ -228,9 +238,12 @@ def execute(run, count):
                 archive = target / 'pre-restart-qualification'
                 with (target / 'generation.lock').open('a') as generation_lock:
                     fcntl.flock(generation_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    assert {name for name in FAILURE_FILES if (target / name).exists()} == set(plan['archived_failure']), (
+                        'Terminal output inventory changed after submission')
                     for name, digest in plan['archived_failure'].items():
                         assert sha(target / name) == digest
-                    archive.mkdir()
+                    if plan['archived_failure']:
+                        archive.mkdir()
                     for name in plan['archived_failure']:
                         original = target / name
                         original.rename(archive / name)
