@@ -53,13 +53,14 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None):
     assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
     assert resume is None or compare_shifts, "Use --compare-shifts with --resume-comparison"
     assert fixed_from is None or (previous is None and not compare_shifts)
     assert predictors_after is None or all(x is None for x in (previous, resume, fixed_from)) and not compare_shifts
     assert solve_from_screen is None or (previous is None and resume is None and fixed_from is None and predictors_after is None and not compare_shifts)
     assert reuse_gamg_after is None or solve_from_screen is not None
+    assert diagnose_after is None or reuse_gamg_after is not None
     assert_idle(P)
     registered(P, parent, parent / 'plan.json')
     source, state = (load(parent / name) for name in ('plan.json', 'state.json'))
@@ -209,6 +210,23 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         assert baseline['cumulative_seconds'] >= cumulative_seconds
         cumulative_seconds = baseline['cumulative_seconds']
         scope += ' Reuse GAMG for one unchanged-shift Jacobian reuse update.'
+    if diagnose_after is not None:
+        registered(P, diagnose_after, diagnose_after / 'plan.json')
+        interrupted = load(diagnose_after / 'plan.json')
+        assert interrupted['reuse_gamg'] and not interrupted.get('log_phases')
+        assert interrupted['target_name'] == source['target_name']
+        assert interrupted['cumulative_seconds_before'] == cumulative_seconds
+        assert interrupted['screened_force_N'] == screened_force
+        assert not (diagnose_after / 'summary.json').exists()
+        interrupted_log = diagnose_after / 'pbs.log'
+        match = re.search(r'job killed: walltime (\d+) exceeded limit 3600', interrupted_log.read_text())
+        assert match, 'Expected PBS walltime termination'
+        interrupted_trace = diagnose_after / 'trace.json'
+        rows = load(interrupted_trace)['custom_newton_steps']
+        assert len(rows) == 1 and rows[0]['accepted_custom_update'] and not rows[0]['reuse_requested']
+        cumulative_seconds += int(match.group(1))
+        resume_paths.extend((diagnose_after / 'plan.json', interrupted_log, interrupted_trace))
+        scope += ' Instrument the first two Newton updates and stop before PBS walltime.'
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -236,7 +254,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         frozen[str(path.relative_to(P))] = sha(path)
     for path, digest in frozen.items():
         assert sha(P / path) == digest, 'Changed input or source: ' + path
-    plan = dict(source, reuse_gamg=reuse_gamg_after is not None, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
+    plan = dict(source, log_phases=diagnose_after is not None, reuse_gamg=reuse_gamg_after is not None, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
                 saved_iterate_force_N=expected_force if saved_iterate else None, fixed_shift=fixed_shift, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
                 regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
@@ -252,6 +270,19 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
     command = [str(P / '.tools/bin/micromamba'), '--no-rc', 'run', '-r', str(P / '.hpc/mamba'),
                '-p', str(prefix), 'mpiexec', '-n', str(plan['ranks']), 'python',
                'hpc/probe_regularization_recovery.py', 'execute', '--run-id', run.name]
+    if plan['log_phases']:
+        command = ['/usr/bin/timeout', '--kill-after=20s', '3300s', *command]
+        diagnostic_dir = shlex.quote(str(run))
+        launch_command = (
+            'set +e\n' + shlex.join(command) + ' > '
+            + diagnostic_dir + '/phase.log 2>&1\nstatus=$?\n'
+            'tail -n 100 ' + diagnostic_dir + '/phase.log\n'
+            'if [[ "$status" == 124 || "$status" == 137 ]]; then\n'
+            '  printf "Diagnostic watchdog stopped MPI with exit %s\\n" "$status" | tee '
+            + diagnostic_dir + '/watchdog.txt\nfi\nexit "$status"\n'
+        )
+    else:
+        launch_command = 'exec ' + shlex.join(command) + '\n'
     script = run / 'job.pbs'
     script.write_text('#!/bin/bash\nset -euo pipefail\ncd ' + shlex.quote(str(P)) + '\n'
         'unset CONDARC MAMBARC CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_SHLVL BASH_ENV ENV FI_TCP_IFACE PKG_CONFIG_SYSROOT_DIR\n'
@@ -263,7 +294,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         + 'export XDG_CACHE_HOME=' + shlex.quote(str(P / '.hpc/cache')) + '\n'
         + 'export MPLCONFIGDIR=' + shlex.quote(str(P / '.hpc/cache/matplotlib')) + '\n'
         + 'export DIJITSO_CACHE_DIR=' + shlex.quote(str(P / '.hpc/fenics-cache')) + '\n'
-        + 'exec ' + shlex.join(command) + '\n')
+        + launch_command)
     args = ['qsub', '-N', 'lv_recovery551', '-q', plan['queue'], '-l',
             f"select=1:ncpus={plan['cpus']}:mem={plan['memory_gb']}gb",
             '-l', 'walltime=01:00:00', '-l', 'place=excl', '-l', 'software=' + plan['software'],
@@ -473,7 +504,9 @@ def execute(run):
                           options, trace, persist,
                           policy=trace['regularization_policy'], timings=timings,
                           reuse_jacobian=plan.get('reuse_jacobian', False),
-                          reuse_gamg=plan.get('reuse_gamg', False), stop_after=28 if comparison else 4 if fixed_shift is not None else None)
+                          reuse_gamg=plan.get('reuse_gamg', False),
+                          log_phases=plan.get('log_phases', False),
+                          stop_after=2 if plan.get('log_phases') else 28 if comparison else 4 if fixed_shift is not None else None)
             except Exception as exc:
                 cause = exc.__cause__
                 local_error = f'{type(exc).__name__}: {exc}' + (f' caused by {cause}' if cause else '')
@@ -481,7 +514,14 @@ def execute(run):
             on_root(persist)
             if any(errors):
                 raise RuntimeError(next(error for error in errors if error))
-            if fixed_shift is not None:
+            if plan.get('log_phases'):
+                def finish_diagnostic():
+                    rows = trace['custom_newton_steps']
+                    assert len(rows) == 2 and all(row['accepted_custom_update'] for row in rows)
+                    artifact(P, run, run / 'trace.json', 'GAMG setup and solve diagnostic')
+                on_root(finish_diagnostic)
+                result['gamg_diagnostic_complete'] = True
+            elif fixed_shift is not None:
                 final_force = float(residual(problem).norm('l2'))
 
                 def record_fixed_result():
@@ -607,7 +647,7 @@ def execute(run):
     comm.Barrier()
     if lock is not None:
         lock.close()
-    return 0 if result['passed'] or result.get('comparison_complete') or result.get('fixed_probe_complete') or result.get('predictor_screen_complete') else 2
+    return 0 if result['passed'] or result.get('comparison_complete') or result.get('fixed_probe_complete') or result.get('predictor_screen_complete') or result.get('gamg_diagnostic_complete') else 2
 
 
 if __name__ == '__main__':
@@ -623,8 +663,9 @@ if __name__ == '__main__':
     parser.add_argument('--screen-predictors-after')
     parser.add_argument('--solve-from-screen')
     parser.add_argument('--reuse-gamg-after')
+    parser.add_argument('--diagnose-gamg-after')
     args = parser.parse_args()
-    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after)):
+    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after, args.diagnose_gamg_after)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
     directory = P / 'experiments/hpc'
     if args.action == 'submit':
@@ -637,6 +678,7 @@ if __name__ == '__main__':
                    fixed_from=directory / args.fixed_from_comparison if args.fixed_from_comparison else None,
                    predictors_after=directory / args.screen_predictors_after if args.screen_predictors_after else None,
                    solve_from_screen=directory / args.solve_from_screen if args.solve_from_screen else None,
-                   reuse_gamg_after=directory / args.reuse_gamg_after if args.reuse_gamg_after else None)
+                   reuse_gamg_after=directory / args.reuse_gamg_after if args.reuse_gamg_after else None,
+                   diagnose_after=directory / args.diagnose_gamg_after if args.diagnose_gamg_after else None)
     else:
         raise SystemExit(execute(directory / args.run_id))

@@ -6,16 +6,21 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
+ iteration = 0
  def measured(name, function, *args):
+  if log_phases and rank == 0:
+   print(f'NEWTON {iteration} shift={mu:g} begin {name}', flush=True)
   start = time.perf_counter()
   try:
    return function(*args)
   finally:
    if timings is not None:
     timings[name] = timings.get(name, 0.) + time.perf_counter() - start
+   if log_phases and rank == 0:
+    print(f'NEWTON {iteration} shift={mu:g} end {name} seconds={time.perf_counter()-start:.3f}', flush=True)
  def budget():
   if comm.allreduce(time.perf_counter()-started,op=MPI.MAX)>options['wall_budget_seconds']:raise RuntimeError('Regularized Newton wall budget exhausted')
  def canonical(v):
@@ -32,7 +37,6 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   return comm.bcast(error,root=0),proof
  old=comm.bcast(adapter.gather('u'),root=0);error,_=positive(old);assert error is None,error
  record['custom_newton_steps']=[]
- iteration = 0
  reuse_next = False
  previous_fresh_shift = None
  while True:
@@ -62,6 +66,8 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   limit = max(1.1e-12,1.1*eta*norm)
 
   def linear_attempt(reuse):
+   if log_phases and rank == 0:
+    print(f'NEWTON {iteration} linear attempt reuse_gamg={reuse}', flush=True)
    budget()
    ksp.getPC().setReusePreconditioner(reuse)
    delta.set(0.)
