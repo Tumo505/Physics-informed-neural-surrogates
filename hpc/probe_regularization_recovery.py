@@ -53,7 +53,7 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None, serialization_after=None, full_solve=False):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None, serialization_after=None, full_solve=False, completed_diagnostic=None):
     assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
     assert resume is None or compare_shifts, "Use --compare-shifts with --resume-comparison"
     assert fixed_from is None or (previous is None and not compare_shifts)
@@ -62,6 +62,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
     assert reuse_gamg_after is None or solve_from_screen is not None
     assert diagnose_after is None or reuse_gamg_after is not None
     assert not full_solve or serialization_after is not None
+    assert completed_diagnostic is None or full_solve
     assert_idle(P)
     registered(P, parent, parent / 'plan.json')
     source, state = (load(parent / name) for name in ('plan.json', 'state.json'))
@@ -250,6 +251,25 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
             assert failed_plan['frozen'][str(path.relative_to(P))] == sha(path)
         assert failed_result['cumulative_seconds'] > cumulative_seconds
         cumulative_seconds = failed_result['cumulative_seconds']
+    if completed_diagnostic is not None:
+        for name in ('plan.json', 'summary.json', 'trace.json'):
+            path = completed_diagnostic / name
+            registered(P, completed_diagnostic, path)
+            resume_paths.append(path)
+        completed_plan = load(completed_diagnostic / 'plan.json')
+        completed_result = load(completed_diagnostic / 'summary.json')
+        assert completed_plan['log_phases'] and completed_plan['reuse_gamg']
+        assert completed_plan['target_name'] == source['target_name']
+        assert completed_plan['screened_force_N'] == screened_force
+        assert completed_plan['cumulative_seconds_before'] == cumulative_seconds
+        assert completed_result['complete'] and completed_result['gamg_diagnostic_complete']
+        assert completed_result['step'] == 550 and completed_result['stop_reason'] is None
+        assert completed_result['gamg_reuse_attempts'] == 1 and completed_result['gamg_reuse_rebuilds'] == 0
+        for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz',
+                     serialization_after / 'summary.json'):
+            assert completed_plan['frozen'][str(path.relative_to(P))] == sha(path)
+        assert completed_result['cumulative_seconds'] > cumulative_seconds
+        cumulative_seconds = completed_result['cumulative_seconds']
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -691,8 +711,9 @@ if __name__ == '__main__':
     parser.add_argument('--diagnose-gamg-after')
     parser.add_argument('--retry-serialization-after')
     parser.add_argument('--full-solve', action='store_true')
+    parser.add_argument('--completed-gamg-diagnostic')
     args = parser.parse_args()
-    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after, args.diagnose_gamg_after, args.retry_serialization_after)):
+    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after, args.diagnose_gamg_after, args.retry_serialization_after, args.completed_gamg_diagnostic)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
     directory = P / 'experiments/hpc'
     if args.action == 'submit':
@@ -708,6 +729,7 @@ if __name__ == '__main__':
                    reuse_gamg_after=directory / args.reuse_gamg_after if args.reuse_gamg_after else None,
                    diagnose_after=directory / args.diagnose_gamg_after if args.diagnose_gamg_after else None,
                    serialization_after=directory / args.retry_serialization_after if args.retry_serialization_after else None,
-                   full_solve=args.full_solve)
+                   full_solve=args.full_solve,
+                   completed_diagnostic=directory / args.completed_gamg_diagnostic if args.completed_gamg_diagnostic else None)
     else:
         raise SystemExit(execute(directory / args.run_id))
