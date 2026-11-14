@@ -53,7 +53,7 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None, serialization_after=None, full_solve=False, completed_diagnostic=None):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None, serialization_after=None, full_solve=False, completed_diagnostic=None, relax_after=None):
     assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
     assert resume is None or compare_shifts, "Use --compare-shifts with --resume-comparison"
     assert fixed_from is None or (previous is None and not compare_shifts)
@@ -270,6 +270,25 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
             assert completed_plan['frozen'][str(path.relative_to(P))] == sha(path)
         assert completed_result['cumulative_seconds'] > cumulative_seconds
         cumulative_seconds = completed_result['cumulative_seconds']
+    if relax_after is not None:
+        assert full_solve and completed_diagnostic is not None
+        for name in ('plan.json', 'summary.json'):
+            registered(P, relax_after, relax_after / name)
+        failed_plan = load(relax_after / 'plan.json')
+        failed = load(relax_after / 'summary.json')
+        assert failed_plan['full_solve'] and failed_plan['reuse_gamg']
+        assert failed_plan['cumulative_seconds_before'] == cumulative_seconds
+        assert failed_plan['screened_force_N'] == screened_force
+        assert failed['complete'] and not failed['passed'] and failed['step'] == 550
+        assert 'Regularized Newton wall budget exhausted' in failed['stop_reason']
+        assert 1e-9 < failed['last_accepted_custom_force_N'] < 1e-5
+        for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz',
+                     completed_diagnostic / 'summary.json'):
+            assert failed_plan['frozen'][str(path.relative_to(P))] == sha(path)
+        assert failed['cumulative_seconds'] > cumulative_seconds
+        cumulative_seconds = failed['cumulative_seconds']
+        resume_paths.extend(relax_after / name for name in ('plan.json', 'summary.json', 'trace.json'))
+        scope += ' Use a 1e-5 linear forcing floor at shifts at or below 0.0009765625.'
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -297,7 +316,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         frozen[str(path.relative_to(P))] = sha(path)
     for path, digest in frozen.items():
         assert sha(P / path) == digest, 'Changed input or source: ' + path
-    plan = dict(source, full_solve=full_solve, log_phases=diagnose_after is not None, reuse_gamg=reuse_gamg_after is not None, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
+    plan = dict(source, late_forcing_floor=1e-5 if relax_after else None, full_solve=full_solve, log_phases=diagnose_after is not None, reuse_gamg=reuse_gamg_after is not None, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
                 saved_iterate_force_N=expected_force if saved_iterate else None, fixed_shift=fixed_shift, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
                 regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
@@ -541,6 +560,17 @@ def execute(run):
             options = dict(stream['admissible_newton'], wall_budget_seconds=1800)
             if fixed_shift is not None:
                 options['initial_regularization'] = fixed_shift
+            def save_iterate(iteration, field, force, next_shift):
+                def write():
+                    temporary = run / 'last-newton.pending.npz'
+                    with temporary.open('wb') as handle:
+                        np.savez(handle, u=field, iteration=iteration, step=step,
+                                 force_N=force, next_shift=next_shift, accepted=False)
+                        handle.flush()
+                        os.fsync(handle.fileno())
+                    temporary.replace(run / 'last-newton.npz')
+                on_root(write)
+
             gamg_diagnostic = plan.get('log_phases') and not plan.get('full_solve')
             stop_after = 2 if gamg_diagnostic else 28 if comparison else 4 if fixed_shift is not None else None
             try:
@@ -551,6 +581,8 @@ def execute(run):
                           reuse_jacobian=plan.get('reuse_jacobian', False),
                           reuse_gamg=plan.get('reuse_gamg', False),
                           log_phases=plan.get('log_phases', False),
+                          late_forcing_floor=plan.get('late_forcing_floor'),
+                          save_iterate=save_iterate if plan.get('late_forcing_floor') else None,
                           stop_after=stop_after)
             except Exception as exc:
                 cause = exc.__cause__
@@ -683,6 +715,10 @@ def execute(run):
                       last_accepted_custom_force_N=accepted[-1]['native_force_N'] if accepted else None)
         result.update(complete=True, wall_seconds=time.monotonic()-started,
                       cumulative_seconds=plan['cumulative_seconds_before']+time.monotonic()-started)
+        last_iterate = run / 'last-newton.npz'
+        if last_iterate.exists():
+            artifact(P, run, last_iterate, 'Unadmitted Newton iterate')
+            result['last_newton_iterate_sha256'] = sha(last_iterate)
         atomic(run / 'summary.json', result)
         status.update(status='diagnostic_complete', cumulative_seconds=result['cumulative_seconds'],
                       blockers=[] if result['passed'] else [result['stop_reason']])
@@ -712,8 +748,9 @@ if __name__ == '__main__':
     parser.add_argument('--retry-serialization-after')
     parser.add_argument('--full-solve', action='store_true')
     parser.add_argument('--completed-gamg-diagnostic')
+    parser.add_argument('--relax-linear-after')
     args = parser.parse_args()
-    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after, args.diagnose_gamg_after, args.retry_serialization_after, args.completed_gamg_diagnostic)):
+    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after, args.diagnose_gamg_after, args.retry_serialization_after, args.completed_gamg_diagnostic, args.relax_linear_after)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
     directory = P / 'experiments/hpc'
     if args.action == 'submit':
@@ -730,6 +767,7 @@ if __name__ == '__main__':
                    diagnose_after=directory / args.diagnose_gamg_after if args.diagnose_gamg_after else None,
                    serialization_after=directory / args.retry_serialization_after if args.retry_serialization_after else None,
                    full_solve=args.full_solve,
-                   completed_diagnostic=directory / args.completed_gamg_diagnostic if args.completed_gamg_diagnostic else None)
+                   completed_diagnostic=directory / args.completed_gamg_diagnostic if args.completed_gamg_diagnostic else None,
+                   relax_after=directory / args.relax_linear_after if args.relax_linear_after else None)
     else:
         raise SystemExit(execute(directory / args.run_id))

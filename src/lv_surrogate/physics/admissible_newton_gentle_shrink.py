@@ -6,7 +6,7 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
  iteration = 0
@@ -50,6 +50,8 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   if iteration==options['maximum_custom_newton_iterations']:raise RuntimeError('Regularized Newton iteration ceiling reached')
   if reference_force is None:reference_force=norm
   eta=min(1e-4,max(1e-8,1e-4*np.sqrt(norm/reference_force)))
+  if late_forcing_floor is not None and mu <= .0009765625:
+   eta = max(eta, late_forcing_floor)
   old=comm.bcast(adapter.gather('u'),root=0)
   if not reused:
    measured('jacobian_assembly',problem._problem.J,matrix,problem.u.vector())
@@ -161,6 +163,8 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
    good_full_steps=0
   sr.update(accepted_custom_update=accepted,next_regularization=mu,good_full_steps_at_shift=good_full_steps)
   if rank==0:record['custom_newton_steps'].append(sr);persist();print('REGULARIZED NEWTON',iteration,norm,force,accepted,mu,flush=True)
+  if accepted and save_iterate is not None:
+   save_iterate(iteration, candidate, force, mu)
   for v in [diag,scale,shifted,b,delta,true,jdelta,model]:v.destroy()
   if stop_after != 1 and not accepted and mu>=options['maximum_regularization']:raise RuntimeError('Regularization ceiling without admissible descent')
   iteration += 1
