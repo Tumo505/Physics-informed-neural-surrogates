@@ -53,11 +53,12 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None):
     assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
     assert resume is None or compare_shifts, "Use --compare-shifts with --resume-comparison"
     assert fixed_from is None or (previous is None and not compare_shifts)
     assert predictors_after is None or all(x is None for x in (previous, resume, fixed_from)) and not compare_shifts
+    assert solve_from_screen is None or (previous is None and resume is None and fixed_from is None and predictors_after is None and not compare_shifts)
     assert_idle(P)
     registered(P, parent, parent / 'plan.json')
     source, state = (load(parent / name) for name in ('plan.json', 'state.json'))
@@ -169,6 +170,28 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
             assert baseline_plan['frozen'][str(path.relative_to(P))] == sha(path)
         cumulative_seconds = baseline['cumulative_seconds']
         scope = 'Screen existing predictors and bounded displacement extrapolations.'
+    screened_force = None
+    if solve_from_screen is not None:
+        for name in ('plan.json', 'summary.json'):
+            registered(P, solve_from_screen, solve_from_screen / name)
+            resume_paths.append(solve_from_screen / name)
+        screen_plan = load(solve_from_screen / 'plan.json')
+        screen = load(solve_from_screen / 'summary.json')
+        assert screen_plan['screen_predictors'] and screen_plan['parent_run'] == parent.name
+        assert screen['complete'] and screen['predictor_screen_complete'] and screen['step'] == 550
+        for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz'):
+            assert screen_plan['frozen'][str(path.relative_to(P))] == sha(path)
+        eligible = [row for row in screen['predictors'] if row['admissible']]
+        best = min(eligible, key=lambda row: row['force_N'])
+        original = next(row for row in eligible if row['predictor'] == screen['original_selected_predictor'])
+        assert best['predictor'] == 'displacement extrapolation 0.5'
+        assert 0 < best['force_N'] < original['force_N']
+        screened_force = best['force_N']
+        cumulative_seconds = screen['cumulative_seconds']
+        assert cumulative_seconds >= state['cumulative_seconds']
+        policy = 'two_good_steps'
+        reuse_jacobian = True
+        scope = 'Solve from the screened half-increment predictor with the Jacobian reuse policy.'
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -196,7 +219,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         frozen[str(path.relative_to(P))] = sha(path)
     for path, digest in frozen.items():
         assert sha(P / path) == digest, 'Changed input or source: ' + path
-    plan = dict(source, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
+    plan = dict(source, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
                 saved_iterate_force_N=expected_force if saved_iterate else None, fixed_shift=fixed_shift, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
                 regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
@@ -343,7 +366,13 @@ def execute(run):
         old, dt = history['u_old'], cfg['dt_s']
         alpha = float(problem.parameters['alpha_f'])
         assert alpha == .4
-        if plan.get('saved_iterate'):
+        if plan.get('screened_force_N') is not None:
+            adapter.assign('u', old + .5 * (old - previous))
+            initial_force = float(residual(problem).norm('l2'))
+            np.testing.assert_allclose(initial_force, plan['screened_force_N'], rtol=1e-5, atol=1e-12)
+            trace.update(time_s=time_s, selected_predictor='displacement extrapolation 0.5',
+                         initial_force_N=initial_force)
+        elif plan.get('saved_iterate'):
             def load_iterate():
                 field = np.load(P / plan['saved_iterate'], allow_pickle=False)
                 assert field.shape == old.shape and np.isfinite(field).all()
@@ -532,6 +561,9 @@ def execute(run):
     if rank == 0:
         accepted = [row['trials'][-1] for row in trace['custom_newton_steps']
                     if row.get('accepted_custom_update')]
+        if plan.get('screened_force_N') is not None:
+            result.update(selected_predictor=trace.get('selected_predictor'),
+                          initial_force_N=trace.get('initial_force_N'))
         result.update(regularization_policy=trace.get('regularization_policy'),
                       phase_seconds_rank0=trace.get('phase_seconds_rank0', {}),
                       reused_jacobian_updates=sum(row.get('jacobian_reused', False)
@@ -565,8 +597,9 @@ if __name__ == '__main__':
     parser.add_argument('--resume-comparison')
     parser.add_argument('--fixed-from-comparison')
     parser.add_argument('--screen-predictors-after')
+    parser.add_argument('--solve-from-screen')
     args = parser.parse_args()
-    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after)):
+    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
     directory = P / 'experiments/hpc'
     if args.action == 'submit':
@@ -577,6 +610,7 @@ if __name__ == '__main__':
                    compare_shifts=args.compare_shifts, queue=args.queue,
                    resume=directory / args.resume_comparison if args.resume_comparison else None,
                    fixed_from=directory / args.fixed_from_comparison if args.fixed_from_comparison else None,
-                   predictors_after=directory / args.screen_predictors_after if args.screen_predictors_after else None)
+                   predictors_after=directory / args.screen_predictors_after if args.screen_predictors_after else None,
+                   solve_from_screen=directory / args.solve_from_screen if args.solve_from_screen else None)
     else:
         raise SystemExit(execute(directory / args.run_id))
