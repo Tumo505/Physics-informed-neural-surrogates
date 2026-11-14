@@ -53,7 +53,7 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None, serialization_after=None, full_solve=False, completed_diagnostic=None, relax_after=None):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None, serialization_after=None, full_solve=False, completed_diagnostic=None, relax_after=None, resume_newton=None):
     assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
     assert resume is None or compare_shifts, "Use --compare-shifts with --resume-comparison"
     assert fixed_from is None or (previous is None and not compare_shifts)
@@ -63,6 +63,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
     assert diagnose_after is None or reuse_gamg_after is not None
     assert not full_solve or serialization_after is not None
     assert completed_diagnostic is None or full_solve
+    assert resume_newton is None or relax_after is not None
     assert_idle(P)
     registered(P, parent, parent / 'plan.json')
     source, state = (load(parent / name) for name in ('plan.json', 'state.json'))
@@ -289,6 +290,36 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         cumulative_seconds = failed['cumulative_seconds']
         resume_paths.extend(relax_after / name for name in ('plan.json', 'summary.json', 'trace.json'))
         scope += ' Use a 1e-5 linear forcing floor at shifts at or below 0.0009765625.'
+    warm_shift = None
+    solver_seconds = 1800
+    if resume_newton is not None:
+        for name in ('plan.json', 'summary.json', 'last-newton.npz'):
+            registered(P, resume_newton, resume_newton / name)
+            resume_paths.append(resume_newton / name)
+        warm_plan = load(resume_newton / 'plan.json')
+        warm_result = load(resume_newton / 'summary.json')
+        assert warm_plan['full_solve'] and warm_plan['late_forcing_floor'] == 1e-5
+        assert warm_plan['cumulative_seconds_before'] == cumulative_seconds
+        assert warm_result['complete'] and not warm_result['passed'] and warm_result['step'] == 550
+        assert 'Regularized Newton wall budget exhausted' in warm_result['stop_reason']
+        assert not warm_result['reference_continuation_allowed']
+        for path in (parent / 'plan.json', data / 'manifest.json', data / 'restart.npz',
+                     relax_after / 'summary.json'):
+            assert warm_plan['frozen'][str(path.relative_to(P))] == sha(path)
+        checkpoint = resume_newton / 'last-newton.npz'
+        assert sha(checkpoint) == warm_result['last_newton_iterate_sha256']
+        import numpy as np
+        with np.load(checkpoint, allow_pickle=False) as saved:
+            assert not bool(saved['accepted']) and int(saved['step']) == 550
+            expected_force = float(saved['force_N'])
+            assert 1e-9 < expected_force == warm_result['last_accepted_custom_force_N']
+            warm_shift = float(saved['next_shift'])
+            assert np.isfinite(warm_shift) and warm_shift > 0
+        saved_iterate = str(checkpoint.relative_to(P))
+        assert warm_result['cumulative_seconds'] > cumulative_seconds
+        cumulative_seconds = warm_result['cumulative_seconds']
+        solver_seconds = 900
+        scope = 'One bounded 900 s state 551 recovery from a verified unadmitted iterate.'
     assert cumulative_seconds + 3600 < source['cumulative_pipeline_budget_hours'] * 3600
     frozen = {**source['scientific_sources'], **source['inherited_evidence_sha256']}
     frozen[source['config']] = source['reference_config_sha256']
@@ -316,11 +347,11 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         frozen[str(path.relative_to(P))] = sha(path)
     for path, digest in frozen.items():
         assert sha(P / path) == digest, 'Changed input or source: ' + path
-    plan = dict(source, late_forcing_floor=1e-5 if relax_after else None, full_solve=full_solve, log_phases=diagnose_after is not None, reuse_gamg=reuse_gamg_after is not None, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
+    plan = dict(source, warm_shift=warm_shift, solver_seconds=solver_seconds, late_forcing_floor=1e-5 if relax_after else None, full_solve=full_solve, log_phases=diagnose_after is not None, reuse_gamg=reuse_gamg_after is not None, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
                 saved_iterate_force_N=expected_force if saved_iterate else None, fixed_shift=fixed_shift, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
                 regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
-                scope=f'One equation from checkpoint 550. {scope} 1800 s solver cap. Candidate fields only.')
+                scope=f'One equation from checkpoint 550. {scope} {solver_seconds} s solver cap. Candidate fields only.')
     run.mkdir()
     atomic(run / 'plan.json', plan)
     atomic(run / 'state.json', dict(status='submitted', phase='recovery_probe', blockers=[],
@@ -332,6 +363,10 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
     command = [str(P / '.tools/bin/micromamba'), '--no-rc', 'run', '-r', str(P / '.hpc/mamba'),
                '-p', str(prefix), 'mpiexec', '-n', str(plan['ranks']), 'python',
                'hpc/probe_regularization_recovery.py', 'execute', '--run-id', run.name]
+    if warm_shift is not None:
+        audit_command = command[:command.index('mpiexec')] + [
+            'python', 'hpc/probe_regularization_recovery.py', 'audit', '--run-id', run.name]
+        command = ['/bin/bash', '-c', shlex.join(command) + ' && ' + shlex.join(audit_command)]
     if plan['log_phases']:
         command = ['/usr/bin/timeout', '--kill-after=20s', '3300s', *command]
         diagnostic_dir = shlex.quote(str(run))
@@ -476,7 +511,7 @@ def execute(run):
         old, dt = history['u_old'], cfg['dt_s']
         alpha = float(problem.parameters['alpha_f'])
         assert alpha == .4
-        if plan.get('screened_force_N') is not None:
+        if plan.get('screened_force_N') is not None and not plan.get('saved_iterate'):
             adapter.assign('u', old + .5 * (old - previous))
             initial_force = float(residual(problem).norm('l2'))
             np.testing.assert_allclose(initial_force, plan['screened_force_N'], rtol=1e-5, atol=1e-12)
@@ -484,7 +519,12 @@ def execute(run):
                          initial_force_N=initial_force)
         elif plan.get('saved_iterate'):
             def load_iterate():
-                field = np.load(P / plan['saved_iterate'], allow_pickle=False)
+                path = P / plan['saved_iterate']
+                if plan.get('warm_shift') is not None:
+                    with np.load(path, allow_pickle=False) as saved:
+                        field = saved['u']
+                else:
+                    field = np.load(path, allow_pickle=False)
                 assert field.shape == old.shape and np.isfinite(field).all()
                 return field
 
@@ -492,7 +532,7 @@ def execute(run):
             adapter.assign('u', saved)
             saved_force = float(residual(problem).norm('l2'))
             np.testing.assert_allclose(saved_force, plan['saved_iterate_force_N'], rtol=1e-5, atol=1e-12)
-            trace.update(time_s=time_s, saved_iterate=plan['saved_iterate'])
+            trace.update(time_s=time_s, saved_iterate=plan['saved_iterate'], initial_force_N=saved_force)
         else:
             guesses = [old, old + dt*history['v_old'], old + dt*history['v_old'] + .5*dt**2*history['a_old'],
                        (alpha*previous + (1-alpha)*old - alpha*old)/(1-alpha)]
@@ -557,7 +597,10 @@ def execute(run):
             local_error = None
             comparison = plan.get('compare_shifts', False)
             fixed_shift = plan.get('fixed_shift')
-            options = dict(stream['admissible_newton'], wall_budget_seconds=1800)
+            options = dict(stream['admissible_newton'], wall_budget_seconds=plan.get('solver_seconds', 1800))
+            if plan.get('warm_shift') is not None:
+                assert options['minimum_regularization'] <= plan['warm_shift'] <= options['maximum_regularization']
+                options['initial_regularization'] = plan['warm_shift']
             if fixed_shift is not None:
                 options['initial_regularization'] = fixed_shift
             def save_iterate(iteration, field, force, next_shift):
@@ -574,7 +617,7 @@ def execute(run):
             gamg_diagnostic = plan.get('log_phases') and not plan.get('full_solve')
             stop_after = 2 if gamg_diagnostic else 28 if comparison else 4 if fixed_shift is not None else None
             try:
-                if not plan.get('saved_iterate') or fixed_shift is not None:
+                if not plan.get('saved_iterate') or fixed_shift is not None or plan.get('warm_shift') is not None:
                     solve(problem, adapter, history, audit,
                           options, trace, persist,
                           policy=trace['regularization_policy'], timings=timings,
@@ -670,6 +713,14 @@ def execute(run):
                 assert snes.getKSP().getPC().getType() == 'gamg'
                 solve_seconds = comm.allreduce(time.monotonic() - solve_started, op=MPI.MAX)
 
+                advanced_history = {}
+                if plan.get('warm_shift') is not None:
+                    problem._update_fields()
+                    advanced_history = {
+                        'next_' + name: adapter.gather(name)
+                        for name in ('u_old', 'v_old', 'a_old')
+                    }
+
                 def verify_candidate():
                     np.testing.assert_array_equal(before, field)
                     cofactor = audit.pair(field, old)
@@ -682,7 +733,7 @@ def execute(run):
                     same_proof(proof, cofactor)
                     atomic(run / 'proof.json', proof)
                     path = run / 'candidate.npz'
-                    np.savez_compressed(path, accepted=False, step=step, time_s=time_s, u=field, **history)
+                    np.savez_compressed(path, accepted=False, step=step, time_s=time_s, u=field, **history, **advanced_history)
                     for output in (path, run / 'proof.json', run / 'trace.json'):
                         artifact(P, run, output, 'Recovery probe output, no reference admission')
 
@@ -731,9 +782,63 @@ def execute(run):
     return 0 if result['passed'] or result.get('comparison_complete') or result.get('fixed_probe_complete') or result.get('predictor_screen_complete') or result.get('gamg_diagnostic_complete') else 2
 
 
+def audit_recovery(run):
+    """Independently reassemble a converged candidate and compare its updated history."""
+    assert os.environ.get('PBS_JOBID'), 'Run the audit via PBS'
+    started = time.monotonic()
+    import numpy as np
+    from lv_surrogate.physics.parallel_fem import ParallelP2
+    from lv_surrogate.physics.reference_fem import residual
+    from lv_surrogate.physics.bernstein import BernsteinAudit
+    from platform_native import norm_check
+
+    for name in ('plan.json', 'summary.json', 'candidate.npz'):
+        registered(P, run, run / name)
+    plan = load(run / 'plan.json')
+    result = load(run / 'summary.json')
+    assert plan['warm_shift'] is not None and result['passed'] and result['step'] == 550
+    data = P / 'data/processed' / plan['target_name']
+    restart = data / 'restart.npz'
+    assert sha(restart) == plan['frozen'][str(restart.relative_to(P))]
+    manifest_path = data / 'manifest.json'
+    assert sha(manifest_path) == plan['frozen'][str(manifest_path.relative_to(P))]
+    manifest = load(manifest_path)
+    assert manifest['completed_steps'] == 550
+    inputs_path = data / 'inputs.npz'
+    assert sha(inputs_path) == manifest['source_inputs_sha256']
+    output = run / 'independent-audit.json'
+    assert not output.exists()
+    source = load(P / plan['snapshot'])['source_reference']
+    adapter = ParallelP2(P, source, manifest['config'])
+    assert adapter.comm.size == 1
+    path = run / 'candidate.npz'
+    histories = ('u_old', 'v_old', 'a_old')
+    with np.load(path) as candidate, np.load(restart) as checkpoint, np.load(inputs_path) as inputs:
+        assert int(checkpoint['completed_steps']) == int(candidate['step']) == 550
+        assert not bool(candidate['accepted'])
+        for name in histories:
+            np.testing.assert_array_equal(candidate[name], checkpoint[name])
+            adapter.assign(name, checkpoint[name])
+        u = candidate['u']
+        adapter.assign('u', u)
+        adapter.problem.parameters['p'].assign(float(inputs['pressure'][550]))
+        force = float(residual(adapter.problem).norm('l2'))
+        assert 0 <= force < 1e-8
+        norm_error = norm_check(adapter, inputs, u)
+        proof = BernsteinAudit(inputs).pair(u, checkpoint['u_old'])
+        adapter.problem._update_fields()
+        for name in histories:
+            np.testing.assert_allclose(adapter.gather(name), candidate['next_' + name],
+                                       rtol=1e-7, atol=1e-10)
+    atomic(output, dict(passed=True, step=550, native_force_N=force, norm_relative_error=norm_error,
+                        whole_element_proof=proof, history_passed=True, candidate_sha256=sha(path),
+                        wall_seconds=time.monotonic()-started))
+    artifact(P, run, output, 'Independent recovery force and history audit')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['submit', 'execute'])
+    parser.add_argument('action', choices=['submit', 'execute', 'audit'])
     parser.add_argument('--run-id', required=True)
     parser.add_argument('--parent-run', default='cmbbe-cofactor-ref-03')
     parser.add_argument('--previous-recovery')
@@ -749,8 +854,9 @@ if __name__ == '__main__':
     parser.add_argument('--full-solve', action='store_true')
     parser.add_argument('--completed-gamg-diagnostic')
     parser.add_argument('--relax-linear-after')
+    parser.add_argument('--resume-newton-after')
     args = parser.parse_args()
-    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after, args.diagnose_gamg_after, args.retry_serialization_after, args.completed_gamg_diagnostic, args.relax_linear_after)):
+    for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after, args.diagnose_gamg_after, args.retry_serialization_after, args.completed_gamg_diagnostic, args.relax_linear_after, args.resume_newton_after)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
     directory = P / 'experiments/hpc'
     if args.action == 'submit':
@@ -768,6 +874,9 @@ if __name__ == '__main__':
                    serialization_after=directory / args.retry_serialization_after if args.retry_serialization_after else None,
                    full_solve=args.full_solve,
                    completed_diagnostic=directory / args.completed_gamg_diagnostic if args.completed_gamg_diagnostic else None,
-                   relax_after=directory / args.relax_linear_after if args.relax_linear_after else None)
+                   relax_after=directory / args.relax_linear_after if args.relax_linear_after else None,
+                   resume_newton=directory / args.resume_newton_after if args.resume_newton_after else None)
+    elif args.action == 'audit':
+        audit_recovery(directory / args.run_id)
     else:
         raise SystemExit(execute(directory / args.run_id))
