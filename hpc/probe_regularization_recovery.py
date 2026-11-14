@@ -53,7 +53,7 @@ def check_followup(trace):
             assert low_trial['actual_to_predicted_merit_ratio'] < .25
 
 
-def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None, serialization_after=None):
+def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resume=None, fixed_from=None, predictors_after=None, solve_from_screen=None, reuse_gamg_after=None, diagnose_after=None, serialization_after=None, full_solve=False):
     assert not compare_shifts or previous is not None, "Supply the failed Jacobian reuse probe"
     assert resume is None or compare_shifts, "Use --compare-shifts with --resume-comparison"
     assert fixed_from is None or (previous is None and not compare_shifts)
@@ -61,6 +61,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
     assert solve_from_screen is None or (previous is None and resume is None and fixed_from is None and predictors_after is None and not compare_shifts)
     assert reuse_gamg_after is None or solve_from_screen is not None
     assert diagnose_after is None or reuse_gamg_after is not None
+    assert not full_solve or serialization_after is not None
     assert_idle(P)
     registered(P, parent, parent / 'plan.json')
     source, state = (load(parent / name) for name in ('plan.json', 'state.json'))
@@ -226,7 +227,8 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         assert len(rows) == 1 and rows[0]['accepted_custom_update'] and not rows[0]['reuse_requested']
         cumulative_seconds += int(match.group(1))
         resume_paths.extend((diagnose_after / 'plan.json', interrupted_log, interrupted_trace))
-        scope += ' Instrument the first two Newton updates and stop before PBS walltime.'
+        scope += (' Run to the solver limit with live phase logging and a watchdog.' if full_solve
+                  else ' Instrument the first two Newton updates and stop before PBS walltime.')
     if serialization_after is not None:
         assert diagnose_after is not None
         for name in ('plan.json', 'summary.json'):
@@ -275,7 +277,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         frozen[str(path.relative_to(P))] = sha(path)
     for path, digest in frozen.items():
         assert sha(P / path) == digest, 'Changed input or source: ' + path
-    plan = dict(source, log_phases=diagnose_after is not None, reuse_gamg=reuse_gamg_after is not None, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
+    plan = dict(source, full_solve=full_solve, log_phases=diagnose_after is not None, reuse_gamg=reuse_gamg_after is not None, screened_force_N=screened_force, screen_predictors=predictors_after is not None, queue=queue or source['queue'], compare_shifts=compare_shifts, saved_iterate=saved_iterate,
                 saved_iterate_force_N=expected_force if saved_iterate else None, fixed_shift=fixed_shift, run_id=run.name, step=550, frozen=frozen, parent_run=parent.name,
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
                 regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
@@ -519,6 +521,8 @@ def execute(run):
             options = dict(stream['admissible_newton'], wall_budget_seconds=1800)
             if fixed_shift is not None:
                 options['initial_regularization'] = fixed_shift
+            gamg_diagnostic = plan.get('log_phases') and not plan.get('full_solve')
+            stop_after = 2 if gamg_diagnostic else 28 if comparison else 4 if fixed_shift is not None else None
             try:
                 if not plan.get('saved_iterate') or fixed_shift is not None:
                     solve(problem, adapter, history, audit,
@@ -527,7 +531,7 @@ def execute(run):
                           reuse_jacobian=plan.get('reuse_jacobian', False),
                           reuse_gamg=plan.get('reuse_gamg', False),
                           log_phases=plan.get('log_phases', False),
-                          stop_after=2 if plan.get('log_phases') else 28 if comparison else 4 if fixed_shift is not None else None)
+                          stop_after=stop_after)
             except Exception as exc:
                 cause = exc.__cause__
                 local_error = f'{type(exc).__name__}: {exc}' + (f' caused by {cause}' if cause else '')
@@ -535,7 +539,7 @@ def execute(run):
             on_root(persist)
             if any(errors):
                 raise RuntimeError(next(error for error in errors if error))
-            if plan.get('log_phases'):
+            if gamg_diagnostic:
                 def finish_diagnostic():
                     rows = trace['custom_newton_steps']
                     assert len(rows) == 2 and all(row['accepted_custom_update'] for row in rows)
@@ -686,6 +690,7 @@ if __name__ == '__main__':
     parser.add_argument('--reuse-gamg-after')
     parser.add_argument('--diagnose-gamg-after')
     parser.add_argument('--retry-serialization-after')
+    parser.add_argument('--full-solve', action='store_true')
     args = parser.parse_args()
     for name in filter(None, (args.run_id, args.parent_run, args.previous_recovery, args.resume_comparison, args.fixed_from_comparison, args.screen_predictors_after, args.solve_from_screen, args.reuse_gamg_after, args.diagnose_gamg_after, args.retry_serialization_after)):
         assert re.fullmatch('[A-Za-z0-9_-]+', name), 'Invalid run ID'
@@ -702,6 +707,7 @@ if __name__ == '__main__':
                    solve_from_screen=directory / args.solve_from_screen if args.solve_from_screen else None,
                    reuse_gamg_after=directory / args.reuse_gamg_after if args.reuse_gamg_after else None,
                    diagnose_after=directory / args.diagnose_gamg_after if args.diagnose_gamg_after else None,
-                   serialization_after=directory / args.retry_serialization_after if args.retry_serialization_after else None)
+                   serialization_after=directory / args.retry_serialization_after if args.retry_serialization_after else None,
+                   full_solve=args.full_solve)
     else:
         raise SystemExit(execute(directory / args.run_id))
