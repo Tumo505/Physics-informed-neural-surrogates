@@ -17,6 +17,14 @@ try:
  assert sha(P/plan['snapshot'])==plan['snapshot_sha256']
  snapshot=json.loads((P/plan['snapshot']).read_text())
  root=P/'data/processed'/plan['target_name']
+ production=plan.get('fresh_production',False)
+ if production:
+  inherited_lock=(P/'experiments/hpc'/plan['parent_run']/'execution.lock').open('a')
+  fcntl.flock(inherited_lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+  assert state['status'] in ('submitted','paused','reference_complete')
+  assert sha(root/'restart.npz')==state['checkpoint_sha256']
+  assert sha(root/'manifest.json')==state['manifest_sha256']
+  if state['status']=='reference_complete':sys.exit(0)
  spec=str((run/'plan.json').relative_to(P))
  native_prefix=P/plan.get('native_prefix','.fenics')
  native=[str(P/'.tools/bin/micromamba'),'--no-rc','run','-r',str(P/'.hpc/mamba'),
@@ -35,7 +43,7 @@ try:
  env.update(PKG_CONFIG=str(native_prefix/'bin/pkg-config'),PKG_CONFIG_PATH=pkgconfig_paths,
             PKG_CONFIG_LIBDIR=pkgconfig_paths)
  env.pop('PKG_CONFIG_SYSROOT_DIR',None)
-except BaseException as exc:
+except Exception as exc:
  state.update(status='blocked',phase='preflight',terminal_rejection=True,blockers=[str(exc)],cumulative_seconds=prior+time.monotonic()-job_start)
  atomic(run/'state.json',state)
  try:event(run,'stage_blocked',phase='preflight',reason=str(exc),pbs_job_id=os.environ['PBS_JOBID']);render(P,run)
@@ -97,7 +105,7 @@ def execute(phase,cmd,max_seconds,outputs=(),generation=False,audit_chunk=False)
  for terminal in sorted(attemptdir.glob('terminal-rank-*')):artifact(P,run,terminal,'Exact terminal owned native functions and rank-local failure reason')
  event(run,('audit_chunk_finished' if audit_chunk else 'stage_finished') if code==0 and not pause_reason else 'stage_interrupted' if pause_reason else 'stage_failed',phase=phase,attempt=attempt,return_code=code,reason=pause_reason,wall_seconds=elapsed,sampled_peak_RSS_bytes=peak,pbs_job_id=os.environ['PBS_JOBID']);persist()
  if pause_reason:
-  if pause_reason in ['declared stage wall budget','100 GiB free-disk reserve'] or not (generation or audit_chunk):raise Rejected('Interrupted non-resumable stage/resource bound: '+pause_reason+'; preserved attempt requires a separately declared follow-up')
+  if production or pause_reason in ['declared stage wall budget','100 GiB free-disk reserve'] or not (generation or audit_chunk):raise Rejected('Interrupted non-resumable stage/resource bound: '+pause_reason+'; preserved attempt requires a separately declared follow-up')
   raise Paused(pause_reason)
  if code:raise Rejected(f'{phase} exited {code}; inspect {log.relative_to(P)}')
  for path,role in outputs:
@@ -159,11 +167,27 @@ try:
    state['completed_phases'].append('reference');persist();break
   left=deadline-time.monotonic();steps=segment_size(left,m['n_steps']-m['completed_steps'],plan['segment_steps'],plan['per_step_seconds'])
   if steps<1:raise Paused('Clean checkpoint stop before PBS wall-time limit')
-  if state['generation_seconds']+steps*plan['per_step_seconds']>plan['native_generation_budget_hours']*3600:raise Rejected('Remaining declared native-generation budget insufficient')
+  if state['generation_seconds']+steps*plan['per_step_seconds']+(300 if production else 0)>plan['native_generation_budget_hours']*3600:raise Rejected('Remaining declared native-generation budget insufficient')
+  if production and state['cumulative_seconds']+steps*plan['per_step_seconds']+300+plan['final_reserve_seconds']>plan['cumulative_pipeline_budget_hours']*3600:
+   raise Rejected('Remaining cumulative budget must retain the final audit reserve')
   i=m['completed_steps'];trace=root/f'custom_trace_{i:06d}.json'
   if trace.exists():
    archived=run/'interrupted-traces'/f'{i:06d}-{sha(trace)[:12]}.json';archived.parent.mkdir(exist_ok=True);shutil.copyfile(trace,archived);artifact(P,run,archived,'preserved interrupted custom trace')
-  phase=f'reference_{i:06d}';execute(phase,mpi+['hpc/worker8_native.py','generate','--policy',state['stream_protocol'],'--protocol',state['stream_protocol'],'--qualification-stop',str(i+steps)],steps*plan['per_step_seconds']+300,generation=True)
+  entry='hpc/production_fresh_native.py' if production else 'hpc/worker8_native.py'
+  phase=f'reference_{i:06d}';execute(phase,mpi+[entry,'generate','--policy',state['stream_protocol'],'--protocol',state['stream_protocol'],'--qualification-stop',str(i+steps)],steps*plan['per_step_seconds']+300,generation=True)
+  if production:
+   updated=json.loads((root/'manifest.json').read_text())
+   assert updated['completed_steps']==i+steps
+   checkpoint=sha(root/'restart.npz')
+   digest=state['checkpoint_sha256']
+   for index in range(i,i+steps):
+    journal=json.loads((root/'step_journal'/f'{index:06d}.json').read_text())
+    assert journal['input_checkpoint_sha256']==digest and journal['record']==updated['steps'][index]
+    digest=journal['accepted_checkpoint_sha256']
+   assert digest==checkpoint
+   state.update(checkpoint_sha256=checkpoint,manifest_sha256=sha(root/'manifest.json'),
+                completed_steps=i+steps,n_steps=updated['n_steps'])
+   persist()
  if not completed('positivity_summary'):execute('positivity_summary',modern+['scripts/finalize_parallel_reference.py','--protocol',state['stream_protocol']],1800)
  if not completed('final_audit'):
   out=audit_phase('final_audit','final')
@@ -171,6 +195,9 @@ try:
   out=next_output('mesh_comparison','result.json');execute('mesh_comparison',native+['scripts/compare_quadratic_references.py','--config-a','configs/physics/dynamic_quadratic_reference_halfstep_ew_refined.json','--config-b',plan['config'],'--output',out],8*3600,[(out,'full-cycle R1/R2 sensitivity, not continuum truth')]);state['mesh_comparison']=out;persist()
   comparison=json.loads((P/out).read_text())
   if not comparison['passes_declared_one_percent_sensitivity']:raise Rejected('Full-cycle R1/R2 mesh sensitivity failed unchanged1% gate: '+str(comparison['relative_space_time_L2']))
+ if production:
+  state.update(status='reference_complete',phase='mesh_comparison')
+  sys.exit(0)
  if not completed('qualified_followup_gate'):
   execute('qualified_followup_gate',modern+['scripts/assess_qualified_followup_readiness.py'],600,[('experiments/metrics/dynamic_qualified_followup_readiness.json','qualified-reference/gradient/transfer readiness')])
  gate=json.loads((P/'experiments/metrics/dynamic_qualified_followup_readiness.json').read_text());blockers=gate.get('blockers',[])
@@ -178,7 +205,7 @@ try:
  raise Rejected('Qualified reference gate passed, but a registered full-P2 train/calibration/untouched-test executor must be supplied; older inspected-test/P1 training is not silently substituted.')
 except Paused as exc:
  state.update(status='paused',pause_reason=str(exc));event(run,'job_paused',phase=state.get('phase'),reason=str(exc),pbs_job_id=os.environ['PBS_JOBID']);persist();render(P,run);sys.exit(0)
-except BaseException as exc:
+except Exception as exc:
  state.update(status='blocked',terminal_rejection=True,blockers=[str(exc)]);event(run,'stage_blocked',phase=state.get('phase'),reason=str(exc),pbs_job_id=os.environ['PBS_JOBID']);persist();render(P,run);sys.exit(2)
 finally:
  persist();event(run,'job_finished',status=state['status'],phase=state.get('phase'),pbs_job_id=os.environ['PBS_JOBID']);render(P,run)

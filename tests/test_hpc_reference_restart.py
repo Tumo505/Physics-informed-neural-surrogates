@@ -159,3 +159,31 @@ def test_fresh_solver_keeps_force_and_time_gates(monkeypatch):
     with pytest.raises(AssertionError):
         solve_fresh(None, None, None, None, dict(options, wall_budget_seconds=1801),
                     {}, lambda: None)
+
+
+def test_production_submits_a_single_dependency_chain(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    import launch_fresh_production as production
+
+    monkeypatch.setattr(production, 'ROOT', tmp_path)
+    commands = []
+
+    def qsub(command, **kwargs):
+        commands.append(command)
+        return SimpleNamespace(returncode=0, stdout=f'{len(commands)}.pbs\n', stderr='')
+
+    monkeypatch.setattr(production.subprocess, 'run', qsub)
+    production.submit(tmp_path / 'run', dict(queue='nvidia', cpus=28, memory_gb=240,
+                                            software='PBSJobApp'), dict(status='submitted'))
+    assert len(commands) == production.SLICES
+    assert '-W' not in commands[0]
+    for index, command in enumerate(commands[1:], start=1):
+        assert command[command.index('-W') + 1] == f'depend=afterok:{index}.pbs'
+
+
+def test_production_throughput_retains_final_stage_reserve():
+    from launch_fresh_production import throughput_limit
+
+    plan = dict(native_generation_budget_hours=168, cumulative_pipeline_budget_hours=192)
+    state = dict(generation_seconds=30 * 3600, cumulative_seconds=58 * 3600)
+    assert throughput_limit(plan, state, 1000) == 360
