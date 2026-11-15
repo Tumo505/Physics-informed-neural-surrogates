@@ -78,7 +78,8 @@ def test_state_552_followup_checks_final_trend():
         verified_final_trend(trace, summary, forces[-1], .0625, 4)
 
 
-def test_admit_audited_state_552_updates_checkpoint_once(tmp_path, monkeypatch):
+@pytest.mark.parametrize("step", [551, 552])
+def test_admit_audited_recovery_updates_checkpoint_once(tmp_path, monkeypatch, step):
     import json
     import numpy as np
     import admit_recovery_551 as admission
@@ -94,14 +95,14 @@ def test_admit_audited_state_552_updates_checkpoint_once(tmp_path, monkeypatch):
     u = np.arange(12, dtype=float)
     old_history = dict.fromkeys(('u_old', 'v_old', 'a_old'), old)
     restart_path = target / 'restart.npz'
-    np.savez(restart_path, completed_steps=551, u=old, **old_history)
-    np.savez(target / 'restart.previous.npz', completed_steps=550, u=old, **old_history)
-    np.savez(target / 'inputs.npz', time=np.arange(552), cells=[[0, 1, 2, 3]],
+    np.savez(restart_path, completed_steps=step, u=old, **old_history)
+    np.savez(target / 'restart.previous.npz', completed_steps=step - 1, u=old, **old_history)
+    np.savez(target / 'inputs.npz', time=np.arange(step + 1), cells=[[0, 1, 2, 3]],
              coords=np.zeros((4, 3)), canonical_cell_dofs=np.arange(12).reshape(1, 4, 3))
-    np.save(target / 'displacement_coefficients.npy', np.zeros((552, 12)))
-    np.save(target / 'displacements.npy', np.zeros((552, 4, 3)))
-    atomic(target / 'positivity.json', [{}] * 551)
-    atomic(target / 'manifest.json', dict(completed_steps=551, n_steps=1600, steps=[{}] * 551,
+    np.save(target / 'displacement_coefficients.npy', np.zeros((step + 1, 12)))
+    np.save(target / 'displacements.npy', np.zeros((step + 1, 4, 3)))
+    atomic(target / 'positivity.json', [{}] * step)
+    atomic(target / 'manifest.json', dict(completed_steps=step, n_steps=1600, steps=[{}] * step,
                                           prefix_independent_native_audit_passed=True,
                                           prefix_positivity_passed=True, config_sha256='config',
                                           source_inputs_sha256=sha(target / 'inputs.npz')))
@@ -109,31 +110,32 @@ def test_admit_audited_state_552_updates_checkpoint_once(tmp_path, monkeypatch):
     atomic(config, {})
     frozen = {str(path.relative_to(tmp_path)): sha(path) for path in
               (config, target / 'manifest.json', restart_path)}
-    atomic(run / 'plan.json', dict(step=551, warm_shift=.01, warm_restart_552=True,
-                                   warm_followup_parent='warm', target_name='reference',
+    atomic(run / 'plan.json', dict(step=step, warm_shift=.01, warm_restart_552=True,
+                                   warm_followup_parent='warm', checkpointed_recovery_553=True,
+                                   recovery_parent='prior', saved_iterate='last-newton.npz', target_name='reference',
                                    parent_run='parent', config='config.json', frozen=frozen))
-    atomic(run / 'summary.json', dict(complete=True, passed=True, step=551, native_updates=0,
+    atomic(run / 'summary.json', dict(complete=True, passed=True, step=step, native_updates=0,
                                       SNES_reason=2, native_force_N=2e-10, proof_agreement=True,
                                       physical_new_state_generated=False))
     candidate = run / 'candidate.npz'
-    np.savez(candidate, accepted=False, step=551, time_s=551, u=u, **old_history,
+    np.savez(candidate, accepted=False, step=step, time_s=step, u=u, **old_history,
              next_u_old=u, next_v_old=u + 1, next_a_old=u + 2)
     proof = {stage: dict(passed=True, minimum_Bernstein_bound=.1) for stage in ('endpoint', 'stress')}
-    atomic(run / 'independent-audit.json', dict(passed=True, step=551, history_passed=True,
+    atomic(run / 'independent-audit.json', dict(passed=True, step=step, history_passed=True,
                                                 candidate_sha256=sha(candidate), native_force_N=2e-10,
                                                 norm_relative_error=0., whole_element_proof=proof))
     for name in ('plan.json', 'summary.json', 'independent-audit.json', 'candidate.npz'):
         artifact(tmp_path, run, run / name, name)
 
-    admission.admit(run, step=551)
+    admission.admit(run, step=step)
     digest = sha(restart_path)
-    admission.admit(run, step=551)
+    admission.admit(run, step=step)
     assert sha(restart_path) == digest
     assert sha(target / 'restart.previous.npz') == frozen['data/processed/reference/restart.npz']
-    assert json.loads((target / 'manifest.json').read_text())['completed_steps'] == 552
-    assert (target / 'step_journal/000551.json').exists()
+    assert json.loads((target / 'manifest.json').read_text())['completed_steps'] == step + 1
+    assert (target / f'step_journal/{step:06d}.json').exists()
     with np.load(restart_path) as checkpoint:
-        assert int(checkpoint['completed_steps']) == 552
+        assert int(checkpoint['completed_steps']) == step + 1
         np.testing.assert_array_equal(checkpoint['a_old'], u + 2)
 
 
