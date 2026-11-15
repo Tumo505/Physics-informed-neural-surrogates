@@ -61,3 +61,18 @@ def test_state_552_warm_iterate_must_match_verified_summary(tmp_path):
     summary['last_accepted_custom_force_N'] = .09
     with pytest.raises(AssertionError):
         saved_iterate_parameters(path, summary, options)
+
+
+def test_state_552_followup_checks_final_trend():
+    from recover_reference_552 import verified_final_trend
+
+    forces = [.08, .06, .03, .002, .00005]
+    rows = [dict(iteration=i, next_regularization=.0625, accepted_custom_update=True,
+                 trials=[dict(native_force_N=force, whole_element_admissible=True, armijo_passed=True)])
+            for i, force in enumerate(forces)]
+    trace = dict(step=551, custom_newton_steps=rows)
+    summary = dict(accepted_custom_iterations=5)
+    assert verified_final_trend(trace, summary, forces[-1], .0625, 4) == forces
+    rows[2]['trials'][0]['native_force_N'] = .07
+    with pytest.raises(AssertionError, match='did not decrease'):
+        verified_final_trend(trace, summary, forces[-1], .0625, 4)

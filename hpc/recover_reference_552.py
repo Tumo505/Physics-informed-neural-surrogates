@@ -173,6 +173,59 @@ def prepare_warm_restart(run, failed, screen):
                       'Jacobian for each update and independently audit any converged candidate.')
 
 
+def verified_final_trend(trace, summary, force, shift, iteration):
+    assert trace['step'] == STEP
+    rows = [row for row in trace['custom_newton_steps'] if row.get('accepted_custom_update')]
+    assert len(rows) == summary['accepted_custom_iterations'] and len(rows) >= 5
+    last = rows[-1]
+    assert last['iteration'] == iteration and last['next_regularization'] == shift
+    trials = [row['trials'][-1] for row in rows[-5:]]
+    assert all(trial['whole_element_admissible'] and trial['armijo_passed'] for trial in trials)
+    forces = [trial['native_force_N'] for trial in trials]
+    assert forces[-1] == force
+    assert all(np.isfinite(value) and value > 0 for value in forces)
+    assert all(left > right for left, right in zip(forces, forces[1:])), (
+        'Last five accepted residuals did not decrease strictly')
+    return forces
+
+
+def prepare_warm_followup(run, failed, warm):
+    for name in ('plan.json', 'summary.json', 'last-newton.npz'):
+        registered(P, warm, warm / name)
+    previous = load(warm / 'plan.json')
+    summary = load(warm / 'summary.json')
+    assert previous['warm_restart_552'] and 'warm_followup_parent' not in previous
+    assert previous['step'] == summary['step'] == STEP
+    assert previous['failed_restart_run'] == failed.name and previous['full_solve']
+    assert not previous['reuse_jacobian'] and not previous['reuse_gamg']
+    assert summary['complete'] and not summary['passed'] and TIMEOUT in summary['stop_reason']
+    assert not summary['physical_new_state_generated'] and not summary['reference_continuation_allowed']
+    assert summary['reused_jacobian_updates'] == summary['jacobian_reuse_rejections'] == 0
+    plan = prepare_warm_restart(run, failed, HPC / previous['warm_restart_screen'])
+    for name in ('manifest.json', 'restart.npz'):
+        key = f"data/processed/{plan['target_name']}/{name}"
+        assert previous['frozen'][key] == plan['frozen'][key]
+    assert previous['saved_iterate'] == plan['saved_iterate']
+    assert previous['cumulative_seconds_before'] == plan['cumulative_seconds_before']
+    assert previous['generation_seconds_before'] == plan['generation_seconds_before']
+    saved = warm / 'last-newton.npz'
+    options = load(P / plan['stream_protocol'])['admissible_newton']
+    force, shift, iteration = saved_iterate_parameters(saved, summary, options)
+    trace = warm / 'trace.json'
+    trend = verified_final_trend(load(trace), summary, force, shift, iteration)
+    for path in (warm / 'plan.json', warm / 'summary.json', saved, trace):
+        plan['frozen'][str(path.relative_to(P))] = sha(path)
+    elapsed = summary['cumulative_seconds']
+    generation = previous['generation_seconds_before'] + summary['wall_seconds']
+    assert elapsed > plan['cumulative_seconds_before'] and summary['wall_seconds'] > 0
+    assert elapsed + 3600 <= plan['cumulative_pipeline_budget_hours'] * 3600
+    assert generation + 3600 <= plan['native_generation_budget_hours'] * 3600
+    return dict(plan, warm_followup_parent=warm.name, prior_final_force_trend_N=trend,
+                cumulative_seconds_before=elapsed, generation_seconds_before=generation,
+                saved_iterate=str(saved.relative_to(P)), saved_iterate_force_N=force,
+                saved_iterate_iteration=iteration, warm_shift=shift)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-id', required=True)
@@ -181,9 +234,11 @@ if __name__ == '__main__':
     modes.add_argument('--startup-failure')
     modes.add_argument('--damped-screen-after')
     modes.add_argument('--warm-restart-after-screen')
+    modes.add_argument('--warm-followup-after')
     args = parser.parse_args()
     for value in filter(None, (args.run_id, args.failed_restart, args.startup_failure,
-                               args.damped_screen_after, args.warm_restart_after_screen)):
+                               args.damped_screen_after, args.warm_restart_after_screen,
+                               args.warm_followup_after)):
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
             parser.error('Invalid run ID')
     with (P / '.hpc/profile-submission.lock').open('a') as lock:
@@ -192,7 +247,9 @@ if __name__ == '__main__':
         run = HPC / args.run_id
         startup_failure = HPC / args.startup_failure if args.startup_failure else None
         failed = HPC / args.failed_restart
-        if args.warm_restart_after_screen:
+        if args.warm_followup_after:
+            plan = prepare_warm_followup(run, failed, HPC / args.warm_followup_after)
+        elif args.warm_restart_after_screen:
             plan = prepare_warm_restart(run, failed, HPC / args.warm_restart_after_screen)
         elif args.damped_screen_after:
             plan = prepare_damped_screen(run, failed, HPC / args.damped_screen_after)
