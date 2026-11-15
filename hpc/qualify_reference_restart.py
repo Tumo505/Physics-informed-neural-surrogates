@@ -74,7 +74,9 @@ def prepare_and_submit(run, recovery, fresh=False):
     parent_state = load(parent / 'state.json')
     assert parent_state['status'] == 'blocked' and parent_state['terminal_rejection']
     target = ROOT / 'data/processed' / source['target_name']
-    start = 552 if fresh else START
+    start = source['step'] + 1 if fresh else START
+    if fresh:
+        assert start in (552, 553), 'Fresh qualification requires admitted state 552 or 553'
     assert source['step'] == summary['step'] == audit['step'] == start - 1
     manifest, digest = check_checkpoint(target, start)
     admission = manifest['steps'][-1]['recovery_admission']
@@ -90,14 +92,21 @@ def prepare_and_submit(run, recovery, fresh=False):
     assert {start + 1, start + 2} <= set(protocol['allowed_qualification_stops'])
     generation = max(parent_state['generation_seconds'], manifest['cumulative_native_wall_seconds'])
     if fresh:
-        assert source['warm_restart_552'] and source['warm_followup_parent']
+        if start == 552:
+            assert source['warm_restart_552'] and source['warm_followup_parent']
+            failed = HPC / source['failed_restart_run']
+        else:
+            assert source['checkpointed_recovery_553'] and source['recovery_parent'] and source['saved_iterate']
+            failed = HPC / source['failed_qualification']
+            failed_state = load(failed / 'state.json')
+            assert failed_state['status'] == 'blocked' and failed_state['terminal_rejection']
+            assert failed_state['phase'] == 'state_553' and failed_state['completed_steps'] == 552
         assert not source['reuse_jacobian'] and not source['reuse_gamg']
         assert source['regularization_policy'] == 'two_good_steps' and source['late_forcing_floor'] == 1e-5
         assert summary['proof_agreement'] and 0 <= summary['native_force_N'] < 1e-9
         assert summary['native_updates'] == 0 and summary['SNES_reason'] > 0
         assert 0 <= audit['native_force_N'] < 1e-8
-        failed = HPC / source['failed_restart_run']
-        failure_log = failed / 'command-552.log'
+        failure_log = failed / f'command-{start}.log'
         registered(ROOT, failed, failure_log)
         assert f'RuntimeError: {TIMEOUT}' in failure_log.read_text()
         marker = target / 'failure.json'
@@ -107,11 +116,19 @@ def prepare_and_submit(run, recovery, fresh=False):
         # The successor binds the newly admitted checkpoint and this launcher version.
         replaced = {str(path.relative_to(ROOT)) for path in
                     (target / 'manifest.json', target / 'restart.npz', Path(__file__).resolve())}
+        for name in FAILURE_FILES:
+            key = str((target / name).relative_to(ROOT))
+            if key in source['frozen']:
+                assert archived_failure.get(name) == source['frozen'][key]
+                replaced.add(key)
         frozen = {key: value for key, value in source['frozen'].items() if key not in replaced}
         for path in ('hpc/fresh_reference_native.py',
                      'src/lv_surrogate/physics/admissible_newton_gentle_shrink.py',
                      'src/lv_surrogate/physics/regularization_recovery_policy.py'):
             frozen[path] = sha(ROOT / path)
+        if start == 553:
+            entry = 'hpc/production_fresh_native.py'
+            frozen[entry] = sha(ROOT / entry)
         generation = max(generation, source['generation_seconds_before'] + summary['wall_seconds'])
     else:
         assert source['per_step_seconds'] == 1800
@@ -133,6 +150,8 @@ def prepare_and_submit(run, recovery, fresh=False):
                 stream_protocol=str(protocol_path.relative_to(ROOT)), start_restart_sha256=digest,
                 start_manifest_sha256=sha(target / 'manifest.json'),
                 archived_failure=archived_failure,
+                generation_entry='hpc/production_fresh_native.py' if start == 553
+                else 'hpc/fresh_reference_native.py' if fresh else 'hpc/worker8_native.py',
                 scope='Two production states through separate PBS jobs. The inherited terminal run '
                       'is retained. Production beyond this restart and timing qualification requires review.')
     atomic(run / 'plan.json', plan)
@@ -198,7 +217,8 @@ def advance(run, plan, count, started):
                MPLCONFIGDIR=str(ROOT / '.hpc/cache/matplotlib'),
                DIJITSO_CACHE_DIR=str(ROOT / '.hpc/fenics-cache'))
     protocol = plan['stream_protocol']
-    entry = 'hpc/fresh_reference_native.py' if plan.get('fresh_jacobian') else 'hpc/worker8_native.py'
+    entry = plan.get('generation_entry',
+                     'hpc/fresh_reference_native.py' if plan.get('fresh_jacobian') else 'hpc/worker8_native.py')
     cmd = [str(ROOT / '.tools/bin/micromamba'), '--no-rc', 'run', '-r', str(ROOT / '.hpc/mamba'),
            '-p', str(prefix), 'mpiexec', '-n', str(plan['ranks']), 'python',
            entry, 'generate', '--policy', protocol, '--protocol', protocol,
@@ -266,6 +286,8 @@ def execute(run, count):
                 assert before == plan['start_restart_sha256']
                 assert sha(target / 'manifest.json') == plan['start_manifest_sha256']
                 archive_name = 'pre-fresh-jacobian-qualification' if plan.get('fresh_jacobian') else 'pre-restart-qualification'
+                if start == 553:
+                    archive_name += '-553'
                 archive = target / archive_name
                 with (target / 'generation.lock').open('a') as generation_lock:
                     fcntl.flock(generation_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)

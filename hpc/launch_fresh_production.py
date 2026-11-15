@@ -30,11 +30,12 @@ def prepare(run, qualification):
     qualified = load(qualification / 'plan.json')
     state_path = qualification / 'state.json'
     state = load(state_path)
-    assert qualified['fresh_jacobian'] and (qualified['start'], qualified['stop']) == (552, 554)
+    start, stop = qualified['start'], qualified['stop']
+    assert qualified['fresh_jacobian'] and start in (552, 553) and stop == start + 2
     assert state['status'] == 'qualification_complete' and state['restart_verified']
-    assert state['completed_steps'] == 554 and not state['blockers']
+    assert state['completed_steps'] == stop and not state['blockers']
     first, second = state['measurements']
-    assert (first['state'], second['state']) == (553, 554)
+    assert (first['state'], second['state']) == (start + 1, stop)
     assert first['job_id'] != second['job_id']
     assert first['input_checkpoint_sha256'] == qualified['start_restart_sha256']
     assert first['output_checkpoint_sha256'] == second['input_checkpoint_sha256']
@@ -47,7 +48,7 @@ def prepare(run, qualification):
     assert digest == second['output_checkpoint_sha256']
     assert sha(target / 'manifest.json') == second['output_manifest_sha256']
     assert not any((target / name).exists() for name in ('failure.json', 'UNACCEPTED_iterate.npz'))
-    for index in (552, 553):
+    for index in range(start, stop):
         for name in (f'step_journal/{index:06d}.json', f'custom_trace_{index:06d}.json'):
             registered(ROOT, qualification, target / name)
         trace = load(target / f'custom_trace_{index:06d}.json')
@@ -88,7 +89,7 @@ def prepare(run, qualification):
                 scope='Checkpointed fresh-Jacobian reference production and final numerical audits.')
     state = dict(status='submitted', phase='reference', completed_phases=phases, attempts={},
                  checkpoints_verified=True, checkpoint_sha256=second['output_checkpoint_sha256'],
-                 manifest_sha256=second['output_manifest_sha256'], completed_steps=554,
+                 manifest_sha256=second['output_manifest_sha256'], completed_steps=stop,
                  n_steps=manifest['n_steps'], stream_protocol=qualified['stream_protocol'],
                  cumulative_seconds=state['cumulative_seconds'], generation_seconds=state['generation_seconds'],
                  measured_seconds_per_state=measured, allowed_seconds_per_state=allowed, blockers=[])
