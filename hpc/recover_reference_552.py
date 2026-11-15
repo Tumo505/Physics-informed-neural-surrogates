@@ -11,9 +11,20 @@ from submit_probe_profile import assert_idle, registered
 
 HPC = P / 'experiments/hpc'
 STEP = 551
+SHARED_FIELDS = (
+    'account', 'config', 'cpus', 'environment_sha256', 'host_free_reserve_gib',
+    'memory_gb', 'native_prefix', 'parent_run', 'ranks', 'reference_config_sha256',
+    'snapshot', 'software', 'stream_protocol', 'target_name',
+    'cumulative_pipeline_budget_hours', 'native_generation_budget_hours',
+)
 
 
-def prepare(run, failed):
+def recovery_plan(pilot, **fields):
+    shared = {name: pilot[name] for name in SHARED_FIELDS if name != 'account'}
+    return dict(shared, account=pilot.get('account'), **fields)
+
+
+def prepare(run, failed, startup_failure=None):
     plan_path = failed / 'plan.json'
     log = failed / 'command-552.log'
     for path in (plan_path, log):
@@ -50,10 +61,31 @@ def prepare(run, failed):
                  P / 'src/lv_surrogate/physics/regularization_recovery_policy.py'):
         frozen[str(path.relative_to(P))] = sha(path)
     elapsed, generation = state['cumulative_seconds'], state['generation_seconds']
+    if startup_failure is not None:
+        for name in ('plan.json', 'summary.json'):
+            path = startup_failure / name
+            registered(P, startup_failure, path)
+            frozen[str(path.relative_to(P))] = sha(path)
+        previous = load(startup_failure / 'plan.json')
+        summary = load(startup_failure / 'summary.json')
+        assert previous['failed_restart_run'] == failed.name and previous['step'] == STEP
+        assert previous['frozen'][str(plan_path.relative_to(P))] == sha(plan_path)
+        assert previous['frozen'][str((target / 'restart.npz').relative_to(P))] == checkpoint_hash
+        assert previous['screen_and_solve'] and previous['saved_iterate']
+        assert summary['complete'] and not summary['passed'] and summary['step'] == STEP
+        assert not summary['physical_new_state_generated'] and not summary['reference_continuation_allowed']
+        assert summary['accepted_custom_iterations'] == 0 and summary['regularization_policy'] is None
+        assert summary['gamg_reuse_attempts'] == 0 and summary['selected_predictor'] is None
+        assert 'Mismatched elements' in summary['stop_reason']
+        assert summary['cumulative_seconds'] > elapsed
+        generation += summary['cumulative_seconds'] - elapsed
+        elapsed = summary['cumulative_seconds']
     assert elapsed + 3600 <= pilot['cumulative_pipeline_budget_hours'] * 3600
     assert generation + 3600 <= pilot['native_generation_budget_hours'] * 3600
-    return dict(pilot, run_id=run.name, step=STEP, frozen=frozen, queue='nvidia',
-                failed_restart_run=failed.name, cumulative_seconds_before=elapsed,
+    return recovery_plan(pilot, run_id=run.name, step=STEP, frozen=frozen, queue='nvidia',
+                failed_restart_run=failed.name,
+                startup_failure_run=startup_failure.name if startup_failure else None,
+                cumulative_seconds_before=elapsed,
                 generation_seconds_before=generation, solver_seconds=1800,
                 screen_and_solve=True, full_solve=True, log_phases=True,
                 reuse_jacobian=True, reuse_gamg=True, regularization_policy='two_good_steps',
@@ -66,12 +98,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-id', required=True)
     parser.add_argument('--failed-restart', default='cmbbe-restart-551-01')
+    parser.add_argument('--startup-failure')
     args = parser.parse_args()
-    for value in (args.run_id, args.failed_restart):
+    for value in filter(None, (args.run_id, args.failed_restart, args.startup_failure)):
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
             parser.error('Invalid run ID')
     with (P / '.hpc/profile-submission.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         assert_idle(P)
         run = HPC / args.run_id
-        queue_recovery(run, prepare(run, HPC / args.failed_restart))
+        startup_failure = HPC / args.startup_failure if args.startup_failure else None
+        queue_recovery(run, prepare(run, HPC / args.failed_restart, startup_failure))
