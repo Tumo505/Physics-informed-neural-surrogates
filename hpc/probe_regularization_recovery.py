@@ -416,6 +416,27 @@ def queue_recovery(run, plan):
     print('Result:', (run / 'summary.json').relative_to(P))
 
 
+def damped_predictors(old, previous, velocity_increment, stress):
+    yield 'stress extrapolation', stress
+    for family, increment, factors in (
+        ('velocity', velocity_increment, (.0625, .125, .25, .5)),
+        ('displacement', old - previous, (-.5, -.25, -.125, .0625, .125, .25)),
+    ):
+        for factor in factors:
+            yield f'damped {family} {factor:g}', old + factor * increment
+
+
+def summarize_damped_screen(rows):
+    baseline, *candidates = rows
+    assert baseline['predictor'] == 'stress extrapolation'
+    assert baseline['admissible'], 'Stress extrapolation baseline failed positivity'
+    eligible = [row for row in candidates if row['admissible']]
+    best = min(eligible, key=lambda row: row['force_N'], default=None)
+    return dict(baseline_force_N=baseline['force_N'], best_damped_predictor=best,
+                improves_on_baseline=best is not None and best['force_N'] < baseline['force_N'])
+
+
+
 def execute(run):
     assert os.environ.get('PBS_JOBID'), 'Run the full-size probe via PBS'
     from mpi4py import MPI
@@ -472,7 +493,10 @@ def execute(run):
         on_root(preflight)
         manifest = load(data / 'manifest.json')
         assert comm.size == plan['ranks'] == 12
-        assert step == (551 if plan.get('screen_and_solve') else 550)
+        damped_screen = plan.get('damped_predictor_screen', False)
+        assert step == (551 if plan.get('screen_and_solve') or damped_screen else 550)
+        if damped_screen:
+            assert plan.get('screen_predictors') and not plan.get('screen_and_solve')
         from lv_surrogate.physics.parallel_fem import ParallelP2
         from lv_surrogate.physics.reference_fem import residual
         from lv_surrogate.physics.admissible_newton_gentle_shrink import solve
@@ -517,7 +541,10 @@ def execute(run):
         old, dt = history['u_old'], cfg['dt_s']
         alpha = float(problem.parameters['alpha_f'])
         assert alpha == .4
-        if plan.get('screened_force_N') is not None and not plan.get('saved_iterate'):
+        if damped_screen:
+            stress = (alpha*previous + (1-alpha)*old - alpha*old)/(1-alpha)
+            named_guesses = damped_predictors(old, previous, dt*history['v_old'], stress)
+        elif plan.get('screened_force_N') is not None and not plan.get('saved_iterate'):
             adapter.assign('u', old + .5 * (old - previous))
             initial_force = float(residual(problem).norm('l2'))
             np.testing.assert_allclose(initial_force, plan['screened_force_N'], rtol=1e-5, atol=1e-12)
@@ -565,12 +592,13 @@ def execute(run):
             trace.update(time_s=time_s, selected_predictor=choice)
 
         if plan.get('screen_predictors') or plan.get('screen_and_solve'):
-            named_guesses = list(zip(
-                ('previous state', 'velocity', 'velocity and acceleration', 'stress extrapolation'),
-                guesses))
-            named_guesses.extend(
-                (f'displacement extrapolation {factor:g}', old + factor * (old - previous))
-                for factor in (.25, .5, 1.))
+            if not damped_screen:
+                named_guesses = list(zip(
+                    ('previous state', 'velocity', 'velocity and acceleration', 'stress extrapolation'),
+                    guesses))
+                named_guesses.extend(
+                    (f'displacement extrapolation {factor:g}', old + factor * (old - previous))
+                    for factor in (.25, .5, 1.))
             results = []
             for name, candidate in named_guesses:
                 adapter.assign('u', candidate)
@@ -589,10 +617,17 @@ def execute(run):
                     admissible = error is None
                 results.append(dict(predictor=name, force_N=force if np.isfinite(force) else None,
                                     admissible=admissible, positivity_failure=error))
-            if plan.get('screen_and_solve'):
+            if damped_screen:
+                result['predictors'] = results
+                result.update(summarize_damped_screen(results))
+                np.testing.assert_allclose(result['baseline_force_N'], plan['expected_baseline_force_N'],
+                                           rtol=1e-5, atol=1e-12)
+                result['predictor_screen_complete'] = True
+            elif plan.get('screen_and_solve'):
                 choice = next((i for i in original_order if results[i]['admissible']), None)
-            result.update(predictors=results,
-                          original_selected_predictor=named_guesses[choice][0] if choice is not None else None)
+            if not damped_screen:
+                result.update(predictors=results,
+                              original_selected_predictor=named_guesses[choice][0] if choice is not None else None)
             if plan.get('screen_and_solve'):
                 eligible = [i for i, row in enumerate(results) if row['admissible']]
                 assert eligible, 'No whole-element-admissible screened predictor'
@@ -600,7 +635,7 @@ def execute(run):
                 adapter.assign('u', named_guesses[best][1])
                 trace.update(selected_predictor=results[best]['predictor'],
                              initial_force_N=results[best]['force_N'])
-            else:
+            elif not damped_screen:
                 result['predictor_screen_complete'] = True
 
         if not plan.get('screen_predictors'):

@@ -94,13 +94,49 @@ def prepare(run, failed, startup_failure=None):
                       'A converged candidate receives an independent audit. Reference admission is separate.')
 
 
+def prepare_damped_screen(run, failed, recovery):
+    plan = prepare(run, failed)
+    for name in ('plan.json', 'summary.json'):
+        registered(P, recovery, recovery / name)
+        path = recovery / name
+        plan['frozen'][str(path.relative_to(P))] = sha(path)
+    previous = load(recovery / 'plan.json')
+    summary = load(recovery / 'summary.json')
+    assert previous['step'] == summary['step'] == STEP
+    assert previous['screen_and_solve'] and previous['failed_restart_run'] == failed.name
+    target = P / 'data/processed' / plan['target_name']
+    assert previous['target_name'] == plan['target_name']
+    for name in ('manifest.json', 'restart.npz'):
+        key = str((target / name).relative_to(P))
+        assert previous['frozen'][key] == plan['frozen'][key]
+    assert summary['complete'] and not summary['passed']
+    assert not summary['physical_new_state_generated'] and not summary['reference_continuation_allowed']
+    assert TIMEOUT in summary['stop_reason'] and summary['accepted_custom_iterations'] > 0
+    assert summary['selected_predictor'] == 'stress extrapolation'
+    baseline = next(row for row in summary['predictors'] if row['predictor'] == 'stress extrapolation')
+    assert baseline['admissible'] and 0 < baseline['force_N'] == summary['initial_force_N']
+    elapsed = summary['cumulative_seconds']
+    assert elapsed > plan['cumulative_seconds_before']
+    generation = previous['generation_seconds_before'] + summary['wall_seconds']
+    assert elapsed + 3600 <= plan['cumulative_pipeline_budget_hours'] * 3600
+    return dict(plan, cumulative_seconds_before=elapsed, generation_seconds_before=generation,
+                screen_and_solve=False, full_solve=False, screen_predictors=True,
+                damped_predictor_screen=True, reuse_gamg=False, reuse_jacobian=False,
+                late_forcing_floor=None, expected_baseline_force_N=baseline['force_N'],
+                damped_screen_parent=recovery.name,
+                scope='Measure the state-552 force and whole-element endpoint and stress positivity '
+                      'for fixed damped increments and the stress extrapolation baseline.')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-id', required=True)
     parser.add_argument('--failed-restart', default='cmbbe-restart-551-01')
-    parser.add_argument('--startup-failure')
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument('--startup-failure')
+    modes.add_argument('--damped-screen-after')
     args = parser.parse_args()
-    for value in filter(None, (args.run_id, args.failed_restart, args.startup_failure)):
+    for value in filter(None, (args.run_id, args.failed_restart, args.startup_failure, args.damped_screen_after)):
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
             parser.error('Invalid run ID')
     with (P / '.hpc/profile-submission.lock').open('a') as lock:
@@ -108,4 +144,9 @@ if __name__ == '__main__':
         assert_idle(P)
         run = HPC / args.run_id
         startup_failure = HPC / args.startup_failure if args.startup_failure else None
-        queue_recovery(run, prepare(run, HPC / args.failed_restart, startup_failure))
+        failed = HPC / args.failed_restart
+        if args.damped_screen_after:
+            plan = prepare_damped_screen(run, failed, HPC / args.damped_screen_after)
+        else:
+            plan = prepare(run, failed, startup_failure)
+        queue_recovery(run, plan)

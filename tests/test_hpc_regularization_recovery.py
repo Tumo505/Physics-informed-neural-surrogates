@@ -69,3 +69,23 @@ def test_followup_accepts_observed_cycle_ending_in_a_poor_full_step(timeout_trac
     steps[-2]['trials'][0]['actual_to_predicted_merit_ratio'] = .5
     with pytest.raises(AssertionError):
         check_followup(timeout_trace)
+
+
+def test_damped_screen_preserves_baseline_and_ranks_only_admissible_candidates():
+    import numpy as np
+    from probe_regularization_recovery import damped_predictors, summarize_damped_screen
+
+    old = np.array([2.])
+    candidates = dict(damped_predictors(old, np.array([1.]), np.array([4.]), np.array([1.3])))
+    assert len(candidates) == 11
+    np.testing.assert_array_equal(candidates['stress extrapolation'], [1.3])
+    np.testing.assert_array_equal(candidates['damped velocity 0.125'], [2.5])
+    np.testing.assert_array_equal(candidates['damped displacement -0.25'], [1.75])
+    rows = [
+        dict(predictor='stress extrapolation', admissible=True, force_N=.167),
+        dict(predictor='damped velocity 0.125', admissible=False, force_N=.01),
+        dict(predictor='damped displacement -0.25', admissible=True, force_N=.12),
+    ]
+    assert summarize_damped_screen(rows) == dict(
+        baseline_force_N=.167, best_damped_predictor=rows[2], improves_on_baseline=True)
+    assert not summarize_damped_screen(rows[:2])['improves_on_baseline']
