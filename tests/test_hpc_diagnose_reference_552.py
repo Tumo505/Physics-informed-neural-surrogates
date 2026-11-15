@@ -24,3 +24,21 @@ def test_endpoint_and_stress_witnesses_and_local_increment():
     assert cell == 0
     np.testing.assert_allclose(determinant, -.5)
     assert increment_stats(predicted, maps, np.array([cell]))['max_cell_max'] == 1.5
+
+
+def test_face_neighbors_and_accepted_determinant_gradient():
+    from diagnose_reference_552 import face_neighborhood, local_kinematics
+
+    cells = np.array([[0, 1, 2, 3], [1, 0, 2, 4], [0, 1, 5, 6]])
+    assert face_neighborhood(cells, [0]) == [0, 1]
+    vertices = np.eye(4, 3)
+    nodes = np.vstack((vertices, [(vertices[i] + vertices[j]) / 2
+                                 for i in range(4) for j in range(i + 1, 4)]))
+    audit = BernsteinAudit(dict(coords=vertices, cells=cells[:1],
+                                canonical_cell_dofs=np.arange(30).reshape(1, 10, 3)))
+    field = np.zeros_like(nodes)
+    field[:, 0] = -.5 * nodes[:, 0]
+    rows = local_kinematics(audit, dict(accepted_550=np.zeros(30), accepted_551=field.ravel()), [0])
+    result = rows['accepted_551'][0]
+    np.testing.assert_allclose([result['sampled_min_det'], result['whole_element_lower_bound'],
+                                result['max_grad_change_frobenius']], [.5, .5, .5])
