@@ -355,6 +355,10 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
     queue_recovery(run, plan)
 
 
+def checkpointed_recovery(plan):
+    return plan.get('checkpointed_recovery') or checkpointed_recovery(plan)
+
+
 def queue_recovery(run, plan):
     state_number = plan['step'] + 1
     run.mkdir()
@@ -368,7 +372,7 @@ def queue_recovery(run, plan):
     command = [str(P / '.tools/bin/micromamba'), '--no-rc', 'run', '-r', str(P / '.hpc/mamba'),
                '-p', str(prefix), 'mpiexec', '-n', str(plan['ranks']), 'python',
                'hpc/probe_regularization_recovery.py', 'execute', '--run-id', run.name]
-    if plan.get('warm_shift') is not None or plan.get('screen_and_solve') or plan.get('checkpointed_recovery_553'):
+    if plan.get('warm_shift') is not None or plan.get('screen_and_solve') or checkpointed_recovery(plan):
         audit_command = command[:command.index('mpiexec')] + [
             'python', 'hpc/probe_regularization_recovery.py', 'audit', '--run-id', run.name]
         command = ['/bin/bash', '-c', shlex.join(command) + ' && ' + shlex.join(audit_command)]
@@ -495,9 +499,9 @@ def execute(run):
         assert comm.size == plan['ranks'] == 12
         damped_screen = plan.get('damped_predictor_screen', False)
         warm_restart_552 = plan.get('warm_restart_552', False)
-        checkpointed_553 = plan.get('checkpointed_recovery_553', False)
-        if checkpointed_553:
-            assert step == 552 and plan['full_solve'] and plan['solver_seconds'] == 1800
+        checkpointed = checkpointed_recovery(plan)
+        if checkpointed:
+            assert 552 <= step < 1600 and plan['full_solve'] and plan['solver_seconds'] == 1800
             assert not plan['reuse_jacobian'] and not plan['reuse_gamg']
             assert plan['late_forcing_floor'] == 1e-5
         else:
@@ -576,7 +580,7 @@ def execute(run):
             adapter.assign('u', saved)
             saved_force = float(residual(problem).norm('l2'))
             np.testing.assert_allclose(saved_force, plan['saved_iterate_force_N'], rtol=1e-5, atol=1e-12)
-            if warm_restart_552 or checkpointed_553:
+            if warm_restart_552 or checkpointed:
                 on_root(lambda: audit.pair(saved, old))
             trace.update(time_s=time_s, saved_iterate=plan['saved_iterate'], initial_force_N=saved_force)
         else:
@@ -680,7 +684,7 @@ def execute(run):
                         handle.flush()
                         os.fsync(handle.fileno())
                     temporary.replace(run / 'last-newton.npz')
-                    if checkpointed_553:
+                    if checkpointed:
                         directory = os.open(run, os.O_RDONLY)
                         try:
                             os.fsync(directory)
@@ -788,9 +792,9 @@ def execute(run):
                 solve_seconds = comm.allreduce(time.monotonic() - solve_started, op=MPI.MAX)
 
                 advanced_history = {}
-                if plan.get('screen_and_solve') or warm_restart_552 or checkpointed_553:
+                if plan.get('screen_and_solve') or warm_restart_552 or checkpointed:
                     assert 0 <= force < 1e-9, 'Original custom force target was not met'
-                if plan.get('warm_shift') is not None or plan.get('screen_and_solve') or plan.get('checkpointed_recovery_553'):
+                if plan.get('warm_shift') is not None or plan.get('screen_and_solve') or checkpointed_recovery(plan):
                     problem._update_fields()
                     advanced_history = {
                         'next_' + name: adapter.gather(name)
@@ -826,7 +830,7 @@ def execute(run):
         if plan.get('screened_force_N') is not None or plan.get('screen_and_solve'):
             result.update(selected_predictor=trace.get('selected_predictor'),
                           initial_force_N=trace.get('initial_force_N'))
-        if plan.get('warm_restart_552') or (plan.get('checkpointed_recovery_553') and plan.get('saved_iterate')):
+        if plan.get('warm_restart_552') or (checkpointed_recovery(plan) and plan.get('saved_iterate')):
             result.update(initial_force_N=trace.get('initial_force_N'),
                           saved_iterate_iteration=plan['saved_iterate_iteration'],
                           initial_regularization=plan['warm_shift'])
@@ -877,7 +881,7 @@ def audit_recovery(run):
     plan = load(run / 'plan.json')
     result = load(run / 'summary.json')
     step = plan['step']
-    assert plan.get('warm_shift') is not None or plan.get('screen_and_solve') or plan.get('checkpointed_recovery_553')
+    assert plan.get('warm_shift') is not None or plan.get('screen_and_solve') or checkpointed_recovery(plan)
     assert result['complete'] and result['passed'] and result['step'] == step
     data = P / 'data/processed' / plan['target_name']
     restart = data / 'restart.npz'
