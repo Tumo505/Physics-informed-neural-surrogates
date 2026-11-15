@@ -576,7 +576,7 @@ def execute(run):
             adapter.assign('u', saved)
             saved_force = float(residual(problem).norm('l2'))
             np.testing.assert_allclose(saved_force, plan['saved_iterate_force_N'], rtol=1e-5, atol=1e-12)
-            if warm_restart_552:
+            if warm_restart_552 or checkpointed_553:
                 on_root(lambda: audit.pair(saved, old))
             trace.update(time_s=time_s, saved_iterate=plan['saved_iterate'], initial_force_N=saved_force)
         else:
@@ -826,7 +826,7 @@ def execute(run):
         if plan.get('screened_force_N') is not None or plan.get('screen_and_solve'):
             result.update(selected_predictor=trace.get('selected_predictor'),
                           initial_force_N=trace.get('initial_force_N'))
-        if plan.get('warm_restart_552'):
+        if plan.get('warm_restart_552') or (plan.get('checkpointed_recovery_553') and plan.get('saved_iterate')):
             result.update(initial_force_N=trace.get('initial_force_N'),
                           saved_iterate_iteration=plan['saved_iterate_iteration'],
                           initial_regularization=plan['warm_shift'])
