@@ -494,7 +494,12 @@ def execute(run):
         manifest = load(data / 'manifest.json')
         assert comm.size == plan['ranks'] == 12
         damped_screen = plan.get('damped_predictor_screen', False)
-        assert step == (551 if plan.get('screen_and_solve') or damped_screen else 550)
+        warm_restart_552 = plan.get('warm_restart_552', False)
+        assert step == (551 if plan.get('screen_and_solve') or damped_screen or warm_restart_552 else 550)
+        if warm_restart_552:
+            assert plan['saved_iterate'] and plan['warm_shift'] > 0
+            assert not plan['reuse_jacobian'] and not plan['reuse_gamg']
+            assert plan['full_solve'] and not plan['screen_predictors'] and not damped_screen
         if damped_screen:
             assert plan.get('screen_predictors') and not plan.get('screen_and_solve')
         from lv_surrogate.physics.parallel_fem import ParallelP2
@@ -565,6 +570,8 @@ def execute(run):
             adapter.assign('u', saved)
             saved_force = float(residual(problem).norm('l2'))
             np.testing.assert_allclose(saved_force, plan['saved_iterate_force_N'], rtol=1e-5, atol=1e-12)
+            if warm_restart_552:
+                on_root(lambda: audit.pair(saved, old))
             trace.update(time_s=time_s, saved_iterate=plan['saved_iterate'], initial_force_N=saved_force)
         else:
             guesses = [old, old + dt*history['v_old'], old + dt*history['v_old'] + .5*dt**2*history['a_old'],
@@ -769,7 +776,7 @@ def execute(run):
                 solve_seconds = comm.allreduce(time.monotonic() - solve_started, op=MPI.MAX)
 
                 advanced_history = {}
-                if plan.get('screen_and_solve'):
+                if plan.get('screen_and_solve') or warm_restart_552:
                     assert 0 <= force < 1e-9, 'Original custom force target was not met'
                 if plan.get('warm_shift') is not None or plan.get('screen_and_solve'):
                     problem._update_fields()
@@ -807,6 +814,10 @@ def execute(run):
         if plan.get('screened_force_N') is not None or plan.get('screen_and_solve'):
             result.update(selected_predictor=trace.get('selected_predictor'),
                           initial_force_N=trace.get('initial_force_N'))
+        if plan.get('warm_restart_552'):
+            result.update(initial_force_N=trace.get('initial_force_N'),
+                          saved_iterate_iteration=plan['saved_iterate_iteration'],
+                          initial_regularization=plan['warm_shift'])
         if plan.get('reuse_gamg'):
             attempts = [row['linear_attempts'] for row in
                         trace['custom_newton_steps'] + trace.get('jacobian_reuse_rejections', [])

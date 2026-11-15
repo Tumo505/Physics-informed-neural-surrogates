@@ -4,6 +4,8 @@ import fcntl
 from pathlib import Path
 import re
 
+import numpy as np
+
 from probe_regularization_recovery import P, load, queue_recovery
 from qualify_reference_restart import check_checkpoint, TIMEOUT
 from registry import sha
@@ -128,6 +130,49 @@ def prepare_damped_screen(run, failed, recovery):
                       'for fixed damped increments and the stress extrapolation baseline.')
 
 
+def saved_iterate_parameters(path, summary, options):
+    assert sha(path) == summary['last_newton_iterate_sha256']
+    with np.load(path, allow_pickle=False) as saved:
+        assert int(saved['step']) == STEP and not bool(saved['accepted'])
+        force, shift = float(saved['force_N']), float(saved['next_shift'])
+        assert np.isfinite(force) and 1e-9 < force == summary['last_accepted_custom_force_N']
+        assert np.isfinite(shift) and options['minimum_regularization'] <= shift <= options['maximum_regularization']
+        return force, shift, int(saved['iteration'])
+
+
+def prepare_warm_restart(run, failed, screen):
+    for name in ('plan.json', 'summary.json'):
+        registered(P, screen, screen / name)
+    screen_plan = load(screen / 'plan.json')
+    screen_result = load(screen / 'summary.json')
+    assert screen_plan['damped_predictor_screen'] and screen_plan['failed_restart_run'] == failed.name
+    assert screen_plan['step'] == screen_result['step'] == STEP
+    assert screen_result['complete'] and screen_result['predictor_screen_complete']
+    assert not screen_result['reference_continuation_allowed']
+    recovery = HPC / screen_plan['damped_screen_parent']
+    plan = prepare_damped_screen(run, failed, recovery)
+    assert screen_plan['cumulative_seconds_before'] == plan['cumulative_seconds_before']
+    assert screen_plan['generation_seconds_before'] == plan['generation_seconds_before']
+    saved = recovery / 'last-newton.npz'
+    registered(P, recovery, saved)
+    summary = load(recovery / 'summary.json')
+    options = load(P / plan['stream_protocol'])['admissible_newton']
+    force, shift, iteration = saved_iterate_parameters(saved, summary, options)
+    for path in (screen / 'plan.json', screen / 'summary.json', saved):
+        plan['frozen'][str(path.relative_to(P))] = sha(path)
+    elapsed = screen_result['cumulative_seconds']
+    assert elapsed > plan['cumulative_seconds_before']
+    assert elapsed + 3600 <= plan['cumulative_pipeline_budget_hours'] * 3600
+    assert plan['generation_seconds_before'] + 3600 <= plan['native_generation_budget_hours'] * 3600
+    return dict(plan, cumulative_seconds_before=elapsed, damped_predictor_screen=False,
+                screen_predictors=False, full_solve=True, warm_restart_552=True,
+                warm_restart_parent=recovery.name, warm_restart_screen=screen.name,
+                saved_iterate=str(saved.relative_to(P)), saved_iterate_force_N=force,
+                saved_iterate_iteration=iteration, warm_shift=shift, late_forcing_floor=1e-5,
+                scope='Bounded state-552 solve from the verified unapplied iterate. Assemble a fresh '
+                      'Jacobian for each update and independently audit any converged candidate.')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-id', required=True)
@@ -135,8 +180,10 @@ if __name__ == '__main__':
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument('--startup-failure')
     modes.add_argument('--damped-screen-after')
+    modes.add_argument('--warm-restart-after-screen')
     args = parser.parse_args()
-    for value in filter(None, (args.run_id, args.failed_restart, args.startup_failure, args.damped_screen_after)):
+    for value in filter(None, (args.run_id, args.failed_restart, args.startup_failure,
+                               args.damped_screen_after, args.warm_restart_after_screen)):
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
             parser.error('Invalid run ID')
     with (P / '.hpc/profile-submission.lock').open('a') as lock:
@@ -145,7 +192,9 @@ if __name__ == '__main__':
         run = HPC / args.run_id
         startup_failure = HPC / args.startup_failure if args.startup_failure else None
         failed = HPC / args.failed_restart
-        if args.damped_screen_after:
+        if args.warm_restart_after_screen:
+            plan = prepare_warm_restart(run, failed, HPC / args.warm_restart_after_screen)
+        elif args.damped_screen_after:
             plan = prepare_damped_screen(run, failed, HPC / args.damped_screen_after)
         else:
             plan = prepare(run, failed, startup_failure)

@@ -47,3 +47,17 @@ def test_state_552_plan_does_not_inherit_state_551_solver_inputs():
     assert not (prior_solver.keys() & plan.keys())
     assert plan['stream_protocol'] == pilot['stream_protocol']
     assert plan['step'] == 551 and plan['screen_and_solve'] and plan['full_solve']
+
+
+def test_state_552_warm_iterate_must_match_verified_summary(tmp_path):
+    import numpy as np
+    from recover_reference_552 import saved_iterate_parameters
+
+    path = tmp_path / 'last-newton.npz'
+    np.savez(path, step=551, accepted=False, force_N=.087, next_shift=.0625, iteration=35)
+    summary = dict(last_newton_iterate_sha256=sha(path), last_accepted_custom_force_N=.087)
+    options = dict(minimum_regularization=1e-9, maximum_regularization=100)
+    assert saved_iterate_parameters(path, summary, options) == (.087, .0625, 35)
+    summary['last_accepted_custom_force_N'] = .09
+    with pytest.raises(AssertionError):
+        saved_iterate_parameters(path, summary, options)
