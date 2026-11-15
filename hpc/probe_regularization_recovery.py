@@ -368,7 +368,7 @@ def queue_recovery(run, plan):
     command = [str(P / '.tools/bin/micromamba'), '--no-rc', 'run', '-r', str(P / '.hpc/mamba'),
                '-p', str(prefix), 'mpiexec', '-n', str(plan['ranks']), 'python',
                'hpc/probe_regularization_recovery.py', 'execute', '--run-id', run.name]
-    if plan.get('warm_shift') is not None or plan.get('screen_and_solve'):
+    if plan.get('warm_shift') is not None or plan.get('screen_and_solve') or plan.get('checkpointed_recovery_553'):
         audit_command = command[:command.index('mpiexec')] + [
             'python', 'hpc/probe_regularization_recovery.py', 'audit', '--run-id', run.name]
         command = ['/bin/bash', '-c', shlex.join(command) + ' && ' + shlex.join(audit_command)]
@@ -495,7 +495,13 @@ def execute(run):
         assert comm.size == plan['ranks'] == 12
         damped_screen = plan.get('damped_predictor_screen', False)
         warm_restart_552 = plan.get('warm_restart_552', False)
-        assert step == (551 if plan.get('screen_and_solve') or damped_screen or warm_restart_552 else 550)
+        checkpointed_553 = plan.get('checkpointed_recovery_553', False)
+        if checkpointed_553:
+            assert step == 552 and plan['full_solve'] and plan['solver_seconds'] == 1800
+            assert not plan['reuse_jacobian'] and not plan['reuse_gamg']
+            assert plan['late_forcing_floor'] == 1e-5
+        else:
+            assert step == (551 if plan.get('screen_and_solve') or damped_screen or warm_restart_552 else 550)
         if warm_restart_552:
             assert plan['saved_iterate'] and plan['warm_shift'] > 0
             assert not plan['reuse_jacobian'] and not plan['reuse_gamg']
@@ -674,6 +680,12 @@ def execute(run):
                         handle.flush()
                         os.fsync(handle.fileno())
                     temporary.replace(run / 'last-newton.npz')
+                    if checkpointed_553:
+                        directory = os.open(run, os.O_RDONLY)
+                        try:
+                            os.fsync(directory)
+                        finally:
+                            os.close(directory)
                 on_root(write)
 
             gamg_diagnostic = plan.get('log_phases') and not plan.get('full_solve')
@@ -776,9 +788,9 @@ def execute(run):
                 solve_seconds = comm.allreduce(time.monotonic() - solve_started, op=MPI.MAX)
 
                 advanced_history = {}
-                if plan.get('screen_and_solve') or warm_restart_552:
+                if plan.get('screen_and_solve') or warm_restart_552 or checkpointed_553:
                     assert 0 <= force < 1e-9, 'Original custom force target was not met'
-                if plan.get('warm_shift') is not None or plan.get('screen_and_solve'):
+                if plan.get('warm_shift') is not None or plan.get('screen_and_solve') or plan.get('checkpointed_recovery_553'):
                     problem._update_fields()
                     advanced_history = {
                         'next_' + name: adapter.gather(name)
@@ -842,7 +854,7 @@ def execute(run):
         status.update(status='diagnostic_complete', cumulative_seconds=result['cumulative_seconds'],
                       blockers=[] if result['passed'] else [result['stop_reason']])
         atomic(run / 'state.json', status)
-        artifact(P, run, run / 'summary.json', 'State-551 recovery probe result')
+        artifact(P, run, run / 'summary.json', f'State-{step + 1} recovery result')
         event(run, 'job_finished', status=status['status'], pbs_job_id=os.environ['PBS_JOBID'])
     comm.Barrier()
     if lock is not None:
@@ -865,7 +877,7 @@ def audit_recovery(run):
     plan = load(run / 'plan.json')
     result = load(run / 'summary.json')
     step = plan['step']
-    assert plan.get('warm_shift') is not None or plan.get('screen_and_solve')
+    assert plan.get('warm_shift') is not None or plan.get('screen_and_solve') or plan.get('checkpointed_recovery_553')
     assert result['complete'] and result['passed'] and result['step'] == step
     data = P / 'data/processed' / plan['target_name']
     restart = data / 'restart.npz'
