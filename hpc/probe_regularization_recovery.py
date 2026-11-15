@@ -352,18 +352,23 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
                 cumulative_seconds_before=cumulative_seconds, generation_seconds_before=state['generation_seconds'],
                 regularization_policy=policy, reuse_jacobian=reuse_jacobian, previous_recovery=previous.name if previous else None,
                 scope=f'One equation from checkpoint 550. {scope} {solver_seconds} s solver cap. Candidate fields only.')
+    queue_recovery(run, plan)
+
+
+def queue_recovery(run, plan):
+    state_number = plan['step'] + 1
     run.mkdir()
     atomic(run / 'plan.json', plan)
     atomic(run / 'state.json', dict(status='submitted', phase='recovery_probe', blockers=[],
-                                   generation_seconds=state['generation_seconds'],
-                                   cumulative_seconds=cumulative_seconds))
-    artifact(P, run, run / 'plan.json', 'State-551 recovery probe protocol')
+                                   generation_seconds=plan['generation_seconds_before'],
+                                   cumulative_seconds=plan['cumulative_seconds_before']))
+    artifact(P, run, run / 'plan.json', f'State-{state_number} recovery protocol')
     prefix = P / plan['native_prefix']
     pkgconfig = f'{prefix}/lib/pkgconfig:{prefix}/share/pkgconfig'
     command = [str(P / '.tools/bin/micromamba'), '--no-rc', 'run', '-r', str(P / '.hpc/mamba'),
                '-p', str(prefix), 'mpiexec', '-n', str(plan['ranks']), 'python',
                'hpc/probe_regularization_recovery.py', 'execute', '--run-id', run.name]
-    if warm_shift is not None:
+    if plan.get('warm_shift') is not None or plan.get('screen_and_solve'):
         audit_command = command[:command.index('mpiexec')] + [
             'python', 'hpc/probe_regularization_recovery.py', 'audit', '--run-id', run.name]
         command = ['/bin/bash', '-c', shlex.join(command) + ' && ' + shlex.join(audit_command)]
@@ -392,7 +397,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         + 'export MPLCONFIGDIR=' + shlex.quote(str(P / '.hpc/cache/matplotlib')) + '\n'
         + 'export DIJITSO_CACHE_DIR=' + shlex.quote(str(P / '.hpc/fenics-cache')) + '\n'
         + launch_command)
-    args = ['qsub', '-N', 'lv_recovery551', '-q', plan['queue'], '-l',
+    args = ['qsub', '-N', f'lv_recovery{state_number}', '-q', plan['queue'], '-l',
             f"select=1:ncpus={plan['cpus']}:mem={plan['memory_gb']}gb",
             '-l', 'walltime=01:00:00', '-l', 'place=excl', '-l', 'software=' + plan['software'],
             '-j', 'oe', '-o', str(run / 'pbs.log')]
@@ -407,7 +412,7 @@ def submit(run, parent, previous=None, *, compare_shifts=False, queue=None, resu
         status.update(status='submission_failed', blockers=[reply.stderr.strip()])
         atomic(run / 'state.json', status)
         raise SystemExit(reply.stderr)
-    print('State-551 probe job:', reply.stdout.strip())
+    print(f'State-{state_number} recovery job:', reply.stdout.strip())
     print('Result:', (run / 'summary.json').relative_to(P))
 
 
@@ -420,7 +425,7 @@ def execute(run):
     started = time.monotonic()
     plan = load(run / 'plan.json')
     status = {}
-    result = dict(complete=False, passed=False, step=550, physical_new_state_generated=False,
+    result = dict(complete=False, passed=False, step=plan['step'], physical_new_state_generated=False,
                   reference_continuation_allowed=False, stop_reason=None)
 
     def on_root(function):
@@ -466,7 +471,8 @@ def execute(run):
     try:
         on_root(preflight)
         manifest = load(data / 'manifest.json')
-        assert comm.size == plan['ranks'] == 12 and step == 550
+        assert comm.size == plan['ranks'] == 12
+        assert step == (551 if plan.get('screen_and_solve') else 550)
         from lv_surrogate.physics.parallel_fem import ParallelP2
         from lv_surrogate.physics.reference_fem import residual
         from lv_surrogate.physics.admissible_newton_gentle_shrink import solve
@@ -540,7 +546,8 @@ def execute(run):
             for guess in guesses:
                 adapter.assign('u', guess)
                 forces.append(float(residual(problem).norm('l2')))
-            for choice in sorted((i for i in range(4) if np.isfinite(forces[i])), key=forces.__getitem__):
+            original_order = sorted((i for i in range(4) if np.isfinite(forces[i])), key=forces.__getitem__)
+            for choice in original_order if not plan.get('screen_and_solve') else ():
                 def predictor_error():
                     try:
                         audit.pair(guesses[choice], old)
@@ -552,10 +559,12 @@ def execute(run):
                     adapter.assign('u', guesses[choice])
                     break
             else:
-                raise RuntimeError('No whole-element-admissible initializer')
+                if not plan.get('screen_and_solve'):
+                    raise RuntimeError('No whole-element-admissible initializer')
+                choice = None
             trace.update(time_s=time_s, selected_predictor=choice)
 
-        if plan.get('screen_predictors'):
+        if plan.get('screen_predictors') or plan.get('screen_and_solve'):
             named_guesses = list(zip(
                 ('previous state', 'velocity', 'velocity and acceleration', 'stress extrapolation'),
                 guesses))
@@ -580,8 +589,19 @@ def execute(run):
                     admissible = error is None
                 results.append(dict(predictor=name, force_N=force if np.isfinite(force) else None,
                                     admissible=admissible, positivity_failure=error))
-            result.update(predictor_screen_complete=True, predictors=results,
-                          original_selected_predictor=named_guesses[choice][0])
+            if plan.get('screen_and_solve'):
+                choice = next((i for i in original_order if results[i]['admissible']), None)
+            result.update(predictors=results,
+                          original_selected_predictor=named_guesses[choice][0] if choice is not None else None)
+            if plan.get('screen_and_solve'):
+                eligible = [i for i, row in enumerate(results) if row['admissible']]
+                assert eligible, 'No whole-element-admissible screened predictor'
+                best = min(eligible, key=lambda i: results[i]['force_N'])
+                adapter.assign('u', named_guesses[best][1])
+                trace.update(selected_predictor=results[best]['predictor'],
+                             initial_force_N=results[best]['force_N'])
+            else:
+                result['predictor_screen_complete'] = True
 
         if not plan.get('screen_predictors'):
             timings = {}
@@ -714,7 +734,9 @@ def execute(run):
                 solve_seconds = comm.allreduce(time.monotonic() - solve_started, op=MPI.MAX)
 
                 advanced_history = {}
-                if plan.get('warm_shift') is not None:
+                if plan.get('screen_and_solve'):
+                    assert 0 <= force < 1e-9, 'Original custom force target was not met'
+                if plan.get('warm_shift') is not None or plan.get('screen_and_solve'):
                     problem._update_fields()
                     advanced_history = {
                         'next_' + name: adapter.gather(name)
@@ -747,7 +769,7 @@ def execute(run):
     if rank == 0:
         accepted = [row['trials'][-1] for row in trace['custom_newton_steps']
                     if row.get('accepted_custom_update')]
-        if plan.get('screened_force_N') is not None:
+        if plan.get('screened_force_N') is not None or plan.get('screen_and_solve'):
             result.update(selected_predictor=trace.get('selected_predictor'),
                           initial_force_N=trace.get('initial_force_N'))
         if plan.get('reuse_gamg'):
@@ -796,14 +818,16 @@ def audit_recovery(run):
         registered(P, run, run / name)
     plan = load(run / 'plan.json')
     result = load(run / 'summary.json')
-    assert plan['warm_shift'] is not None and result['passed'] and result['step'] == 550
+    step = plan['step']
+    assert plan.get('warm_shift') is not None or plan.get('screen_and_solve')
+    assert result['complete'] and result['passed'] and result['step'] == step
     data = P / 'data/processed' / plan['target_name']
     restart = data / 'restart.npz'
     assert sha(restart) == plan['frozen'][str(restart.relative_to(P))]
     manifest_path = data / 'manifest.json'
     assert sha(manifest_path) == plan['frozen'][str(manifest_path.relative_to(P))]
     manifest = load(manifest_path)
-    assert manifest['completed_steps'] == 550
+    assert manifest['completed_steps'] == step
     inputs_path = data / 'inputs.npz'
     assert sha(inputs_path) == manifest['source_inputs_sha256']
     output = run / 'independent-audit.json'
@@ -814,14 +838,14 @@ def audit_recovery(run):
     path = run / 'candidate.npz'
     histories = ('u_old', 'v_old', 'a_old')
     with np.load(path) as candidate, np.load(restart) as checkpoint, np.load(inputs_path) as inputs:
-        assert int(checkpoint['completed_steps']) == int(candidate['step']) == 550
+        assert int(checkpoint['completed_steps']) == int(candidate['step']) == step
         assert not bool(candidate['accepted'])
         for name in histories:
             np.testing.assert_array_equal(candidate[name], checkpoint[name])
             adapter.assign(name, checkpoint[name])
         u = candidate['u']
         adapter.assign('u', u)
-        adapter.problem.parameters['p'].assign(float(inputs['pressure'][550]))
+        adapter.problem.parameters['p'].assign(float(inputs['pressure'][step]))
         force = float(residual(adapter.problem).norm('l2'))
         assert 0 <= force < 1e-8
         norm_error = norm_check(adapter, inputs, u)
@@ -830,7 +854,7 @@ def audit_recovery(run):
         for name in histories:
             np.testing.assert_allclose(adapter.gather(name), candidate['next_' + name],
                                        rtol=1e-7, atol=1e-10)
-    atomic(output, dict(passed=True, step=550, native_force_N=force, norm_relative_error=norm_error,
+    atomic(output, dict(passed=True, step=step, native_force_N=force, norm_relative_error=norm_error,
                         whole_element_proof=proof, history_passed=True, candidate_sha256=sha(path),
                         wall_seconds=time.monotonic()-started))
     artifact(P, run, output, 'Independent recovery force and history audit')
