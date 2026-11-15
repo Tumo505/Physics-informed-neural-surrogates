@@ -135,3 +135,27 @@ def test_admit_audited_state_552_updates_checkpoint_once(tmp_path, monkeypatch):
     with np.load(restart_path) as checkpoint:
         assert int(checkpoint['completed_steps']) == 552
         np.testing.assert_array_equal(checkpoint['a_old'], u + 2)
+
+
+def test_fresh_solver_keeps_force_and_time_gates(monkeypatch):
+    from types import ModuleType
+    from fresh_reference_native import solve_fresh
+
+    native = ModuleType('lv_surrogate.physics.admissible_newton_gentle_shrink')
+    seen = {}
+
+    def solve(problem, adapter, history, audit, options, trace, persist, **policy):
+        seen.update(policy)
+        trace['custom_force_N'] = 2e-10
+
+    native.solve = solve
+    monkeypatch.setitem(sys.modules, native.__name__, native)
+    trace = {}
+    options = dict(custom_absolute_tolerance_N=1e-9, wall_budget_seconds=1800)
+    solve_fresh(None, None, None, None, options, trace, lambda: None)
+    assert trace['solver_policy'] == 'fresh_jacobian_two_good_steps'
+    assert seen == dict(policy='two_good_steps', reuse_jacobian=False, reuse_gamg=False,
+                        late_forcing_floor=1e-5)
+    with pytest.raises(AssertionError):
+        solve_fresh(None, None, None, None, dict(options, wall_budget_seconds=1801),
+                    {}, lambda: None)
