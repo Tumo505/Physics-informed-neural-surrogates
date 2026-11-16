@@ -2,6 +2,7 @@
 import os
 from pathlib import Path
 import sys
+import subprocess
 import traceback
 import time
 
@@ -33,9 +34,51 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     trace['solver_policy'] = 'cuda_fresh_jacobian_two_good_steps'
     trace['gamg_matrix_backend'] = 'host' if host_preconditioner else 'cuda'
 
+    def save_checkpoint(label, candidate, shift):
+        error = None
+        if rank == 0:
+            try:
+                pending = run / f'{label}.pending.npz'
+                digest = sha(checkpoint)
+                with pending.open('wb') as output:
+                    np.savez(output, u=candidate, step=step, shift=shift, checkpoint_sha256=digest)
+                    output.flush()
+                    os.fsync(output.fileno())
+                saved = run / f'{label}.npz'
+                pending.replace(saved)
+                if label == 'paused':
+                    atomic(run / 'pause.json', dict(step=step, checkpoint_sha256=digest,
+                                                    iterate_sha256=sha(saved)))
+            except Exception as exc:
+                error = str(exc)
+        error = comm.bcast(error, root=0)
+        if error:
+            raise RuntimeError(error)
+
+    def log_memory(iteration):
+        with Path('/proc/self/status').open() as status:
+            rss_kib = next(int(line.split()[1]) for line in status if line.startswith('VmRSS:'))
+        ranks = comm.gather(rss_kib, root=0)
+        if rank != 0:
+            return
+        try:
+            gpu = subprocess.run(
+                ['nvidia-smi', '--query-gpu=index,memory.used,memory.total',
+                 '--format=csv,noheader,nounits'],
+                capture_output=True, text=True, timeout=5, check=True,
+            ).stdout.strip().replace('\n', ' | ')
+        except (OSError, subprocess.SubprocessError) as exc:
+            gpu = f'unavailable ({exc})'
+        print(f'MEMORY state={step + 1} iteration={iteration} '
+              f'rank_rss_sum_KiB={sum(ranks)} rank_rss_max_KiB={max(ranks)} '
+              f'GPU index,used_MiB,total_MiB: {gpu}', flush=True)
+
     def remember(iteration, candidate, force, shift):
         nonlocal latest
         latest = candidate, shift
+        if step == 554:
+            save_checkpoint('latest-newton', candidate, shift)
+            log_memory(iteration)
 
     def check_deadline():
         if not comm.bcast(time.monotonic() >= deadline if rank == 0 else None, root=0):
@@ -43,26 +86,12 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
         candidate, shift = latest if latest is not None else (None, options['initial_regularization'])
         if candidate is None:
             candidate = adapter.gather('u')
-        error = None
-        if rank == 0:
-            try:
-                pending = run / 'paused.pending.npz'
-                digest = sha(checkpoint)
-                with pending.open('wb') as output:
-                    np.savez(output, u=candidate, step=step, shift=shift, checkpoint_sha256=digest)
-                    output.flush()
-                    os.fsync(output.fileno())
-                saved = run / 'paused.npz'
-                pending.replace(saved)
-                atomic(run / 'pause.json', dict(step=step, checkpoint_sha256=digest,
-                                                iterate_sha256=sha(saved)))
-            except Exception as exc:
-                error = str(exc)
-        error = comm.bcast(error, root=0)
-        if error:
-            raise RuntimeError(error)
+        save_checkpoint('paused', candidate, shift)
+
         raise RuntimeError('CUDA production slice deadline')
 
+    if step == 554:
+        log_memory("start")
     try:
         solve(problem, adapter, history, audit, options, trace, persist,
               policy='two_good_steps', late_forcing_floor=1e-5,

@@ -59,6 +59,7 @@ def initialize(run, retry=None, host_preconditioner=False):
     markers = [target / name for name in ('failure.json', 'UNACCEPTED_iterate.npz')
                if (target / name).exists()]
     retry_log = None
+    retry_iterate = None
     if retry is not None:
         failed = load(retry / 'state.json')
         assert failed['status'] == 'blocked' and failed['completed_steps'] == 554
@@ -74,15 +75,30 @@ def initialize(run, retry=None, host_preconditioner=False):
         if rank_log.is_file():
             retry_log = rank_log
         log = retry_log.read_text()
-        assert 'PETSc.KSP.setUp' in log
         error_code = 'error code 97'
-        if load(retry / 'plan.json').get('host_preconditioner'):
-            assert host_preconditioner and 'REGULARIZED NEWTON 0 ' in generator_log
-            error_code = 'error code 76'
-        assert error_code in log
-        for marker in markers:
-            if marker.name == 'failure.json':
-                assert error_code in load(marker)['error']
+        saved = failed_slice / 'latest-newton.npz'
+        if failed.get('blocker', '').startswith('RuntimeError: CUDA generator exited 9.'):
+            assert host_preconditioner and load(retry / 'plan.json').get('host_preconditioner')
+            assert 'Killed (signal 9)' in generator_log and 'REGULARIZED NEWTON 0 ' in generator_log
+            assert not any(marker.name == 'failure.json' for marker in markers)
+            if saved.is_file():
+                import numpy as np
+
+                with np.load(saved, allow_pickle=False) as checkpoint:
+                    assert int(checkpoint['step']) == 554
+                    assert checkpoint['checkpoint_sha256'].item() == digest
+                    assert np.isfinite(checkpoint['u']).all()
+                    assert np.isfinite(checkpoint['shift']) and float(checkpoint['shift']) > 0
+                retry_iterate = saved
+        else:
+            assert 'PETSc.KSP.setUp' in log
+            if load(retry / 'plan.json').get('host_preconditioner'):
+                assert host_preconditioner and 'REGULARIZED NEWTON 0 ' in generator_log
+                error_code = 'error code 76'
+            assert error_code in log
+            for marker in markers:
+                if marker.name == 'failure.json':
+                    assert error_code in load(marker)['error']
     else:
         assert not markers, 'Existing failure artifacts require a reviewed retry'
 
@@ -96,6 +112,9 @@ def initialize(run, retry=None, host_preconditioner=False):
     protocol_path = run / 'stream-protocol.json'
     assert GPU_LIB.is_file() and (NATIVE / 'bin/mpiexec').is_file()
     run.mkdir()
+    if retry_iterate is not None:
+        os.link(retry_iterate, run / 'paused-iterate.npz')
+        artifact(ROOT, run, run / 'paused-iterate.npz', 'Recovered state-555 Newton iterate')
     atomic(protocol_path, protocol)
     plan = dict(inherited, run_id=run.name, queue='iworkq',
                 stream_protocol=str(protocol_path.relative_to(ROOT)),
