@@ -59,7 +59,7 @@ def add_positivity_diagnostics(audit, on_failure=None):
 
 def use_positivity_depth(audit, depth):
     """Extend subdivision for the current state through its final proof."""
-    assert audit.max_depth == 12 and audit.margin == 1e-9 and depth == 16
+    assert audit.max_depth == 12 and audit.margin == 1e-9 and depth in (16, 20)
     children = [child for _, child in audit.shards]
     assert all(child.max_depth == audit.max_depth for child in children)
     original_pair = audit.pair

@@ -84,11 +84,19 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
         assert result['reproduced'] and result['state'] == 555
         assert result['stage'] == spec['stage'] == 'endpoint'
         assert result['element'] == spec['element'] == 813578
-        assert result['alpha'] == 1.0 and result['shift'] == spec['shift']
-        assert result['margin'] == 1e-9 and result['original_depth'] == 12
+        iteration = spec.get('iteration', 0)
+        original_depth = spec.get('original_depth', 12)
+        certified_depth = {(0, 12): 16, (3, 16): 20}[iteration, original_depth]
+        assert result.get('iteration', 0) == iteration
+        if iteration == 3:
+            assert result['prefix_matches'] and len(spec['prefix']) == 3
+            assert result['initial_shift'] == spec['shift']
+        assert result['alpha'] == 1.0 and result['shift'] == spec.get('trial_shift', spec['shift'])
+        assert result['margin'] == 1e-9 and result['original_depth'] == original_depth
         proof, = result['results']
-        assert proof['outcome'] == 'certified_positive' and proof['depth'] == 16
-        assert 12 < proof['maximum_depth'] <= 16 and proof['lower_bound'] > result['margin']
+        assert proof['outcome'] == 'certified_positive' and proof['depth'] == certified_depth
+        assert original_depth < proof['maximum_depth'] <= certified_depth
+        assert math.isfinite(proof['lower_bound']) and proof['lower_bound'] > result['margin']
         retry_iterate = replay_run / 'diagnostic-seed.npz'
         registered(ROOT, replay_run, retry_iterate)
         assert sha(retry_iterate) == spec['seed_sha256']
