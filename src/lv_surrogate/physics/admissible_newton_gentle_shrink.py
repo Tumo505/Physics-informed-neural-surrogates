@@ -6,7 +6,7 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
  iteration = 0
@@ -22,6 +22,7 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
    if log_phases and rank == 0:
     print(f'NEWTON {iteration} shift={mu:g} end {name} seconds={time.perf_counter()-start:.3f}', flush=True)
  def budget():
+  if check_deadline is not None:check_deadline()
   if comm.allreduce(time.perf_counter()-started,op=MPI.MAX)>options['wall_budget_seconds']:raise RuntimeError('Regularized Newton wall budget exhausted')
  def canonical(v):
   arrays=comm.gather(np.array(v.getArray(readonly=True)),root=0);x=None
@@ -62,7 +63,18 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   if ksp is None:
    ksp=PETSc.KSP().create(A.comm);ksp.setType('gmres');ksp.setGMRESRestart(200);ksp.getPC().setType('gamg');ksp.setNormType(PETSc.KSP.NormType.UNPRECONDITIONED);ksp.setMonitor(lambda k,it,r:budget())
   reuse_pc = bool(reuse_gamg and reused and previous_fresh_shift == mu)
-  ksp.setOperators(A)
+  if cuda_linear:
+   gpu_matrix = measured('cuda_matrix_copy', A.copy)
+   gpu_matrix.convert('aijcusparse')
+   gpu_delta, gpu_rhs = gpu_matrix.createVecs()
+   assert 'cusparse' in gpu_matrix.getType()
+   assert all('cuda' in v.getType() for v in (gpu_delta, gpu_rhs))
+   b.copy(gpu_rhs)
+   if rank == 0 and iteration == 0:
+    print('CUDA Newton operator', gpu_matrix.getType(), 'vector', gpu_rhs.getType(), flush=True)
+   ksp.setOperators(gpu_matrix)
+  else:
+   ksp.setOperators(A)
   ksp.setTolerances(rtol=eta,atol=1e-12,max_it=3000)
   true = b.duplicate()
   limit = max(1.1e-12,1.1*eta*norm)
@@ -78,7 +90,12 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
    setup_seconds = time.perf_counter()-setup_started
    budget()
    solve_started = time.perf_counter()
-   measured('ksp_solve',ksp.solve,b,delta)
+   if cuda_linear:
+    gpu_delta.set(0.)
+    measured('ksp_solve',ksp.solve,gpu_rhs,gpu_delta)
+    gpu_delta.copy(delta)
+   else:
+    measured('ksp_solve',ksp.solve,b,delta)
    solve_seconds = time.perf_counter()-solve_started
    A.mult(delta,true)
    true.axpy(-1,b)
@@ -97,6 +114,8 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
    fallback = dict(first_KSP_reason=first['reason'],first_iterations=first['iterations'],
                    first_true_residual_N=first['true_residual_N'])
    attempts.append(linear_attempt(False))
+  if cuda_linear:
+   for obj in (gpu_delta, gpu_rhs, gpu_matrix):obj.destroy()
   last = attempts[-1]
   previous_fresh_shift = mu if not reused and last['qualified'] else None
   true_force = last['true_residual_N']
