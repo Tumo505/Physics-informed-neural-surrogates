@@ -6,7 +6,7 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
  iteration = 0
@@ -70,9 +70,11 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
    assert 'cusparse' in gpu_matrix.getType()
    assert all('cuda' in v.getType() for v in (gpu_delta, gpu_rhs))
    b.copy(gpu_rhs)
+   preconditioner_matrix = A if host_preconditioner else gpu_matrix
    if rank == 0 and iteration == 0:
-    print('CUDA Newton operator', gpu_matrix.getType(), 'vector', gpu_rhs.getType(), flush=True)
-   ksp.setOperators(gpu_matrix)
+    print('CUDA Newton operator', gpu_matrix.getType(), 'vector', gpu_rhs.getType(),
+          'GAMG matrix', preconditioner_matrix.getType(), flush=True)
+   ksp.setOperators(gpu_matrix, preconditioner_matrix)
   else:
    ksp.setOperators(A)
   ksp.setTolerances(rtol=eta,atol=1e-12,max_it=3000)

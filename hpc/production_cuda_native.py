@@ -29,7 +29,9 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
                 assert saved['checkpoint_sha256'].item() == digest
                 adapter.assign('u', saved['u'])
                 options['initial_regularization'] = float(saved['shift'])
+    host_preconditioner = os.environ.get('LV_CUDA_HOST_PRECONDITIONER') == '1'
     trace['solver_policy'] = 'cuda_fresh_jacobian_two_good_steps'
+    trace['gamg_matrix_backend'] = 'host' if host_preconditioner else 'cuda'
 
     def remember(iteration, candidate, force, shift):
         nonlocal latest
@@ -64,7 +66,8 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     try:
         solve(problem, adapter, history, audit, options, trace, persist,
               policy='two_good_steps', late_forcing_floor=1e-5,
-              cuda_linear=True, check_deadline=check_deadline, save_iterate=remember)
+              cuda_linear=True, check_deadline=check_deadline, save_iterate=remember,
+              host_preconditioner=host_preconditioner)
     except PETSc.Error:
         print(f'PETSc failure on rank {rank}, state {step + 1}', file=sys.stderr, flush=True)
         traceback.print_exc()

@@ -45,7 +45,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None):
+def initialize(run, retry=None, host_preconditioner=False):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -68,9 +68,12 @@ def initialize(run, retry=None):
         failed_slice = retry / f"slice-{failed['slice']:03d}"
         assert not (failed_slice / 'pause.json').exists()
         retry_log = failed_slice / 'generate.log'
+        assert 'CUDA Newton operator' in retry_log.read_text()
+        rank_log = failed_slice / 'petsc-rank-00.log'
+        if rank_log.is_file():
+            retry_log = rank_log
         log = retry_log.read_text()
-        assert all(value in log for value in (
-            'CUDA Newton operator', 'PETSc.KSP.setUp', 'error code 97'))
+        assert 'PETSc.KSP.setUp' in log and 'error code 97' in log
         for marker in markers:
             if marker.name == 'failure.json':
                 assert 'error code 97' in load(marker)['error']
@@ -91,6 +94,7 @@ def initialize(run, retry=None):
     plan = dict(inherited, run_id=run.name, queue='iworkq',
                 stream_protocol=str(protocol_path.relative_to(ROOT)),
                 checkpoint_sha256=digest, gpu_library_sha256=sha(GPU_LIB),
+                host_preconditioner=host_preconditioner,
                 sources={path: sha(ROOT / path) for path in SOURCES})
     if retry_log is not None:
         plan['retry_evidence'] = dict(run=retry.name, log_sha256=sha(retry_log))
@@ -183,6 +187,7 @@ def execute_locked(run, state, job, deadline):
         gpu_env = dict(env, CUDA_VISIBLE_DEVICES=device, PETSC_OPTIONS='-use_gpu_aware_mpi 0',
                        PKG_CONFIG_PATH=f'{GPU}/lib/pkgconfig:{pc_paths}',
                        PKG_CONFIG_LIBDIR=f'{GPU}/lib/pkgconfig:{pc_paths}',
+                       LV_CUDA_HOST_PRECONDITIONER=str(int(plan.get('host_preconditioner', False))),
                        LV_CUDA_SLICE=str(output), LV_CUDA_DEADLINE=str(deadline),
                        LV_REFERENCE_TARGET=str(target))
         result = run_command('generate', [
@@ -264,14 +269,16 @@ def main():
     parser.add_argument('action', choices=('submit', 'execute'))
     parser.add_argument('--run-id', required=True)
     parser.add_argument('--retry-after', metavar='BLOCKED_RUN')
+    parser.add_argument('--host-preconditioner', action='store_true',
+                        help='Build GAMG from the host AIJ matrix and solve with the CUDA matrix')
     args = parser.parse_args()
     if any(not re.fullmatch(r'[\w-]+', value)
            for value in (args.run_id, args.retry_after) if value is not None):
         parser.error('Invalid run ID')
     run = HPC / args.run_id
     if args.action == 'execute':
-        if args.retry_after is not None:
-            parser.error('--retry-after applies to submission only')
+        if args.retry_after is not None or args.host_preconditioner:
+            parser.error('Retry and preconditioner options apply to submission only')
         execute(run)
     else:
         with (ROOT / '.hpc/profile-submission.lock').open('a') as lock:
@@ -279,7 +286,8 @@ def main():
             assert_idle(ROOT)
             with (PARENT / 'execution.lock').open('a') as execution:
                 fcntl.flock(execution, fcntl.LOCK_EX | fcntl.LOCK_NB)
-                initialize(run, HPC / args.retry_after if args.retry_after else None)
+                initialize(run, HPC / args.retry_after if args.retry_after else None,
+                           args.host_preconditioner)
             submit(run, 1)
 
 
