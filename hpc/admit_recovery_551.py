@@ -21,7 +21,7 @@ def read(path):
 
 
 def admit(run, step=550):
-    assert step in (550, 551, 552)
+    assert 550 <= step < 1600
     for name in ('plan.json', 'summary.json', 'independent-audit.json', 'candidate.npz'):
         registered(ROOT, run, run / name)
     plan = read(run / 'plan.json')
@@ -35,6 +35,8 @@ def admit(run, step=550):
         assert plan['warm_restart_552'] and plan['warm_followup_parent']
     if step == 552:
         assert plan['checkpointed_recovery_553'] and plan['recovery_parent'] and plan['saved_iterate']
+    if step >= 553:
+        assert plan['checkpointed_recovery'] and plan['full_solve']
     if step >= 551:
         assert result['proof_agreement'] and not result['physical_new_state_generated']
     assert result['complete'] and result['passed'] and result['step'] == audit['step'] == step
@@ -137,12 +139,16 @@ def admit(run, step=550):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--state', type=int, choices=(551, 552, 553), default=551)
+    parser.add_argument('--state', type=int, metavar='551–1600', default=551)
     parser.add_argument('--run')
     args = parser.parse_args()
+    if not 551 <= args.state <= 1600:
+        parser.error('State must be between 551 and 1600')
+    if args.run is None and args.state > 554:
+        parser.error('Supply --run for states after 554')
     if args.run is None:
         args.run = {551: 'cmbbe-recovery-551-resume-01', 552: 'cmbbe-warm-552-02',
-                    553: 'cmbbe-recovery-553-02'}[args.state]
+                    553: 'cmbbe-recovery-553-02', 554: 'cmbbe-recovery-554-02'}[args.state]
     if Path(args.run).name != args.run or args.run in ('.', '..'):
         parser.error('Supply a run ID')
     assert_idle(ROOT)

@@ -78,7 +78,7 @@ def test_state_552_followup_checks_final_trend():
         verified_final_trend(trace, summary, forces[-1], .0625, 4)
 
 
-@pytest.mark.parametrize("step", [551, 552])
+@pytest.mark.parametrize("step", [551, 552, 553])
 def test_admit_audited_recovery_updates_checkpoint_once(tmp_path, monkeypatch, step):
     import json
     import numpy as np
@@ -112,7 +112,8 @@ def test_admit_audited_recovery_updates_checkpoint_once(tmp_path, monkeypatch, s
               (config, target / 'manifest.json', restart_path)}
     atomic(run / 'plan.json', dict(step=step, warm_shift=.01, warm_restart_552=True,
                                    warm_followup_parent='warm', checkpointed_recovery_553=True,
-                                   recovery_parent='prior', saved_iterate='last-newton.npz', target_name='reference',
+                                   recovery_parent='prior', saved_iterate='last-newton.npz',
+                                   checkpointed_recovery=step >= 553, full_solve=True, target_name='reference',
                                    parent_run='parent', config='config.json', frozen=frozen))
     atomic(run / 'summary.json', dict(complete=True, passed=True, step=step, native_updates=0,
                                       SNES_reason=2, native_force_N=2e-10, proof_agreement=True,
