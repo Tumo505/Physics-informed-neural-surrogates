@@ -49,7 +49,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None):
+def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -110,6 +110,8 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
         retry = replay_run
         stagnation_shift = spec['shift']
         positivity_depth = proof['depth']
+        if adaptive_positivity:
+            assert positivity_depth == 20, 'Adaptive refinement requires the depth-20 production replay'
     elif diagnose_positivity:
         previous = load(retry / 'plan.json')
         registered(ROOT, retry, retry / 'plan.json')
@@ -248,6 +250,7 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
                 checkpoint_sha256=digest, gpu_library_sha256=sha(GPU_LIB),
                 host_preconditioner=host_preconditioner, gpus=gpus, stagnation_shift=stagnation_shift,
                 positivity_diagnostic=diagnostic, positivity_depth=positivity_depth,
+                positivity_retry_depth=24 if adaptive_positivity else None,
                 sources={path: sha(ROOT / path) for path in SOURCES})
     if retry_log is not None:
         plan['retry_evidence'] = dict(run=retry.name, log_sha256=sha(retry_log), resume_cancelled=resume_cancelled)
@@ -361,6 +364,8 @@ def execute_locked(run, state, job, deadline):
             gpu_env['LV_CUDA_STAGNATION_SHIFT'] = str(plan['stagnation_shift'])
         if plan.get('positivity_depth') is not None:
             gpu_env['LV_CUDA_POSITIVITY_DEPTH'] = str(plan['positivity_depth'])
+        if plan.get('positivity_retry_depth') is not None:
+            gpu_env['LV_CUDA_POSITIVITY_RETRY_DEPTH'] = str(plan['positivity_retry_depth'])
         if plan.get('positivity_diagnostic'):
             gpu_env['LV_CUDA_DIAGNOSTIC_PLAN'] = str(run / 'plan.json')
         result = run_command('generate', [
@@ -463,7 +468,11 @@ def main():
                         help='Replay one rejected trial and check the unresolved element at greater depth')
     parser.add_argument('--certify-depth-from', metavar='REPLAY_RUN',
                         help='Resume production with the depth certified by a registered replay')
+    parser.add_argument('--adaptive-positivity', action='store_true',
+                        help='Retry unresolved depth-20 cells at depth 24 for state 555')
     args = parser.parse_args()
+    if args.adaptive_positivity and not args.certify_depth_from:
+        parser.error('--adaptive-positivity requires --certify-depth-from')
     if args.certify_depth_from and (
             args.action != 'submit' or args.retry_after or args.resume_cancelled
             or args.diagnose_positivity or args.stagnation_shift is not None
@@ -496,7 +505,8 @@ def main():
                 initialize(run, HPC / args.retry_after if args.retry_after else None,
                            args.host_preconditioner, args.gpus, args.resume_cancelled, args.stagnation_shift,
                            args.diagnose_positivity,
-                           HPC / args.certify_depth_from if args.certify_depth_from else None)
+                           HPC / args.certify_depth_from if args.certify_depth_from else None,
+                           args.adaptive_positivity)
             submit(run, 1)
 
 

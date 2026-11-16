@@ -57,18 +57,37 @@ def add_positivity_diagnostics(audit, on_failure=None):
     return restore
 
 
-def use_positivity_depth(audit, depth):
+def use_positivity_depth(audit, depth, retry_depth=None):
     """Extend subdivision for the current state through its final proof."""
     assert audit.max_depth == 12 and audit.margin == 1e-9 and depth in (16, 20)
     children = [child for _, child in audit.shards]
     assert all(child.max_depth == audit.max_depth for child in children)
+    assert retry_depth is None or (depth == 20 and retry_depth == 24)
     original_pair = audit.pair
+    original_resolvers = [child.resolve for child in children] if retry_depth is not None else []
     for child in children:
         child.max_depth = depth
+
+    for child, resolve in zip(children, original_resolvers):
+        deeper = copy.copy(child)
+        deeper.max_depth = retry_depth
+
+        def resolve_with_retry(deformation, vertices, resolve=resolve, deeper=deeper):
+            try:
+                return resolve(deformation, vertices)
+            except ValueError as exc:
+                if str(exc) != 'Whole-element positivity remains unresolved at maximum depth':
+                    raise
+            proof = deeper.resolve(deformation, vertices)
+            return dict(proof, subdivision_retry_depth=retry_depth)
+
+        child.resolve = resolve_with_retry
 
     def restore():
         for child in children:
             child.max_depth = audit.max_depth
+        for child, resolve in zip(children, original_resolvers):
+            child.resolve = resolve
         audit.pair = original_pair
 
     def pair(*args, **kwargs):
@@ -78,6 +97,8 @@ def use_positivity_depth(audit, depth):
         try:
             proof = original_pair(*args, **kwargs)
             proof['subdivision_depth_limit'] = depth
+            if retry_depth is not None:
+                proof['subdivision_retry_depth_limit'] = retry_depth
             return proof
         finally:
             restore()
@@ -116,10 +137,15 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     trace['solver_policy'] = 'cuda_fresh_jacobian_two_good_steps'
     directional_armijo = step == 554 and bool(os.environ.get('LV_CUDA_STAGNATION_SHIFT'))
     depth = int(os.environ.get('LV_CUDA_POSITIVITY_DEPTH', '12')) if step == 554 else 12
+    retry_depth = os.environ.get('LV_CUDA_POSITIVITY_RETRY_DEPTH') if step == 554 else None
+    retry_depth = int(retry_depth) if retry_depth else None
+    if retry_depth is not None:
+        trace['positivity_subdivision_retry_depth_limit'] = retry_depth
     if depth != 12:
         trace['positivity_subdivision_depth_limit'] = depth
         if rank == 0:
-            print(f'POSITIVITY state={step + 1} maximum_depth={depth}', flush=True)
+            retry_note = f' unresolved_retry_depth={retry_depth}' if retry_depth is not None else ''
+            print(f'POSITIVITY state={step + 1} maximum_depth={depth}{retry_note}', flush=True)
     if directional_armijo:
         trace['line_search'] = 'directional_armijo_squared_force'
     trace['gamg_matrix_backend'] = 'host' if host_preconditioner else 'cuda'
@@ -182,8 +208,8 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
 
     if step == 554:
         log_memory("start")
+    restore_depth = use_positivity_depth(audit, depth, retry_depth) if depth != 12 and rank == 0 else None
     restore = add_positivity_diagnostics(audit) if directional_armijo and rank == 0 else None
-    restore_depth = use_positivity_depth(audit, depth) if depth != 12 and rank == 0 else None
     solved = False
     try:
         solve(problem, adapter, history, audit, options, trace, persist,
