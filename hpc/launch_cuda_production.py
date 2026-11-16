@@ -45,7 +45,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run):
+def initialize(run, retry=None):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -56,7 +56,27 @@ def initialize(run):
     work = load(ADMISSION / 'independent-audit.json')
     registered(ROOT, ADMISSION, ADMISSION / 'independent-audit.json')
     assert work['passed'] and work['history_passed']
-    assert not any((target / name).exists() for name in ('failure.json', 'UNACCEPTED_iterate.npz'))
+    markers = [target / name for name in ('failure.json', 'UNACCEPTED_iterate.npz')
+               if (target / name).exists()]
+    retry_log = None
+    if retry is not None:
+        failed = load(retry / 'state.json')
+        assert failed['status'] == 'blocked' and failed['completed_steps'] == 554
+        assert failed['checkpoint_sha256'] == digest
+        assert any(row['kind'] == 'job_submission' and row['return_code'] == 0
+                   and row['stdout'] == failed['job'] for row in read(retry))
+        failed_slice = retry / f"slice-{failed['slice']:03d}"
+        assert not (failed_slice / 'pause.json').exists()
+        retry_log = failed_slice / 'generate.log'
+        log = retry_log.read_text()
+        assert all(value in log for value in (
+            'CUDA Newton operator', 'PETSc.KSP.setUp', 'error code 97'))
+        for marker in markers:
+            if marker.name == 'failure.json':
+                assert 'error code 97' in load(marker)['error']
+    else:
+        assert not markers, 'Existing failure artifacts require a reviewed retry'
+
     protocol = load(ROOT / state['stream_protocol'])
     assert protocol['parallel_ranks'] == 12
     # The frozen generator requires finite JSON numbers for these legacy fields.
@@ -72,6 +92,13 @@ def initialize(run):
                 stream_protocol=str(protocol_path.relative_to(ROOT)),
                 checkpoint_sha256=digest, gpu_library_sha256=sha(GPU_LIB),
                 sources={path: sha(ROOT / path) for path in SOURCES})
+    if retry_log is not None:
+        plan['retry_evidence'] = dict(run=retry.name, log_sha256=sha(retry_log))
+        for marker in markers:
+            archived = run / ('prior-' + marker.name)
+            os.link(marker, archived)
+            artifact(ROOT, run, archived, 'Archived state-555 failure artifact')
+            marker.unlink()
     atomic(run / 'plan.json', plan)
     artifact(ROOT, run, run / 'plan.json', 'CUDA production plan')
     artifact(ROOT, run, protocol_path, 'Frozen generator protocol for PBS CUDA slices')
@@ -80,7 +107,6 @@ def initialize(run):
     script.write_text(f'#!/bin/bash\nset -eu\ncd {shlex.quote(str(ROOT))}\nexec {command}\n')
     artifact(ROOT, run, script, 'PBS slice command')
     atomic(run / 'state.json', dict(status='submitted', completed_steps=554, checkpoint_sha256=digest))
-    submit(run, 1)
 
 
 def execute(run):
@@ -174,7 +200,12 @@ def execute_locked(run, state, job, deadline):
         assert sha(target / 'restart.npz') == digest
         state.update(completed_steps=count, checkpoint_sha256=digest)
         if result:
-            receipt = load(output / 'pause.json')
+            receipt_path = output / 'pause.json'
+            if not receipt_path.is_file():
+                raise RuntimeError(
+                    f'CUDA generator exited {result}. See {output / "generate.log"}'
+                )
+            receipt = load(receipt_path)
             failed = target / 'failure.json'
             if failed.exists():
                 assert load(failed)['error'] == 'CUDA production slice deadline'
@@ -232,17 +263,24 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('submit', 'execute'))
     parser.add_argument('--run-id', required=True)
+    parser.add_argument('--retry-after', metavar='BLOCKED_RUN')
     args = parser.parse_args()
-    if not re.fullmatch(r'[\w-]+', args.run_id):
+    if any(not re.fullmatch(r'[\w-]+', value)
+           for value in (args.run_id, args.retry_after) if value is not None):
         parser.error('Invalid run ID')
     run = HPC / args.run_id
     if args.action == 'execute':
+        if args.retry_after is not None:
+            parser.error('--retry-after applies to submission only')
         execute(run)
     else:
         with (ROOT / '.hpc/profile-submission.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             assert_idle(ROOT)
-            initialize(run)
+            with (PARENT / 'execution.lock').open('a') as execution:
+                fcntl.flock(execution, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                initialize(run, HPC / args.retry_after if args.retry_after else None)
+            submit(run, 1)
 
 
 if __name__ == '__main__':

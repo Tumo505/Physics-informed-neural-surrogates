@@ -2,6 +2,7 @@
 import os
 from pathlib import Path
 import sys
+import traceback
 import time
 
 import worker8_native
@@ -10,6 +11,7 @@ from registry import atomic, sha
 
 def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     import numpy as np
+    from petsc4py import PETSc
     from lv_surrogate.physics.admissible_newton_gentle_shrink import solve
 
     run = Path(os.environ['LV_CUDA_SLICE'])
@@ -59,9 +61,16 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
             raise RuntimeError(error)
         raise RuntimeError('CUDA production slice deadline')
 
-    solve(problem, adapter, history, audit, options, trace, persist,
-          policy='two_good_steps', late_forcing_floor=1e-5,
-          cuda_linear=True, check_deadline=check_deadline, save_iterate=remember)
+    try:
+        solve(problem, adapter, history, audit, options, trace, persist,
+              policy='two_good_steps', late_forcing_floor=1e-5,
+              cuda_linear=True, check_deadline=check_deadline, save_iterate=remember)
+    except PETSc.Error:
+        print(f'PETSc failure on rank {rank}, state {step + 1}', file=sys.stderr, flush=True)
+        traceback.print_exc()
+        sys.stderr.flush()
+        os.fsync(sys.stderr.fileno())
+        raise
     assert 0 <= trace['custom_force_N'] < 1e-9
     persist()
 
@@ -80,6 +89,11 @@ def main():
     if MPI.COMM_WORLD.rank == 0:
         print(f'CUDA PETSc on {MPI.COMM_WORLD.size} MPI ranks: {expected}', flush=True)
     assert os.environ['PBS_JOBID']
+    rank = MPI.COMM_WORLD.rank
+    path = Path(os.environ['LV_CUDA_SLICE']) / f'petsc-rank-{rank:02d}.log'
+    with path.open('ab', buffering=0) as rank_log:
+        os.dup2(rank_log.fileno(), sys.stderr.fileno())
+    PETSc.Sys.pushErrorHandler('traceback')
     admissible_newton_regularized_forcing.solve = solve_cuda
     worker8_native.main()
 
