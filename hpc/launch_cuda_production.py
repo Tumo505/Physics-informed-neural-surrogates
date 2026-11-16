@@ -68,15 +68,21 @@ def initialize(run, retry=None, host_preconditioner=False):
         failed_slice = retry / f"slice-{failed['slice']:03d}"
         assert not (failed_slice / 'pause.json').exists()
         retry_log = failed_slice / 'generate.log'
-        assert 'CUDA Newton operator' in retry_log.read_text()
+        generator_log = retry_log.read_text()
+        assert 'CUDA Newton operator' in generator_log
         rank_log = failed_slice / 'petsc-rank-00.log'
         if rank_log.is_file():
             retry_log = rank_log
         log = retry_log.read_text()
-        assert 'PETSc.KSP.setUp' in log and 'error code 97' in log
+        assert 'PETSc.KSP.setUp' in log
+        error_code = 'error code 97'
+        if load(retry / 'plan.json').get('host_preconditioner'):
+            assert host_preconditioner and 'REGULARIZED NEWTON 0 ' in generator_log
+            error_code = 'error code 76'
+        assert error_code in log
         for marker in markers:
             if marker.name == 'failure.json':
-                assert 'error code 97' in load(marker)['error']
+                assert error_code in load(marker)['error']
     else:
         assert not markers, 'Existing failure artifacts require a reviewed retry'
 

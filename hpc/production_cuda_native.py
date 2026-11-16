@@ -96,7 +96,6 @@ def main():
     path = Path(os.environ['LV_CUDA_SLICE']) / f'petsc-rank-{rank:02d}.log'
     with path.open('ab', buffering=0) as rank_log:
         os.dup2(rank_log.fileno(), sys.stderr.fileno())
-    PETSc.Sys.pushErrorHandler('traceback')
     admissible_newton_regularized_forcing.solve = solve_cuda
     worker8_native.main()
 

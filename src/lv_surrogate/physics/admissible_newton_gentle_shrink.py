@@ -60,6 +60,10 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   diag=A.getDiagonal();scale=diag.copy();scale.abs();values=scale.getArray();values[:]=np.maximum(values,scale.norm(PETSc.NormType.NORM_INFINITY)*1e-12)
   shifted=diag.copy();shifted.axpy(mu,scale);A.setDiagonal(shifted);A.assemble()
   b=df.as_backend_type(R).vec().copy();b.scale(-1);delta=b.duplicate();delta.set(0.)
+  if host_preconditioner and ksp is not None:
+   # The host GAMG hierarchy and CUDA Krylov storage belong to the preceding matrix.
+   ksp.destroy()
+   ksp = None
   if ksp is None:
    ksp=PETSc.KSP().create(A.comm);ksp.setType('gmres');ksp.setGMRESRestart(200);ksp.getPC().setType('gamg');ksp.setNormType(PETSc.KSP.NormType.UNPRECONDITIONED);ksp.setMonitor(lambda k,it,r:budget())
   reuse_pc = bool(reuse_gamg and reused and previous_fresh_shift == mu)
