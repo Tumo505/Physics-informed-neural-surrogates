@@ -114,17 +114,31 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
         assert evidence and sha(diagnostic_seed) == evidence[-1]['sha256']
         trace_path = target / 'custom_trace_000554.json'
         trace = load(trace_path)
-        first = trace['custom_newton_steps'][0]
-        full = first['trials'][0]
+        original_depth = previous.get('positivity_depth') or 12
+        assert original_depth in (12, 16)
+        iteration = 3 if original_depth == 16 else 0
+        rows = trace['custom_newton_steps'][:iteration + 1]
+        assert [row['iteration'] for row in rows] == list(range(iteration + 1))
+        first, rejected = rows[0], rows[-1]
+        full = rejected['trials'][0]
         assert trace['step'] == 554 and trace['line_search'] == 'directional_armijo_squared_force'
-        assert first['iteration'] == 0 and first['regularization'] == previous['stagnation_shift']
+        assert trace.get('positivity_subdivision_depth_limit', 12) == original_depth
+        assert first['regularization'] == previous['stagnation_shift']
+        prefix = []
+        for row in rows[:-1]:
+            trial, = row['trials']
+            assert row['accepted_custom_update'] and trial['alpha'] == 1
+            prefix.append(dict(force_N=trial['native_force_N'], shift=row['next_regularization']))
         assert full['alpha'] == 1 and full['armijo_passed']
         assert full['positivity_failure'] == (
             'Whole-element positivity remains unresolved at maximum depth (stage=endpoint, element=813578)')
         diagnostic = dict(source_run=retry.name, source_trace_sha256=sha(trace_path),
                           seed_sha256=sha(diagnostic_seed), shift=first['regularization'],
-                          initial_force_N=first['initial_force_N'], trial_force_N=full['native_force_N'],
-                          stage='endpoint', element=813578, depths=[16, 20, 24])
+                          iteration=iteration, original_depth=original_depth, prefix=prefix,
+                          trial_shift=rejected['regularization'],
+                          initial_force_N=rejected['initial_force_N'], trial_force_N=full['native_force_N'],
+                          stage='endpoint', element=813578,
+                          depths=[depth for depth in (16, 20, 24) if depth > original_depth])
     elif retry is not None:
         failed = load(retry / 'state.json')
         allowed = ('running', 'blocked') if resume_cancelled else ('blocked',)

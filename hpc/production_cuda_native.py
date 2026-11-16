@@ -207,7 +207,7 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
 
 
 def diagnose_trial(plan_path):
-    """Reconstruct one direction and replay its unresolved cell without the generator."""
+    """Reconstruct a bounded Newton prefix and check the selected rejected trial."""
     import numpy as np
     from mpi4py import MPI
     from cofactor_proof import CofactorBernsteinAudit
@@ -250,41 +250,59 @@ def diagnose_trial(plan_path):
         audit = CofactorBernsteinAudit(arrays, workers=8) if rank == 0 else None
 
     captured = []
+    iteration = spec.get('iteration', 0)
+    original_depth = spec.get('original_depth', 12)
+    trace = dict(step=554)
 
     def capture(stage, element, deformation, vertices, reason):
-        if stage == spec['stage'] and element == spec['element'] and not captured:
+        if (len(trace.get('custom_newton_steps', [])) == iteration
+                and stage == spec['stage'] and element == spec['element'] and not captured):
             captured.append((deformation.copy(), vertices.copy(), reason))
 
-    trace = dict(step=554)
     restore = add_positivity_diagnostics(audit, capture) if rank == 0 else None
+    restore_depth = use_positivity_depth(audit, original_depth) if rank == 0 and original_depth != 12 else None
     options = dict(protocol['admissible_newton'], initial_regularization=spec['shift'],
                    maximum_backtracks=0, wall_budget_seconds=1800)
     try:
         solve(problem, adapter, history, audit, options, trace, lambda: None,
-              policy='two_good_steps', late_forcing_floor=1e-5, stop_after=1,
+              policy='two_good_steps', late_forcing_floor=1e-5, stop_after=iteration + 1,
               cuda_linear=True, host_preconditioner=True, directional_armijo=True)
     finally:
         if rank == 0:
             restore()
+            if restore_depth is not None:
+                restore_depth()
             audit.close()
     if rank != 0:
         return
 
     atomic(output / 'replay-trace.json', trace)
-    row, = trace['custom_newton_steps']
+    rows = trace['custom_newton_steps']
+    assert len(rows) == iteration + 1
+    row = rows[-1]
     trial, = row['trials']
+    prefix_matches = all(
+        prior['accepted_custom_update']
+        and prior['next_regularization'] == expected['shift']
+        and prior['trials'][0]['alpha'] == 1
+        and np.isclose(prior['trials'][0]['native_force_N'], expected['force_N'], rtol=1e-6, atol=1e-10)
+        for prior, expected in zip(rows[:-1], spec.get('prefix', []), strict=True)
+    )
     expected_reason = (
         f"Whole-element positivity remains unresolved at maximum depth "
         f"(stage={spec['stage']}, element={spec['element']})"
     )
-    reproduced = (trial['alpha'] == 1 and trial['armijo_passed']
+    trial_shift = spec.get('trial_shift', spec['shift'])
+    reproduced = (prefix_matches and row['iteration'] == iteration and row['regularization'] == trial_shift
+                  and trial['alpha'] == 1 and trial['armijo_passed']
                   and trial['positivity_failure'] == expected_reason and len(captured) == 1
                   and np.isclose(row['initial_force_N'], spec['initial_force_N'], rtol=1e-6, atol=1e-10)
                   and np.isclose(trial['native_force_N'], spec['trial_force_N'], rtol=1e-6, atol=1e-10))
     summary = dict(reproduced=bool(reproduced), state=555, element=spec['element'],
-                   stage=spec['stage'], alpha=trial['alpha'], shift=spec['shift'],
+                   stage=spec['stage'], iteration=iteration, prefix_matches=prefix_matches,
+                   alpha=trial['alpha'], shift=trial_shift, initial_shift=spec['shift'],
                    trial_force_N=trial['native_force_N'], margin=audit.margin,
-                   original_depth=audit.max_depth, results=[])
+                   original_depth=original_depth, results=[])
     if reproduced:
         deformation, vertices, _ = captured[0]
         np.savez(output / 'rejected-cell.npz', deformation=deformation, vertices=vertices)
