@@ -49,7 +49,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False):
+def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -66,7 +66,43 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
     retry_iterate = None
     diagnostic = None
     diagnostic_seed = None
-    if diagnose_positivity:
+    positivity_depth = None
+    if certify_depth_from is not None:
+        replay_run = certify_depth_from
+        replay_plan_path = replay_run / 'plan.json'
+        registered(ROOT, replay_run, replay_plan_path)
+        replay_plan = load(replay_plan_path)
+        spec = replay_plan['positivity_diagnostic']
+        replay_state = load(replay_run / 'state.json')
+        assert replay_state['status'] == 'diagnostic_complete'
+        assert replay_state['checkpoint_sha256'] == replay_plan['checkpoint_sha256'] == digest
+        assert sha(GPU_LIB) == replay_plan['gpu_library_sha256']
+        report = ROOT / replay_state['result']
+        assert report == replay_run / 'slice-001/positivity-replay.json'
+        registered(ROOT, replay_run, report)
+        result = load(report)
+        assert result['reproduced'] and result['state'] == 555
+        assert result['stage'] == spec['stage'] == 'endpoint'
+        assert result['element'] == spec['element'] == 813578
+        assert result['alpha'] == 1.0 and result['shift'] == spec['shift']
+        assert result['margin'] == 1e-9 and result['original_depth'] == 12
+        proof, = result['results']
+        assert proof['outcome'] == 'certified_positive' and proof['depth'] == 16
+        assert 12 < proof['maximum_depth'] <= 16 and proof['lower_bound'] > result['margin']
+        retry_iterate = replay_run / 'diagnostic-seed.npz'
+        registered(ROOT, replay_run, retry_iterate)
+        assert sha(retry_iterate) == spec['seed_sha256']
+        for marker in markers:
+            if marker.name == 'failure.json':
+                assert load(marker)['error'] in (
+                    'Regularization ceiling without admissible descent',
+                    'Regularized Newton iteration ceiling reached',
+                )
+        retry_log = report
+        retry = replay_run
+        stagnation_shift = spec['shift']
+        positivity_depth = proof['depth']
+    elif diagnose_positivity:
         previous = load(retry / 'plan.json')
         registered(ROOT, retry, retry / 'plan.json')
         assert previous['gpus'] == 4 and previous['host_preconditioner']
@@ -189,11 +225,11 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
                 stream_protocol=str(protocol_path.relative_to(ROOT)),
                 checkpoint_sha256=digest, gpu_library_sha256=sha(GPU_LIB),
                 host_preconditioner=host_preconditioner, gpus=gpus, stagnation_shift=stagnation_shift,
-                positivity_diagnostic=diagnostic,
+                positivity_diagnostic=diagnostic, positivity_depth=positivity_depth,
                 sources={path: sha(ROOT / path) for path in SOURCES})
     if retry_log is not None:
         plan['retry_evidence'] = dict(run=retry.name, log_sha256=sha(retry_log), resume_cancelled=resume_cancelled)
-        if stagnation_shift is not None:
+        if stagnation_shift is not None and positivity_depth is None:
             preserved_trace = run / 'prior-state-555-trace.json'
             shutil.copy2(retry_log, preserved_trace)
             artifact(ROOT, run, preserved_trace, 'Armijo and positivity failure evidence')
@@ -301,6 +337,8 @@ def execute_locked(run, state, job, deadline):
                        LV_REFERENCE_TARGET=str(target))
         if plan.get('stagnation_shift') is not None:
             gpu_env['LV_CUDA_STAGNATION_SHIFT'] = str(plan['stagnation_shift'])
+        if plan.get('positivity_depth') is not None:
+            gpu_env['LV_CUDA_POSITIVITY_DEPTH'] = str(plan['positivity_depth'])
         if plan.get('positivity_diagnostic'):
             gpu_env['LV_CUDA_DIAGNOSTIC_PLAN'] = str(run / 'plan.json')
         result = run_command('generate', [
@@ -401,7 +439,14 @@ def main():
                         help='Retry a verified state-555 regularization ceiling with directional Armijo')
     parser.add_argument('--diagnose-positivity', action='store_true',
                         help='Replay one rejected trial and check the unresolved element at greater depth')
+    parser.add_argument('--certify-depth-from', metavar='REPLAY_RUN',
+                        help='Resume production with the depth certified by a registered replay')
     args = parser.parse_args()
+    if args.certify_depth_from and (
+            args.action != 'submit' or args.retry_after or args.resume_cancelled
+            or args.diagnose_positivity or args.stagnation_shift is not None
+            or args.gpus != 4 or not args.host_preconditioner):
+        parser.error('--certify-depth-from requires submission with --gpus 4 and --host-preconditioner')
     if args.diagnose_positivity and (
             not args.retry_after or args.resume_cancelled or args.stagnation_shift is not None
             or args.gpus != 4 or not args.host_preconditioner):
@@ -413,7 +458,7 @@ def main():
     if args.resume_cancelled and not args.retry_after:
         parser.error('--resume-cancelled requires --retry-after')
     if any(not re.fullmatch(r'[\w-]+', value)
-           for value in (args.run_id, args.retry_after) if value is not None):
+           for value in (args.run_id, args.retry_after, args.certify_depth_from) if value is not None):
         parser.error('Invalid run ID')
     run = HPC / args.run_id
     if args.action == 'execute':
@@ -428,7 +473,8 @@ def main():
                 fcntl.flock(execution, fcntl.LOCK_EX | fcntl.LOCK_NB)
                 initialize(run, HPC / args.retry_after if args.retry_after else None,
                            args.host_preconditioner, args.gpus, args.resume_cancelled, args.stagnation_shift,
-                           args.diagnose_positivity)
+                           args.diagnose_positivity,
+                           HPC / args.certify_depth_from if args.certify_depth_from else None)
             submit(run, 1)
 
 

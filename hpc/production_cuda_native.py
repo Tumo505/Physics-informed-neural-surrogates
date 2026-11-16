@@ -57,6 +57,35 @@ def add_positivity_diagnostics(audit, on_failure=None):
     return restore
 
 
+def use_positivity_depth(audit, depth):
+    """Extend subdivision for the current state through its final proof."""
+    assert audit.max_depth == 12 and audit.margin == 1e-9 and depth == 16
+    children = [child for _, child in audit.shards]
+    assert all(child.max_depth == audit.max_depth for child in children)
+    original_pair = audit.pair
+    for child in children:
+        child.max_depth = depth
+
+    def restore():
+        for child in children:
+            child.max_depth = audit.max_depth
+        audit.pair = original_pair
+
+    def pair(*args, **kwargs):
+        # The generator supplies alpha_f explicitly for the final proof.
+        if 'alpha_f' not in kwargs:
+            return original_pair(*args, **kwargs)
+        try:
+            proof = original_pair(*args, **kwargs)
+            proof['subdivision_depth_limit'] = depth
+            return proof
+        finally:
+            restore()
+
+    audit.pair = pair
+    return restore
+
+
 def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     import numpy as np
     from petsc4py import PETSc
@@ -86,6 +115,11 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     host_preconditioner = os.environ.get('LV_CUDA_HOST_PRECONDITIONER') == '1'
     trace['solver_policy'] = 'cuda_fresh_jacobian_two_good_steps'
     directional_armijo = step == 554 and bool(os.environ.get('LV_CUDA_STAGNATION_SHIFT'))
+    depth = int(os.environ.get('LV_CUDA_POSITIVITY_DEPTH', '12')) if step == 554 else 12
+    if depth != 12:
+        trace['positivity_subdivision_depth_limit'] = depth
+        if rank == 0:
+            print(f'POSITIVITY state={step + 1} maximum_depth={depth}', flush=True)
     if directional_armijo:
         trace['line_search'] = 'directional_armijo_squared_force'
     trace['gamg_matrix_backend'] = 'host' if host_preconditioner else 'cuda'
@@ -149,11 +183,16 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     if step == 554:
         log_memory("start")
     restore = add_positivity_diagnostics(audit) if directional_armijo and rank == 0 else None
+    restore_depth = use_positivity_depth(audit, depth) if depth != 12 and rank == 0 else None
+    solved = False
     try:
         solve(problem, adapter, history, audit, options, trace, persist,
               policy='two_good_steps', late_forcing_floor=1e-5,
               cuda_linear=True, check_deadline=check_deadline, save_iterate=remember,
               host_preconditioner=host_preconditioner, directional_armijo=directional_armijo)
+        assert 0 <= trace['custom_force_N'] < 1e-9
+        persist()
+        solved = True
     except PETSc.Error:
         print(f'PETSc failure on rank {rank}, state {step + 1}', file=sys.stderr, flush=True)
         traceback.print_exc()
@@ -163,8 +202,8 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     finally:
         if restore is not None:
             restore()
-    assert 0 <= trace['custom_force_N'] < 1e-9
-    persist()
+        if restore_depth is not None and not solved:
+            restore_depth()
 
 
 def diagnose_trial(plan_path):
