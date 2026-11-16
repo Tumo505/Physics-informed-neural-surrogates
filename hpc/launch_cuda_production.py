@@ -31,10 +31,12 @@ SOURCES = ('hpc/launch_cuda_production.py', 'hpc/production_cuda_native.py',
 
 def submit(run, number, after=None):
     script = run / 'job.pbs'
-    gpus = load(run / 'plan.json').get('gpus', 1)
+    plan = load(run / 'plan.json')
+    gpus = plan.get('gpus', 1)
+    walltime = '01:00:00' if plan.get('positivity_diagnostic') else '168:00:00'
     cmd = ['qsub', '-N', 'lv_cuda_ref', '-q', 'iworkq',
            '-l', f'select=1:ncpus=28:mem=240gb:ngpus={gpus}', '-l', 'place=excl',
-           '-l', 'software=PBSJobApp', '-l', 'walltime=168:00:00',
+           '-l', 'software=PBSJobApp', '-l', f'walltime={walltime}',
            '-j', 'oe', '-o', str(run / f'pbs-{number:03d}.log')]
     if after:
         cmd += ['-W', 'depend=afterok:' + after]
@@ -47,7 +49,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None):
+def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -62,7 +64,32 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
                if (target / name).exists()]
     retry_log = None
     retry_iterate = None
-    if retry is not None:
+    diagnostic = None
+    diagnostic_seed = None
+    if diagnose_positivity:
+        previous = load(retry / 'plan.json')
+        registered(ROOT, retry, retry / 'plan.json')
+        assert previous['gpus'] == 4 and previous['host_preconditioner']
+        assert sha(GPU_LIB) == previous['gpu_library_sha256']
+        assert previous['stagnation_shift'] is not None and previous['checkpoint_sha256'] == digest
+        diagnostic_seed = retry / 'initial-newton.npz'
+        evidence = [row for row in read(retry) if row['kind'] == 'artifact'
+                    and row['path'] == str((retry / 'paused-iterate.npz').relative_to(ROOT))]
+        assert evidence and sha(diagnostic_seed) == evidence[-1]['sha256']
+        trace_path = target / 'custom_trace_000554.json'
+        trace = load(trace_path)
+        first = trace['custom_newton_steps'][0]
+        full = first['trials'][0]
+        assert trace['step'] == 554 and trace['line_search'] == 'directional_armijo_squared_force'
+        assert first['iteration'] == 0 and first['regularization'] == previous['stagnation_shift']
+        assert full['alpha'] == 1 and full['armijo_passed']
+        assert full['positivity_failure'] == (
+            'Whole-element positivity remains unresolved at maximum depth (stage=endpoint, element=813578)')
+        diagnostic = dict(source_run=retry.name, source_trace_sha256=sha(trace_path),
+                          seed_sha256=sha(diagnostic_seed), shift=first['regularization'],
+                          initial_force_N=first['initial_force_N'], trial_force_N=full['native_force_N'],
+                          stage='endpoint', element=813578, depths=[16, 20, 24])
+    elif retry is not None:
         failed = load(retry / 'state.json')
         allowed = ('running', 'blocked') if resume_cancelled else ('blocked',)
         assert failed['status'] in allowed and failed['completed_steps'] == 554
@@ -154,11 +181,15 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
         if stagnation_shift is not None:
             os.link(retry_iterate, run / 'initial-newton.npz')
         artifact(ROOT, run, run / 'paused-iterate.npz', 'Recovered state-555 Newton iterate')
+    if diagnostic is not None:
+        os.link(diagnostic_seed, run / 'diagnostic-seed.npz')
+        artifact(ROOT, run, run / 'diagnostic-seed.npz', 'Read-only replay input')
     atomic(protocol_path, protocol)
     plan = dict(inherited, run_id=run.name, queue='iworkq',
                 stream_protocol=str(protocol_path.relative_to(ROOT)),
                 checkpoint_sha256=digest, gpu_library_sha256=sha(GPU_LIB),
                 host_preconditioner=host_preconditioner, gpus=gpus, stagnation_shift=stagnation_shift,
+                positivity_diagnostic=diagnostic,
                 sources={path: sha(ROOT / path) for path in SOURCES})
     if retry_log is not None:
         plan['retry_evidence'] = dict(run=retry.name, log_sha256=sha(retry_log), resume_cancelled=resume_cancelled)
@@ -270,10 +301,23 @@ def execute_locked(run, state, job, deadline):
                        LV_REFERENCE_TARGET=str(target))
         if plan.get('stagnation_shift') is not None:
             gpu_env['LV_CUDA_STAGNATION_SHIFT'] = str(plan['stagnation_shift'])
+        if plan.get('positivity_diagnostic'):
+            gpu_env['LV_CUDA_DIAGNOSTIC_PLAN'] = str(run / 'plan.json')
         result = run_command('generate', [
             str(NATIVE / 'bin/mpiexec'), '-n', '12', '/usr/bin/env', f'LD_PRELOAD={GPU_LIB}',
             *cpu, 'hpc/production_cuda_native.py', 'generate', '--policy', str(protocol),
             '--protocol', str(protocol)], gpu_env)
+        if plan.get('positivity_diagnostic'):
+            if result:
+                raise RuntimeError(f'Positivity replay exited {result}. See {output / "generate.log"}')
+            assert sha(target / 'restart.npz') == state['checkpoint_sha256']
+            assert load(target / 'manifest.json')['completed_steps'] == state['completed_steps']
+            summary = output / 'positivity-replay.json'
+            assert load(summary)['reproduced']
+            artifact(ROOT, run, summary, 'Single-element depth replay')
+            state.update(status='diagnostic_complete', result=str(summary.relative_to(ROOT)))
+            atomic(run / 'state.json', state)
+            return
         updated = load(target / 'manifest.json')
         count = updated['completed_steps']
         digest = state['checkpoint_sha256']
@@ -355,7 +399,13 @@ def main():
     parser.add_argument('--resume-cancelled', action='store_true')
     parser.add_argument('--stagnation-shift', type=float,
                         help='Retry a verified state-555 regularization ceiling with directional Armijo')
+    parser.add_argument('--diagnose-positivity', action='store_true',
+                        help='Replay one rejected trial and check the unresolved element at greater depth')
     args = parser.parse_args()
+    if args.diagnose_positivity and (
+            not args.retry_after or args.resume_cancelled or args.stagnation_shift is not None
+            or args.gpus != 4 or not args.host_preconditioner):
+        parser.error('--diagnose-positivity requires --retry-after, --gpus 4 and --host-preconditioner')
     if args.stagnation_shift is not None and (
             not math.isfinite(args.stagnation_shift) or args.stagnation_shift <= 0
             or not args.retry_after or args.resume_cancelled):
@@ -377,7 +427,8 @@ def main():
             with (PARENT / 'execution.lock').open('a') as execution:
                 fcntl.flock(execution, fcntl.LOCK_EX | fcntl.LOCK_NB)
                 initialize(run, HPC / args.retry_after if args.retry_after else None,
-                           args.host_preconditioner, args.gpus, args.resume_cancelled, args.stagnation_shift)
+                           args.host_preconditioner, args.gpus, args.resume_cancelled, args.stagnation_shift,
+                           args.diagnose_positivity)
             submit(run, 1)
 
 

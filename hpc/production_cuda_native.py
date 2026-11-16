@@ -1,4 +1,6 @@
 """Run the frozen reference generator with CUDA PETSc Newton linear algebra."""
+import copy
+import json
 import os
 from pathlib import Path
 import sys
@@ -10,7 +12,7 @@ import worker8_native
 from registry import atomic, sha
 
 
-def add_positivity_diagnostics(audit):
+def add_positivity_diagnostics(audit, on_failure=None):
     """Annotate failures without changing proof arithmetic or its depth limit."""
     original_field = audit.field
     stage = None
@@ -27,6 +29,8 @@ def add_positivity_diagnostics(audit):
             except ValueError as exc:
                 offset = vertices.__array_interface__['data'][0] - base
                 element = start + offset // stride
+                if on_failure is not None:
+                    on_failure(stage, element, deformation, vertices, str(exc))
                 raise ValueError(f'{exc} (stage={stage}, element={element})') from exc
 
         child.resolve = diagnose
@@ -163,6 +167,106 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     persist()
 
 
+def diagnose_trial(plan_path):
+    """Reconstruct one direction and replay its unresolved cell without the generator."""
+    import numpy as np
+    from mpi4py import MPI
+    from cofactor_proof import CofactorBernsteinAudit
+    from lv_surrogate.physics.admissible_newton_gentle_shrink import solve
+    from lv_surrogate.physics.bernstein import BernsteinAudit
+    from lv_surrogate.physics.parallel_fem import ParallelP2
+
+    comm = MPI.COMM_WORLD
+    rank = comm.rank
+    plan = json.loads(plan_path.read_text())
+    spec = plan['positivity_diagnostic']
+    target = Path(os.environ['LV_REFERENCE_TARGET'])
+    output = Path(os.environ['LV_CUDA_SLICE'])
+    seed = plan_path.parent / 'diagnostic-seed.npz'
+    restart = target / 'restart.npz'
+    protocol = json.loads((worker8_native.P / plan['stream_protocol']).read_text())
+    assert comm.size == protocol['parallel_ranks'] == 12
+    if rank == 0:
+        worker8_native.check_policy(worker8_native.P, protocol, generation=True)
+        assert sha(seed) == spec['seed_sha256']
+        assert sha(restart) == plan['checkpoint_sha256']
+        assert sha(target / 'custom_trace_000554.json') == spec['source_trace_sha256']
+        cfg_path = worker8_native.P / protocol['config']
+        manifest = json.loads((target / 'manifest.json').read_text())
+        assert sha(cfg_path) == manifest['config_sha256']
+        assert sha(target / 'inputs.npz') == manifest['source_inputs_sha256']
+    cfg = json.loads((worker8_native.P / protocol['config']).read_text())
+    adapter = ParallelP2(worker8_native.P, protocol['source_reference'], cfg)
+    problem = adapter.problem
+    with np.load(restart, allow_pickle=False) as saved:
+        assert int(saved['completed_steps']) == 554
+        history = {name: saved[name] for name in ('u_old', 'v_old', 'a_old')}
+    for name, values in history.items():
+        adapter.assign(name, values)
+    with np.load(seed, allow_pickle=False) as warm:
+        assert int(warm['step']) == 554 and warm['checkpoint_sha256'].item() == plan['checkpoint_sha256']
+        adapter.assign('u', warm['u'])
+    with np.load(target / 'inputs.npz', allow_pickle=False) as arrays:
+        problem.parameters['p'].assign(float(arrays['pressure'][554]))
+        audit = CofactorBernsteinAudit(arrays, workers=8) if rank == 0 else None
+
+    captured = []
+
+    def capture(stage, element, deformation, vertices, reason):
+        if stage == spec['stage'] and element == spec['element'] and not captured:
+            captured.append((deformation.copy(), vertices.copy(), reason))
+
+    trace = dict(step=554)
+    restore = add_positivity_diagnostics(audit, capture) if rank == 0 else None
+    options = dict(protocol['admissible_newton'], initial_regularization=spec['shift'],
+                   maximum_backtracks=0, wall_budget_seconds=1800)
+    try:
+        solve(problem, adapter, history, audit, options, trace, lambda: None,
+              policy='two_good_steps', late_forcing_floor=1e-5, stop_after=1,
+              cuda_linear=True, host_preconditioner=True, directional_armijo=True)
+    finally:
+        if rank == 0:
+            restore()
+            audit.close()
+    if rank != 0:
+        return
+
+    atomic(output / 'replay-trace.json', trace)
+    row, = trace['custom_newton_steps']
+    trial, = row['trials']
+    expected_reason = (
+        f"Whole-element positivity remains unresolved at maximum depth "
+        f"(stage={spec['stage']}, element={spec['element']})"
+    )
+    reproduced = (trial['alpha'] == 1 and trial['armijo_passed']
+                  and trial['positivity_failure'] == expected_reason and len(captured) == 1
+                  and np.isclose(row['initial_force_N'], spec['initial_force_N'], rtol=1e-6, atol=1e-10)
+                  and np.isclose(trial['native_force_N'], spec['trial_force_N'], rtol=1e-6, atol=1e-10))
+    summary = dict(reproduced=bool(reproduced), state=555, element=spec['element'],
+                   stage=spec['stage'], alpha=trial['alpha'], shift=spec['shift'],
+                   trial_force_N=trial['native_force_N'], margin=audit.margin,
+                   original_depth=audit.max_depth, results=[])
+    if reproduced:
+        deformation, vertices, _ = captured[0]
+        np.savez(output / 'rejected-cell.npz', deformation=deformation, vertices=vertices)
+        deeper = copy.copy(audit)
+        for depth in spec['depths']:
+            deeper.max_depth = depth
+            try:
+                proof = BernsteinAudit.resolve(deeper, deformation, vertices)
+            except ValueError as exc:
+                reason = str(exc)
+                outcome = 'nonpositive_witness' if 'nonpositive' in reason else 'unresolved'
+                summary['results'].append(dict(depth=depth, outcome=outcome, reason=reason))
+                if outcome == 'unresolved':
+                    continue
+            else:
+                summary['results'].append(dict(depth=depth, outcome='certified_positive', **proof))
+            break
+    atomic(output / 'positivity-replay.json', summary)
+    print('POSITIVITY REPLAY', summary, flush=True)
+
+
 def main():
     # Hydra exports PMI_RANK before Python starts on the exclusive PBS vnode.
     # Select the rank's device before DOLFIN or petsc4py initializes CUDA.
@@ -191,6 +295,15 @@ def main():
     path = Path(os.environ['LV_CUDA_SLICE']) / f'petsc-rank-{rank:02d}.log'
     with path.open('ab', buffering=0) as rank_log:
         os.dup2(rank_log.fileno(), sys.stderr.fileno())
+    diagnostic = os.environ.get('LV_CUDA_DIAGNOSTIC_PLAN')
+    if diagnostic:
+        try:
+            diagnose_trial(Path(diagnostic))
+        except Exception:
+            traceback.print_exc()
+            sys.stderr.flush()
+            MPI.COMM_WORLD.Abort(1)
+        return
     admissible_newton_regularized_forcing.solve = solve_cuda
     worker8_native.main()
 
