@@ -108,6 +108,16 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
 
 
 def main():
+    # Hydra exports PMI_RANK before Python starts on the exclusive PBS vnode.
+    # Select the rank's device before DOLFIN or petsc4py initializes CUDA.
+    gpu_count = int(os.environ.get('LV_CUDA_GPU_COUNT', '1'))
+    if gpu_count > 1:
+        rank = int(os.environ['PMI_RANK'])
+        devices = os.environ['CUDA_VISIBLE_DEVICES'].split(',')
+        assert len(set(devices)) == gpu_count
+        device = devices[rank % gpu_count]
+        os.environ['CUDA_VISIBLE_DEVICES'] = device
+        print(f'CUDA rank {rank} assigned device {device}', flush=True)
     from lv_surrogate.physics import admissible_newton_regularized_forcing
     from mpi4py import MPI
     from petsc4py import PETSc

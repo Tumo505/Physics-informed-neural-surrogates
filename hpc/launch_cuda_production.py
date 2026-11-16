@@ -30,8 +30,9 @@ SOURCES = ('hpc/launch_cuda_production.py', 'hpc/production_cuda_native.py',
 
 def submit(run, number, after=None):
     script = run / 'job.pbs'
+    gpus = load(run / 'plan.json').get('gpus', 1)
     cmd = ['qsub', '-N', 'lv_cuda_ref', '-q', 'iworkq',
-           '-l', 'select=1:ncpus=28:mem=240gb:ngpus=1', '-l', 'place=excl',
+           '-l', f'select=1:ncpus=28:mem=240gb:ngpus={gpus}', '-l', 'place=excl',
            '-l', 'software=PBSJobApp', '-l', 'walltime=168:00:00',
            '-j', 'oe', '-o', str(run / f'pbs-{number:03d}.log')]
     if after:
@@ -45,7 +46,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None, host_preconditioner=False):
+def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -62,7 +63,8 @@ def initialize(run, retry=None, host_preconditioner=False):
     retry_iterate = None
     if retry is not None:
         failed = load(retry / 'state.json')
-        assert failed['status'] == 'blocked' and failed['completed_steps'] == 554
+        allowed = ('running', 'blocked') if resume_cancelled else ('blocked',)
+        assert failed['status'] in allowed and failed['completed_steps'] == 554
         assert failed['checkpoint_sha256'] == digest
         assert any(row['kind'] == 'job_submission' and row['return_code'] == 0
                    and row['stdout'] == failed['job'] for row in read(retry))
@@ -77,9 +79,16 @@ def initialize(run, retry=None, host_preconditioner=False):
         log = retry_log.read_text()
         error_code = 'error code 97'
         saved = failed_slice / 'latest-newton.npz'
-        if failed.get('blocker', '').startswith('RuntimeError: CUDA generator exited 9.'):
+        if resume_cancelled or failed.get('blocker', '').startswith('RuntimeError: CUDA generator exited 9.'):
             assert host_preconditioner and load(retry / 'plan.json').get('host_preconditioner')
-            assert 'Killed (signal 9)' in generator_log and 'REGULARIZED NEWTON 0 ' in generator_log
+            assert 'REGULARIZED NEWTON 0 ' in generator_log
+            if resume_cancelled:
+                status = subprocess.check_output(['qstat', '-fx', failed['job']], text=True)
+                assert re.search(r'^\s*job_state\s*=\s*F\s*$', status, re.MULTILINE), status
+                assert saved.is_file(), 'Cancelled job has no saved iterate'
+            else:
+                assert 'Killed (signal 9)' in generator_log
+            retry_log = failed_slice / 'generate.log'
             assert not any(marker.name == 'failure.json' for marker in markers)
             if saved.is_file():
                 import numpy as np
@@ -119,10 +128,10 @@ def initialize(run, retry=None, host_preconditioner=False):
     plan = dict(inherited, run_id=run.name, queue='iworkq',
                 stream_protocol=str(protocol_path.relative_to(ROOT)),
                 checkpoint_sha256=digest, gpu_library_sha256=sha(GPU_LIB),
-                host_preconditioner=host_preconditioner,
+                host_preconditioner=host_preconditioner, gpus=gpus,
                 sources={path: sha(ROOT / path) for path in SOURCES})
     if retry_log is not None:
-        plan['retry_evidence'] = dict(run=retry.name, log_sha256=sha(retry_log))
+        plan['retry_evidence'] = dict(run=retry.name, log_sha256=sha(retry_log), resume_cancelled=resume_cancelled)
         for marker in markers:
             archived = run / ('prior-' + marker.name)
             os.link(marker, archived)
@@ -198,18 +207,28 @@ def execute_locked(run, state, job, deadline):
         submit(run, number + 1, after=job)
 
     if state['completed_steps'] < 1600:
+        gpus = plan.get('gpus', 1)
         visible = env.get('CUDA_VISIBLE_DEVICES')
         if visible:
-            device = visible.split(',')[0]
+            devices = visible.split(',')
         elif os.environ.get('PBS_GPUFILE'):
-            gpu_entry = Path(os.environ['PBS_GPUFILE']).read_text().splitlines()[0]
-            match = re.search(r'(?:^|gpu)(\d+)$', gpu_entry)
-            assert match, f'Unknown PBS GPU entry: {gpu_entry}'
-            device = match[1]
+            devices = []
+            for gpu_entry in Path(os.environ['PBS_GPUFILE']).read_text().splitlines():
+                match = re.search(r'(?:^|gpu)(\d+)$', gpu_entry)
+                assert match, f'Unknown PBS GPU entry: {gpu_entry}'
+                devices.append(match[1])
+        elif gpus == 4:
+            # All four GPUs are requested on the exclusive vnode.
+            listing = subprocess.check_output(
+                ['nvidia-smi', '--query-gpu=uuid', '--format=csv,noheader'], env=env, text=True)
+            devices = listing.splitlines()
+            assert len(devices) == gpus
         else:
-            # The request uses exclusive placement on the selected single vnode.
-            device = '0'
-        gpu_env = dict(env, CUDA_VISIBLE_DEVICES=device, PETSC_OPTIONS='-use_gpu_aware_mpi 0',
+            devices = ['0']
+        devices = list(dict.fromkeys(device.strip() for device in devices if device.strip()))
+        assert len(devices) >= gpus, f'PBS exposed {len(devices)} GPUs for a {gpus}-GPU run'
+        gpu_env = dict(env, CUDA_VISIBLE_DEVICES=','.join(devices[:gpus]),
+                       LV_CUDA_GPU_COUNT=str(gpus), PETSC_OPTIONS='-use_gpu_aware_mpi 0',
                        PKG_CONFIG_PATH=f'{GPU}/lib/pkgconfig:{pc_paths}',
                        PKG_CONFIG_LIBDIR=f'{GPU}/lib/pkgconfig:{pc_paths}',
                        LV_CUDA_HOST_PRECONDITIONER=str(int(plan.get('host_preconditioner', False))),
@@ -296,13 +315,17 @@ def main():
     parser.add_argument('--retry-after', metavar='BLOCKED_RUN')
     parser.add_argument('--host-preconditioner', action='store_true',
                         help='Build GAMG from the host AIJ matrix and solve with the CUDA matrix')
+    parser.add_argument('--gpus', type=int, choices=(1, 4), default=1)
+    parser.add_argument('--resume-cancelled', action='store_true')
     args = parser.parse_args()
+    if args.resume_cancelled and not args.retry_after:
+        parser.error('--resume-cancelled requires --retry-after')
     if any(not re.fullmatch(r'[\w-]+', value)
            for value in (args.run_id, args.retry_after) if value is not None):
         parser.error('Invalid run ID')
     run = HPC / args.run_id
     if args.action == 'execute':
-        if args.retry_after is not None or args.host_preconditioner:
+        if args.retry_after is not None or args.host_preconditioner or args.gpus != 1:
             parser.error('Retry and preconditioner options apply to submission only')
         execute(run)
     else:
@@ -312,7 +335,7 @@ def main():
             with (PARENT / 'execution.lock').open('a') as execution:
                 fcntl.flock(execution, fcntl.LOCK_EX | fcntl.LOCK_NB)
                 initialize(run, HPC / args.retry_after if args.retry_after else None,
-                           args.host_preconditioner)
+                           args.host_preconditioner, args.gpus, args.resume_cancelled)
             submit(run, 1)
 
 
