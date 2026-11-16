@@ -1,6 +1,7 @@
 """Submit and continue the full CUDA reference trajectory on one exclusive PBS node."""
 import argparse
 import fcntl
+import math
 import os
 import re
 import shlex
@@ -46,7 +47,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False):
+def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -79,7 +80,34 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
         log = retry_log.read_text()
         error_code = 'error code 97'
         saved = failed_slice / 'latest-newton.npz'
-        if resume_cancelled or failed.get('blocker', '').startswith('RuntimeError: CUDA generator exited 9.'):
+        if stagnation_shift is not None:
+            import numpy as np
+
+            assert gpus == 4 and host_preconditioner
+            previous = load(retry / 'plan.json')
+            assert previous['gpus'] == 4 and previous['host_preconditioner']
+            trace = target / 'custom_trace_000554.json'
+            rows = load(trace)['custom_newton_steps']
+            last = next(row for row in reversed(rows) if row['accepted_custom_update'])
+            assert len(rows) >= 2 and not rows[-1]['accepted_custom_update']
+            assert all(not t['armijo_passed'] for t in rows[-1]['trials'])
+            assert any('unresolved at maximum depth' in (t['positivity_failure'] or '')
+                       for t in last['trials'])
+            assert rows[-1]['next_regularization'] == load(ROOT / state['stream_protocol'])[
+                'admissible_newton']['maximum_regularization']
+            with np.load(saved, allow_pickle=False) as checkpoint:
+                assert int(checkpoint['step']) == 554
+                assert checkpoint['checkpoint_sha256'].item() == digest
+                assert checkpoint['u'].shape == np.load(
+                    target / 'displacement_coefficients.npy', mmap_mode='r').shape[1:]
+                assert np.isfinite(checkpoint['u']).all()
+                assert float(checkpoint['shift']) == last['next_regularization'] > stagnation_shift
+            for marker in markers:
+                if marker.name == 'failure.json':
+                    assert 'Regularization ceiling without admissible descent' in load(marker)['error']
+            retry_log = trace
+            retry_iterate = saved
+        elif resume_cancelled or failed.get('blocker', '').startswith('RuntimeError: CUDA generator exited 9.'):
             assert host_preconditioner and load(retry / 'plan.json').get('host_preconditioner')
             assert 'REGULARIZED NEWTON 0 ' in generator_log
             if resume_cancelled:
@@ -123,15 +151,21 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
     run.mkdir()
     if retry_iterate is not None:
         os.link(retry_iterate, run / 'paused-iterate.npz')
+        if stagnation_shift is not None:
+            os.link(retry_iterate, run / 'initial-newton.npz')
         artifact(ROOT, run, run / 'paused-iterate.npz', 'Recovered state-555 Newton iterate')
     atomic(protocol_path, protocol)
     plan = dict(inherited, run_id=run.name, queue='iworkq',
                 stream_protocol=str(protocol_path.relative_to(ROOT)),
                 checkpoint_sha256=digest, gpu_library_sha256=sha(GPU_LIB),
-                host_preconditioner=host_preconditioner, gpus=gpus,
+                host_preconditioner=host_preconditioner, gpus=gpus, stagnation_shift=stagnation_shift,
                 sources={path: sha(ROOT / path) for path in SOURCES})
     if retry_log is not None:
         plan['retry_evidence'] = dict(run=retry.name, log_sha256=sha(retry_log), resume_cancelled=resume_cancelled)
+        if stagnation_shift is not None:
+            preserved_trace = run / 'prior-state-555-trace.json'
+            shutil.copy2(retry_log, preserved_trace)
+            artifact(ROOT, run, preserved_trace, 'Armijo and positivity failure evidence')
         for marker in markers:
             archived = run / ('prior-' + marker.name)
             os.link(marker, archived)
@@ -234,6 +268,8 @@ def execute_locked(run, state, job, deadline):
                        LV_CUDA_HOST_PRECONDITIONER=str(int(plan.get('host_preconditioner', False))),
                        LV_CUDA_SLICE=str(output), LV_CUDA_DEADLINE=str(deadline),
                        LV_REFERENCE_TARGET=str(target))
+        if plan.get('stagnation_shift') is not None:
+            gpu_env['LV_CUDA_STAGNATION_SHIFT'] = str(plan['stagnation_shift'])
         result = run_command('generate', [
             str(NATIVE / 'bin/mpiexec'), '-n', '12', '/usr/bin/env', f'LD_PRELOAD={GPU_LIB}',
             *cpu, 'hpc/production_cuda_native.py', 'generate', '--policy', str(protocol),
@@ -317,7 +353,13 @@ def main():
                         help='Build GAMG from the host AIJ matrix and solve with the CUDA matrix')
     parser.add_argument('--gpus', type=int, choices=(1, 4), default=1)
     parser.add_argument('--resume-cancelled', action='store_true')
+    parser.add_argument('--stagnation-shift', type=float,
+                        help='Retry a verified state-555 regularization ceiling with directional Armijo')
     args = parser.parse_args()
+    if args.stagnation_shift is not None and (
+            not math.isfinite(args.stagnation_shift) or args.stagnation_shift <= 0
+            or not args.retry_after or args.resume_cancelled):
+        parser.error('--stagnation-shift requires a positive shift and --retry-after')
     if args.resume_cancelled and not args.retry_after:
         parser.error('--resume-cancelled requires --retry-after')
     if any(not re.fullmatch(r'[\w-]+', value)
@@ -335,7 +377,7 @@ def main():
             with (PARENT / 'execution.lock').open('a') as execution:
                 fcntl.flock(execution, fcntl.LOCK_EX | fcntl.LOCK_NB)
                 initialize(run, HPC / args.retry_after if args.retry_after else None,
-                           args.host_preconditioner, args.gpus, args.resume_cancelled)
+                           args.host_preconditioner, args.gpus, args.resume_cancelled, args.stagnation_shift)
             submit(run, 1)
 
 

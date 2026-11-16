@@ -6,7 +6,7 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False, directional_armijo=False):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
  iteration = 0
@@ -148,9 +148,16 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
     return
    raise RuntimeError('Shifted linear direction failed true residual qualification')
   direction=canonical(delta);A.setDiagonal(diag);A.assemble();jdelta=b.duplicate();A.mult(delta,jdelta);model=b.duplicate();accepted=False
+  if directional_armijo:
+   slope = -float(b.dot(jdelta))
+   sr['merit_directional_derivative'] = slope if np.isfinite(slope) else None
   for power in range(1 if reused else options['maximum_backtracks']+1):
    budget();alpha=2.**(-power);candidate=old+alpha*direction;adapter.assign('u',candidate);force=float(measured('trial_residual',residual,problem).norm('l2'));error=None;proof=None
    armijo=bool(np.isfinite(force) and force<=(1-options['armijo_constant']*alpha)*norm)
+   if directional_armijo:
+    merit_change = .5 * (force - norm) * (force + norm)
+    armijo = bool(np.isfinite(merit_change) and np.isfinite(slope) and slope < 0
+                  and merit_change <= options['armijo_constant'] * alpha * slope)
    if armijo:error,proof=positive(candidate)
    adapter.assign('u',old)  # Keep a safe accepted iterate even if a later budget check interrupts.
    valid=armijo and error is None;model.set(0.);model.axpy(alpha,jdelta);model.axpy(-1,b);predicted=.5*(norm**2-model.norm()**2)

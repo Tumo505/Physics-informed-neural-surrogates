@@ -10,6 +10,49 @@ import worker8_native
 from registry import atomic, sha
 
 
+def add_positivity_diagnostics(audit):
+    """Annotate failures without changing proof arithmetic or its depth limit."""
+    original_field = audit.field
+    stage = None
+    restores = []
+    for start, child in audit.shards:
+        resolve = child.resolve
+        coords = child.X
+        base = coords.__array_interface__['data'][0]
+
+        def diagnose(deformation, vertices, resolve=resolve, start=start, base=base,
+                     stride=coords.strides[0]):
+            try:
+                return resolve(deformation, vertices)
+            except ValueError as exc:
+                offset = vertices.__array_interface__['data'][0] - base
+                element = start + offset // stride
+                raise ValueError(f'{exc} (stage={stage}, element={element})') from exc
+
+        child.resolve = diagnose
+        restores.append((child, resolve))
+    field_index = 0
+
+    def field(values):
+        nonlocal field_index, stage
+        stage = ('endpoint', 'stress')[field_index]
+        field_index = (field_index + 1) % 2
+        try:
+            return original_field(values)
+        except Exception:
+            field_index = 0
+            raise
+
+    audit.field = field
+
+    def restore():
+        audit.field = original_field
+        for child, resolve in restores:
+            child.resolve = resolve
+
+    return restore
+
+
 def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     import numpy as np
     from petsc4py import PETSc
@@ -30,8 +73,17 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
                 assert saved['checkpoint_sha256'].item() == digest
                 adapter.assign('u', saved['u'])
                 options['initial_regularization'] = float(saved['shift'])
+                retry_shift = os.environ.get('LV_CUDA_STAGNATION_SHIFT')
+                if retry_shift and resume.samefile(run.parent / 'initial-newton.npz'):
+                    options['initial_regularization'] = float(retry_shift)
+                if rank == 0:
+                    print(f'RESUMED NEWTON state={step + 1} shift={options["initial_regularization"]:g}',
+                          flush=True)
     host_preconditioner = os.environ.get('LV_CUDA_HOST_PRECONDITIONER') == '1'
     trace['solver_policy'] = 'cuda_fresh_jacobian_two_good_steps'
+    directional_armijo = step == 554 and bool(os.environ.get('LV_CUDA_STAGNATION_SHIFT'))
+    if directional_armijo:
+        trace['line_search'] = 'directional_armijo_squared_force'
     trace['gamg_matrix_backend'] = 'host' if host_preconditioner else 'cuda'
 
     def save_checkpoint(label, candidate, shift):
@@ -92,17 +144,21 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
 
     if step == 554:
         log_memory("start")
+    restore = add_positivity_diagnostics(audit) if directional_armijo and rank == 0 else None
     try:
         solve(problem, adapter, history, audit, options, trace, persist,
               policy='two_good_steps', late_forcing_floor=1e-5,
               cuda_linear=True, check_deadline=check_deadline, save_iterate=remember,
-              host_preconditioner=host_preconditioner)
+              host_preconditioner=host_preconditioner, directional_armijo=directional_armijo)
     except PETSc.Error:
         print(f'PETSc failure on rank {rank}, state {step + 1}', file=sys.stderr, flush=True)
         traceback.print_exc()
         sys.stderr.flush()
         os.fsync(sys.stderr.fileno())
         raise
+    finally:
+        if restore is not None:
+            restore()
     assert 0 <= trace['custom_force_N'] < 1e-9
     persist()
 
