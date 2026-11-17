@@ -6,7 +6,7 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False, directional_armijo=False):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False, directional_armijo=False, direction_guard=None):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
  iteration = 0
@@ -147,7 +147,26 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
     if ksp is not None:ksp.destroy()
     return
    raise RuntimeError('Shifted linear direction failed true residual qualification')
-  direction=canonical(delta);A.setDiagonal(diag);A.assemble();jdelta=b.duplicate();A.mult(delta,jdelta);model=b.duplicate();accepted=False
+  direction=canonical(delta);A.setDiagonal(diag);A.assemble()
+  if direction_guard is not None:
+   merit_gradient = b.duplicate()
+   A.multTranspose(b, merit_gradient)
+   canonical_merit = canonical(merit_gradient)
+   merit_gradient.destroy()
+   corrected = detail = error = None
+   if rank == 0:
+    try:
+     corrected,detail = direction_guard(old,direction,canonical_merit)
+    except Exception as exc:
+     error = f'{type(exc).__name__}: {exc}'
+   error = comm.bcast(error,root=0)
+   if error is not None:raise RuntimeError(error)
+   corrected = comm.bcast(corrected,root=0)
+   if corrected is not None:
+    direction = corrected
+    delta.getArray()[:] = direction[adapter.mapping]
+   if rank == 0:sr['determinant_direction'] = detail
+  jdelta=b.duplicate();A.mult(delta,jdelta);model=b.duplicate();accepted=False
   if directional_armijo:
    slope = -float(b.dot(jdelta))
    sr['merit_directional_derivative'] = slope if np.isfinite(slope) else None

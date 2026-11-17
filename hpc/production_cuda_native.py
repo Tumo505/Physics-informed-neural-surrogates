@@ -146,6 +146,18 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
         if rank == 0:
             retry_note = f' unresolved_retry_depth={retry_depth}' if retry_depth is not None else ''
             print(f'POSITIVITY state={step + 1} maximum_depth={depth}{retry_note}', flush=True)
+    guarded = step == 554 and os.environ.get('LV_CUDA_DETERMINANT_DIRECTION') == '1'
+    direction_guard = None
+    if guarded:
+        assert directional_armijo and retry_depth == 24
+        from cuda_determinant_direction import correct_direction
+
+        def direction_guard(current, direction, merit_gradient):
+            return correct_direction(audit, 813578, current, direction, merit_gradient)
+
+        trace['determinant_direction_element'] = 813578
+        if rank == 0:
+            print('DETERMINANT DIRECTION state=555 endpoint_element=813578', flush=True)
     if directional_armijo:
         trace['line_search'] = 'directional_armijo_squared_force'
     trace['gamg_matrix_backend'] = 'host' if host_preconditioner else 'cuda'
@@ -215,7 +227,8 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
         solve(problem, adapter, history, audit, options, trace, persist,
               policy='two_good_steps', late_forcing_floor=1e-5,
               cuda_linear=True, check_deadline=check_deadline, save_iterate=remember,
-              host_preconditioner=host_preconditioner, directional_armijo=directional_armijo)
+              host_preconditioner=host_preconditioner, directional_armijo=directional_armijo,
+              direction_guard=direction_guard)
         assert 0 <= trace['custom_force_N'] < 1e-9
         persist()
         solved = True

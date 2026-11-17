@@ -26,6 +26,7 @@ SOURCES = ('hpc/launch_cuda_production.py', 'hpc/production_cuda_native.py',
            'src/lv_surrogate/physics/admissible_newton_gentle_shrink.py',
            'src/lv_surrogate/physics/regularization_recovery_policy.py',
            'hpc/worker8_native.py', 'hpc/platform_native_chunked.py',
+           'hpc/cuda_determinant_direction.py',
            'scripts/finalize_parallel_reference.py', 'scripts/compare_quadratic_references.py')
 
 
@@ -49,7 +50,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False):
+def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False, determinant_from=None):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -67,6 +68,7 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
     diagnostic = None
     diagnostic_seed = None
     positivity_depth = None
+    direction_evidence = None
     if certify_depth_from is not None:
         replay_run = certify_depth_from
         replay_plan_path = replay_run / 'plan.json'
@@ -112,6 +114,36 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
         positivity_depth = proof['depth']
         if adaptive_positivity:
             assert positivity_depth == 20, 'Adaptive refinement requires the depth-20 production replay'
+        if determinant_from is not None:
+            import numpy as np
+
+            prior = determinant_from
+            registered(ROOT, prior, prior / 'plan.json')
+            previous = load(prior / 'plan.json')
+            failed = load(prior / 'state.json')
+            assert failed['status'] == 'blocked' and failed['completed_steps'] == 554
+            assert failed['checkpoint_sha256'] == previous['checkpoint_sha256'] == digest
+            assert previous['positivity_depth'] == 20 and previous['positivity_retry_depth'] == 24
+            assert previous['host_preconditioner'] and previous['gpus'] == 4
+            assert previous['gpu_library_sha256'] == replay_plan['gpu_library_sha256']
+            assert any(row['kind'] == 'job_submission' and row['return_code'] == 0
+                       and row['stdout'] == failed['job'] for row in read(prior))
+            trace_path = target / 'custom_trace_000554.json'
+            trace = load(trace_path)
+            assert trace['step'] == 554 and trace['positivity_subdivision_retry_depth_limit'] == 24
+            rows = trace['custom_newton_steps']
+            assert not rows[-1]['accepted_custom_update'] and rows[-1]['next_regularization'] == 1e8
+            assert any('stage=endpoint, element=813578' in (trial.get('positivity_failure') or '')
+                       for row in rows for trial in row['trials'])
+            last = next(row for row in reversed(rows) if row['accepted_custom_update'])
+            retry_iterate = prior / f"slice-{failed['slice']:03d}" / 'latest-newton.npz'
+            with np.load(retry_iterate, allow_pickle=False) as saved:
+                assert int(saved['step']) == 554 and saved['checkpoint_sha256'].item() == digest
+                assert float(saved['shift']) == last['next_regularization'] > stagnation_shift
+                fields = np.load(target / 'displacement_coefficients.npy', mmap_mode='r')
+                assert saved['u'].shape == fields.shape[1:] and np.isfinite(saved['u']).all()
+            direction_evidence = dict(run=prior.name, job=failed['job'],
+                                      trace_sha256=sha(trace_path), iterate_sha256=sha(retry_iterate))
     elif diagnose_positivity:
         previous = load(retry / 'plan.json')
         registered(ROOT, retry, retry / 'plan.json')
@@ -241,6 +273,11 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
         if stagnation_shift is not None:
             os.link(retry_iterate, run / 'initial-newton.npz')
         artifact(ROOT, run, run / 'paused-iterate.npz', 'Recovered state-555 Newton iterate')
+    if direction_evidence is not None:
+        preserved = run / 'prior-state-555-trace.json'
+        shutil.copy2(trace_path, preserved)
+        assert sha(preserved) == direction_evidence['trace_sha256']
+        artifact(ROOT, run, preserved, 'Previous determinant-limited state-555 solve')
     if diagnostic is not None:
         os.link(diagnostic_seed, run / 'diagnostic-seed.npz')
         artifact(ROOT, run, run / 'diagnostic-seed.npz', 'Read-only replay input')
@@ -251,6 +288,7 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
                 host_preconditioner=host_preconditioner, gpus=gpus, stagnation_shift=stagnation_shift,
                 positivity_diagnostic=diagnostic, positivity_depth=positivity_depth,
                 positivity_retry_depth=24 if adaptive_positivity else None,
+                determinant_direction_evidence=direction_evidence,
                 sources={path: sha(ROOT / path) for path in SOURCES})
     if retry_log is not None:
         plan['retry_evidence'] = dict(run=retry.name, log_sha256=sha(retry_log), resume_cancelled=resume_cancelled)
@@ -366,6 +404,8 @@ def execute_locked(run, state, job, deadline):
             gpu_env['LV_CUDA_POSITIVITY_DEPTH'] = str(plan['positivity_depth'])
         if plan.get('positivity_retry_depth') is not None:
             gpu_env['LV_CUDA_POSITIVITY_RETRY_DEPTH'] = str(plan['positivity_retry_depth'])
+        if plan.get('determinant_direction_evidence') is not None:
+            gpu_env['LV_CUDA_DETERMINANT_DIRECTION'] = '1'
         if plan.get('positivity_diagnostic'):
             gpu_env['LV_CUDA_DIAGNOSTIC_PLAN'] = str(run / 'plan.json')
         result = run_command('generate', [
@@ -470,7 +510,11 @@ def main():
                         help='Resume production with the depth certified by a registered replay')
     parser.add_argument('--adaptive-positivity', action='store_true',
                         help='Retry unresolved depth-20 cells at depth 24 for state 555')
+    parser.add_argument('--determinant-direction-from', metavar='BLOCKED_RUN',
+                        help='Warm-start a determinant-corrected state-555 solve from a blocked run')
     args = parser.parse_args()
+    if args.determinant_direction_from and (not args.certify_depth_from or not args.adaptive_positivity):
+        parser.error('--determinant-direction-from requires --certify-depth-from and --adaptive-positivity')
     if args.adaptive_positivity and not args.certify_depth_from:
         parser.error('--adaptive-positivity requires --certify-depth-from')
     if args.certify_depth_from and (
@@ -489,7 +533,8 @@ def main():
     if args.resume_cancelled and not args.retry_after:
         parser.error('--resume-cancelled requires --retry-after')
     if any(not re.fullmatch(r'[\w-]+', value)
-           for value in (args.run_id, args.retry_after, args.certify_depth_from) if value is not None):
+           for value in (args.run_id, args.retry_after, args.certify_depth_from,
+                         args.determinant_direction_from) if value is not None):
         parser.error('Invalid run ID')
     run = HPC / args.run_id
     if args.action == 'execute':
@@ -506,7 +551,8 @@ def main():
                            args.host_preconditioner, args.gpus, args.resume_cancelled, args.stagnation_shift,
                            args.diagnose_positivity,
                            HPC / args.certify_depth_from if args.certify_depth_from else None,
-                           args.adaptive_positivity)
+                           args.adaptive_positivity,
+                           HPC / args.determinant_direction_from if args.determinant_direction_from else None)
             submit(run, 1)
 
 
