@@ -50,7 +50,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False, determinant_from=None, compare_direction=False):
+def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False, determinant_from=None, compare_direction=False, direction_comparison_from=None):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -69,6 +69,7 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
     diagnostic_seed = None
     positivity_depth = None
     direction_evidence = None
+    comparison_report = None
     if certify_depth_from is not None:
         replay_run = certify_depth_from
         replay_plan_path = replay_run / 'plan.json'
@@ -143,6 +144,42 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
                 fields = np.load(target / 'displacement_coefficients.npy', mmap_mode='r')
                 assert saved['u'].shape == fields.shape[1:] and np.isfinite(saved['u']).all()
             direction_evidence = dict(run=prior.name, job=failed['job'],
+                                      trace_sha256=sha(trace_path), iterate_sha256=sha(retry_iterate))
+        elif direction_comparison_from is not None:
+            comparison = direction_comparison_from
+            comparison_plan_path = comparison / 'plan.json'
+            registered(ROOT, comparison, comparison_plan_path)
+            comparison_plan = load(comparison_plan_path)
+            comparison_state = load(comparison / 'state.json')
+            assert comparison_state['status'] == 'diagnostic_complete'
+            assert comparison_state['completed_steps'] == 554
+            assert comparison_state['checkpoint_sha256'] == comparison_plan['checkpoint_sha256'] == digest
+            assert comparison_plan['gpu_library_sha256'] == replay_plan['gpu_library_sha256']
+            assert comparison_plan['host_preconditioner'] and comparison_plan['gpus'] == 4
+            comparison_spec = comparison_plan['positivity_diagnostic']
+            assert comparison_spec['kind'] == 'direction_comparison' and comparison_spec['element'] == 813578
+            assert comparison_spec['shift'] == stagnation_shift == 1.0
+            comparison_report = comparison / 'slice-001/direction-comparison.json'
+            assert ROOT / comparison_state['result'] == comparison_report
+            registered(ROOT, comparison, comparison_report)
+            result = load(comparison_report)
+            assert result['state'] == 555 and result['warm_start_matches']
+            assert result['reference_state_accepted'] is False and result['force_target_N'] == 1e-9
+            assert result['shift'] == stagnation_shift and result['stop_reason'] == 'direction_budget'
+            assert result['requested_directions'] == comparison_spec['directions'] == 12
+            corrected, baseline = result['corrected'], result['baseline_matched']
+            assert corrected['directions'] == baseline['directions'] == 12
+            assert corrected['accepted_updates'] > 0 and result['corrections_applied'] > 0
+            assert 0 < corrected['force_N'] < min(baseline['force_N'], result['baseline_terminal']['force_N'])
+            assert corrected['full_steps'] > baseline['full_steps']
+            trace_path = comparison / 'baseline-trace.json'
+            registered(ROOT, comparison, trace_path)
+            assert sha(trace_path) == comparison_spec['baseline_trace_sha256']
+            retry_iterate = comparison / 'diagnostic-seed.npz'
+            registered(ROOT, comparison, retry_iterate)
+            assert sha(retry_iterate) == comparison_spec['seed_sha256']
+            direction_evidence = dict(run=comparison.name, job=comparison_state['job'],
+                                      comparison_sha256=sha(comparison_report),
                                       trace_sha256=sha(trace_path), iterate_sha256=sha(retry_iterate))
     elif compare_direction:
         failed_plan = load(retry / 'plan.json')
@@ -311,6 +348,11 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
         shutil.copy2(trace_path, preserved)
         assert sha(preserved) == direction_evidence['trace_sha256']
         artifact(ROOT, run, preserved, 'Previous determinant-limited state-555 solve')
+        if comparison_report is not None:
+            preserved_report = run / 'prior-direction-comparison.json'
+            shutil.copy2(comparison_report, preserved_report)
+            assert sha(preserved_report) == direction_evidence['comparison_sha256']
+            artifact(ROOT, run, preserved_report, 'Completed original warm-start comparison')
     if diagnostic is not None:
         os.link(diagnostic_seed, run / 'diagnostic-seed.npz')
         artifact(ROOT, run, run / 'diagnostic-seed.npz', 'Read-only replay input')
@@ -552,7 +594,12 @@ def main():
                         help='Warm-start a determinant-corrected state-555 solve from a blocked run')
     parser.add_argument('--compare-direction', action='store_true',
                         help='Compare 12 directions from the original warm start of the blocked retry')
+    parser.add_argument('--direction-comparison-from', metavar='COMPARISON_RUN',
+                        help='Start corrected production from a verified comparison warm start')
     args = parser.parse_args()
+    if args.direction_comparison_from and (
+            not args.certify_depth_from or not args.adaptive_positivity or args.determinant_direction_from):
+        parser.error('--direction-comparison-from requires --certify-depth-from and --adaptive-positivity')
     if args.compare_direction and (
             args.action != 'submit' or not args.retry_after or args.resume_cancelled
             or args.diagnose_positivity or args.stagnation_shift is not None or args.certify_depth_from
@@ -579,7 +626,7 @@ def main():
         parser.error('--resume-cancelled requires --retry-after')
     if any(not re.fullmatch(r'[\w-]+', value)
            for value in (args.run_id, args.retry_after, args.certify_depth_from,
-                         args.determinant_direction_from) if value is not None):
+                         args.determinant_direction_from, args.direction_comparison_from) if value is not None):
         parser.error('Invalid run ID')
     run = HPC / args.run_id
     if args.action == 'execute':
@@ -598,7 +645,8 @@ def main():
                            HPC / args.certify_depth_from if args.certify_depth_from else None,
                            args.adaptive_positivity,
                            HPC / args.determinant_direction_from if args.determinant_direction_from else None,
-                           args.compare_direction)
+                           args.compare_direction,
+                           HPC / args.direction_comparison_from if args.direction_comparison_from else None)
             submit(run, 1)
 
 
