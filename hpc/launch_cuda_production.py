@@ -50,7 +50,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False, determinant_from=None):
+def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False, determinant_from=None, compare_direction=False):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -144,6 +144,39 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
                 assert saved['u'].shape == fields.shape[1:] and np.isfinite(saved['u']).all()
             direction_evidence = dict(run=prior.name, job=failed['job'],
                                       trace_sha256=sha(trace_path), iterate_sha256=sha(retry_iterate))
+    elif compare_direction:
+        failed_plan = load(retry / 'plan.json')
+        registered(ROOT, retry, retry / 'plan.json')
+        failed = load(retry / 'state.json')
+        assert failed['status'] == 'blocked' and failed['completed_steps'] == 554
+        assert failed['checkpoint_sha256'] == failed_plan['checkpoint_sha256'] == digest
+        evidence = failed_plan['determinant_direction_evidence']
+        baseline_run = HPC / evidence['run']
+        baseline_plan_path = baseline_run / 'plan.json'
+        registered(ROOT, baseline_run, baseline_plan_path)
+        baseline_plan = load(baseline_plan_path)
+        assert baseline_plan['checkpoint_sha256'] == digest
+        assert baseline_plan['host_preconditioner'] and baseline_plan['gpus'] == 4
+        assert baseline_plan['positivity_depth'] == 20 and baseline_plan['positivity_retry_depth'] == 24
+        assert baseline_plan.get('determinant_direction_evidence') is None
+        assert sha(GPU_LIB) == baseline_plan['gpu_library_sha256']
+        baseline_trace = retry / 'prior-state-555-trace.json'
+        registered(ROOT, retry, baseline_trace)
+        assert sha(baseline_trace) == evidence['trace_sha256']
+        baseline = load(baseline_trace)
+        assert baseline['step'] == 554 and baseline['positivity_subdivision_retry_depth_limit'] == 24
+        diagnostic_seed = baseline_run / 'initial-newton.npz'
+        seed_events = [row for row in read(baseline_run) if row['kind'] == 'artifact'
+                       and row['path'] == str((baseline_run / 'paused-iterate.npz').relative_to(ROOT))]
+        seed_digest = sha(diagnostic_seed)
+        assert seed_events and seed_digest == seed_events[-1]['sha256']
+        rows = baseline['custom_newton_steps']
+        assert rows[0]['regularization'] == baseline_plan['stagnation_shift']
+        assert len(rows) >= 12 and not rows[-1]['accepted_custom_update']
+        diagnostic = dict(kind='direction_comparison', source_run=baseline_run.name,
+                          baseline_trace_sha256=sha(baseline_trace), seed_sha256=seed_digest,
+                          shift=rows[0]['regularization'], directions=12, element=813578,
+                          initial_force_N=rows[0]['initial_force_N'])
     elif diagnose_positivity:
         previous = load(retry / 'plan.json')
         registered(ROOT, retry, retry / 'plan.json')
@@ -281,6 +314,9 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
     if diagnostic is not None:
         os.link(diagnostic_seed, run / 'diagnostic-seed.npz')
         artifact(ROOT, run, run / 'diagnostic-seed.npz', 'Read-only replay input')
+        if compare_direction:
+            shutil.copy2(baseline_trace, run / 'baseline-trace.json')
+            artifact(ROOT, run, run / 'baseline-trace.json', 'Matched direction-comparison baseline')
     atomic(protocol_path, protocol)
     plan = dict(inherited, run_id=run.name, queue='iworkq',
                 stream_protocol=str(protocol_path.relative_to(ROOT)),
@@ -417,9 +453,11 @@ def execute_locked(run, state, job, deadline):
                 raise RuntimeError(f'Positivity replay exited {result}. See {output / "generate.log"}')
             assert sha(target / 'restart.npz') == state['checkpoint_sha256']
             assert load(target / 'manifest.json')['completed_steps'] == state['completed_steps']
-            summary = output / 'positivity-replay.json'
-            assert load(summary)['reproduced']
-            artifact(ROOT, run, summary, 'Single-element depth replay')
+            comparison = plan['positivity_diagnostic'].get('kind') == 'direction_comparison'
+            summary = output / ('direction-comparison.json' if comparison else 'positivity-replay.json')
+            report = load(summary)
+            assert report['warm_start_matches' if comparison else 'reproduced']
+            artifact(ROOT, run, summary, 'State-555 direction comparison' if comparison else 'Single-element depth replay')
             state.update(status='diagnostic_complete', result=str(summary.relative_to(ROOT)))
             atomic(run / 'state.json', state)
             return
@@ -512,7 +550,14 @@ def main():
                         help='Retry unresolved depth-20 cells at depth 24 for state 555')
     parser.add_argument('--determinant-direction-from', metavar='BLOCKED_RUN',
                         help='Warm-start a determinant-corrected state-555 solve from a blocked run')
+    parser.add_argument('--compare-direction', action='store_true',
+                        help='Compare 12 directions from the original warm start of the blocked retry')
     args = parser.parse_args()
+    if args.compare_direction and (
+            args.action != 'submit' or not args.retry_after or args.resume_cancelled
+            or args.diagnose_positivity or args.stagnation_shift is not None or args.certify_depth_from
+            or args.gpus != 4 or not args.host_preconditioner):
+        parser.error('--compare-direction requires --retry-after, --gpus 4 and --host-preconditioner')
     if args.determinant_direction_from and (not args.certify_depth_from or not args.adaptive_positivity):
         parser.error('--determinant-direction-from requires --certify-depth-from and --adaptive-positivity')
     if args.adaptive_positivity and not args.certify_depth_from:
@@ -552,7 +597,8 @@ def main():
                            args.diagnose_positivity,
                            HPC / args.certify_depth_from if args.certify_depth_from else None,
                            args.adaptive_positivity,
-                           HPC / args.determinant_direction_from if args.determinant_direction_from else None)
+                           HPC / args.determinant_direction_from if args.determinant_direction_from else None,
+                           args.compare_direction)
             submit(run, 1)
 
 

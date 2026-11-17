@@ -245,6 +245,69 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
             restore_depth()
 
 
+def compare_directions(problem, adapter, history, audit, protocol, spec, baseline_path, output):
+    import numpy as np
+    from cuda_determinant_direction import correct_direction
+    from lv_surrogate.physics.admissible_newton_gentle_shrink import solve
+    from lv_surrogate.physics.reference_fem import residual
+
+    force = float(residual(problem).norm('l2'))
+    assert np.isclose(force, spec['initial_force_N'], rtol=1e-6, atol=1e-10)
+    rank = adapter.rank
+    trace = dict(step=554, initial_force_N=force)
+    trace_path = output / 'direction-trace.json'
+    depth = use_positivity_depth(audit, 20, 24) if rank == 0 else None
+    diagnostics = add_positivity_diagnostics(audit) if rank == 0 else None
+
+    def guard(current, direction, merit_gradient):
+        return correct_direction(audit, spec['element'], current, direction, merit_gradient)
+
+    options = dict(protocol['admissible_newton'], initial_regularization=spec['shift'],
+                   wall_budget_seconds=2700)
+    failure = None
+    try:
+        solve(problem, adapter, history, audit, options, trace, lambda: atomic(trace_path, trace),
+              policy='two_good_steps', late_forcing_floor=1e-5, stop_after=spec['directions'],
+              cuda_linear=True, host_preconditioner=True, directional_armijo=True,
+              direction_guard=guard)
+    except RuntimeError as exc:
+        failure = str(exc)
+        if failure not in ('Regularization ceiling without admissible descent',
+                           'Regularized Newton wall budget exhausted',
+                           'Regularized Newton iteration ceiling reached',
+                           'Shifted linear direction failed true residual qualification'):
+            raise
+    finally:
+        if rank == 0:
+            diagnostics()
+            depth()
+            audit.close()
+    if rank != 0:
+        return
+
+    def metrics(rows):
+        accepted = [row['trials'][-1] for row in rows if row['accepted_custom_update']]
+        return dict(directions=len(rows), accepted_updates=len(accepted),
+                    full_steps=sum(t['alpha'] == 1 for t in accepted),
+                    median_accepted_alpha=float(np.median([t['alpha'] for t in accepted])) if accepted else None,
+                    force_N=accepted[-1]['native_force_N'] if accepted else force)
+
+    baseline_rows = json.loads(baseline_path.read_text())['custom_newton_steps']
+    rows = trace.get('custom_newton_steps', [])
+    corrected = metrics(rows)
+    baseline = metrics(baseline_rows[:len(rows)])
+    report = dict(state=555, warm_start_matches=True, initial_force_N=force,
+                  shift=spec['shift'], requested_directions=spec['directions'],
+                  corrected=corrected, baseline_matched=baseline, baseline_terminal=metrics(baseline_rows),
+                  corrections_applied=sum(bool(row.get('determinant_direction', {}).get('applied')) for row in rows),
+                  corrected_force_advantage_N=baseline['force_N'] - corrected['force_N'],
+                  force_target_N=options['custom_absolute_tolerance_N'],
+                  stop_reason=failure or ('force_target_reached' if 'custom_force_N' in trace else 'direction_budget'),
+                  reference_state_accepted=False)
+    atomic(output / 'direction-comparison.json', report)
+    print('DIRECTION COMPARISON', report, flush=True)
+
+
 def diagnose_trial(plan_path):
     """Reconstruct a bounded Newton prefix and check the selected rejected trial."""
     import numpy as np
@@ -268,7 +331,10 @@ def diagnose_trial(plan_path):
         worker8_native.check_policy(worker8_native.P, protocol, generation=True)
         assert sha(seed) == spec['seed_sha256']
         assert sha(restart) == plan['checkpoint_sha256']
-        assert sha(target / 'custom_trace_000554.json') == spec['source_trace_sha256']
+        if spec.get('kind') == 'direction_comparison':
+            assert sha(plan_path.parent / 'baseline-trace.json') == spec['baseline_trace_sha256']
+        else:
+            assert sha(target / 'custom_trace_000554.json') == spec['source_trace_sha256']
         cfg_path = worker8_native.P / protocol['config']
         manifest = json.loads((target / 'manifest.json').read_text())
         assert sha(cfg_path) == manifest['config_sha256']
@@ -287,6 +353,11 @@ def diagnose_trial(plan_path):
     with np.load(target / 'inputs.npz', allow_pickle=False) as arrays:
         problem.parameters['p'].assign(float(arrays['pressure'][554]))
         audit = CofactorBernsteinAudit(arrays, workers=8) if rank == 0 else None
+
+    if spec.get('kind') == 'direction_comparison':
+        compare_directions(problem, adapter, history, audit, protocol, spec,
+                           plan_path.parent / 'baseline-trace.json', output)
+        return
 
     captured = []
     iteration = spec.get('iteration', 0)
