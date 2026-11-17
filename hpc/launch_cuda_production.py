@@ -50,7 +50,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False, determinant_from=None, compare_direction=False, direction_comparison_from=None):
+def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False, determinant_from=None, compare_direction=False, direction_comparison_from=None, pressure_after=None):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -70,6 +70,7 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
     positivity_depth = None
     direction_evidence = None
     comparison_report = None
+    pressure_continuation = None
     if certify_depth_from is not None:
         replay_run = certify_depth_from
         replay_plan_path = replay_run / 'plan.json'
@@ -181,6 +182,31 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
             direction_evidence = dict(run=comparison.name, job=comparison_state['job'],
                                       comparison_sha256=sha(comparison_report),
                                       trace_sha256=sha(trace_path), iterate_sha256=sha(retry_iterate))
+            if pressure_after is not None:
+                prior = pressure_after
+                prior_plan_path = prior / 'plan.json'
+                registered(ROOT, prior, prior_plan_path)
+                prior_plan = load(prior_plan_path)
+                prior_state = load(prior / 'state.json')
+                assert prior_state['status'] == 'blocked' and prior_state['completed_steps'] == 554
+                assert prior_state['checkpoint_sha256'] == prior_plan['checkpoint_sha256'] == digest
+                assert prior_plan['determinant_direction_evidence'] == direction_evidence
+                assert prior_plan['gpu_library_sha256'] == replay_plan['gpu_library_sha256']
+                prior_trace = target / 'custom_trace_000554.json'
+                trace = load(prior_trace)
+                assert trace['step'] == 554 and trace['determinant_direction_element'] == 813578
+                rows = trace['custom_newton_steps']
+                limit = load(ROOT / state['stream_protocol'])['admissible_newton']['maximum_custom_newton_iterations']
+                assert len(rows) == limit and rows[-1]['iteration'] == limit - 1
+                prior_slice = prior / f"slice-{prior_state['slice']:03d}"
+                ceiling_logs = [
+                    path for path in sorted(prior_slice.glob('petsc-rank-*.log'))
+                    if 'RuntimeError: Regularized Newton iteration ceiling reached' in path.read_text()
+                ]
+                assert ceiling_logs, 'Previous retry must have reached its Newton iteration ceiling'
+                pressure_continuation = dict(run=prior.name, fractions=[0., .25, .5, .75, 1.],
+                                             trace_sha256=sha(prior_trace),
+                                             ceiling_log_sha256=sha(ceiling_logs[0]))
     elif compare_direction:
         failed_plan = load(retry / 'plan.json')
         registered(ROOT, retry, retry / 'plan.json')
@@ -353,6 +379,12 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
             shutil.copy2(comparison_report, preserved_report)
             assert sha(preserved_report) == direction_evidence['comparison_sha256']
             artifact(ROOT, run, preserved_report, 'Completed original warm-start comparison')
+    if pressure_continuation is not None:
+        for source, name in ((prior_trace, 'prior-pressure-retry-trace.json'),
+                             (ceiling_logs[0], 'prior-pressure-retry-ceiling.log')):
+            destination = run / name
+            shutil.copy2(source, destination)
+            artifact(ROOT, run, destination, 'Previous exact-pressure iteration ceiling evidence')
     if diagnostic is not None:
         os.link(diagnostic_seed, run / 'diagnostic-seed.npz')
         artifact(ROOT, run, run / 'diagnostic-seed.npz', 'Read-only replay input')
@@ -367,6 +399,7 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
                 positivity_diagnostic=diagnostic, positivity_depth=positivity_depth,
                 positivity_retry_depth=24 if adaptive_positivity else None,
                 determinant_direction_evidence=direction_evidence,
+                pressure_continuation=pressure_continuation,
                 sources={path: sha(ROOT / path) for path in SOURCES})
     if retry_log is not None:
         plan['retry_evidence'] = dict(run=retry.name, log_sha256=sha(retry_log), resume_cancelled=resume_cancelled)
@@ -484,6 +517,9 @@ def execute_locked(run, state, job, deadline):
             gpu_env['LV_CUDA_POSITIVITY_RETRY_DEPTH'] = str(plan['positivity_retry_depth'])
         if plan.get('determinant_direction_evidence') is not None:
             gpu_env['LV_CUDA_DETERMINANT_DIRECTION'] = '1'
+        if plan.get('pressure_continuation') is not None:
+            gpu_env['LV_CUDA_PRESSURE_FRACTIONS'] = ','.join(
+                str(fraction) for fraction in plan['pressure_continuation']['fractions'])
         if plan.get('positivity_diagnostic'):
             gpu_env['LV_CUDA_DIAGNOSTIC_PLAN'] = str(run / 'plan.json')
         result = run_command('generate', [
@@ -596,7 +632,11 @@ def main():
                         help='Compare 12 directions from the original warm start of the blocked retry')
     parser.add_argument('--direction-comparison-from', metavar='COMPARISON_RUN',
                         help='Start corrected production from a verified comparison warm start')
+    parser.add_argument('--pressure-continuation-after', metavar='BLOCKED_RUN',
+                        help='Continue pressure from state 554 using fixed state-554 histories')
     args = parser.parse_args()
+    if args.pressure_continuation_after and not args.direction_comparison_from:
+        parser.error('--pressure-continuation-after requires --direction-comparison-from')
     if args.direction_comparison_from and (
             not args.certify_depth_from or not args.adaptive_positivity or args.determinant_direction_from):
         parser.error('--direction-comparison-from requires --certify-depth-from and --adaptive-positivity')
@@ -626,7 +666,8 @@ def main():
         parser.error('--resume-cancelled requires --retry-after')
     if any(not re.fullmatch(r'[\w-]+', value)
            for value in (args.run_id, args.retry_after, args.certify_depth_from,
-                         args.determinant_direction_from, args.direction_comparison_from) if value is not None):
+                         args.determinant_direction_from, args.direction_comparison_from,
+                         args.pressure_continuation_after) if value is not None):
         parser.error('Invalid run ID')
     run = HPC / args.run_id
     if args.action == 'execute':
@@ -646,7 +687,8 @@ def main():
                            args.adaptive_positivity,
                            HPC / args.determinant_direction_from if args.determinant_direction_from else None,
                            args.compare_direction,
-                           HPC / args.direction_comparison_from if args.direction_comparison_from else None)
+                           HPC / args.direction_comparison_from if args.direction_comparison_from else None,
+                           HPC / args.pressure_continuation_after if args.pressure_continuation_after else None)
             submit(run, 1)
 
 

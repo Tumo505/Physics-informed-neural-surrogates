@@ -119,6 +119,19 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     rank, comm = adapter.rank, adapter.comm
     options = dict(options, wall_budget_seconds=float('inf'))
     latest = None
+    pressure_fractions = os.environ.get('LV_CUDA_PRESSURE_FRACTIONS') if step == 554 else None
+    pressure_stage = 0
+    exact_pressure = None
+    if pressure_fractions:
+        fractions = tuple(map(float, pressure_fractions.split(',')))
+        assert fractions == (0., .25, .5, .75, 1.)
+        with np.load(checkpoint.parent / 'inputs.npz', allow_pickle=False) as inputs:
+            old_pressure, exact_pressure = map(float, inputs['pressure'][step - 1:step + 1])
+        assert np.isfinite(old_pressure) and np.isfinite(exact_pressure) and old_pressure != exact_pressure
+        pressure_schedule = [old_pressure + fraction * (exact_pressure - old_pressure)
+                             for fraction in fractions[:-1]] + [exact_pressure]
+        assert float(problem.parameters['p']) == exact_pressure
+        trace['pressure_continuation'] = dict(fractions=list(fractions), pressures=pressure_schedule)
     resume = run.parent / 'paused-iterate.npz'
     if resume.is_file():
         with np.load(resume, allow_pickle=False) as saved:
@@ -127,6 +140,9 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
                 assert saved['checkpoint_sha256'].item() == digest
                 adapter.assign('u', saved['u'])
                 options['initial_regularization'] = float(saved['shift'])
+                if pressure_fractions and 'pressure_stage' in saved:
+                    pressure_stage = int(saved['pressure_stage'])
+                    assert 0 <= pressure_stage < len(pressure_schedule)
                 retry_shift = os.environ.get('LV_CUDA_STAGNATION_SHIFT')
                 if retry_shift and resume.samefile(run.parent / 'initial-newton.npz'):
                     options['initial_regularization'] = float(retry_shift)
@@ -169,7 +185,9 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
                 pending = run / f'{label}.pending.npz'
                 digest = sha(checkpoint)
                 with pending.open('wb') as output:
-                    np.savez(output, u=candidate, step=step, shift=shift, checkpoint_sha256=digest)
+                    metadata = dict(pressure_stage=pressure_stage) if pressure_fractions else {}
+                    np.savez(output, u=candidate, step=step, shift=shift, checkpoint_sha256=digest,
+                             **metadata)
                     output.flush()
                     os.fsync(output.fileno())
                 saved = run / f'{label}.npz'
@@ -205,7 +223,10 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
         nonlocal latest
         latest = candidate, shift
         if step == 554:
-            save_checkpoint('latest-newton', candidate, shift)
+            label = 'latest-newton'
+            if pressure_fractions and pressure_stage < len(pressure_schedule) - 1:
+                label = f'pressure-stage-{pressure_stage}-latest-newton'
+            save_checkpoint(label, candidate, shift)
             log_memory(iteration)
 
     def check_deadline():
@@ -222,14 +243,45 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
         log_memory("start")
     restore_depth = use_positivity_depth(audit, depth, retry_depth) if depth != 12 and rank == 0 else None
     restore = add_positivity_diagnostics(audit) if directional_armijo and rank == 0 else None
-    solved = False
-    try:
-        solve(problem, adapter, history, audit, options, trace, persist,
+    def solve_at_pressure(record, save):
+        solve(problem, adapter, history, audit, options, record, save,
               policy='two_good_steps', late_forcing_floor=1e-5,
               cuda_linear=True, check_deadline=check_deadline, save_iterate=remember,
               host_preconditioner=host_preconditioner, directional_armijo=directional_armijo,
               direction_guard=direction_guard)
-        assert 0 <= trace['custom_force_N'] < 1e-9
+        assert 0 <= record['custom_force_N'] < 1e-9
+
+    solved = False
+    try:
+        if pressure_fractions:
+            for pressure_stage in range(pressure_stage, len(pressure_schedule)):
+                pressure = pressure_schedule[pressure_stage]
+                problem.parameters['p'].assign(pressure)
+                latest = None
+                exact_stage = pressure_stage == len(pressure_schedule) - 1
+                if rank == 0:
+                    print(f'PRESSURE STAGE state=555 index={pressure_stage} fraction={fractions[pressure_stage]:g} '
+                          f'pressure={pressure:.17g} exact={exact_stage}', flush=True)
+                if exact_stage:
+                    solve_at_pressure(trace, persist)
+                    break
+                record = dict(step=step, fraction=fractions[pressure_stage], pressure=pressure,
+                              physical_state_accepted=False)
+                path = run / f'pressure-stage-{pressure_stage}.json'
+
+                def save_stage():
+                    if rank == 0:
+                        atomic(path, record)
+
+                solve_at_pressure(record, save_stage)
+                record['complete'] = True
+                save_stage()
+                if rank == 0:
+                    print(f'PRESSURE STAGE COMPLETE index={pressure_stage} '
+                          f'force_N={record["custom_force_N"]:.9g}', flush=True)
+                options['initial_regularization'] = float(os.environ['LV_CUDA_STAGNATION_SHIFT'])
+        else:
+            solve_at_pressure(trace, persist)
         persist()
         solved = True
     except PETSc.Error:
@@ -239,6 +291,8 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
         os.fsync(sys.stderr.fileno())
         raise
     finally:
+        if exact_pressure is not None:
+            problem.parameters['p'].assign(exact_pressure)
         if restore is not None:
             restore()
         if restore_depth is not None and not solved:
