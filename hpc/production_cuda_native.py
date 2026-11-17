@@ -120,7 +120,10 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
     options = dict(options, wall_budget_seconds=float('inf'))
     latest = None
     pressure_fractions = os.environ.get('LV_CUDA_PRESSURE_FRACTIONS') if step == 554 else None
-    pressure_stage = 0
+    residual_fractions = os.environ.get('LV_CUDA_RESIDUAL_FRACTIONS') if step == 554 else None
+    assert not (pressure_fractions and residual_fractions)
+    continuation = 'pressure' if pressure_fractions else 'residual' if residual_fractions else None
+    stage = 0
     exact_pressure = None
     if pressure_fractions:
         fractions = tuple(map(float, pressure_fractions.split(',')))
@@ -132,6 +135,29 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
                              for fraction in fractions[:-1]] + [exact_pressure]
         assert float(problem.parameters['p']) == exact_pressure
         trace['pressure_continuation'] = dict(fractions=list(fractions), pressures=pressure_schedule)
+    if residual_fractions:
+        from lv_surrogate.physics.reference_fem import residual
+
+        fractions = tuple(map(float, residual_fractions.split(',')))
+        assert fractions == tuple(i / 8 for i in range(1, 9))
+        exact_pressure = float(problem.parameters['p'])
+        assert np.isfinite(exact_pressure)
+        anchor_path = run.parent / 'initial-newton.npz'
+        digest = comm.bcast(sha(anchor_path) if rank == 0 else None, root=0)
+        assert digest == os.environ['LV_CUDA_RESIDUAL_ANCHOR_SHA256']
+        with np.load(anchor_path, allow_pickle=False) as seed:
+            assert int(seed['step']) == step
+            checkpoint_digest = comm.bcast(sha(checkpoint) if rank == 0 else None, root=0)
+            assert seed['checkpoint_sha256'].item() == checkpoint_digest
+            adapter.assign('u', seed['u'])
+        anchor = residual(problem)
+        anchor_force = float(anchor.norm('l2'))
+        assert np.isfinite(anchor_force)
+        trace['residual_continuation'] = dict(fractions=list(fractions), pressure=exact_pressure,
+                                              anchor_force_N=anchor_force, anchor_sha256=digest)
+        if rank == 0:
+            print(f'RESIDUAL ANCHOR state=555 pressure={exact_pressure:.17g} '
+                  f'force_N={anchor_force:.9g}', flush=True)
     resume = run.parent / 'paused-iterate.npz'
     if resume.is_file():
         with np.load(resume, allow_pickle=False) as saved:
@@ -140,9 +166,9 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
                 assert saved['checkpoint_sha256'].item() == digest
                 adapter.assign('u', saved['u'])
                 options['initial_regularization'] = float(saved['shift'])
-                if pressure_fractions and 'pressure_stage' in saved:
-                    pressure_stage = int(saved['pressure_stage'])
-                    assert 0 <= pressure_stage < len(pressure_schedule)
+                if continuation and f'{continuation}_stage' in saved:
+                    stage = int(saved[f'{continuation}_stage'])
+                    assert 0 <= stage < len(fractions)
                 retry_shift = os.environ.get('LV_CUDA_STAGNATION_SHIFT')
                 if retry_shift and resume.samefile(run.parent / 'initial-newton.npz'):
                     options['initial_regularization'] = float(retry_shift)
@@ -185,7 +211,7 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
                 pending = run / f'{label}.pending.npz'
                 digest = sha(checkpoint)
                 with pending.open('wb') as output:
-                    metadata = dict(pressure_stage=pressure_stage) if pressure_fractions else {}
+                    metadata = {f'{continuation}_stage': stage} if continuation else {}
                     np.savez(output, u=candidate, step=step, shift=shift, checkpoint_sha256=digest,
                              **metadata)
                     output.flush()
@@ -224,8 +250,8 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
         latest = candidate, shift
         if step == 554:
             label = 'latest-newton'
-            if pressure_fractions and pressure_stage < len(pressure_schedule) - 1:
-                label = f'pressure-stage-{pressure_stage}-latest-newton'
+            if continuation and stage < len(fractions) - 1:
+                label = f'{continuation}-stage-{stage}-latest-newton'
             save_checkpoint(label, candidate, shift)
             log_memory(iteration)
 
@@ -243,45 +269,51 @@ def solve_cuda(problem, adapter, history, audit, options, trace, persist):
         log_memory("start")
     restore_depth = use_positivity_depth(audit, depth, retry_depth) if depth != 12 and rank == 0 else None
     restore = add_positivity_diagnostics(audit) if directional_armijo and rank == 0 else None
-    def solve_at_pressure(record, save):
+    def solve_stage(record, save, offset=None):
         solve(problem, adapter, history, audit, options, record, save,
               policy='two_good_steps', late_forcing_floor=1e-5,
               cuda_linear=True, check_deadline=check_deadline, save_iterate=remember,
               host_preconditioner=host_preconditioner, directional_armijo=directional_armijo,
-              direction_guard=direction_guard)
+              direction_guard=direction_guard, residual_offset=offset)
         assert 0 <= record['custom_force_N'] < 1e-9
 
     solved = False
     try:
-        if pressure_fractions:
-            for pressure_stage in range(pressure_stage, len(pressure_schedule)):
-                pressure = pressure_schedule[pressure_stage]
+        if continuation:
+            label = continuation.upper()
+            for stage in range(stage, len(fractions)):
+                fraction = fractions[stage]
+                pressure = pressure_schedule[stage] if pressure_fractions else exact_pressure
                 problem.parameters['p'].assign(pressure)
                 latest = None
-                exact_stage = pressure_stage == len(pressure_schedule) - 1
+                exact_stage = stage == len(fractions) - 1
                 if rank == 0:
-                    print(f'PRESSURE STAGE state=555 index={pressure_stage} fraction={fractions[pressure_stage]:g} '
+                    print(f'{label} STAGE state=555 index={stage} fraction={fraction:g} '
                           f'pressure={pressure:.17g} exact={exact_stage}', flush=True)
                 if exact_stage:
-                    solve_at_pressure(trace, persist)
+                    solve_stage(trace, persist)
                     break
-                record = dict(step=step, fraction=fractions[pressure_stage], pressure=pressure,
+                offset = None
+                if residual_fractions:
+                    offset = anchor.copy()
+                    offset *= 1. - fraction
+                record = dict(step=step, fraction=fraction, pressure=pressure,
                               physical_state_accepted=False)
-                path = run / f'pressure-stage-{pressure_stage}.json'
+                path = run / f'{continuation}-stage-{stage}.json'
 
                 def save_stage():
                     if rank == 0:
                         atomic(path, record)
 
-                solve_at_pressure(record, save_stage)
+                solve_stage(record, save_stage, offset)
                 record['complete'] = True
                 save_stage()
                 if rank == 0:
-                    print(f'PRESSURE STAGE COMPLETE index={pressure_stage} '
+                    print(f'{label} STAGE COMPLETE index={stage} '
                           f'force_N={record["custom_force_N"]:.9g}', flush=True)
                 options['initial_regularization'] = float(os.environ['LV_CUDA_STAGNATION_SHIFT'])
         else:
-            solve_at_pressure(trace, persist)
+            solve_stage(trace, persist)
         persist()
         solved = True
     except PETSc.Error:
