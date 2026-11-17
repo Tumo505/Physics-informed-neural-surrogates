@@ -394,6 +394,85 @@ def compare_directions(problem, adapter, history, audit, protocol, spec, baselin
     print('DIRECTION COMPARISON', report, flush=True)
 
 
+def screen_blends(problem, adapter, history, audit, spec, seed_path, output):
+    import numpy as np
+    from audit_reference_cell_555 import cartesian_deformation, inspect_field
+    from lv_surrogate.physics.bernstein import BernsteinAudit
+    from lv_surrogate.physics.reference_fem import residual
+
+    with np.load(seed_path, allow_pickle=False) as seed:
+        warm = seed['u']
+    old = history['u_old']
+    assert warm.shape == old.shape and np.isfinite(warm).all()
+    rank, comm = adapter.rank, adapter.comm
+    report = dict(state=555, pressure=float(problem.parameters['p']), element=spec['element'],
+                  margin=spec['margin'], weights=spec['weights'], candidates=[],
+                  screen_complete=False, reference_state_accepted=False,
+                  minimum_scope='Multistart numerical estimates. Whole-element acceptance uses Bernstein proofs.')
+    restore_depth = use_positivity_depth(audit, spec['whole_element_depth'], spec['retry_depth']) if rank == 0 else None
+    diagnostics = add_positivity_diagnostics(audit) if rank == 0 else None
+
+    def on_root(function):
+        result = error = None
+        if rank == 0:
+            try:
+                result = function()
+            except Exception as exc:
+                error = f'{type(exc).__name__}: {exc}'
+        error = comm.bcast(error, root=0)
+        if error:
+            raise RuntimeError(error)
+        return result
+
+    def evaluate(candidate, theta, force):
+        element = spec['element']
+        vertices = audit.X[element]
+        local = BernsteinAudit(dict(coords=vertices, cells=np.array([[0, 1, 2, 3]]),
+                                    canonical_cell_dofs=audit.maps[element:element + 1]))
+        nodal = candidate[audit.maps[element]]
+        deformation = cartesian_deformation(vertices, nodal, vertices)
+        estimate = inspect_field(local, deformation)
+        row = dict(theta=theta, native_force_N=force if np.isfinite(force) else None,
+                   local_minimum_estimate=estimate['optimized_minimum_estimate'],
+                   local_minimum_barycentric=estimate['minimum_barycentric'],
+                   local_bernstein=estimate['bernstein'],
+                   local_singular_values=estimate['singular_values_at_minimum'],
+                   whole_element_admissible=False, positivity_failure=None)
+        try:
+            proof = audit.pair(candidate, history['u_old'])
+        except ValueError as exc:
+            row['positivity_failure'] = str(exc)
+        else:
+            row['whole_element_admissible'] = True
+            row['whole_element_proof'] = proof
+        report['candidates'].append(row)
+        atomic(output / 'blend-screen.json', report)
+        print(f'BLEND theta={theta:g} force_N={force:.9g} '
+              f'local_min_estimate={row["local_minimum_estimate"]:.9g} '
+              f'admissible={row["whole_element_admissible"]}', flush=True)
+
+    try:
+        for theta in spec['weights']:
+            if theta == 0:
+                candidate = old.copy()
+            elif theta == 1:
+                candidate = warm.copy()
+            else:
+                candidate = old + theta * (warm - old)
+            adapter.assign('u', candidate)
+            force = float(residual(problem).norm('l2'))
+            on_root(lambda: evaluate(candidate, theta, force))
+        def finish():
+            report['screen_complete'] = True
+            atomic(output / 'blend-screen.json', report)
+        on_root(finish)
+    finally:
+        if rank == 0:
+            diagnostics()
+            restore_depth()
+            audit.close()
+
+
 def diagnose_trial(plan_path):
     """Reconstruct a bounded Newton prefix and check the selected rejected trial."""
     import numpy as np
@@ -419,6 +498,9 @@ def diagnose_trial(plan_path):
         assert sha(restart) == plan['checkpoint_sha256']
         if spec.get('kind') == 'direction_comparison':
             assert sha(plan_path.parent / 'baseline-trace.json') == spec['baseline_trace_sha256']
+        elif spec.get('kind') == 'blend_screen':
+            audit_report = worker8_native.P / 'experiments/hpc/cmbbe-cell-audit-555-01/result.json'
+            assert sha(audit_report) == spec['audit_sha256']
         else:
             assert sha(target / 'custom_trace_000554.json') == spec['source_trace_sha256']
         cfg_path = worker8_native.P / protocol['config']
@@ -439,6 +521,10 @@ def diagnose_trial(plan_path):
     with np.load(target / 'inputs.npz', allow_pickle=False) as arrays:
         problem.parameters['p'].assign(float(arrays['pressure'][554]))
         audit = CofactorBernsteinAudit(arrays, workers=8) if rank == 0 else None
+
+    if spec.get('kind') == 'blend_screen':
+        screen_blends(problem, adapter, history, audit, spec, seed, output)
+        return
 
     if spec.get('kind') == 'direction_comparison':
         compare_directions(problem, adapter, history, audit, protocol, spec,

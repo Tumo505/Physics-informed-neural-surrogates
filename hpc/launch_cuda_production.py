@@ -26,7 +26,7 @@ SOURCES = ('hpc/launch_cuda_production.py', 'hpc/production_cuda_native.py',
            'src/lv_surrogate/physics/admissible_newton_gentle_shrink.py',
            'src/lv_surrogate/physics/regularization_recovery_policy.py',
            'hpc/worker8_native.py', 'hpc/platform_native_chunked.py',
-           'hpc/cuda_determinant_direction.py',
+           'hpc/cuda_determinant_direction.py', 'hpc/audit_reference_cell_555.py',
            'scripts/finalize_parallel_reference.py', 'scripts/compare_quadratic_references.py')
 
 
@@ -50,7 +50,7 @@ def submit(run, number, after=None):
     print(f'Slice {number}: {job}', flush=True)
 
 
-def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False, determinant_from=None, compare_direction=False, direction_comparison_from=None, pressure_after=None, residual_after=None):
+def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancelled=False, stagnation_shift=None, diagnose_positivity=False, certify_depth_from=None, adaptive_positivity=False, determinant_from=None, compare_direction=False, direction_comparison_from=None, pressure_after=None, residual_after=None, screen_blends=False):
     registered(ROOT, PARENT, PARENT / 'plan.json')
     inherited = load(PARENT / 'plan.json')
     state = load(PARENT / 'state.json')
@@ -229,6 +229,31 @@ def initialize(run, retry=None, host_preconditioner=False, gpus=1, resume_cancel
                 assert len(rows) == limit and rows[-1]['iteration'] == limit - 1
                 residual_continuation = dict(run=prior.name, fractions=[i / 8 for i in range(1, 9)],
                                              anchor_sha256=sha(retry_iterate), trace_sha256=sha(prior_trace))
+    elif screen_blends:
+        audit_run = HPC / 'cmbbe-cell-audit-555-01'
+        audit_report = audit_run / 'result.json'
+        registered(ROOT, audit_run, audit_report)
+        report = load(audit_report)
+        assert report['accepted_states'] == 554 and report['element'] == 813578
+        assert report['geometry']['nodal_coordinate_error'] == 0.
+        previous_path = retry / 'plan.json'
+        registered(ROOT, retry, previous_path)
+        previous = load(previous_path)
+        previous_state = load(retry / 'state.json')
+        assert previous_state['status'] == 'blocked' and previous_state['completed_steps'] == 554
+        assert previous['checkpoint_sha256'] == previous_state['checkpoint_sha256'] == digest
+        assert previous['residual_continuation'] is not None
+        assert sha(GPU_LIB) == previous['gpu_library_sha256']
+        diagnostic_seed = retry / 'initial-newton.npz'
+        seed_digest = sha(diagnostic_seed)
+        assert seed_digest == previous['residual_continuation']['anchor_sha256']
+        seed_events = [row for row in read(retry) if row['kind'] == 'artifact'
+                       and row['path'] == str((retry / 'paused-iterate.npz').relative_to(ROOT))]
+        assert seed_events and seed_events[-1]['sha256'] == seed_digest
+        diagnostic = dict(kind='blend_screen', source_run=retry.name,
+                          seed_sha256=seed_digest, audit_sha256=sha(audit_report),
+                          element=813578, weights=[0., .25, .5, .75, .875, 1.],
+                          whole_element_depth=20, retry_depth=24, margin=1e-9)
     elif compare_direction:
         failed_plan = load(retry / 'plan.json')
         registered(ROOT, retry, retry / 'plan.json')
@@ -562,11 +587,15 @@ def execute_locked(run, state, job, deadline):
                 raise RuntimeError(f'Positivity replay exited {result}. See {output / "generate.log"}')
             assert sha(target / 'restart.npz') == state['checkpoint_sha256']
             assert load(target / 'manifest.json')['completed_steps'] == state['completed_steps']
-            comparison = plan['positivity_diagnostic'].get('kind') == 'direction_comparison'
-            summary = output / ('direction-comparison.json' if comparison else 'positivity-replay.json')
+            kind = plan['positivity_diagnostic'].get('kind')
+            name = {'direction_comparison': 'direction-comparison.json',
+                    'blend_screen': 'blend-screen.json'}.get(kind, 'positivity-replay.json')
+            summary = output / name
             report = load(summary)
-            assert report['warm_start_matches' if comparison else 'reproduced']
-            artifact(ROOT, run, summary, 'State-555 direction comparison' if comparison else 'Single-element depth replay')
+            key = {'direction_comparison': 'warm_start_matches',
+                   'blend_screen': 'screen_complete'}.get(kind, 'reproduced')
+            assert report[key]
+            artifact(ROOT, run, summary, 'State-555 diagnostic result')
             state.update(status='diagnostic_complete', result=str(summary.relative_to(ROOT)))
             atomic(run / 'state.json', state)
             return
@@ -667,7 +696,14 @@ def main():
                         help='Continue pressure from state 554 using fixed state-554 histories')
     parser.add_argument('--residual-continuation-after', metavar='BLOCKED_RUN',
                         help='Continue the residual at the exact state-555 pressure')
+    parser.add_argument('--screen-blends', action='store_true',
+                        help='Screen blends of accepted state 554 and the original warm start')
     args = parser.parse_args()
+    if args.screen_blends and (
+            args.action != 'submit' or not args.retry_after or args.resume_cancelled
+            or args.compare_direction or args.diagnose_positivity or args.stagnation_shift is not None
+            or args.certify_depth_from or args.gpus != 4 or not args.host_preconditioner):
+        parser.error('--screen-blends requires --retry-after, --gpus 4 and --host-preconditioner')
     if args.residual_continuation_after and (
             not args.direction_comparison_from or args.pressure_continuation_after):
         parser.error('--residual-continuation-after requires --direction-comparison-from')
@@ -725,7 +761,8 @@ def main():
                            args.compare_direction,
                            HPC / args.direction_comparison_from if args.direction_comparison_from else None,
                            HPC / args.pressure_continuation_after if args.pressure_continuation_after else None,
-                           HPC / args.residual_continuation_after if args.residual_continuation_after else None)
+                           HPC / args.residual_continuation_after if args.residual_continuation_after else None,
+                           args.screen_blends)
             submit(run, 1)
 
 
