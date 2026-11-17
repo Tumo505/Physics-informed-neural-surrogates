@@ -24,7 +24,7 @@ def load(path):
     return json.loads(path.read_text())
 
 
-def submit(run):
+def submit(run, neighborhood=False):
     with (ROOT / '.hpc/profile-submission.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         assert_idle(ROOT)
@@ -40,9 +40,20 @@ def submit(run):
         for path in (Path(__file__), ASSEMBLY_AUDIT / 'result.json',
                      ROOT / 'hpc/audit_reference_cell_555.py'):
             frozen[str(path)] = sha(path)
+        if neighborhood:
+            transition = ROOT / 'experiments/hpc/cmbbe-transition-audit-555-01'
+            transition_report = transition / 'result.json'
+            registered(ROOT, transition, transition_report)
+            report = load(transition_report)
+            assert report['complete'] and not report['accepted_force_failures']
+            assert all(row['matches'] for row in report['replayed_final_history_vs_checkpoint'].values())
+            for path in (transition_report, ROOT / 'hpc/audit_reference_neighborhood_555.py',
+                         ROOT / 'external/cardiac_benchmark/src/cardiac_benchmark/material.py'):
+                frozen[str(path)] = sha(path)
         run.mkdir()
         atomic(run / 'plan.json', dict(seed=previous['seed'], protocol=previous['protocol'],
-                                      checkpoint_sha256=previous['checkpoint_sha256'], frozen=frozen))
+                                      checkpoint_sha256=previous['checkpoint_sha256'],
+                                      neighborhood=neighborhood, frozen=frozen))
         artifact(ROOT, run, run / 'plan.json', 'Force and history transition audit plan')
         script = run / 'job.pbs'
         command = [str(ROOT / '.venv/bin/python'), str(Path(__file__).resolve()),
@@ -84,8 +95,9 @@ def execute(run):
                        OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', MKL_NUM_THREADS='1',
                        CUDA_VISIBLE_DEVICES='', DIJITSO_CACHE_DIR=str(ROOT / '.hpc/fenics-cache'),
                        XDG_CACHE_HOME=str(ROOT / '.hpc/cache'))
+            entry = ROOT / 'hpc/audit_reference_neighborhood_555.py' if plan.get('neighborhood') else Path(__file__).resolve()
             with (run / 'audit.log').open('x') as log:
-                subprocess.run([str(NATIVE / 'bin/python'), str(Path(__file__).resolve()),
+                subprocess.run([str(NATIVE / 'bin/python'), str(entry),
                                 'audit', '--run-id', run.name], cwd=ROOT, env=env,
                                stdout=log, stderr=subprocess.STDOUT, check=True)
             report = load(run / 'result.json')
@@ -289,12 +301,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('submit', 'execute', 'audit'))
     parser.add_argument('--run-id', default='cmbbe-transition-audit-555-01')
+    parser.add_argument('--neighborhood', action='store_true',
+                        help='Audit cells supporting the previous elastic-force hotspots')
     args = parser.parse_args()
+    if args.neighborhood and args.action != 'submit':
+        parser.error('--neighborhood applies to submission')
     if not re.fullmatch(r'[A-Za-z0-9_-]+', args.run_id):
         parser.error('Invalid run ID')
     run = ROOT / 'experiments/hpc' / args.run_id
     if args.action == 'submit':
-        submit(run)
+        submit(run, args.neighborhood)
     elif args.action == 'execute':
         execute(run)
     else:
