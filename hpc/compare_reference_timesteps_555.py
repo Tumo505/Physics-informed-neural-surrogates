@@ -45,6 +45,23 @@ def sampling_schedule(base_dt, factor):
     return dt, end_times, end_times - .4 * dt
 
 
+def pressure_reproduction(reconstructed, stored):
+    """Validate the local experiment interval and retain full-cycle diagnostics."""
+    import numpy as np
+    reconstructed, stored = np.asarray(reconstructed), np.asarray(stored)
+    assert reconstructed.shape == stored.shape and len(stored) >= 555
+    assert np.isfinite(reconstructed).all() and np.isfinite(stored).all()
+    local = slice(549, 555)
+    np.testing.assert_allclose(reconstructed[local], stored[local], rtol=1e-10, atol=1e-8)
+    difference = abs(reconstructed-stored)
+    mismatches = np.flatnonzero(~np.isclose(reconstructed, stored, rtol=1e-10, atol=1e-8))
+    return dict(checked_states=list(range(550, 556)), rtol=1e-10, atol_Pa=1e-8,
+                local_max_abs_Pa=float(difference[local].max()),
+                full_cycle_max_abs_Pa=float(difference.max()),
+                full_cycle_mismatch_count=int(len(mismatches)),
+                first_full_cycle_mismatch_state=int(mismatches[0]+1) if len(mismatches) else None)
+
+
 def submit(run):
     with (ROOT / '.hpc/profile-submission.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -221,8 +238,9 @@ def prepare(run):
                                          *[item[2] for item in schedules.values()]]))
     pressure = cfg['amplitude'] * pressure_function((0, cfg['duration_s']), parameters=parameters, t_eval=combined)
     reconstructed = pressure[np.searchsorted(combined, original_times - .4*cfg['dt_s'])]
-    np.testing.assert_allclose(reconstructed, original_pressures, rtol=1e-10, atol=1e-8)
-    output = dict(original_pressure_reproduction_max_abs=float(np.max(abs(reconstructed-original_pressures))),
+    reproduction = pressure_reproduction(reconstructed, original_pressures)
+    output = dict(original_pressure_reproduction_max_abs=reproduction['full_cycle_max_abs_Pa'],
+                  pressure_reproduction=reproduction,
                   source_force_at_state_550_N=force, material_parameters={
                       key: float(value) for key,value in problem.material.parameters.items()}, factors={})
     for factor, (dt, times, stage_times) in schedules.items():
@@ -462,6 +480,7 @@ def compare(run, outcomes):
                       outcome['completed'] and outcome['completed']['complete'] for outcome in outcomes.values()),
                   start_state=550, stop_state=555, source_accepted_states=554, outcomes=outcomes,
                   original_pressure_reproduction_max_abs=pressure['original_pressure_reproduction_max_abs'],
+                  pressure_reproduction=pressure['pressure_reproduction'],
                   samples=rows, scope='Local time-refinement comparison inheriting the state-550 histories. '
                   'This interval does not establish full-cycle time convergence. Source reference remains separate.')
     atomic(run / 'result.json', result)
