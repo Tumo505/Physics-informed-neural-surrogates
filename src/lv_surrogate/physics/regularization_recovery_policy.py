@@ -1,6 +1,16 @@
 """Regularization update for the state 551 recovery experiment."""
 
 
+def retry_linear_accuracy(attempt, attempts, *, rtol, limit):
+    """Tighten the internal solve, retaining the original true-residual gate."""
+    for reduction in (.1, .01):
+        last = attempts[-1]
+        if last['qualified'] or last['reason'] <= 0 or last['true_residual_N'] is None:
+            break
+        attempts.append(attempt(False, rtol * reduction, min(1e-12, limit * .05)))
+    return attempts
+
+
 def update_shift(mu, good_full_steps, *, accepted, full_step, ratio, minimum, maximum):
     """Require two good full steps at the same shift before halving it."""
     if not accepted:

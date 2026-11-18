@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 
@@ -62,7 +63,45 @@ def pressure_reproduction(reconstructed, stored):
                 first_full_cycle_mismatch_state=int(mismatches[0]+1) if len(mismatches) else None)
 
 
-def submit(run):
+def accepted_prefix(parent, factor):
+    """Recover only the hash-verified, committed refined checkpoint chain."""
+    result = load(parent / 'result.json')
+    assert result['complete']
+    summary = result['outcomes'][str(factor)]['completed']
+    assert summary and not summary['complete'], 'Require an unfinished refined trajectory'
+    assert summary['factor'] == factor and summary['start_state'] == 550 and summary['stop_state'] == 555
+    rows = summary['records']
+    assert 0 < len(rows) == summary['completed_substeps'] < 5*factor
+    schedule = load(parent / 'pressure.json')['factors'][str(factor)]
+    digest = sha(parent / 'seed-550.npz')
+    for index, row in enumerate(rows, 1):
+        step = parent / f'factor-{factor}/substep-{index:03d}'
+        assert row['substep'] == index and row['input_checkpoint_sha256'] == digest
+        assert row == load(step / 'accepted.json')
+        assert sha(step / 'checkpoint.npz') == row['checkpoint_sha256']
+        assert sha(step / 'trace.json') == row['trace_sha256']
+        assert row['time_s'] == schedule['endpoint_times'][index-1]
+        assert row['pressure_Pa'] == schedule['pressures'][index-1]
+        assert 0 <= row['custom_force_N'] < 1e-9 and 0 <= row['native_force_N'] < 1e-8
+        assert row['native_updates'] == 0
+        digest = row['checkpoint_sha256']
+    return rows
+
+
+def restored_checkpoint(path, row, factor):
+    import numpy as np
+    assert sha(path) == row['checkpoint_sha256']
+    with np.load(path, allow_pickle=False) as saved:
+        assert int(saved['completed_substeps']) == row['substep'] and int(saved['factor']) == factor
+        assert float(saved['time_s']) == row['time_s']
+        values = {name: saved[name] for name in ('u', 'u_old', 'v_old', 'a_old', 'previous')}
+    np.testing.assert_array_equal(values['u'], values['u_old'])
+    for value in values.values():
+        assert value.ndim == 1 and value.shape == values['u'].shape and np.isfinite(value).all()
+    return values
+
+
+def submit(run, resume_after=None, factor=None):
     with (ROOT / '.hpc/profile-submission.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         assert_idle(ROOT)
@@ -74,6 +113,22 @@ def submit(run):
         manifest = load(TARGET / 'manifest.json')
         assert manifest['completed_steps'] == 554
         assert sha(TARGET / 'restart.npz') == source['checkpoint_sha256']
+        parent = None
+        rows = []
+        factors = [2, 4]
+        if resume_after is not None:
+            assert factor in (2, 4), '--factor is required with --resume-after'
+            parent = ROOT / 'experiments/hpc' / resume_after
+            for filename in ('plan.json', 'result.json', 'seed-550.npz', 'patch.npz', 'pressure.json'):
+                registered(ROOT, parent, parent / filename)
+            parent_plan = load(parent / 'plan.json')
+            assert parent_plan['source_checkpoint_sha256'] == source['checkpoint_sha256']
+            assert parent_plan['protocol'] == source['protocol']
+            assert parent_plan['gpu_library_sha256'] == sha(GPU / 'lib/libpetsc.so')
+            rows = accepted_prefix(parent, factor)
+            factors = [factor]
+        else:
+            assert factor is None, '--factor for submit requires --resume-after'
         frozen = dict(source['frozen'])
         files = [Path(__file__), AUDIT / 'result.json',
                  ROOT / 'hpc/production_cuda_native.py', ROOT / 'hpc/cofactor_proof.py',
@@ -89,9 +144,36 @@ def submit(run):
         for path, digest in frozen.items():
             assert sha(Path(path)) == digest, path
         run.mkdir()
+        resume = None
+        if parent is not None:
+            for filename in ('seed-550.npz', 'patch.npz', 'pressure.json'):
+                shutil.copyfile(parent / filename, run / filename)
+                assert sha(run / filename) == sha(parent / filename)
+                artifact(ROOT, run, run / filename, 'Verified refined resume input')
+                frozen[str(run / filename)] = sha(run / filename)
+            folder = run / f'factor-{factor}'
+            folder.mkdir()
+            for row in rows:
+                relative = Path(f'factor-{factor}/substep-{row["substep"]:03d}')
+                (run / relative).mkdir()
+                for filename in ('accepted.json', 'trace.json', 'checkpoint.npz'):
+                    path = run / relative / filename
+                    shutil.copyfile(parent / relative / filename, path)
+                    expected = {'checkpoint.npz': row['checkpoint_sha256'],
+                                'trace.json': row['trace_sha256'],
+                                'accepted.json': sha(parent / relative / filename)}[filename]
+                    assert sha(path) == expected
+                    artifact(ROOT, run, path, 'Verified accepted refined prefix')
+                    frozen[str(path)] = sha(path)
+            atomic(run / 'resume.json', dict(parent_run=parent.name, factor=factor, records=rows))
+            artifact(ROOT, run, run / 'resume.json', 'Refined resume provenance')
+            frozen[str(run / 'resume.json')] = sha(run / 'resume.json')
+            frozen[str(parent / 'result.json')] = sha(parent / 'result.json')
+            resume = dict(parent_run=parent.name, factor=factor, completed_substeps=len(rows))
         atomic(run / 'plan.json', dict(source_checkpoint_sha256=source['checkpoint_sha256'],
                                       protocol=source['protocol'], start_state=550, stop_state=555,
-                                      factors=[2, 4], gpu_library_sha256=sha(GPU / 'lib/libpetsc.so'),
+                                      factors=factors, resume=resume,
+                                      gpu_library_sha256=sha(GPU / 'lib/libpetsc.so'),
                                       frozen=frozen))
         artifact(ROOT, run, run / 'plan.json', 'Separate time-refinement comparison plan')
         command = [str(ROOT / '.venv/bin/python'), str(Path(__file__).resolve()),
@@ -137,11 +219,12 @@ def execute(run):
                        DIJITSO_CACHE_DIR=str(ROOT / '.hpc/fenics-cache'),
                        XDG_CACHE_HOME=str(ROOT / '.hpc/cache'))
             base = [str(NATIVE / 'bin/python'), str(Path(__file__).resolve())]
-            with (run / 'prepare.log').open('x') as log:
-                subprocess.run([*base, 'prepare', '--run-id', run.name], env=dict(env, CUDA_VISIBLE_DEVICES=''),
-                               cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
-            for filename in ('seed-550.npz', 'patch.npz', 'pressure.json'):
-                artifact(ROOT, run, run / filename, 'Time-refinement initial data')
+            if not plan.get('resume'):
+                with (run / 'prepare.log').open('x') as log:
+                    subprocess.run([*base, 'prepare', '--run-id', run.name], env=dict(env, CUDA_VISIBLE_DEVICES=''),
+                                   cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
+                for filename in ('seed-550.npz', 'patch.npz', 'pressure.json'):
+                    artifact(ROOT, run, run / filename, 'Time-refinement initial data')
             visible = env.get('CUDA_VISIBLE_DEVICES')
             if not visible:
                 visible = subprocess.check_output(
@@ -154,7 +237,7 @@ def execute(run):
             outcomes = {}
             for factor in plan['factors']:
                 folder = run / f'factor-{factor}'
-                folder.mkdir()
+                folder.mkdir(exist_ok=bool(plan.get('resume')))
                 state['phase'] = f'factor_{factor}'
                 atomic(run / 'state.json', state)
                 command = [str(NATIVE / 'bin/mpiexec'), '-n', '12', '/usr/bin/env',
@@ -340,7 +423,29 @@ def solve_factor(run, factor):
         return on_root(lambda: audit.pair(candidate, histories['u_old']))
 
     try:
+        start = 0
+        if plan.get('resume'):
+            resume = load(run / 'resume.json')
+            assert resume['factor'] == factor == plan['resume']['factor']
+            records.extend(resume['records'])
+            start = len(records)
+            assert start == plan['resume']['completed_substeps']
+            last = folder / f'substep-{start:03d}'
+            assert records[-1]['time_s'] == schedule['endpoint_times'][start-1]
+            saved = restored_checkpoint(last / 'checkpoint.npz', records[-1], factor)
+            previous = saved['previous']
+            histories = {name: saved[name] for name in histories}
+            for name in ('u', *histories):
+                adapter.assign(name, saved[name])
+            on_root(lambda: audit.pair(histories['u_old'], previous))
+            summary['completed_substeps'] = start
+            on_root(lambda: atomic(folder / 'summary.json', summary))
+            if rank == 0:
+                print('REFINED RESUME factor', factor, 'accepted_substeps', start,
+                      'next_substep', start+1, flush=True)
         for index, (time_s, pressure) in enumerate(zip(schedule['endpoint_times'],schedule['pressures'],strict=True)):
+            if index < start:
+                continue
             step = folder / f'substep-{index+1:03d}'
             on_root(lambda: step.mkdir())
             problem.parameters['p'].assign(pressure)
@@ -476,15 +581,17 @@ def compare(run, outcomes):
                     relative_l2=float(np.linalg.norm(difference)/max(np.linalg.norm(samples[4][name]),1e-30)),
                     max_abs=float(np.max(abs(difference))))
         rows.append(row)
-    result = dict(complete=True, both_factors_completed=all(
-                      outcome['completed'] and outcome['completed']['complete'] for outcome in outcomes.values()),
+    requested_complete = all(
+        outcome['completed'] and outcome['completed']['complete'] for outcome in outcomes.values())
+    result = dict(complete=True, both_factors_completed=set(outcomes) == {'2', '4'} and requested_complete,
+                  requested_factors_completed=requested_complete,
                   start_state=550, stop_state=555, source_accepted_states=554, outcomes=outcomes,
                   original_pressure_reproduction_max_abs=pressure['original_pressure_reproduction_max_abs'],
                   pressure_reproduction=pressure['pressure_reproduction'],
                   samples=rows, scope='Local time-refinement comparison inheriting the state-550 histories. '
                   'This interval does not establish full-cycle time convergence. Source reference remains separate.')
     atomic(run / 'result.json', result)
-    print('TIME REFINEMENT COMPARISON COMPLETE', result['both_factors_completed'], flush=True)
+    print('TIME REFINEMENT REQUESTED FACTORS COMPLETE', requested_complete, flush=True)
 
 
 if __name__ == '__main__':
@@ -492,12 +599,17 @@ if __name__ == '__main__':
     parser.add_argument('action',choices=('submit','execute','prepare','solve'))
     parser.add_argument('--run-id',default='cmbbe-timestep-550-555-01')
     parser.add_argument('--factor',type=int,choices=(2,4))
+    parser.add_argument('--resume-after', help='Completed comparison containing accepted refined substeps')
     args = parser.parse_args()
     if not re.fullmatch(r'[A-Za-z0-9_-]+',args.run_id):
         parser.error('Invalid run ID')
+    if args.resume_after and not re.fullmatch(r'[A-Za-z0-9_-]+',args.resume_after):
+        parser.error('Invalid resume run ID')
+    if args.resume_after and args.action != 'submit':
+        parser.error('--resume-after is only supported for submit')
     run = ROOT / 'experiments/hpc' / args.run_id
     if args.action == 'submit':
-        submit(run)
+        submit(run, args.resume_after, args.factor)
     elif args.action == 'execute':
         execute(run)
     elif args.action == 'prepare':

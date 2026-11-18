@@ -4,7 +4,7 @@ import numpy as np
 from .reference_fem import df,residual
 from mpi4py import MPI
 from petsc4py import PETSc
-from .regularization_recovery_policy import update_shift
+from .regularization_recovery_policy import update_shift, retry_linear_accuracy
 
 def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False, directional_armijo=False, direction_guard=None, residual_offset=None):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
@@ -91,10 +91,14 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   true = b.duplicate()
   limit = max(1.1e-12,1.1*eta*norm)
 
-  def linear_attempt(reuse):
+  def linear_attempt(reuse, internal_rtol=eta, internal_atol=1e-12):
+   if rank == 0 and internal_rtol < eta:
+    print(f'LINEAR ACCURACY RETRY iteration={iteration} rtol={internal_rtol:g} '
+          f'atol={internal_atol:g} true_limit_N={limit:g}', flush=True)
    if log_phases and rank == 0:
     print(f'NEWTON {iteration} linear attempt reuse_gamg={reuse}', flush=True)
    budget()
+   ksp.setTolerances(rtol=internal_rtol,atol=internal_atol,max_it=3000)
    ksp.getPC().setReusePreconditioner(reuse)
    delta.set(0.)
    setup_started = time.perf_counter()
@@ -113,7 +117,8 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
    true.axpy(-1,b)
    residual_norm = float(true.norm())
    reason = int(ksp.getConvergedReason())
-   return dict(reuse=reuse,setup_seconds=setup_seconds,solve_seconds=solve_seconds,
+   return dict(reuse=reuse,internal_rtol=internal_rtol,internal_atol=internal_atol,
+               true_residual_limit_N=limit,setup_seconds=setup_seconds,solve_seconds=solve_seconds,
                reason=reason,iterations=int(ksp.getIterationNumber()),
                true_residual_N=residual_norm if np.isfinite(residual_norm) else None,
                qualified=bool(reason>0 and residual_norm<=limit))
@@ -126,6 +131,7 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
    fallback = dict(first_KSP_reason=first['reason'],first_iterations=first['iterations'],
                    first_true_residual_N=first['true_residual_N'])
    attempts.append(linear_attempt(False))
+  retry_linear_accuracy(linear_attempt, attempts, rtol=eta, limit=limit)
   if cuda_linear:
    for obj in (gpu_delta, gpu_rhs, gpu_matrix):obj.destroy()
   last = attempts[-1]
