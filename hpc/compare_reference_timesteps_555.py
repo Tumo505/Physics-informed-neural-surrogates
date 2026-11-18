@@ -63,15 +63,16 @@ def pressure_reproduction(reconstructed, stored):
                 first_full_cycle_mismatch_state=int(mismatches[0]+1) if len(mismatches) else None)
 
 
-def accepted_prefix(parent, factor):
+def accepted_prefix(parent, factor, *, completed=False):
     """Recover only the hash-verified, committed refined checkpoint chain."""
     result = load(parent / 'result.json')
     assert result['complete']
     summary = result['outcomes'][str(factor)]['completed']
-    assert summary and not summary['complete'], 'Require an unfinished refined trajectory'
+    assert summary and summary['complete'] == completed
     assert summary['factor'] == factor and summary['start_state'] == 550 and summary['stop_state'] == 555
     rows = summary['records']
-    assert 0 < len(rows) == summary['completed_substeps'] < 5*factor
+    assert 0 < len(rows) == summary['completed_substeps'] <= 5*factor
+    assert (len(rows) == 5*factor) == completed
     schedule = load(parent / 'pressure.json')['factors'][str(factor)]
     digest = sha(parent / 'seed-550.npz')
     for index, row in enumerate(rows, 1):
@@ -360,6 +361,10 @@ def patch_metrics(patch, current, old, parameters):
     return output
 
 
+class SliceDeadline(TimeoutError):
+    pass
+
+
 def solve_factor(run, factor):
     import numpy as np
     from mpi4py import MPI
@@ -386,6 +391,16 @@ def solve_factor(run, factor):
     problem.solver._solver.parameters.update(dict(method='newtonls', maximum_iterations=100,
                                                   absolute_tolerance=1e-8, relative_tolerance=0.))
     folder = run / f'factor-{factor}'
+    production = plan.get('refined_production', False)
+    requested = len(schedule['endpoint_times'])
+    assert requested == (plan['stop_state']-550)*factor
+    deadline = float(os.environ.get('REFINED_DEADLINE', 'inf'))
+
+    def check_deadline():
+        if production:
+            import time
+            if comm.allreduce(time.time(), op=MPI.MAX) >= deadline:
+                raise SliceDeadline('PBS slice checkpoint pause')
     for name in ('seed-550.npz', 'patch.npz', 'pressure.json'):
         if rank == 0:
             registered(ROOT, run, run / name)
@@ -403,8 +418,8 @@ def solve_factor(run, factor):
         use_positivity_depth(audit, 20, 24)
         add_positivity_diagnostics(audit)
     records = []
-    summary = dict(factor=factor, start_state=550, stop_state=555, dt_s=cfg['dt_s'],
-                   completed_substeps=0, requested_substeps=5*factor, complete=False, records=records,
+    summary = dict(factor=factor, start_state=550, stop_state=plan['stop_state'], dt_s=cfg['dt_s'],
+                   completed_substeps=0, requested_substeps=requested, complete=False, records=records,
                    reference_state_accepted=False)
 
     def on_root(function):
@@ -424,12 +439,18 @@ def solve_factor(run, factor):
 
     try:
         start = 0
-        if plan.get('resume'):
+        if production:
+            from launch_refined_production import production_records
+            # Each rank restores the same accepted prefix, including velocity and acceleration.
+            records.extend(comm.bcast(on_root(lambda: production_records(run)), root=0))
+            start = len(records)
+        elif plan.get('resume'):
             resume = load(run / 'resume.json')
             assert resume['factor'] == factor == plan['resume']['factor']
             records.extend(resume['records'])
             start = len(records)
             assert start == plan['resume']['completed_substeps']
+        if start:
             last = folder / f'substep-{start:03d}'
             assert records[-1]['time_s'] == schedule['endpoint_times'][start-1]
             saved = restored_checkpoint(last / 'checkpoint.npz', records[-1], factor)
@@ -446,8 +467,12 @@ def solve_factor(run, factor):
         for index, (time_s, pressure) in enumerate(zip(schedule['endpoint_times'],schedule['pressures'],strict=True)):
             if index < start:
                 continue
+            check_deadline()
             step = folder / f'substep-{index+1:03d}'
-            on_root(lambda: step.mkdir())
+            on_root(lambda: step.mkdir(exist_ok=production))
+            trace_path = step / 'trace.json'
+            if production:
+                trace_path = step / f'trace-slice-{int(os.environ["REFINED_SLICE"]):03d}.json'
             problem.parameters['p'].assign(pressure)
             old, velocity, acceleration = (histories[name] for name in ('u_old','v_old','a_old'))
             dt = cfg['dt_s']
@@ -480,13 +505,14 @@ def solve_factor(run, factor):
 
             def persist():
                 if rank == 0:
-                    atomic(step / 'trace.json', trace)
+                    atomic(trace_path, trace)
 
             persist()
             options = dict(protocol['admissible_newton'], wall_budget_seconds=float('inf'))
             solve(problem, adapter, histories, audit, options, trace, persist,
                   policy='two_good_steps', cuda_linear=True, host_preconditioner=True,
-                  directional_armijo=True, late_forcing_floor=1e-5)
+                  directional_armijo=True, late_forcing_floor=1e-5,
+                  check_deadline=check_deadline if production else None)
             assert 0 <= trace['custom_force_N'] < 1e-9
             persist()
             before = adapter.gather('u')
@@ -517,23 +543,33 @@ def solve_factor(run, factor):
                            pressure_Pa=pressure, native_force_N=force, custom_force_N=trace['custom_force_N'],
                            native_updates=0, custom_iterations=trace['custom_iterations'],
                            checkpoint_sha256=sha(step / 'checkpoint.npz'),
-                           trace_sha256=sha(step / 'trace.json'),
+                           trace_sha256=sha(trace_path), trace_file=trace_path.name,
                            input_checkpoint_sha256=sha(run / 'seed-550.npz') if index==0 else records[-1]['checkpoint_sha256'],
                            velocity_max_abs=float(np.max(abs(checkpoint['v_old']))),
                            acceleration_max_abs=float(np.max(abs(checkpoint['a_old']))),
                            patch=patch_metrics(patch, candidate, old, forcing['material_parameters']),
                            whole_element_proof=proof)
                 atomic(step / 'accepted.json', row)
-                records.append(row)
+                if production:
+                    artifact(ROOT, run, step / 'accepted.json', 'Accepted refined production substep')
+                    from launch_refined_production import compact_record
+                    records.append(compact_record(row))
+                else:
+                    records.append(row)
                 summary['completed_substeps'] = index+1
                 atomic(folder / 'summary.json', summary)
-                print('REFINED ACCEPTED', 'factor',factor,'substep',index+1,'/',5*factor,
+                print('REFINED ACCEPTED', 'factor',factor,'substep',index+1,'/',requested,
                       'time',time_s,'force_N',force,flush=True)
             on_root(accept)
             previous = old
             histories = comm.bcast({name: checkpoint[name] for name in histories} if rank==0 else None,root=0)
         summary['complete'] = True
         on_root(lambda: atomic(folder / 'summary.json', summary))
+    except SliceDeadline:
+        summary['paused_for_walltime'] = True
+        on_root(lambda: atomic(folder / 'summary.json', summary))
+        if rank == 0:
+            print('REFINED SLICE PAUSED accepted_substeps', summary['completed_substeps'], flush=True)
     except Exception as exc:
         if rank == 0:
             summary['failure'] = f'{type(exc).__name__}: {exc}'
