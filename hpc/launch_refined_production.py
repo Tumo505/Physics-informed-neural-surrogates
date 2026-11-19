@@ -230,6 +230,16 @@ def execute(run):
             with log_path.open('x') as log:
                 result = subprocess.run(command, cwd=ROOT, env=gpu_env, stdout=log, stderr=subprocess.STDOUT)
             assert result.returncode == 0, f'Native worker exited {result.returncode}; inspect {log_path}'
+            if plan.get('positivity_replay'):
+                report = run / 'positivity-replay.json'
+                artifact(ROOT, run, report, 'Rejected refined trial positivity replay')
+                if (run / 'rejected-cell.npz').exists():
+                    artifact(ROOT, run, run / 'rejected-cell.npz', 'Captured rejected cell and P2 displacement')
+                assert load(report)['reproduced'], 'Replay did not match the preserved rejected trial'
+                assert sha(TARGET / 'restart.npz') == plan['source_checkpoint_sha256']
+                assert sha(TARGET / 'manifest.json') == plan['frozen'][str(TARGET / 'manifest.json')]
+                state.update(status='diagnostic_complete', result=str(report.relative_to(ROOT)))
+                return
             summary = load(run / 'factor-4/summary.json')
             state.update(completed_substeps=summary['completed_substeps'])
             assert sha(TARGET / 'restart.npz') == plan['source_checkpoint_sha256']

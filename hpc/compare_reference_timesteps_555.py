@@ -410,13 +410,20 @@ def solve_factor(run, factor):
         previous = seed['previous']
         for name in ('u', *histories):
             adapter.assign(name, seed[name])
-    audit = patch = None
+    audit = patch = capture = None
+    replay = plan.get('positivity_replay')
+    trace = {}
     if rank == 0:
         with np.load(TARGET / 'inputs.npz', allow_pickle=False) as inputs:
             audit = CofactorBernsteinAudit(inputs, workers=8)
         patch = np.load(run / 'patch.npz', allow_pickle=False)
         use_positivity_depth(audit, 20, 24)
-        add_positivity_diagnostics(audit)
+        if replay:
+            from replay_refined_positivity import TrialCapture
+            capture = TrialCapture(audit, replay, lambda: trace)
+        add_positivity_diagnostics(audit, capture.on_failure if capture else None)
+        if capture:
+            capture.track_field()
     records = []
     summary = dict(factor=factor, start_state=550, stop_state=plan['stop_state'], dt_s=cfg['dt_s'],
                    completed_substeps=0, requested_substeps=requested, complete=False, records=records,
@@ -469,6 +476,8 @@ def solve_factor(run, factor):
                 continue
             check_deadline()
             step = folder / f'substep-{index+1:03d}'
+            if replay:
+                assert index+1 == replay['substep'], 'Replay must begin at the failed substep'
             on_root(lambda: step.mkdir(exist_ok=production))
             trace_path = step / 'trace.json'
             if production:
@@ -512,7 +521,13 @@ def solve_factor(run, factor):
             solve(problem, adapter, histories, audit, options, trace, persist,
                   policy='two_good_steps', cuda_linear=True, host_preconditioner=True,
                   directional_armijo=True, late_forcing_floor=1e-5,
+                  stop_after=replay['iteration']+1 if replay else None,
                   check_deadline=check_deadline if production else None)
+            if replay:
+                persist()
+                from replay_refined_positivity import finish_replay
+                on_root(lambda: finish_replay(run, replay, trace, capture))
+                return
             assert 0 <= trace['custom_force_N'] < 1e-9
             persist()
             before = adapter.gather('u')
