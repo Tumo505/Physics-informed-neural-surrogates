@@ -86,6 +86,8 @@ def initialize(run, parent):
                  Path(__file__).resolve().with_name('refined_positivity_policy.py'),
                  Path(__file__).resolve().with_name('refined_constrained_direction.py'),
                  Path(__file__).resolve().with_name('cuda_determinant_direction.py'),
+                 Path(__file__).resolve().with_name('coupled_newton_direction.py'),
+                 Path(__file__).resolve().parents[1] / 'src/lv_surrogate/physics/admissible_newton_gentle_shrink.py',
                  Path(__file__).resolve().parents[1] / 'src/lv_surrogate/physics/adaptive_bernstein.py'):
         frozen[str(path)] = sha(path)
     for path, digest in frozen.items():
@@ -303,6 +305,45 @@ def initialize_direction_retry(run, failed):
     artifact(ROOT, run, run / 'plan.json', 'Joint determinant/force-merit production direction plan')
 
 
+def initialize_coupled_retry(run, failed):
+    for name in ('plan.json', 'pressure.json'):
+        registered(ROOT, failed, failed / name)
+    state, source = load(failed / 'state.json'), load(failed / 'plan.json')
+    assert state['status'] in ('running', 'blocked')
+    assert source['constrained_direction']['kind'] == 'joint_determinant_merit_qp'
+    assert source['constrained_direction']['margin'] == source['adaptive_interval_proof']['margin'] == 1e-9
+    assert not source.get('positivity_replay') and not source.get('cell_path_audit')
+    assert source['source_checkpoint_sha256'] == sha(TARGET / 'restart.npz')
+    assert any(item['kind'] == 'job_submission' and item['return_code'] == 0 and item['stdout'] == state['job']
+               for item in read(failed))
+    records = production_records(failed)
+    assert len(records) == 20
+    trace_path = failed / f'factor-4/substep-021/trace-slice-{state["slice"]:03d}.json'
+    trace = load(trace_path)
+    assert trace['substep'] == 21 and trace['direction_policy'] == 'joint_determinant_merit_qp'
+    rows = trace['custom_newton_steps']
+    assert any(row.get('determinant_direction', {}).get('applied') for row in rows)
+    assert len(rows) >= 8 and rows[-1]['initial_force_N'] > 1e-9
+    forces = [row['initial_force_N'] for row in rows[-5:]]
+    assert max(forces)-min(forces) < 1e-3*max(forces), 'Require the measured constrained-direction stall'
+    parent = ROOT / 'experiments/hpc' / source['parent_refinement']
+    qualified = refined.accepted_prefix(parent, 4, completed=True)
+    assert [row['checkpoint_sha256'] for row in qualified] == [row['checkpoint_sha256'] for row in records]
+    initialize(run, parent)
+    shutil.copyfile(failed / 'pressure.json', run / 'pressure.json')
+    assert sha(run / 'pressure.json') == sha(failed / 'pressure.json')
+    artifact(ROOT, run, run / 'pressure.json', 'Preserved forcing for coupled Newton solve')
+    plan = load(run / 'plan.json')
+    plan.update(certified_depth_retry=source['certified_depth_retry'],
+                adaptive_interval_proof=source['adaptive_interval_proof'],
+                coupled_newton=dict(kind='assembled_jacobian_active_set', element=813578, margin=1e-9,
+                    parent_run=failed.name, start_checkpoint_sha256=records[-1]['checkpoint_sha256']))
+    for path in (failed / 'plan.json', trace_path, run / 'pressure.json'):
+        plan['frozen'][str(path)] = sha(path)
+    atomic(run / 'plan.json', plan)
+    artifact(ROOT, run, run / 'plan.json', 'Assembled coupled constrained Newton production plan')
+
+
 def submit_slice(run, number, after=None):
     command = ['qsub', '-N', 'lv_refined', '-q', 'iworkq',
                '-l', 'select=1:ncpus=28:mem=240gb:ngpus=4', '-l', 'place=excl',
@@ -464,6 +505,7 @@ if __name__ == '__main__':
     parser.add_argument('--certify-depth-from', help='Completed refined positivity replay authorizing depth-32 fallback')
     parser.add_argument('--adaptive-proof-from', help='Completed cell-path audit used for the saved-frame proof check')
     parser.add_argument('--constrained-direction-after', help='Blocked adaptive-proof production with a determinant margin witness')
+    parser.add_argument('--coupled-newton-after', help='Stopped production with a measured projected-direction stall')
     args = parser.parse_args()
     for value in (args.run_id, args.from_refinement, args.certify_depth_from, args.adaptive_proof_from,
                   args.constrained_direction_after):
@@ -472,7 +514,10 @@ if __name__ == '__main__':
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
             parser.error('Invalid run ID')
     run = ROOT / 'experiments/hpc' / args.run_id
-    evidence_sources = (args.certify_depth_from, args.adaptive_proof_from, args.constrained_direction_after)
+    if args.coupled_newton_after and not re.fullmatch(r'[A-Za-z0-9_-]+', args.coupled_newton_after):
+        parser.error('Invalid run ID')
+    evidence_sources = (args.certify_depth_from, args.adaptive_proof_from, args.constrained_direction_after,
+                        args.coupled_newton_after)
     if any(evidence_sources) and args.action != 'submit':
         parser.error('Proof evidence options require submit')
     if sum(bool(value) for value in evidence_sources) > 1:
@@ -482,7 +527,9 @@ if __name__ == '__main__':
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             assert_idle(ROOT)
             if args.action == 'submit':
-                if args.constrained_direction_after:
+                if args.coupled_newton_after:
+                    initialize_coupled_retry(run, ROOT / 'experiments/hpc' / args.coupled_newton_after)
+                elif args.constrained_direction_after:
                     initialize_direction_retry(run, ROOT / 'experiments/hpc' / args.constrained_direction_after)
                 elif args.adaptive_proof_from:
                     initialize_adaptive_retry(run, ROOT / 'experiments/hpc' / args.adaptive_proof_from)

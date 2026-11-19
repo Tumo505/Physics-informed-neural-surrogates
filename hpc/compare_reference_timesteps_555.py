@@ -539,6 +539,9 @@ def solve_factor(run, factor):
                 trace['positivity_fallback_algorithm'] = 'determinant_adaptive_interval_bernstein'
             if plan.get('constrained_direction'):
                 trace['direction_policy'] = 'joint_determinant_merit_qp'
+            if plan.get('coupled_newton'):
+                assert not plan.get('constrained_direction')
+                trace['direction_policy'] = 'assembled_jacobian_active_set'
 
             def persist():
                 if rank == 0:
@@ -549,6 +552,13 @@ def solve_factor(run, factor):
                 on_root(lambda: path_audit.initializer(candidates[selected], norms[selected]))
             options = dict(protocol['admissible_newton'], wall_budget_seconds=float('inf'))
             guard = None
+            coupled = None
+            if plan.get('coupled_newton'):
+                from coupled_newton_direction import build_constraints
+
+                def coupled(current, raw):
+                    return build_constraints(audit, plan['coupled_newton']['element'],
+                                             current, histories['u_old'], raw)
             if plan.get('constrained_direction'):
                 from refined_constrained_direction import correct_direction
 
@@ -573,6 +583,7 @@ def solve_factor(run, factor):
                       policy='two_good_steps', cuda_linear=True, host_preconditioner=True,
                       directional_armijo=True, late_forcing_floor=1e-5, stop_after=stop,
                       direction_guard=guard,
+                      coupled_constraints=coupled,
                       save_iterate=save_cell if path_spec else None,
                       check_deadline=check_deadline if production else None)
             except RuntimeError as exc:

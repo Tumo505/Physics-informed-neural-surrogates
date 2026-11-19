@@ -6,7 +6,7 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift, retry_linear_accuracy
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False, directional_armijo=False, direction_guard=None, residual_offset=None):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False, directional_armijo=False, direction_guard=None, residual_offset=None, coupled_constraints=None):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
  iteration = 0
@@ -159,7 +159,25 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
     if ksp is not None:ksp.destroy()
     return
    raise RuntimeError('Shifted linear direction failed true residual qualification')
-  direction=canonical(delta);A.setDiagonal(diag);A.assemble()
+  direction=canonical(delta)
+  if coupled_constraints is not None:
+   assert direction_guard is None and not problem._problem.bcs
+   from coupled_newton_direction import solve_coupled
+   try:
+    detail = solve_coupled(A,ksp,b,delta,adapter,coupled_constraints,old,direction,
+                          cuda_linear=cuda_linear,budget=budget,eta=eta)
+   except Exception as exc:
+    if rank == 0:
+     sr['coupled_newton']=dict(error=f'{type(exc).__name__}: {exc}')
+     record['custom_newton_steps'].append(sr);persist()
+    raise
+   direction=canonical(delta)
+   sr['coupled_newton']=detail
+   if rank == 0:
+    print('COUPLED NEWTON',iteration,'active',len(detail['active']),
+          'response_solves',detail['response_solves'],
+          'stationarity_N',detail['stationarity_residual_N'],flush=True)
+  A.setDiagonal(diag);A.assemble()
   if direction_guard is not None:
    merit_gradient = b.duplicate()
    A.multTranspose(b, merit_gradient)
