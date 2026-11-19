@@ -537,6 +537,8 @@ def solve_factor(run, factor):
                              positivity_subdivision_retry_depth_limit=32, positivity_margin=1e-9)
             if plan.get('adaptive_interval_proof'):
                 trace['positivity_fallback_algorithm'] = 'determinant_adaptive_interval_bernstein'
+            if plan.get('constrained_direction'):
+                trace['direction_policy'] = 'joint_determinant_merit_qp'
 
             def persist():
                 if rank == 0:
@@ -546,6 +548,19 @@ def solve_factor(run, factor):
             if path_spec:
                 on_root(lambda: path_audit.initializer(candidates[selected], norms[selected]))
             options = dict(protocol['admissible_newton'], wall_budget_seconds=float('inf'))
+            guard = None
+            if plan.get('constrained_direction'):
+                from refined_constrained_direction import correct_direction
+
+                def guard(current, direction, negative_merit):
+                    corrected, detail = correct_direction(audit, plan['constrained_direction']['element'],
+                        current, histories['u_old'], direction, negative_merit)
+                    if detail['applied']:
+                        print('CONSTRAINED DIRECTION iteration', len(trace.get('custom_newton_steps', [])),
+                              'determinant', detail['minimum_point_determinant'],
+                              'merit_slope', detail['corrected_merit_slope'],
+                              'correction_norm', detail['correction_norm'], flush=True)
+                    return corrected, detail
 
             def save_cell(iteration, candidate, force, shift):
                 if rank == 0:
@@ -557,6 +572,7 @@ def solve_factor(run, factor):
                 solve(problem, adapter, histories, audit, options, trace, persist,
                       policy='two_good_steps', cuda_linear=True, host_preconditioner=True,
                       directional_armijo=True, late_forcing_floor=1e-5, stop_after=stop,
+                      direction_guard=guard,
                       save_iterate=save_cell if path_spec else None,
                       check_deadline=check_deadline if production else None)
             except RuntimeError as exc:

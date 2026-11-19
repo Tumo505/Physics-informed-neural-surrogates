@@ -84,6 +84,8 @@ def initialize(run, parent):
     # This launcher extends the qualified refined runner; pin the new implementation explicitly.
     for path in (Path(__file__).resolve(), Path(refined.__file__).resolve(),
                  Path(__file__).resolve().with_name('refined_positivity_policy.py'),
+                 Path(__file__).resolve().with_name('refined_constrained_direction.py'),
+                 Path(__file__).resolve().with_name('cuda_determinant_direction.py'),
                  Path(__file__).resolve().parents[1] / 'src/lv_surrogate/physics/adaptive_bernstein.py'):
         frozen[str(path)] = sha(path)
     for path, digest in frozen.items():
@@ -265,6 +267,42 @@ def initialize_adaptive_retry(run, diagnostic):
     artifact(ROOT, run, run / 'plan.json', 'Adaptive interval positivity production retry')
 
 
+def initialize_direction_retry(run, failed):
+    for name in ('plan.json', 'pressure.json'):
+        registered(ROOT, failed, failed / name)
+    state, source = load(failed / 'state.json'), load(failed / 'plan.json')
+    assert state['status'] == 'blocked' and source['adaptive_interval_proof']['margin'] == 1e-9
+    assert not source.get('positivity_replay') and not source.get('cell_path_audit')
+    assert source['source_checkpoint_sha256'] == sha(TARGET / 'restart.npz')
+    assert any(item['kind'] == 'job_submission' and item['return_code'] == 0 and item['stdout'] == state['job']
+               for item in read(failed))
+    records = production_records(failed)
+    assert len(records) == 20
+    trace_path = failed / f'factor-4/substep-021/trace-slice-{state["slice"]:03d}.json'
+    trace = load(trace_path)
+    assert trace['substep'] == 21 and trace['positivity_fallback_algorithm'] == 'determinant_adaptive_interval_bernstein'
+    reason = 'Direct determinant margin violation witness (stage=endpoint, element=813578)'
+    assert any(trial.get('positivity_failure') == reason
+               for row in trace['custom_newton_steps'] for trial in row['trials'])
+    assert trace['custom_newton_steps'][-1]['initial_force_N'] > 1e-9
+    parent = ROOT / 'experiments/hpc' / source['parent_refinement']
+    qualified = refined.accepted_prefix(parent, 4, completed=True)
+    assert [row['checkpoint_sha256'] for row in qualified] == [row['checkpoint_sha256'] for row in records]
+    initialize(run, parent)
+    shutil.copyfile(failed / 'pressure.json', run / 'pressure.json')
+    assert sha(run / 'pressure.json') == sha(failed / 'pressure.json')
+    artifact(ROOT, run, run / 'pressure.json', 'Preserved forcing for joint determinant/merit direction retry')
+    plan = load(run / 'plan.json')
+    plan.update(certified_depth_retry=source['certified_depth_retry'],
+                adaptive_interval_proof=source['adaptive_interval_proof'],
+                constrained_direction=dict(kind='joint_determinant_merit_qp', element=813578,
+                    margin=1e-9, parent_run=failed.name, start_checkpoint_sha256=records[-1]['checkpoint_sha256']))
+    for path in (failed / 'plan.json', trace_path, run / 'pressure.json'):
+        plan['frozen'][str(path)] = sha(path)
+    atomic(run / 'plan.json', plan)
+    artifact(ROOT, run, run / 'plan.json', 'Joint determinant/force-merit production direction plan')
+
+
 def submit_slice(run, number, after=None):
     command = ['qsub', '-N', 'lv_refined', '-q', 'iworkq',
                '-l', 'select=1:ncpus=28:mem=240gb:ngpus=4', '-l', 'place=excl',
@@ -425,23 +463,28 @@ if __name__ == '__main__':
     parser.add_argument('--from-refinement', default='cmbbe-timestep-550-555-03')
     parser.add_argument('--certify-depth-from', help='Completed refined positivity replay authorizing depth-32 fallback')
     parser.add_argument('--adaptive-proof-from', help='Completed cell-path audit used for the saved-frame proof check')
+    parser.add_argument('--constrained-direction-after', help='Blocked adaptive-proof production with a determinant margin witness')
     args = parser.parse_args()
-    for value in (args.run_id, args.from_refinement, args.certify_depth_from, args.adaptive_proof_from):
+    for value in (args.run_id, args.from_refinement, args.certify_depth_from, args.adaptive_proof_from,
+                  args.constrained_direction_after):
         if value is None:
             continue
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
             parser.error('Invalid run ID')
     run = ROOT / 'experiments/hpc' / args.run_id
-    if (args.certify_depth_from or args.adaptive_proof_from) and args.action != 'submit':
+    evidence_sources = (args.certify_depth_from, args.adaptive_proof_from, args.constrained_direction_after)
+    if any(evidence_sources) and args.action != 'submit':
         parser.error('Proof evidence options require submit')
-    if args.certify_depth_from and args.adaptive_proof_from:
+    if sum(bool(value) for value in evidence_sources) > 1:
         parser.error('Select one proof evidence source')
     if args.action in ('submit', 'resume'):
         with (ROOT / '.hpc/profile-submission.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             assert_idle(ROOT)
             if args.action == 'submit':
-                if args.adaptive_proof_from:
+                if args.constrained_direction_after:
+                    initialize_direction_retry(run, ROOT / 'experiments/hpc' / args.constrained_direction_after)
+                elif args.adaptive_proof_from:
                     initialize_adaptive_retry(run, ROOT / 'experiments/hpc' / args.adaptive_proof_from)
                 elif args.certify_depth_from:
                     initialize_certified_retry(run, ROOT / 'experiments/hpc' / args.certify_depth_from)
