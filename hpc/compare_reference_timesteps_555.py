@@ -418,6 +418,10 @@ def solve_factor(run, factor):
             audit = CofactorBernsteinAudit(inputs, workers=8)
         patch = np.load(run / 'patch.npz', allow_pickle=False)
         use_positivity_depth(audit, 20, 24)
+        if plan.get('certified_depth_retry'):
+            from refined_positivity_policy import extend_unresolved_depth
+            extend_unresolved_depth(audit, plan['certified_depth_retry']['depth'])
+            print('REFINED POSITIVITY maximum_depth=20 unresolved_retry_depths=24,32 margin=1e-9', flush=True)
         if replay:
             from replay_refined_positivity import TrialCapture
             capture = TrialCapture(audit, replay, lambda: trace)
@@ -511,6 +515,9 @@ def solve_factor(run, factor):
             trace = dict(factor=factor, substep=index+1, time_s=time_s, pressure_Pa=pressure,
                          selected_predictor=selected,
                          initial_forces_N=[value if np.isfinite(value) else None for value in norms])
+            if plan.get('certified_depth_retry'):
+                trace.update(positivity_subdivision_depth_limit=20,
+                             positivity_subdivision_retry_depth_limit=32, positivity_margin=1e-9)
 
             def persist():
                 if rank == 0:

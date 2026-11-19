@@ -1,6 +1,7 @@
 """Continue the completed quarter-step trajectory in a separate checkpointed PBS chain."""
 import argparse
 import fcntl
+import math
 import os
 from pathlib import Path
 import re
@@ -81,7 +82,8 @@ def initialize(run, parent):
     assert load(TARGET / 'manifest.json')['completed_steps'] == 554
     frozen = dict(inherited['frozen'])
     # This launcher extends the qualified refined runner; pin the new implementation explicitly.
-    for path in (Path(__file__).resolve(), Path(refined.__file__).resolve()):
+    for path in (Path(__file__).resolve(), Path(refined.__file__).resolve(),
+                 Path(__file__).resolve().with_name('refined_positivity_policy.py')):
         frozen[str(path)] = sha(path)
     for path, digest in frozen.items():
         assert sha(Path(path)) == digest, path
@@ -125,6 +127,67 @@ def initialize(run, parent):
     artifact(ROOT, run, script, 'Checkpointed refined production worker')
     atomic(run / 'state.json', dict(status='prepared', slice=0, completed_substeps=20,
                                    requested_substeps=len(times), original_reference_steps=554))
+
+
+def check_depth_evidence(report, spec):
+    assert report['reproduced'] and not report['mismatches']
+    assert report['reference_state_accepted'] is False
+    for key, value in (('substep', 21), ('element', 813578), ('stage', 'endpoint'),
+                       ('margin', 1e-9), ('original_depth', 20), ('retry_depth', 24)):
+        assert report[key] == value
+        if key != 'margin':
+            assert spec[key] == value
+    assert report['iteration'] == spec['iteration'] and report['alpha'] == spec['alpha']
+    cell = report['cell_audit']
+    assert cell['independent_gradient_agrees']
+    estimate = cell['independent_cartesian']['optimized_minimum_estimate']
+    assert math.isfinite(estimate) and estimate > report['margin']
+    entries = cell['captured_gradient']['bernstein']
+    assert [(row['depth'], row['outcome']) for row in entries] == [
+        (24, 'unresolved'), (28, 'unresolved'), (32, 'certified_positive')]
+    proof = entries[-1]
+    assert math.isfinite(proof['lower_bound']) and proof['lower_bound'] > report['margin']
+    assert 24 < proof['maximum_depth'] <= 32 and proof['leaf_tetrahedra'] > 0
+    return dict(depth=32, margin=report['margin'], element=report['element'],
+                substep=report['substep'], lower_bound=proof['lower_bound'])
+
+
+def initialize_certified_retry(run, replay):
+    for name in ('plan.json', 'positivity-replay.json', 'rejected-cell.npz'):
+        registered(ROOT, replay, replay / name)
+    assert load(replay / 'state.json')['status'] == 'diagnostic_complete'
+    evidence = load(replay / 'plan.json')
+    policy = check_depth_evidence(load(replay / 'positivity-replay.json'), evidence['positivity_replay'])
+    failed = ROOT / 'experiments/hpc' / evidence['diagnostic_parent']
+    registered(ROOT, failed, failed / 'plan.json')
+    registered(ROOT, failed, failed / 'pressure.json')
+    assert load(failed / 'state.json')['status'] == 'blocked'
+    records = production_records(failed)
+    assert len(records) == 20
+    assert sha(replay / 'factor-4/substep-020/checkpoint.npz') == records[-1]['checkpoint_sha256']
+    # The diagnostic plan pins the failed production plan and the exact measured trial.
+    for path, digest in evidence['frozen'].items():
+        path = Path(path)
+        if path == failed / 'plan.json' or path.is_relative_to(failed / 'factor-4'):
+            assert sha(path) == digest, path
+    source_plan = load(failed / 'plan.json')
+    parent = ROOT / 'experiments/hpc' / source_plan['parent_refinement']
+    qualified = refined.accepted_prefix(parent, 4, completed=True)
+    assert [row['checkpoint_sha256'] for row in qualified] == [row['checkpoint_sha256'] for row in records]
+    initialize(run, parent)
+    shutil.copyfile(failed / 'pressure.json', run / 'pressure.json')
+    assert sha(run / 'pressure.json') == sha(failed / 'pressure.json')
+    artifact(ROOT, run, run / 'pressure.json', 'Preserved pressure schedule for certified production retry')
+    plan = load(run / 'plan.json')
+    policy.update(from_run=replay.name, result_sha256=sha(replay / 'positivity-replay.json'),
+                  rejected_cell_sha256=sha(replay / 'rejected-cell.npz'),
+                  start_checkpoint_sha256=records[-1]['checkpoint_sha256'])
+    plan['certified_depth_retry'] = policy
+    for path in (replay / 'plan.json', replay / 'positivity-replay.json', replay / 'rejected-cell.npz',
+                 failed / 'plan.json', run / 'pressure.json'):
+        plan['frozen'][str(path)] = sha(path)
+    atomic(run / 'plan.json', plan)
+    artifact(ROOT, run, run / 'plan.json', 'Evidence-gated depth-32 refined production retry')
 
 
 def submit_slice(run, number, after=None):
@@ -276,17 +339,25 @@ if __name__ == '__main__':
     parser.add_argument('action', choices=('submit', 'execute', 'prepare', 'worker', 'resume'))
     parser.add_argument('--run-id', required=True)
     parser.add_argument('--from-refinement', default='cmbbe-timestep-550-555-03')
+    parser.add_argument('--certify-depth-from', help='Completed refined positivity replay authorizing depth-32 fallback')
     args = parser.parse_args()
-    for value in (args.run_id, args.from_refinement):
+    for value in (args.run_id, args.from_refinement, args.certify_depth_from):
+        if value is None:
+            continue
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
             parser.error('Invalid run ID')
     run = ROOT / 'experiments/hpc' / args.run_id
+    if args.certify_depth_from and args.action != 'submit':
+        parser.error('--certify-depth-from requires submit')
     if args.action in ('submit', 'resume'):
         with (ROOT / '.hpc/profile-submission.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             assert_idle(ROOT)
             if args.action == 'submit':
-                initialize(run, ROOT / 'experiments/hpc' / args.from_refinement)
+                if args.certify_depth_from:
+                    initialize_certified_retry(run, ROOT / 'experiments/hpc' / args.certify_depth_from)
+                else:
+                    initialize(run, ROOT / 'experiments/hpc' / args.from_refinement)
             else:
                 registered(ROOT, run, run / 'plan.json')
                 assert load(run / 'state.json')['status'] in ('blocked', 'running'), 'No interrupted production run'
