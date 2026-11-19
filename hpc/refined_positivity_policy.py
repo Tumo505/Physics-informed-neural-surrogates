@@ -31,3 +31,28 @@ def extend_unresolved_depth(audit, depth):
             child.resolve = resolve
 
     return restore
+
+
+def install_adaptive_proof(audit):
+    from lv_surrogate.physics.adaptive_bernstein import resolve_positive
+    assert audit.margin == 1e-9
+    restores = []
+    for _, child in audit.shards:
+        original = child.resolve
+
+        def retry(deformation, vertices, original=original):
+            try:
+                return original(deformation, vertices)
+            except ValueError as exc:
+                if str(exc) != 'Whole-element positivity remains unresolved at maximum depth':
+                    raise
+            return dict(resolve_positive(deformation, vertices, margin=audit.margin), fallback_from_depth=32)
+
+        child.resolve = retry
+        restores.append((child, original))
+
+    def restore():
+        for child, original in restores:
+            child.resolve = original
+
+    return restore

@@ -83,7 +83,8 @@ def initialize(run, parent):
     frozen = dict(inherited['frozen'])
     # This launcher extends the qualified refined runner; pin the new implementation explicitly.
     for path in (Path(__file__).resolve(), Path(refined.__file__).resolve(),
-                 Path(__file__).resolve().with_name('refined_positivity_policy.py')):
+                 Path(__file__).resolve().with_name('refined_positivity_policy.py'),
+                 Path(__file__).resolve().parents[1] / 'src/lv_surrogate/physics/adaptive_bernstein.py'):
         frozen[str(path)] = sha(path)
     for path, digest in frozen.items():
         assert sha(Path(path)) == digest, path
@@ -188,6 +189,80 @@ def initialize_certified_retry(run, replay):
         plan['frozen'][str(path)] = sha(path)
     atomic(run / 'plan.json', plan)
     artifact(ROOT, run, run / 'plan.json', 'Evidence-gated depth-32 refined production retry')
+
+
+def check_saved_cell_frames(diagnostic):
+    import numpy as np
+    from lv_surrogate.physics.adaptive_bernstein import resolve_positive
+
+    report = load(diagnostic / 'cell-path.json')
+    assert report['complete'] and report['reference_state_accepted'] is False
+    assert report['element'] == 813578 and report['substep'] == 21 and report['margin'] == 1e-9
+    assert report['matched_prefix_directions'] >= 8
+    index = load(diagnostic / 'cell-frames/index.json')
+    frames = {row['path']: row for row in index['frames']}
+    checks = []
+    improved = 0
+    for frame in report['frames']:
+        assert frames[frame['path']]['sha256'] == frame['sha256']
+        path = diagnostic / frame['path']
+        assert path.resolve().is_relative_to((diagnostic / 'cell-frames').resolve())
+        assert sha(path) == frame['sha256']
+        assert frame['cell_audit']['independent_gradient_agrees']
+        if frame['stage'] != 'endpoint':
+            continue
+        row = dict(kind=frame['kind'], iteration=frame['iteration'], path=frame['path'])
+        with np.load(path, allow_pickle=False) as data:
+            try:
+                proof = resolve_positive(data['deformation'], data['vertices'])
+                row.update(outcome='certified_positive', proof=proof)
+            except ValueError as exc:
+                row.update(outcome='rejected', reason=str(exc))
+        if frame['kind'] in ('checkpoint', 'initializer', 'accepted_newton'):
+            assert row['outcome'] == 'certified_positive', ('Saved positive field failed interval proof', row)
+        elif (frame['kind'] == 'first_unresolved_trial' and frame['iteration'] < report['matched_prefix_directions']
+              and row['outcome'] == 'certified_positive'):
+            improved += 1
+        checks.append(row)
+        print('SAVED CELL PROOF', row['kind'], row['iteration'], row['outcome'], flush=True)
+    assert improved > 0, 'No previously blocked trial in the matched path was newly certified; no job submitted'
+    assert any(row['kind'] == 'checkpoint' for row in checks)
+    return dict(passed=True, margin=1e-9, algorithm='determinant_adaptive_interval_bernstein',
+                improved_matched_trials=improved, checks=checks)
+
+
+def initialize_adaptive_retry(run, diagnostic):
+    for name in ('plan.json', 'cell-path.json', 'cell-frames/index.json'):
+        registered(ROOT, diagnostic, diagnostic / name)
+    assert load(diagnostic / 'state.json')['status'] == 'diagnostic_complete'
+    evidence = load(diagnostic / 'plan.json')
+    assert evidence['certified_depth_retry']['depth'] == 32 and evidence['cell_path_audit']['substep'] == 21
+    proof_check = check_saved_cell_frames(diagnostic)
+    failed = ROOT / 'experiments/hpc' / evidence['diagnostic_parent']
+    registered(ROOT, failed, failed / 'plan.json')
+    registered(ROOT, failed, failed / 'pressure.json')
+    assert load(failed / 'state.json')['status'] in ('blocked', 'running')
+    records = production_records(failed)
+    assert len(records) == 20
+    assert sha(diagnostic / 'factor-4/substep-020/checkpoint.npz') == records[-1]['checkpoint_sha256']
+    source = load(failed / 'plan.json')
+    parent = ROOT / 'experiments/hpc' / source['parent_refinement']
+    qualified = refined.accepted_prefix(parent, 4, completed=True)
+    assert [row['checkpoint_sha256'] for row in qualified] == [row['checkpoint_sha256'] for row in records]
+    initialize(run, parent)
+    shutil.copyfile(failed / 'pressure.json', run / 'pressure.json')
+    artifact(ROOT, run, run / 'pressure.json', 'Unchanged pressure schedule for adaptive-proof retry')
+    atomic(run / 'saved-cell-proof-check.json', proof_check)
+    artifact(ROOT, run, run / 'saved-cell-proof-check.json', 'Adaptive interval proof on preserved cell frames')
+    plan = load(run / 'plan.json')
+    plan.update(certified_depth_retry=source['certified_depth_retry'],
+                adaptive_interval_proof=dict(from_run=diagnostic.name, margin=1e-9,
+                    max_nodes=20000, max_depth=64, start_checkpoint_sha256=records[-1]['checkpoint_sha256']))
+    for path in (diagnostic / 'plan.json', diagnostic / 'cell-path.json', diagnostic / 'cell-frames/index.json',
+                 failed / 'plan.json', run / 'pressure.json', run / 'saved-cell-proof-check.json'):
+        plan['frozen'][str(path)] = sha(path)
+    atomic(run / 'plan.json', plan)
+    artifact(ROOT, run, run / 'plan.json', 'Adaptive interval positivity production retry')
 
 
 def submit_slice(run, number, after=None):
@@ -349,21 +424,26 @@ if __name__ == '__main__':
     parser.add_argument('--run-id', required=True)
     parser.add_argument('--from-refinement', default='cmbbe-timestep-550-555-03')
     parser.add_argument('--certify-depth-from', help='Completed refined positivity replay authorizing depth-32 fallback')
+    parser.add_argument('--adaptive-proof-from', help='Completed cell-path audit used for the saved-frame proof check')
     args = parser.parse_args()
-    for value in (args.run_id, args.from_refinement, args.certify_depth_from):
+    for value in (args.run_id, args.from_refinement, args.certify_depth_from, args.adaptive_proof_from):
         if value is None:
             continue
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
             parser.error('Invalid run ID')
     run = ROOT / 'experiments/hpc' / args.run_id
-    if args.certify_depth_from and args.action != 'submit':
-        parser.error('--certify-depth-from requires submit')
+    if (args.certify_depth_from or args.adaptive_proof_from) and args.action != 'submit':
+        parser.error('Proof evidence options require submit')
+    if args.certify_depth_from and args.adaptive_proof_from:
+        parser.error('Select one proof evidence source')
     if args.action in ('submit', 'resume'):
         with (ROOT / '.hpc/profile-submission.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             assert_idle(ROOT)
             if args.action == 'submit':
-                if args.certify_depth_from:
+                if args.adaptive_proof_from:
+                    initialize_adaptive_retry(run, ROOT / 'experiments/hpc' / args.adaptive_proof_from)
+                elif args.certify_depth_from:
                     initialize_certified_retry(run, ROOT / 'experiments/hpc' / args.certify_depth_from)
                 else:
                     initialize(run, ROOT / 'experiments/hpc' / args.from_refinement)

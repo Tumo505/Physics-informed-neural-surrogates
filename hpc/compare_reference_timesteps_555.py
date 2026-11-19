@@ -424,6 +424,11 @@ def solve_factor(run, factor):
             from refined_positivity_policy import extend_unresolved_depth
             extend_unresolved_depth(audit, plan['certified_depth_retry']['depth'])
             print('REFINED POSITIVITY maximum_depth=20 unresolved_retry_depths=24,32 margin=1e-9', flush=True)
+        if plan.get('adaptive_interval_proof'):
+            from refined_positivity_policy import install_adaptive_proof
+            assert plan['certified_depth_retry']['depth'] == 32
+            install_adaptive_proof(audit)
+            print('REFINED POSITIVITY adaptive_interval_bernstein enabled margin=1e-9', flush=True)
         if replay:
             from replay_refined_positivity import TrialCapture
             capture = TrialCapture(audit, replay, lambda: trace)
@@ -530,6 +535,8 @@ def solve_factor(run, factor):
             if plan.get('certified_depth_retry'):
                 trace.update(positivity_subdivision_depth_limit=20,
                              positivity_subdivision_retry_depth_limit=32, positivity_margin=1e-9)
+            if plan.get('adaptive_interval_proof'):
+                trace['positivity_fallback_algorithm'] = 'determinant_adaptive_interval_bernstein'
 
             def persist():
                 if rank == 0:
