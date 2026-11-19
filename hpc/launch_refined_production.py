@@ -293,6 +293,15 @@ def execute(run):
             with log_path.open('x') as log:
                 result = subprocess.run(command, cwd=ROOT, env=gpu_env, stdout=log, stderr=subprocess.STDOUT)
             assert result.returncode == 0, f'Native worker exited {result.returncode}; inspect {log_path}'
+            if plan.get('cell_path_audit'):
+                report = run / 'cell-path.json'
+                assert load(report)['complete'] and load(report)['reference_state_accepted'] is False
+                artifact(ROOT, run, report, 'Independent limiting-cell path audit')
+                artifact(ROOT, run, run / 'cell-frames/index.json', 'Captured cell displacement frames')
+                assert sha(TARGET / 'restart.npz') == plan['source_checkpoint_sha256']
+                assert sha(TARGET / 'manifest.json') == plan['frozen'][str(TARGET / 'manifest.json')]
+                state.update(status='diagnostic_complete', result=str(report.relative_to(ROOT)))
+                return
             if plan.get('positivity_replay'):
                 report = run / 'positivity-replay.json'
                 artifact(ROOT, run, report, 'Rejected refined trial positivity replay')

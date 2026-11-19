@@ -410,8 +410,10 @@ def solve_factor(run, factor):
         previous = seed['previous']
         for name in ('u', *histories):
             adapter.assign(name, seed[name])
-    audit = patch = capture = None
+    audit = patch = capture = path_audit = None
     replay = plan.get('positivity_replay')
+    path_spec = plan.get('cell_path_audit')
+    assert not (replay and path_spec)
     trace = {}
     if rank == 0:
         with np.load(TARGET / 'inputs.npz', allow_pickle=False) as inputs:
@@ -425,9 +427,15 @@ def solve_factor(run, factor):
         if replay:
             from replay_refined_positivity import TrialCapture
             capture = TrialCapture(audit, replay, lambda: trace)
-        add_positivity_diagnostics(audit, capture.on_failure if capture else None)
+        if path_spec:
+            from audit_refined_cell_path import CellPath
+            path_audit = CellPath(run, audit, path_spec, lambda: trace)
+        observer = capture or path_audit
+        add_positivity_diagnostics(audit, observer.on_failure if observer else None)
         if capture:
             capture.track_field()
+        if path_audit:
+            path_audit.track_field()
     records = []
     summary = dict(factor=factor, start_state=550, stop_state=plan['stop_state'], dt_s=cfg['dt_s'],
                    completed_substeps=0, requested_substeps=requested, complete=False, records=records,
@@ -475,6 +483,8 @@ def solve_factor(run, factor):
             if rank == 0:
                 print('REFINED RESUME factor', factor, 'accepted_substeps', start,
                       'next_substep', start+1, flush=True)
+        if path_spec:
+            on_root(lambda: path_audit.start(histories['u_old'], previous, records[-1]['native_force_N']))
         for index, (time_s, pressure) in enumerate(zip(schedule['endpoint_times'],schedule['pressures'],strict=True)):
             if index < start:
                 continue
@@ -482,6 +492,8 @@ def solve_factor(run, factor):
             step = folder / f'substep-{index+1:03d}'
             if replay:
                 assert index+1 == replay['substep'], 'Replay must begin at the failed substep'
+            if path_spec:
+                assert index+1 == path_spec['substep'], 'Cell-path replay must begin at the failed substep'
             on_root(lambda: step.mkdir(exist_ok=production))
             trace_path = step / 'trace.json'
             if production:
@@ -524,12 +536,34 @@ def solve_factor(run, factor):
                     atomic(trace_path, trace)
 
             persist()
+            if path_spec:
+                on_root(lambda: path_audit.initializer(candidates[selected], norms[selected]))
             options = dict(protocol['admissible_newton'], wall_budget_seconds=float('inf'))
-            solve(problem, adapter, histories, audit, options, trace, persist,
-                  policy='two_good_steps', cuda_linear=True, host_preconditioner=True,
-                  directional_armijo=True, late_forcing_floor=1e-5,
-                  stop_after=replay['iteration']+1 if replay else None,
-                  check_deadline=check_deadline if production else None)
+
+            def save_cell(iteration, candidate, force, shift):
+                if rank == 0:
+                    path_audit.accepted(iteration, candidate, force, shift)
+
+            stop = replay['iteration']+1 if replay else path_spec['directions'] if path_spec else None
+            diagnostic_stop = None
+            try:
+                solve(problem, adapter, histories, audit, options, trace, persist,
+                      policy='two_good_steps', cuda_linear=True, host_preconditioner=True,
+                      directional_armijo=True, late_forcing_floor=1e-5, stop_after=stop,
+                      save_iterate=save_cell if path_spec else None,
+                      check_deadline=check_deadline if production else None)
+            except RuntimeError as exc:
+                if not path_spec or str(exc) not in (
+                        'Regularization ceiling without admissible descent',
+                        'Regularized Newton iteration ceiling reached'):
+                    raise
+                diagnostic_stop = str(exc)
+            if path_spec:
+                persist()
+                if diagnostic_stop is None and trace.get('custom_force_N', float('inf')) < 1e-9:
+                    diagnostic_stop = 'custom_force_target_reached_during_replay'
+                on_root(lambda: path_audit.finish(trace, diagnostic_stop))
+                return
             if replay:
                 persist()
                 from replay_refined_positivity import finish_replay
