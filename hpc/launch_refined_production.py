@@ -87,6 +87,8 @@ def initialize(run, parent):
                  Path(__file__).resolve().with_name('refined_constrained_direction.py'),
                  Path(__file__).resolve().with_name('cuda_determinant_direction.py'),
                  Path(__file__).resolve().with_name('coupled_newton_direction.py'),
+                 Path(__file__).resolve().with_name('constrained_residual_direction.py'),
+                 Path(__file__).resolve().with_name('bounded_refined_solver.py'),
                  Path(__file__).resolve().parents[1] / 'src/lv_surrogate/physics/admissible_newton_gentle_shrink.py',
                  Path(__file__).resolve().parents[1] / 'src/lv_surrogate/physics/adaptive_bernstein.py'):
         frozen[str(path)] = sha(path)
@@ -366,7 +368,10 @@ def initialize_expanding_retry(run, failed):
     seeds = sorted(set(spec.get('initial_elements', [spec['element']])))
     witnessed = set()
     for row in rows:
-        for trial in row.get('trials', []):
+        trials=list(row.get('trials', []))
+        for attempt in row.get('direction_attempts', []):
+            trials.extend(attempt.get('trials', []))
+        for trial in trials:
             reason = trial.get('positivity_failure') or ''
             match = re.search(r'\(stage=(?:endpoint|stress), element=(\d+)\)$', reason)
             if match and reason.startswith(('Direct determinant margin violation witness',
@@ -458,7 +463,7 @@ def execute(run):
     plan = load(run / 'plan.json')
 
     def check_deadline():
-        if time.time() >= started+WALL_SECONDS-120:
+        if time.time() >= started+plan.get('solver_study', {}).get('wall_budget_seconds', WALL_SECONDS)-120:
             raise refined.SliceDeadline('PBS slice checkpoint pause during final verification')
     with (run / 'execution.lock').open('a') as execution, (TARGET / 'generation.lock').open('a') as generation:
         for lock in (execution, generation):
@@ -487,12 +492,24 @@ def execute(run):
             gpu_env = dict(env, CUDA_VISIBLE_DEVICES=devices, PETSC_OPTIONS='-use_gpu_aware_mpi 0',
                            PKG_CONFIG_PATH=f'{GPU}/lib/pkgconfig:{pkg}', PKG_CONFIG_LIBDIR=f'{GPU}/lib/pkgconfig:{pkg}',
                            REFINED_SLICE=str(state['slice']),
-                           REFINED_DEADLINE=str(started+WALL_SECONDS-120))
+                           REFINED_DEADLINE=str(started+plan.get('solver_study', {}).get('wall_budget_seconds', WALL_SECONDS)-120))
             log_path = run / f'factor-4/command-{state["slice"]:03d}.log'
             command = [str(NATIVE / 'bin/mpiexec'), '-n', '12', '/usr/bin/env',
                        f'LD_PRELOAD={GPU}/lib/libpetsc.so', *base, 'worker', '--run-id', run.name]
             with log_path.open('x') as log:
                 result = subprocess.run(command, cwd=ROOT, env=gpu_env, stdout=log, stderr=subprocess.STDOUT)
+            if plan.get('solver_study'):
+                assert sha(TARGET / 'restart.npz') == plan['source_checkpoint_sha256']
+                assert sha(TARGET / 'manifest.json') == plan['frozen'][str(TARGET / 'manifest.json')]
+                from bounded_refined_solver import finish
+                summary_path=run/'factor-4/summary.json'
+                summary=load(summary_path) if summary_path.exists() else {}
+                reason=('worker_failure' if result.returncode else
+                        'budget_exhausted' if summary.get('paused_for_walltime') else 'target_reached')
+                state['status']=finish(run,started,reason,result.returncode)
+                state['completed_substeps']=load(run/'result.json')['accepted_after']
+                state['result']=str((run/'result.json').relative_to(ROOT))
+                return
             assert result.returncode == 0, f'Native worker exited {result.returncode}; inspect {log_path}'
             if plan.get('cell_path_audit'):
                 report = run / 'cell-path.json'
@@ -532,6 +549,11 @@ def execute(run):
                 state['next_job'] = submit_slice(run, state['slice']+1, after=os.environ['PBS_JOBID'])
                 state['status'] = 'awaiting_next_slice'
         except refined.SliceDeadline:
+            if plan.get('solver_study'):
+                from bounded_refined_solver import finish
+                state['status']=finish(run,started,'budget_exhausted',None)
+                state['completed_substeps']=load(run/'result.json')['accepted_after']
+                return
             state['next_job'] = submit_slice(run, state['slice']+1, after=os.environ['PBS_JOBID'])
             state['status'] = 'awaiting_next_slice'
         except Exception as exc:
@@ -539,6 +561,9 @@ def execute(run):
             if path.exists():
                 state['completed_substeps'] = load(path)['completed_substeps']
             state.update(status='blocked', error=f'{type(exc).__name__}: {exc}')
+            if plan.get('solver_study'):
+                # Preserve setup/verification failures separately from a qualified study outcome.
+                state['status']='study_error'
             raise
         finally:
             atomic(run / 'state.json', state)
@@ -554,9 +579,10 @@ if __name__ == '__main__':
     parser.add_argument('--constrained-direction-after', help='Blocked adaptive-proof production with a determinant margin witness')
     parser.add_argument('--coupled-newton-after', help='Stopped production with a measured projected-direction stall')
     parser.add_argument('--expand-constraints-after', help='Failed coupled production with a newly blocking element')
+    parser.add_argument('--solver-study-after', help='Bounded substeps 21-24 residual-minimization study after a failed expanding-constraint run')
     args = parser.parse_args()
     for value in (args.run_id, args.from_refinement, args.certify_depth_from, args.adaptive_proof_from,
-                  args.constrained_direction_after, args.expand_constraints_after):
+                  args.constrained_direction_after, args.expand_constraints_after, args.solver_study_after):
         if value is None:
             continue
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
@@ -565,7 +591,7 @@ if __name__ == '__main__':
     if args.coupled_newton_after and not re.fullmatch(r'[A-Za-z0-9_-]+', args.coupled_newton_after):
         parser.error('Invalid run ID')
     evidence_sources = (args.certify_depth_from, args.adaptive_proof_from, args.constrained_direction_after,
-                        args.coupled_newton_after, args.expand_constraints_after)
+                        args.coupled_newton_after, args.expand_constraints_after, args.solver_study_after)
     if any(evidence_sources) and args.action != 'submit':
         parser.error('Proof evidence options require submit')
     if sum(bool(value) for value in evidence_sources) > 1:
@@ -575,7 +601,10 @@ if __name__ == '__main__':
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             assert_idle(ROOT)
             if args.action == 'submit':
-                if args.expand_constraints_after:
+                if args.solver_study_after:
+                    from bounded_refined_solver import initialize as initialize_study
+                    initialize_study(run, ROOT / 'experiments/hpc' / args.solver_study_after)
+                elif args.expand_constraints_after:
                     initialize_expanding_retry(run, ROOT / 'experiments/hpc' / args.expand_constraints_after)
                 elif args.coupled_newton_after:
                     initialize_coupled_retry(run, ROOT / 'experiments/hpc' / args.coupled_newton_after)
@@ -589,6 +618,7 @@ if __name__ == '__main__':
                     initialize(run, ROOT / 'experiments/hpc' / args.from_refinement)
             else:
                 registered(ROOT, run, run / 'plan.json')
+                assert not load(run / 'plan.json').get('solver_study'), 'A bounded study requires review; no automatic resume'
                 assert load(run / 'state.json')['status'] in ('blocked', 'running'), 'No interrupted production run'
             state = load(run / 'state.json')
             state.update(status='submitted', next_job=submit_slice(run, state['slice']+1))

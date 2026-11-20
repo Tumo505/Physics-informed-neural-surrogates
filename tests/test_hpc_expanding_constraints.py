@@ -83,7 +83,8 @@ def test_retry_restores_only_accepted_history_and_retains_original_constraint(pr
     assert production.load(target / 'manifest.json')['completed_steps'] == 554
 
 
-def test_new_cell_rebuilds_direction_before_acceptance_or_shift_change(monkeypatch):
+@pytest.mark.parametrize('residual_minimizing',[False,True])
+def test_new_cell_rebuilds_direction_before_acceptance_or_shift_change(monkeypatch,residual_minimizing):
     """Run the actual Newton loop with dense algebra in place of PETSc/FEniCS."""
     import importlib.util
     import lv_surrogate.physics.regularization_recovery_policy as policy
@@ -144,12 +145,19 @@ def test_new_cell_rebuilds_direction_before_acceptance_or_shift_change(monkeypat
         delta.values[:] = [.3,.3] if len(builder.elements)==1 else [.3,.1]
         return dict(elements=sorted(builder.elements),active=[],response_solves=0,stationarity_residual_N=0)
     monkeypatch.setattr(coupled,'solve_coupled',solve_coupled)
+    if residual_minimizing:
+        import constrained_residual_direction as merit
+        def residual_direction(A,b,delta,adapter,builder,current,scale,mu,**kwargs):
+            np.testing.assert_array_equal(A.values,np.eye(2))
+            return solve_coupled(A,None,b,delta,adapter,builder,current,np.zeros(2))
+        monkeypatch.setattr(merit,'residual_direction',residual_direction)
     options=dict(initial_regularization=1.,minimum_regularization=1e-8,maximum_regularization=1e8,
         custom_absolute_tolerance_N=1e-9,maximum_custom_newton_iterations=10,
         maximum_backtracks=20,armijo_constant=1e-4,wall_budget_seconds=100.)
     record={}
     module.solve(problem,adapter,{'u_old':np.zeros(2)},SimpleNamespace(pair=proof),options,record,
-        lambda:None,policy='two_good_steps',stop_after=1,directional_armijo=True,coupled_constraints=pool)
+        lambda:None,policy='two_good_steps',stop_after=1,directional_armijo=True,coupled_constraints=pool,
+        residual_minimizing=residual_minimizing)
     assert len(calls)==2 and calls[0][0]=={1} and calls[1][0]=={1,2}
     for i in (1,2,3,4):np.testing.assert_array_equal(calls[0][i],calls[1][i])
     np.testing.assert_array_equal(field,[.3,.1])

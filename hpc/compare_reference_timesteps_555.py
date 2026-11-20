@@ -542,7 +542,8 @@ def solve_factor(run, factor):
                 trace['direction_policy'] = 'joint_determinant_merit_qp'
             if plan.get('coupled_newton'):
                 assert not plan.get('constrained_direction')
-                trace['direction_policy'] = 'assembled_jacobian_active_set'
+                trace['direction_policy'] = ('constrained_residual_minimization'
+                    if plan['coupled_newton'].get('residual_minimizing') else 'assembled_jacobian_active_set')
 
             def persist():
                 if rank == 0:
@@ -552,6 +553,8 @@ def solve_factor(run, factor):
             if path_spec:
                 on_root(lambda: path_audit.initializer(candidates[selected], norms[selected]))
             options = dict(protocol['admissible_newton'], wall_budget_seconds=float('inf'))
+            if plan.get('solver_study'):
+                options['maximum_custom_newton_iterations'] = plan['solver_study']['maximum_newton_directions_per_substep']
             guard = None
             coupled = None
             if plan.get('coupled_newton'):
@@ -588,12 +591,14 @@ def solve_factor(run, factor):
 
             stop = replay['iteration']+1 if replay else path_spec['directions'] if path_spec else None
             diagnostic_stop = None
+            solve_started = __import__('time').perf_counter()
             try:
                 solve(problem, adapter, histories, audit, options, trace, persist,
                       policy='two_good_steps', cuda_linear=True, host_preconditioner=True,
                       directional_armijo=True, late_forcing_floor=1e-5, stop_after=stop,
                       direction_guard=guard,
                       coupled_constraints=coupled,
+                      residual_minimizing=bool(plan.get('coupled_newton', {}).get('residual_minimizing')),
                       save_iterate=save_cell if path_spec else None,
                       check_deadline=check_deadline if production else None)
             except RuntimeError as exc:
@@ -642,6 +647,7 @@ def solve_factor(run, factor):
                 row = dict(substep=index+1, time_s=time_s, pressure_time_s=schedule['pressure_times'][index],
                            pressure_Pa=pressure, native_force_N=force, custom_force_N=trace['custom_force_N'],
                            native_updates=0, custom_iterations=trace['custom_iterations'],
+                           solve_wall_seconds=__import__('time').perf_counter()-solve_started,
                            checkpoint_sha256=sha(step / 'checkpoint.npz'),
                            trace_sha256=sha(trace_path), trace_file=trace_path.name,
                            input_checkpoint_sha256=sha(run / 'seed-550.npz') if index==0 else records[-1]['checkpoint_sha256'],

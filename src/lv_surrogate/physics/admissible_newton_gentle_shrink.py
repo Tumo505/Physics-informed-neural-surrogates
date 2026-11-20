@@ -6,7 +6,7 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift, retry_linear_accuracy
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False, directional_armijo=False, direction_guard=None, residual_offset=None, coupled_constraints=None):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False, directional_armijo=False, direction_guard=None, residual_offset=None, coupled_constraints=None, residual_minimizing=False):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
  iteration = 0
@@ -66,28 +66,30 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   diag=A.getDiagonal();scale=diag.copy();scale.abs();values=scale.getArray();values[:]=np.maximum(values,scale.norm(PETSc.NormType.NORM_INFINITY)*1e-12)
   shifted=diag.copy();shifted.axpy(mu,scale);A.setDiagonal(shifted);A.assemble()
   b=df.as_backend_type(R).vec().copy();b.scale(-1);delta=b.duplicate();delta.set(0.)
-  if host_preconditioner and ksp is not None:
-   # The host GAMG hierarchy and CUDA Krylov storage belong to the preceding matrix.
-   ksp.destroy()
-   ksp = None
-  if ksp is None:
-   ksp=PETSc.KSP().create(A.comm);ksp.setType('gmres');ksp.setGMRESRestart(200);ksp.getPC().setType('gamg');ksp.setNormType(PETSc.KSP.NormType.UNPRECONDITIONED);ksp.setMonitor(lambda k,it,r:budget())
-  reuse_pc = bool(reuse_gamg and reused and previous_fresh_shift == mu)
-  if cuda_linear:
-   gpu_matrix = measured('cuda_matrix_copy', A.copy)
-   gpu_matrix.convert('aijcusparse')
-   gpu_delta, gpu_rhs = gpu_matrix.createVecs()
-   assert 'cusparse' in gpu_matrix.getType()
-   assert all('cuda' in v.getType() for v in (gpu_delta, gpu_rhs))
-   b.copy(gpu_rhs)
-   preconditioner_matrix = A if host_preconditioner else gpu_matrix
-   if rank == 0 and iteration == 0:
-    print('CUDA Newton operator', gpu_matrix.getType(), 'vector', gpu_rhs.getType(),
-          'GAMG matrix', preconditioner_matrix.getType(), flush=True)
-   ksp.setOperators(gpu_matrix, preconditioner_matrix)
-  else:
-   ksp.setOperators(A)
-  ksp.setTolerances(rtol=eta,atol=1e-12,max_it=3000)
+  reuse_pc=False
+  if not residual_minimizing:
+   if host_preconditioner and ksp is not None:
+    # The host GAMG hierarchy and CUDA Krylov storage belong to the preceding matrix.
+    ksp.destroy()
+    ksp = None
+   if ksp is None:
+    ksp=PETSc.KSP().create(A.comm);ksp.setType('gmres');ksp.setGMRESRestart(200);ksp.getPC().setType('gamg');ksp.setNormType(PETSc.KSP.NormType.UNPRECONDITIONED);ksp.setMonitor(lambda k,it,r:budget())
+   reuse_pc = bool(reuse_gamg and reused and previous_fresh_shift == mu)
+   if cuda_linear:
+    gpu_matrix = measured('cuda_matrix_copy', A.copy)
+    gpu_matrix.convert('aijcusparse')
+    gpu_delta, gpu_rhs = gpu_matrix.createVecs()
+    assert 'cusparse' in gpu_matrix.getType()
+    assert all('cuda' in v.getType() for v in (gpu_delta, gpu_rhs))
+    b.copy(gpu_rhs)
+    preconditioner_matrix = A if host_preconditioner else gpu_matrix
+    if rank == 0 and iteration == 0:
+     print('CUDA Newton operator', gpu_matrix.getType(), 'vector', gpu_rhs.getType(),
+           'GAMG matrix', preconditioner_matrix.getType(), flush=True)
+    ksp.setOperators(gpu_matrix, preconditioner_matrix)
+   else:
+    ksp.setOperators(A)
+   ksp.setTolerances(rtol=eta,atol=1e-12,max_it=3000)
   true = b.duplicate()
   limit = max(1.1e-12,1.1*eta*norm)
 
@@ -124,16 +126,20 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
                qualified=bool(reason>0 and residual_norm<=limit))
 
   tick = time.perf_counter()
-  first = linear_attempt(reuse_pc)
-  attempts = [first]
-  fallback = None
-  if not first['qualified'] and (not reused or reuse_pc):
-   fallback = dict(first_KSP_reason=first['reason'],first_iterations=first['iterations'],
-                   first_true_residual_N=first['true_residual_N'])
-   attempts.append(linear_attempt(False))
-  retry_linear_accuracy(linear_attempt, attempts, rtol=eta, limit=limit)
-  if cuda_linear:
-   for obj in (gpu_delta, gpu_rhs, gpu_matrix):obj.destroy()
+  if residual_minimizing:
+   attempts=[dict(qualified=True,reason=None,iterations=0,true_residual_N=None)]
+   fallback=None
+  else:
+   first = linear_attempt(reuse_pc)
+   attempts = [first]
+   fallback = None
+   if not first['qualified'] and (not reused or reuse_pc):
+    fallback = dict(first_KSP_reason=first['reason'],first_iterations=first['iterations'],
+                    first_true_residual_N=first['true_residual_N'])
+    attempts.append(linear_attempt(False))
+   retry_linear_accuracy(linear_attempt, attempts, rtol=eta, limit=limit)
+   if cuda_linear:
+    for obj in (gpu_delta, gpu_rhs, gpu_matrix):obj.destroy()
   last = attempts[-1]
   previous_fresh_shift = mu if not reused and last['qualified'] else None
   true_force = last['true_residual_N']
@@ -142,7 +148,8 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
           regularization=mu,KSP_reason=last['reason'],KSP_iterations=last['iterations'],
           true_shifted_linear_residual_N=true_force,
           true_shifted_linear_relative_residual=true_force/norm if true_force is not None else None,
-          linear_seconds=time.perf_counter()-tick,linear_attempts=attempts,trials=[])
+          linear_seconds=time.perf_counter()-tick,linear_attempts=[] if residual_minimizing else attempts,trials=[])
+  if residual_minimizing:sr['linear_direction_method']='constrained_residual_minimization'
   qualified=last['qualified']
   if not qualified and reused:
    A.setDiagonal(diag);A.assemble()
@@ -159,6 +166,7 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
     if ksp is not None:ksp.destroy()
     return
    raise RuntimeError('Shifted linear direction failed true residual qualification')
+  if residual_minimizing:delta.set(0.)
   raw_direction=canonical(delta)
   dynamic_constraints=coupled_constraints is not None and hasattr(coupled_constraints,'observe_failure')
   raw_delta=delta.copy() if dynamic_constraints else None
@@ -171,8 +179,14 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
     assert direction_guard is None and not problem._problem.bcs
     from coupled_newton_direction import solve_coupled
     try:
-     detail = solve_coupled(A,ksp,b,delta,adapter,coupled_constraints,old,direction,
-                           cuda_linear=cuda_linear,budget=budget,eta=eta)
+     if residual_minimizing:
+      from constrained_residual_direction import residual_direction
+      A.setDiagonal(diag);A.assemble()
+      detail = residual_direction(A,b,delta,adapter,coupled_constraints,old,scale,mu,
+                                  cuda=cuda_linear,budget=budget,eta=eta)
+     else:
+      detail = solve_coupled(A,ksp,b,delta,adapter,coupled_constraints,old,direction,
+                            cuda_linear=cuda_linear,budget=budget,eta=eta)
     except Exception as exc:
      if rank == 0:
       sr['coupled_newton']=dict(error=f'{type(exc).__name__}: {exc}')
