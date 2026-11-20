@@ -83,8 +83,8 @@ def test_retry_restores_only_accepted_history_and_retains_original_constraint(pr
     assert production.load(target / 'manifest.json')['completed_steps'] == 554
 
 
-@pytest.mark.parametrize('residual_minimizing',[False,True])
-def test_new_cell_rebuilds_direction_before_acceptance_or_shift_change(monkeypatch,residual_minimizing):
+@pytest.mark.parametrize('residual_minimizing,linear_failure',[(False,False),(True,False),(True,True)])
+def test_new_cell_rebuilds_direction_before_acceptance_or_shift_change(monkeypatch,residual_minimizing,linear_failure):
     """Run the actual Newton loop with dense algebra in place of PETSc/FEniCS."""
     import importlib.util
     import lv_surrogate.physics.regularization_recovery_policy as policy
@@ -147,7 +147,11 @@ def test_new_cell_rebuilds_direction_before_acceptance_or_shift_change(monkeypat
     monkeypatch.setattr(coupled,'solve_coupled',solve_coupled)
     if residual_minimizing:
         import constrained_residual_direction as merit
+        failed=[False]
         def residual_direction(A,b,delta,adapter,builder,current,scale,mu,**kwargs):
+            if linear_failure and not failed[0]:
+                failed[0]=True
+                raise RuntimeError('Residual-minimizing direction failed true normal-equation qualification: reason=-3 iterations=3000')
             np.testing.assert_array_equal(A.values,np.eye(2))
             return solve_coupled(A,None,b,delta,adapter,builder,current,np.zeros(2))
         monkeypatch.setattr(merit,'residual_direction',residual_direction)
@@ -157,12 +161,13 @@ def test_new_cell_rebuilds_direction_before_acceptance_or_shift_change(monkeypat
     record={}
     module.solve(problem,adapter,{'u_old':np.zeros(2)},SimpleNamespace(pair=proof),options,record,
         lambda:None,policy='two_good_steps',stop_after=1,directional_armijo=True,coupled_constraints=pool,
-        residual_minimizing=residual_minimizing)
+        residual_minimizing=residual_minimizing,maximum_linear_recoveries=2 if linear_failure else 0)
     assert len(calls)==2 and calls[0][0]=={1} and calls[1][0]=={1,2}
     for i in (1,2,3,4):np.testing.assert_array_equal(calls[0][i],calls[1][i])
     np.testing.assert_array_equal(field,[.3,.1])
     rows=record['custom_newton_steps']
-    assert len(rows)==1 and rows[0]['iteration']==0 and rows[0]['regularization']==1.
+    assert len(rows)==1 and rows[0]['iteration']==0 and rows[0]['regularization']==(10. if linear_failure else 1.)
+    if linear_failure:assert len(rows[0]['linear_recoveries'])==1
     assert len(rows[0]['direction_attempts'])==2
     assert rows[0]['direction_attempts'][0]['expansion']['element']==2
     assert rows[0]['accepted_custom_update'] and record['coupled_elements']==[1,2]

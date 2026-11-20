@@ -571,7 +571,7 @@ def execute(run):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=('submit', 'execute', 'prepare', 'worker', 'resume'))
+    parser.add_argument('action', choices=('submit', 'execute', 'prepare', 'worker', 'resume', 'qualify', 'qualification-prepare', 'qualification-verify'))
     parser.add_argument('--run-id', required=True)
     parser.add_argument('--from-refinement', default='cmbbe-timestep-550-555-03')
     parser.add_argument('--certify-depth-from', help='Completed refined positivity replay authorizing depth-32 fallback')
@@ -580,9 +580,10 @@ if __name__ == '__main__':
     parser.add_argument('--coupled-newton-after', help='Stopped production with a measured projected-direction stall')
     parser.add_argument('--expand-constraints-after', help='Failed coupled production with a newly blocking element')
     parser.add_argument('--solver-study-after', help='Bounded substeps 21-24 residual-minimization study after a failed expanding-constraint run')
+    parser.add_argument('--qualify-solver-after', help='One frozen derivative-gated solver qualification with controlled half-step recovery')
     args = parser.parse_args()
     for value in (args.run_id, args.from_refinement, args.certify_depth_from, args.adaptive_proof_from,
-                  args.constrained_direction_after, args.expand_constraints_after, args.solver_study_after):
+                  args.constrained_direction_after, args.expand_constraints_after, args.solver_study_after, args.qualify_solver_after):
         if value is None:
             continue
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
@@ -591,7 +592,7 @@ if __name__ == '__main__':
     if args.coupled_newton_after and not re.fullmatch(r'[A-Za-z0-9_-]+', args.coupled_newton_after):
         parser.error('Invalid run ID')
     evidence_sources = (args.certify_depth_from, args.adaptive_proof_from, args.constrained_direction_after,
-                        args.coupled_newton_after, args.expand_constraints_after, args.solver_study_after)
+                        args.coupled_newton_after, args.expand_constraints_after, args.solver_study_after, args.qualify_solver_after)
     if any(evidence_sources) and args.action != 'submit':
         parser.error('Proof evidence options require submit')
     if sum(bool(value) for value in evidence_sources) > 1:
@@ -601,7 +602,10 @@ if __name__ == '__main__':
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             assert_idle(ROOT)
             if args.action == 'submit':
-                if args.solver_study_after:
+                if args.qualify_solver_after:
+                    from solver_qualification import initialize as initialize_qualification
+                    initialize_qualification(run, ROOT / 'experiments/hpc' / args.qualify_solver_after)
+                elif args.solver_study_after:
                     from bounded_refined_solver import initialize as initialize_study
                     initialize_study(run, ROOT / 'experiments/hpc' / args.solver_study_after)
                 elif args.expand_constraints_after:
@@ -618,11 +622,21 @@ if __name__ == '__main__':
                     initialize(run, ROOT / 'experiments/hpc' / args.from_refinement)
             else:
                 registered(ROOT, run, run / 'plan.json')
-                assert not load(run / 'plan.json').get('solver_study'), 'A bounded study requires review; no automatic resume'
-                assert load(run / 'state.json')['status'] in ('blocked', 'running'), 'No interrupted production run'
+                resume_plan=load(run/'plan.json')
+                assert not resume_plan.get('solver_study') or resume_plan.get('solver_qualification'), 'A bounded study requires review; no automatic resume'
+                assert load(run/'state.json')['status'] in ('blocked','running','qualification_failed','study_stopped','study_error'), 'No interrupted run'
             state = load(run / 'state.json')
             state.update(status='submitted', next_job=submit_slice(run, state['slice']+1))
             atomic(run / 'state.json', state)
+    elif args.action == 'qualify':
+        from solver_qualification import execute as execute_qualification
+        execute_qualification(run)
+    elif args.action == 'qualification-prepare':
+        from solver_qualification import prepare_half_pressures
+        prepare_half_pressures(run)
+    elif args.action == 'qualification-verify':
+        from solver_qualification import verify
+        verify(run)
     elif args.action == 'execute':
         execute(run)
     elif args.action == 'prepare':

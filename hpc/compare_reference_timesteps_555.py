@@ -393,7 +393,10 @@ def solve_factor(run, factor):
     folder = run / f'factor-{factor}'
     production = plan.get('refined_production', False)
     requested = len(schedule['endpoint_times'])
-    assert requested == (plan['stop_state']-550)*factor
+    if plan.get('mixed_step_schedule'):
+        assert requested == plan['requested_substeps'] and requested == 28
+    else:
+        assert requested == (plan['stop_state']-550)*factor
     deadline = float(os.environ.get('REFINED_DEADLINE', 'inf'))
 
     def check_deadline():
@@ -555,6 +558,29 @@ def solve_factor(run, factor):
             options = dict(protocol['admissible_newton'], wall_budget_seconds=float('inf'))
             if plan.get('solver_study'):
                 options['maximum_custom_newton_iterations'] = plan['solver_study']['maximum_newton_directions_per_substep']
+            qualification=plan.get('solver_qualification')
+            binding=saved_newton=None
+            iteration_base=0
+            if qualification:
+                from solver_qualification import derivative_gate,restart_binding,load_newton,save_newton
+                binding=restart_binding(records[-1]['checkpoint_sha256'],pressure,dt)
+                binding['plan_sha256']=sha(run/'plan.json')
+                if index==20:
+                    derivative_gate(run,step,adapter,histories,audit,
+                        plan['coupled_newton']['initial_elements'],candidates[selected],
+                        records[-1]['checkpoint_sha256'],check_deadline)
+                if (step/'newton-restart.npz').exists():
+                    saved_newton=comm.bcast(on_root(lambda:load_newton(step/'newton-restart.npz',binding,old.shape)),root=0)
+                    adapter.assign('u',saved_newton['u'])
+                    proof_pair(saved_newton['u'])
+                    measured_force=float(residual(problem).norm('l2'))
+                    assert abs(measured_force-saved_newton['force_N']) <= 1e-10+1e-7*measured_force
+                    options['initial_regularization']=saved_newton['shift']
+                    iteration_base=saved_newton['iteration']+1
+                    options['maximum_custom_newton_iterations']-=iteration_base
+                    assert options['maximum_custom_newton_iterations']>0,'Qualification direction budget exhausted'
+                    trace['resumed_newton_iteration']=iteration_base
+                    if rank==0:print('QUALIFICATION NEWTON RESUME accepted_updates',iteration_base,flush=True)
             guard = None
             coupled = None
             if plan.get('coupled_newton'):
@@ -565,6 +591,8 @@ def solve_factor(run, factor):
                         seeds = set(spec['initial_elements'])
                         if records:
                             seeds.update(records[-1].get('coupled_elements', []))
+                        if saved_newton:
+                            seeds.update(saved_newton['elements'])
                         coupled_pool = GrowingConstraints(audit, seeds, lambda: histories['u_old'],
                                                          spec['maximum_elements'])
                     coupled = coupled_pool
@@ -587,7 +615,10 @@ def solve_factor(run, factor):
 
             def save_cell(iteration, candidate, force, shift):
                 if rank == 0:
-                    path_audit.accepted(iteration, candidate, force, shift)
+                    if path_audit:path_audit.accepted(iteration, candidate, force, shift)
+                    if qualification:
+                        save_newton(step/'newton-restart.npz',binding,candidate,force,shift,
+                                    iteration_base+iteration,trace.get('coupled_elements',[]))
 
             stop = replay['iteration']+1 if replay else path_spec['directions'] if path_spec else None
             diagnostic_stop = None
@@ -599,7 +630,9 @@ def solve_factor(run, factor):
                       direction_guard=guard,
                       coupled_constraints=coupled,
                       residual_minimizing=bool(plan.get('coupled_newton', {}).get('residual_minimizing')),
-                      save_iterate=save_cell if path_spec else None,
+                      save_iterate=save_cell if path_spec or qualification else None,
+                      normal_preconditioner=qualification['normal_preconditioner'] if qualification else None,
+                      maximum_linear_recoveries=qualification['maximum_linear_recoveries'] if qualification else 0,
                       check_deadline=check_deadline if production else None)
             except RuntimeError as exc:
                 if not path_spec or str(exc) not in (
@@ -647,6 +680,7 @@ def solve_factor(run, factor):
                 row = dict(substep=index+1, time_s=time_s, pressure_time_s=schedule['pressure_times'][index],
                            pressure_Pa=pressure, native_force_N=force, custom_force_N=trace['custom_force_N'],
                            native_updates=0, custom_iterations=trace['custom_iterations'],
+                           integration_dt_s=dt,
                            solve_wall_seconds=__import__('time').perf_counter()-solve_started,
                            checkpoint_sha256=sha(step / 'checkpoint.npz'),
                            trace_sha256=sha(trace_path), trace_file=trace_path.name,
@@ -666,7 +700,7 @@ def solve_factor(run, factor):
                     records.append(row)
                 summary['completed_substeps'] = index+1
                 atomic(folder / 'summary.json', summary)
-                print('REFINED ACCEPTED', 'factor',factor,'substep',index+1,'/',requested,
+                print('REFINED ACCEPTED', 'factor',schedule.get('effective_factor',factor),'substep',index+1,'/',requested,
                       'time',time_s,'force_N',force,flush=True)
             on_root(accept)
             previous = old

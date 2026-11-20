@@ -35,7 +35,7 @@ class NormalOperator:
         for vector in (self.scaled,self.input,self.product,self.transpose):vector.destroy()
 
 
-def residual_direction(J, b, delta, adapter, builder, current, scale, mu, *, cuda, budget, eta):
+def residual_direction(J, b, delta, adapter, builder, current, scale, mu, *, cuda, budget, eta, preconditioner=None):
     from petsc4py import PETSc
     from mpi4py import MPI
     started=time.perf_counter()
@@ -45,12 +45,24 @@ def residual_direction(J, b, delta, adapter, builder, current, scale, mu, *, cud
     jacobian=J.copy()
     if cuda:jacobian.convert('aijcusparse')
     context=NormalOperator(jacobian,scaling,mu,b,cuda)
-    H=solver=rhs=raw=residual=None
+    H=solver=rhs=raw=residual=pc_context=None
     try:
         H=PETSc.Mat().createPython((b.getSizes(),b.getSizes()),context=context,comm=J.comm)
         H.setUp()
         solver=PETSc.KSP().create(J.comm)
-        solver.setType('cg');solver.getPC().setType('none')
+        solver.setType('cg')
+        if preconditioner is None:
+            solver.getPC().setType('none')
+        else:
+            assert preconditioner=='local_ilu_normal'
+            from qualified_normal_pc import LocalNormalPC
+            error=None
+            try:pc_context=LocalNormalPC(J,scaling,mu)
+            except Exception as exc:error=f'{type(exc).__name__}: {exc}'
+            errors=adapter.comm.allgather(error)
+            if any(errors):raise RuntimeError('Collective preconditioner setup failed: '+str(errors))
+            solver.getPC().setType('python');solver.getPC().setPythonContext(pc_context)
+            if adapter.rank==0:print('MERIT PRECONDITIONER',pc_context.detail,flush=True)
         solver.setOperators(H)
         solver.setNormType(PETSc.KSP.NormType.UNPRECONDITIONED)
         def monitor(k,it,r):
@@ -68,7 +80,9 @@ def residual_direction(J, b, delta, adapter, builder, current, scale, mu, *, cud
         raw_error=float(residual.norm())
         limit=max(1.1e-12,1.1*eta*float(rhs.norm()))
         if solver.getConvergedReason()<=0 or not np.isfinite(raw_error) or raw_error>limit:
-            raise RuntimeError('Residual-minimizing direction failed true normal-equation qualification')
+            raise RuntimeError('Residual-minimizing direction failed true normal-equation qualification: '
+                f'reason={int(solver.getConvergedReason())} iterations={int(solver.getIterationNumber())} '
+                f'true_residual={raw_error:.17g} limit={limit:.17g} shift={mu:.17g}')
         raw_iterations=int(solver.getIterationNumber())
         # PETSc ownership and the canonical P2 map have different orderings.
         physical=raw.getArray(readonly=True)/scaling
@@ -101,6 +115,7 @@ def residual_direction(J, b, delta, adapter, builder, current, scale, mu, *, cud
         predicted=.5*(float(b.norm())**2-float(residual.norm())**2)
         detail.update(kind='constrained_residual_minimization',raw_normal_iterations=raw_iterations,
                       raw_normal_residual=raw_error,normal_residual_limit=limit,
+                      preconditioner=pc_context.detail if pc_context is not None else None,
                       merit_slope=slope,predicted_force_merit_reduction=predicted,
                       wall_seconds=time.perf_counter()-started)
         if not np.isfinite(slope) or slope>=0:
@@ -111,6 +126,7 @@ def residual_direction(J, b, delta, adapter, builder, current, scale, mu, *, cud
         return detail
     finally:
         if solver is not None:solver.destroy()
+        if pc_context is not None:pc_context.close()
         if H is not None:H.destroy()
         for vector in (rhs,raw,residual):
             if vector is not None:vector.destroy()

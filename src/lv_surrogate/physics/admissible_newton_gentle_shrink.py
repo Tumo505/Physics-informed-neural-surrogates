@@ -6,7 +6,7 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from .regularization_recovery_policy import update_shift, retry_linear_accuracy
 
-def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False, directional_armijo=False, direction_guard=None, residual_offset=None, coupled_constraints=None, residual_minimizing=False):
+def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half',timings=None,reuse_jacobian=False,stop_after=None,reuse_gamg=False,log_phases=False, late_forcing_floor=None, save_iterate=None, cuda_linear=False, check_deadline=None, host_preconditioner=False, directional_armijo=False, direction_guard=None, residual_offset=None, coupled_constraints=None, residual_minimizing=False, normal_preconditioner=None, maximum_linear_recoveries=0):
  comm=adapter.comm;rank=adapter.rank;started=time.perf_counter();matrix=df.PETScMatrix();mu=options['initial_regularization'];ksp=None;reference_force=None
  good_full_steps = 0
  iteration = 0
@@ -170,6 +170,7 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
   raw_direction=canonical(delta)
   dynamic_constraints=coupled_constraints is not None and hasattr(coupled_constraints,'observe_failure')
   raw_delta=delta.copy() if dynamic_constraints else None
+  linear_recoveries=0
   while True:
    if raw_delta is not None:raw_delta.copy(delta)
    sr['trials']=[]
@@ -183,11 +184,22 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
       from constrained_residual_direction import residual_direction
       A.setDiagonal(diag);A.assemble()
       detail = residual_direction(A,b,delta,adapter,coupled_constraints,old,scale,mu,
-                                  cuda=cuda_linear,budget=budget,eta=eta)
+                                  cuda=cuda_linear,budget=budget,eta=eta,preconditioner=normal_preconditioner)
      else:
       detail = solve_coupled(A,ksp,b,delta,adapter,coupled_constraints,old,direction,
                             cuda_linear=cuda_linear,budget=budget,eta=eta)
     except Exception as exc:
+     recoverable=residual_minimizing and str(exc).startswith('Residual-minimizing direction failed true normal-equation qualification')
+     if recoverable and linear_recoveries<maximum_linear_recoveries and mu<options['maximum_regularization']:
+      linear_recoveries+=1
+      mu=min(options['maximum_regularization'],mu*10)
+      diag.copy(shifted);shifted.axpy(mu,scale)
+      sr.setdefault('linear_recoveries',[]).append(dict(error=str(exc),next_regularization=mu))
+      sr['regularization']=mu
+      if rank==0:
+       record['pending_linear_recovery']=sr['linear_recoveries'];persist()
+       print('MERIT LINEAR RECOVERY iteration',iteration,'shift',mu,flush=True)
+      continue
      if rank == 0:
       sr['coupled_newton']=dict(error=f'{type(exc).__name__}: {exc}')
       record['custom_newton_steps'].append(sr);persist()
