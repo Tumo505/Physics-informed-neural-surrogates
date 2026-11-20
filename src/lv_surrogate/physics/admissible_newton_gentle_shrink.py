@@ -159,75 +159,109 @@ def solve(problem,adapter,hist,audit,options,record,persist,*,policy='band_half'
     if ksp is not None:ksp.destroy()
     return
    raise RuntimeError('Shifted linear direction failed true residual qualification')
-  direction=canonical(delta)
-  if coupled_constraints is not None:
-   assert direction_guard is None and not problem._problem.bcs
-   from coupled_newton_direction import solve_coupled
-   try:
-    detail = solve_coupled(A,ksp,b,delta,adapter,coupled_constraints,old,direction,
-                          cuda_linear=cuda_linear,budget=budget,eta=eta)
-   except Exception as exc:
-    if rank == 0:
-     sr['coupled_newton']=dict(error=f'{type(exc).__name__}: {exc}')
-     record['custom_newton_steps'].append(sr);persist()
-    raise
-   direction=canonical(delta)
-   sr['coupled_newton']=detail
-   if rank == 0:
-    print('COUPLED NEWTON',iteration,'active',len(detail['active']),
-          'response_solves',detail['response_solves'],
-          'stationarity_N',detail['stationarity_residual_N'],flush=True)
-  A.setDiagonal(diag);A.assemble()
-  if direction_guard is not None:
-   merit_gradient = b.duplicate()
-   A.multTranspose(b, merit_gradient)
-   canonical_merit = canonical(merit_gradient)
-   merit_gradient.destroy()
-   corrected = detail = error = None
-   if rank == 0:
+  raw_direction=canonical(delta)
+  dynamic_constraints=coupled_constraints is not None and hasattr(coupled_constraints,'observe_failure')
+  raw_delta=delta.copy() if dynamic_constraints else None
+  while True:
+   if raw_delta is not None:raw_delta.copy(delta)
+   sr['trials']=[]
+   direction=raw_direction
+   if coupled_constraints is not None:
+    A.setDiagonal(shifted);A.assemble()
+    assert direction_guard is None and not problem._problem.bcs
+    from coupled_newton_direction import solve_coupled
     try:
-     corrected,detail = direction_guard(old,direction,canonical_merit)
+     detail = solve_coupled(A,ksp,b,delta,adapter,coupled_constraints,old,direction,
+                           cuda_linear=cuda_linear,budget=budget,eta=eta)
     except Exception as exc:
-     error = f'{type(exc).__name__}: {exc}'
-   error = comm.bcast(error,root=0)
-   if error is not None:raise RuntimeError(error)
-   corrected = comm.bcast(corrected,root=0)
-   if corrected is not None:
-    direction = corrected
-    delta.getArray()[:] = direction[adapter.mapping]
-   if rank == 0:sr['determinant_direction'] = detail
-  jdelta=b.duplicate();A.mult(delta,jdelta);model=b.duplicate();accepted=False
-  if directional_armijo:
-   slope = -float(b.dot(jdelta))
-   sr['merit_directional_derivative'] = slope if np.isfinite(slope) else None
-  for power in range(1 if reused else options['maximum_backtracks']+1):
-   budget();alpha=2.**(-power);candidate=old+alpha*direction;adapter.assign('u',candidate);force=float(measured('trial_residual',evaluate_residual,problem).norm('l2'));error=None;proof=None
-   armijo=bool(np.isfinite(force) and force<=(1-options['armijo_constant']*alpha)*norm)
+     if rank == 0:
+      sr['coupled_newton']=dict(error=f'{type(exc).__name__}: {exc}')
+      record['custom_newton_steps'].append(sr);persist()
+     raise
+    direction=canonical(delta)
+    sr['coupled_newton']=detail
+    if rank == 0 and detail.get('elements'):record['coupled_elements']=detail['elements']
+    if rank == 0:
+     print('COUPLED NEWTON',iteration,'elements',detail.get('elements',[]),'active',len(detail['active']),
+           'response_solves',detail['response_solves'],
+           'stationarity_N',detail['stationarity_residual_N'],flush=True)
+   A.setDiagonal(diag);A.assemble()
+   if direction_guard is not None:
+    merit_gradient = b.duplicate()
+    A.multTranspose(b, merit_gradient)
+    canonical_merit = canonical(merit_gradient)
+    merit_gradient.destroy()
+    corrected = detail = error = None
+    if rank == 0:
+     try:
+      corrected,detail = direction_guard(old,direction,canonical_merit)
+     except Exception as exc:
+      error = f'{type(exc).__name__}: {exc}'
+    error = comm.bcast(error,root=0)
+    if error is not None:raise RuntimeError(error)
+    corrected = comm.bcast(corrected,root=0)
+    if corrected is not None:
+     direction = corrected
+     delta.getArray()[:] = direction[adapter.mapping]
+    if rank == 0:sr['determinant_direction'] = detail
+   jdelta=b.duplicate();A.mult(delta,jdelta);model=b.duplicate();accepted=False
+   expanded=None
    if directional_armijo:
-    merit_change = .5 * (force - norm) * (force + norm)
-    armijo = bool(np.isfinite(merit_change) and np.isfinite(slope) and slope < 0
-                  and merit_change <= options['armijo_constant'] * alpha * slope)
-   if armijo:error,proof=positive(candidate)
-   adapter.assign('u',old)  # Keep a safe accepted iterate even if a later budget check interrupts.
-   valid=armijo and error is None;model.set(0.);model.axpy(alpha,jdelta);model.axpy(-1,b);predicted=.5*(norm**2-model.norm()**2)
-   ratio=(.5*(norm**2-force**2)/predicted) if np.isfinite(force) and predicted>0 else None
-   sr['trials'].append(dict(alpha=alpha,native_force_N=force if np.isfinite(force) else None,armijo_passed=armijo,whole_element_admissible=valid,positivity_failure=error,actual_to_predicted_merit_ratio=ratio))
-   if valid:
-    adapter.assign('u',candidate);accepted=True
-    reuse_next = bool(reuse_jacobian and not reused and power == 0 and ratio is not None and ratio > .75)
-    if rank==0:sr['accepted_whole_element_proof']=proof
-    if policy == 'fixed_shift':
-     pass
-    elif policy == 'two_good_steps':
-     mu, good_full_steps = update_shift(
-      mu, good_full_steps, accepted=True, full_step=power == 0, ratio=ratio,
-      minimum=options['minimum_regularization'], maximum=options['maximum_regularization'])
-    elif ratio is not None and ratio > .75 and power == 0:
-     # The failed step alternated between these bounds. Try the intermediate shift.
-     shrink = .5 if .00390625 <= mu <= .015625 else .25
-     mu = max(options['minimum_regularization'], mu * shrink)
-    elif ratio is None or ratio<.25 or power>0:mu=min(options['maximum_regularization'],mu*4)
-    break
+    slope = -float(b.dot(jdelta))
+    sr['merit_directional_derivative'] = slope if np.isfinite(slope) else None
+   for power in range(1 if reused else options['maximum_backtracks']+1):
+    budget();alpha=2.**(-power);candidate=old+alpha*direction;adapter.assign('u',candidate);force=float(measured('trial_residual',evaluate_residual,problem).norm('l2'));error=None;proof=None
+    armijo=bool(np.isfinite(force) and force<=(1-options['armijo_constant']*alpha)*norm)
+    if directional_armijo:
+     merit_change = .5 * (force - norm) * (force + norm)
+     armijo = bool(np.isfinite(merit_change) and np.isfinite(slope) and slope < 0
+                   and merit_change <= options['armijo_constant'] * alpha * slope)
+    if armijo:error,proof=positive(candidate)
+    adapter.assign('u',old)  # Keep a safe accepted iterate even if a later budget check interrupts.
+    valid=armijo and error is None;model.set(0.);model.axpy(alpha,jdelta);model.axpy(-1,b);predicted=.5*(norm**2-model.norm()**2)
+    ratio=(.5*(norm**2-force**2)/predicted) if np.isfinite(force) and predicted>0 else None
+    sr['trials'].append(dict(alpha=alpha,native_force_N=force if np.isfinite(force) else None,armijo_passed=armijo,whole_element_admissible=valid,positivity_failure=error,actual_to_predicted_merit_ratio=ratio))
+    if dynamic_constraints and error is not None:
+     update=expansion_error=None
+     if rank == 0:
+      try:update=coupled_constraints.observe_failure(error)
+      except Exception as exc:expansion_error=f'{type(exc).__name__}: {exc}'
+     expansion_error=comm.bcast(expansion_error,root=0)
+     if expansion_error is not None:raise RuntimeError(expansion_error)
+     update=comm.bcast(update,root=0)
+     if update is not None:
+      expanded=update
+      if rank == 0:
+       record['coupled_elements']=update['elements']
+       print('COUPLED CONSTRAINT ADDED iteration',iteration,'element',update['element'],
+             'stage',update['stage'],flush=True)
+      break
+    if valid:
+     adapter.assign('u',candidate);accepted=True
+     reuse_next = bool(reuse_jacobian and not reused and power == 0 and ratio is not None and ratio > .75)
+     if rank==0:sr['accepted_whole_element_proof']=proof
+     if policy == 'fixed_shift':
+      pass
+     elif policy == 'two_good_steps':
+      mu, good_full_steps = update_shift(
+       mu, good_full_steps, accepted=True, full_step=power == 0, ratio=ratio,
+       minimum=options['minimum_regularization'], maximum=options['maximum_regularization'])
+     elif ratio is not None and ratio > .75 and power == 0:
+      # The failed step alternated between these bounds. Try the intermediate shift.
+      shrink = .5 if .00390625 <= mu <= .015625 else .25
+      mu = max(options['minimum_regularization'], mu * shrink)
+     elif ratio is None or ratio<.25 or power>0:mu=min(options['maximum_regularization'],mu*4)
+     break
+   if dynamic_constraints:
+    sr.setdefault('direction_attempts',[]).append(dict(
+     coupled_newton=sr.get('coupled_newton'),trials=list(sr['trials']),
+     merit_directional_derivative=sr.get('merit_directional_derivative'),expansion=expanded))
+   if expanded is not None:
+    for vector in (jdelta,model):vector.destroy()
+    if rank == 0:persist()
+    continue
+   break
+  if raw_delta is not None:raw_delta.destroy()
   if reused and not accepted:
    for v in (diag,scale,shifted,b,delta,true,jdelta,model):v.destroy()
    if rank==0:

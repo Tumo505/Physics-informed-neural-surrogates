@@ -344,6 +344,53 @@ def initialize_coupled_retry(run, failed):
     artifact(ROOT, run, run / 'plan.json', 'Assembled coupled constrained Newton production plan')
 
 
+def initialize_expanding_retry(run, failed):
+    for name in ('plan.json', 'pressure.json'):
+        registered(ROOT, failed, failed / name)
+    state, source = load(failed / 'state.json'), load(failed / 'plan.json')
+    assert state['status'] == 'blocked', 'Require a completed failed coupled solve'
+    spec = source['coupled_newton']
+    assert spec['kind'] == 'assembled_jacobian_active_set'
+    assert spec['margin'] == source['adaptive_interval_proof']['margin'] == 1e-9
+    assert not source.get('positivity_replay') and not source.get('cell_path_audit')
+    assert source['source_checkpoint_sha256'] == sha(TARGET / 'restart.npz')
+    assert any(item['kind'] == 'job_submission' and item['return_code'] == 0 and item['stdout'] == state['job']
+               for item in read(failed))
+    records = production_records(failed)
+    assert len(records) == 20
+    trace_path = failed / f'factor-4/substep-021/trace-slice-{state["slice"]:03d}.json'
+    trace = load(trace_path)
+    assert trace['substep'] == 21 and trace['direction_policy'] == 'assembled_jacobian_active_set'
+    rows = trace['custom_newton_steps']
+    assert rows and rows[-1]['initial_force_N'] > 1e-9
+    seeds = sorted(set(spec.get('initial_elements', [spec['element']])))
+    witnessed = set()
+    for row in rows:
+        for trial in row.get('trials', []):
+            reason = trial.get('positivity_failure') or ''
+            match = re.search(r'\(stage=(?:endpoint|stress), element=(\d+)\)$', reason)
+            if match and reason.startswith(('Direct determinant margin violation witness',
+                    'Direct nonpositive determinant witness', 'Whole-element positivity remains unresolved')):
+                witnessed.add(int(match.group(1)))
+    assert witnessed-set(seeds), 'Require evidence of a newly blocking element'
+    parent = ROOT / 'experiments/hpc' / source['parent_refinement']
+    qualified = refined.accepted_prefix(parent, 4, completed=True)
+    assert [row['checkpoint_sha256'] for row in qualified] == [row['checkpoint_sha256'] for row in records]
+    initialize(run, parent)
+    shutil.copyfile(failed / 'pressure.json', run / 'pressure.json')
+    artifact(ROOT, run, run / 'pressure.json', 'Preserved forcing for expanding coupled constraints')
+    plan = load(run / 'plan.json')
+    plan.update(certified_depth_retry=source['certified_depth_retry'],
+                adaptive_interval_proof=source['adaptive_interval_proof'],
+                coupled_newton=dict(spec, dynamic_elements=True, initial_elements=seeds, maximum_elements=32,
+                    witnessed_elements=sorted(witnessed), parent_run=failed.name,
+                    start_checkpoint_sha256=records[-1]['checkpoint_sha256']))
+    for path in (failed / 'plan.json', trace_path, run / 'pressure.json'):
+        plan['frozen'][str(path)] = sha(path)
+    atomic(run / 'plan.json', plan)
+    artifact(ROOT, run, run / 'plan.json', 'Production retry with expanding coupled element constraints')
+
+
 def submit_slice(run, number, after=None):
     command = ['qsub', '-N', 'lv_refined', '-q', 'iworkq',
                '-l', 'select=1:ncpus=28:mem=240gb:ngpus=4', '-l', 'place=excl',
@@ -506,9 +553,10 @@ if __name__ == '__main__':
     parser.add_argument('--adaptive-proof-from', help='Completed cell-path audit used for the saved-frame proof check')
     parser.add_argument('--constrained-direction-after', help='Blocked adaptive-proof production with a determinant margin witness')
     parser.add_argument('--coupled-newton-after', help='Stopped production with a measured projected-direction stall')
+    parser.add_argument('--expand-constraints-after', help='Failed coupled production with a newly blocking element')
     args = parser.parse_args()
     for value in (args.run_id, args.from_refinement, args.certify_depth_from, args.adaptive_proof_from,
-                  args.constrained_direction_after):
+                  args.constrained_direction_after, args.expand_constraints_after):
         if value is None:
             continue
         if not re.fullmatch(r'[A-Za-z0-9_-]+', value):
@@ -517,7 +565,7 @@ if __name__ == '__main__':
     if args.coupled_newton_after and not re.fullmatch(r'[A-Za-z0-9_-]+', args.coupled_newton_after):
         parser.error('Invalid run ID')
     evidence_sources = (args.certify_depth_from, args.adaptive_proof_from, args.constrained_direction_after,
-                        args.coupled_newton_after)
+                        args.coupled_newton_after, args.expand_constraints_after)
     if any(evidence_sources) and args.action != 'submit':
         parser.error('Proof evidence options require submit')
     if sum(bool(value) for value in evidence_sources) > 1:
@@ -527,7 +575,9 @@ if __name__ == '__main__':
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             assert_idle(ROOT)
             if args.action == 'submit':
-                if args.coupled_newton_after:
+                if args.expand_constraints_after:
+                    initialize_expanding_retry(run, ROOT / 'experiments/hpc' / args.expand_constraints_after)
+                elif args.coupled_newton_after:
                     initialize_coupled_retry(run, ROOT / 'experiments/hpc' / args.coupled_newton_after)
                 elif args.constrained_direction_after:
                     initialize_direction_retry(run, ROOT / 'experiments/hpc' / args.constrained_direction_after)

@@ -461,6 +461,7 @@ def solve_factor(run, factor):
     def proof_pair(candidate):
         return on_root(lambda: audit.pair(candidate, histories['u_old']))
 
+    coupled_pool = None
     try:
         start = 0
         if production:
@@ -554,11 +555,20 @@ def solve_factor(run, factor):
             guard = None
             coupled = None
             if plan.get('coupled_newton'):
-                from coupled_newton_direction import build_constraints
-
-                def coupled(current, raw):
-                    return build_constraints(audit, plan['coupled_newton']['element'],
-                                             current, histories['u_old'], raw)
+                from coupled_newton_direction import build_constraints, GrowingConstraints
+                spec = plan['coupled_newton']
+                if spec.get('dynamic_elements'):
+                    if coupled_pool is None:
+                        seeds = set(spec['initial_elements'])
+                        if records:
+                            seeds.update(records[-1].get('coupled_elements', []))
+                        coupled_pool = GrowingConstraints(audit, seeds, lambda: histories['u_old'],
+                                                         spec['maximum_elements'])
+                    coupled = coupled_pool
+                else:
+                    def coupled(current, raw):
+                        return build_constraints(audit, spec['element'],
+                                                 current, histories['u_old'], raw)
             if plan.get('constrained_direction'):
                 from refined_constrained_direction import correct_direction
 
@@ -639,6 +649,8 @@ def solve_factor(run, factor):
                            acceleration_max_abs=float(np.max(abs(checkpoint['a_old']))),
                            patch=patch_metrics(patch, candidate, old, forcing['material_parameters']),
                            whole_element_proof=proof)
+                if trace.get('coupled_elements'):
+                    row['coupled_elements'] = trace['coupled_elements']
                 atomic(step / 'accepted.json', row)
                 if production:
                     artifact(ROOT, run, step / 'accepted.json', 'Accepted refined production substep')

@@ -6,6 +6,7 @@ same assembled operator and preconditioner as the original Newton solve.
 """
 import numpy as np
 import time
+import re
 
 
 class ActiveSet:
@@ -23,6 +24,7 @@ class ActiveSet:
         self.active = []
         self.responses = {}
         self.iterations = 0
+        self.maximum_iterations = max(100,4*(len(self.lower)+len(self.raw)))
 
     def add_response(self, index, local_response):
         value = np.asarray(local_response)
@@ -30,9 +32,9 @@ class ActiveSet:
         self.responses[index] = value.copy()
 
     def action(self):
-        for _ in range(100):
+        for _ in range(self.maximum_iterations):
             self.iterations += 1
-            if self.iterations > 100:
+            if self.iterations > self.maximum_iterations:
                 return 'failed', 'Coupled constraint active-set iteration ceiling'
             for index in self.active:
                 if index not in self.responses:
@@ -76,15 +78,58 @@ class ActiveSet:
 
 
 def build_constraints(audit, element, current, old, raw):
+    return build_multi_constraints(audit, [element], current, old, raw)
+
+
+def build_multi_constraints(audit, elements, current, old, raw):
     from refined_constrained_direction import determinant_constraints
-    normals, determinants, stages = determinant_constraints(audit, element, current, old, raw)
-    lengths = np.linalg.norm(normals, axis=1)
-    keep = lengths > 0
-    assert np.isfinite(normals).all() and np.isfinite(determinants).all()
-    return dict(ids=audit.maps[element].ravel().tolist(), normals=(normals[keep]/lengths[keep,None]).tolist(),
-                lower=(-.5*np.maximum(determinants[keep]-audit.margin,0.)/lengths[keep]).tolist(),
-                minimum_point_determinant=float(determinants.min()),
-                endpoint_constraints=stages.count('endpoint'), stress_constraints=stages.count('stress'))
+    elements = sorted(set(elements))
+    assert elements and audit.margin == 1e-9
+    ids = np.unique(np.concatenate([audit.maps[element].ravel() for element in elements]))
+    rows, bounds = [], []
+    endpoint = stress = 0
+    minimum = float('inf')
+    for element in elements:
+        normals, determinants, stages = determinant_constraints(audit, element, current, old, raw)
+        lengths = np.linalg.norm(normals, axis=1)
+        keep = lengths > 0
+        assert np.isfinite(normals).all() and np.isfinite(determinants).all()
+        embedded = np.zeros((int(keep.sum()),len(ids)))
+        embedded[:,np.searchsorted(ids,audit.maps[element].ravel())] = normals[keep]/lengths[keep,None]
+        rows.append(embedded)
+        bounds.extend(-.5*np.maximum(determinants[keep]-audit.margin,0.)/lengths[keep])
+        minimum = min(minimum,float(determinants.min()))
+        endpoint += stages.count('endpoint')
+        stress += stages.count('stress')
+    return dict(ids=ids.tolist(),normals=np.vstack(rows).tolist(),lower=np.asarray(bounds).tolist(),
+                minimum_point_determinant=minimum,endpoint_constraints=endpoint,stress_constraints=stress,
+                elements=elements)
+
+
+class GrowingConstraints:
+    """Keep every discovered cell; each member contributes both stage constraints."""
+    def __init__(self,audit,elements,old,max_elements=32):
+        self.audit,self.old = audit,old
+        self.elements = set(int(element) for element in elements)
+        self.max_elements = max_elements
+        assert self.elements and len(self.elements) <= max_elements
+
+    def __call__(self,current,raw):
+        return build_multi_constraints(self.audit,self.elements,current,self.old(),raw)
+
+    def observe_failure(self,reason):
+        match = re.search(r'\(stage=(endpoint|stress), element=(\d+)\)$',reason)
+        if not match or not reason.startswith(('Whole-element positivity remains unresolved',
+                'Direct nonpositive determinant witness','Direct determinant margin violation witness')):
+            return None
+        stage,element = match.group(1),int(match.group(2))
+        assert 0 <= element < len(self.audit.maps)
+        if element in self.elements:
+            return None
+        if len(self.elements) >= self.max_elements:
+            raise RuntimeError('Coupled constraint element budget exhausted; no constraints dropped')
+        self.elements.add(element)
+        return dict(element=element,stage=stage,elements=sorted(self.elements),reason=reason)
 
 
 def solve_coupled(A, ksp, b, delta, adapter, builder, current, raw_direction, *,
@@ -197,6 +242,7 @@ def solve_coupled(A, ksp, b, delta, adapter, builder, current, raw_direction, *,
                       augmented_rhs_norm_N=float(effective.norm()),
                       minimum_point_determinant=spec['minimum_point_determinant'],
                       endpoint_constraints=spec['endpoint_constraints'], stress_constraints=spec['stress_constraints'],
+                      elements=spec.get('elements',[]),
                       wall_seconds=time.perf_counter()-started)
         return detail
     finally:
