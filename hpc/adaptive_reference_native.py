@@ -105,8 +105,10 @@ class Native:
         state=Snapshot(0.,zero.copy(),zero.copy(),zero.copy());self.assign(self.model,state)
         problem.parameters['p'].assign(self.pressure(0.))
         R=residual(problem);rhs=df.as_backend_type(R).vec().copy();rhs.scale(-1.)
-        mass=df.assemble(problem.parameters['rho']*ufl.inner(ufl.TrialFunction(problem.u_space),
-            ufl.TestFunction(problem.u_space))*ufl.dx,
+        # DOLFIN's wrappers retain function_space(), which its form compiler
+        # needs. Plain ufl_legacy.Argument objects omit that DOLFIN metadata.
+        mass=df.assemble(problem.parameters['rho']*ufl.inner(df.TrialFunction(problem.u_space),
+            df.TestFunction(problem.u_space))*ufl.dx,
             form_compiler_parameters=dict(quadrature_degree=max(self.plan['policy']['quadrature_ladder'])))
         M=df.as_backend_type(mass).mat();a=rhs.duplicate();check=rhs.duplicate()
         ksp=PETSc.KSP().create(M.comm);ksp.setType('cg');ksp.getPC().setType('jacobi')

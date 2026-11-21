@@ -219,3 +219,60 @@ def test_submission_keeps_existing_pbs_resources_without_an_automatic_successor(
     assert len(calls)==1
     assert 'select=1:ncpus=28:mem=240gb:ngpus=4' in calls[0] and 'walltime=168:00:00' in calls[0]
     assert not any('afterok' in item for item in calls[0])
+
+
+@pytest.mark.parametrize('inaccurate',[False,True])
+def test_initial_mass_assembly_uses_dolfin_arguments_and_qualifies_acceleration(monkeypatch,inaccurate):
+    from adaptive_reference_native import Native
+    from test_hpc_bounded_solver import Vector,Dense,Solver
+    class MassVector(Vector):
+        def copy(self,target=None):
+            if target is None:return MassVector(self.values)
+            target.values[:]=self.values
+        def duplicate(self):return MassVector(np.zeros_like(self.values))
+        def scale(self,value):self.values*=value
+    class MassSolver(Solver):
+        def solve(self,b,x):
+            if inaccurate:x.values[:]=0.
+            else:super().solve(b,x)
+    class Argument:
+        def __init__(self,space):self.space=space
+        def function_space(self):return self.space
+    class Expression:
+        def __init__(self,args):self.args=args
+        def __rmul__(self,rho):return self
+        def __mul__(self,measure):return self
+    V=object();mapping=np.array([2,0,1])
+    canonical_mass=np.array([[2.,.2,0.],[.2,3.,.1],[0.,.1,4.]])
+    canonical_force=np.array([2.,3.,4.])
+    M=Dense(canonical_mass[np.ix_(mapping,mapping)])
+    assembled=[]
+    def assemble(form,**kwargs):
+        # Emulate the DOLFIN 2019 form adapter: a raw UFL Argument lacks this.
+        assert all(arg.function_space() is V for arg in form.args)
+        assert kwargs['form_compiler_parameters']['quadrature_degree']==12
+        assembled.append(form)
+        return M
+    fake_df=SimpleNamespace(TrialFunction=Argument,TestFunction=Argument,assemble=assemble,
+        as_backend_type=lambda value:SimpleNamespace(vec=lambda:value,mat=lambda:value))
+    fake_ufl=SimpleNamespace(inner=lambda a,b:Expression((a,b)),dx=object(),
+        TrialFunction=lambda space:object(),TestFunction=lambda space:object())
+    monkeypatch.setitem(sys.modules,'lv_surrogate.physics.reference_fem',SimpleNamespace(
+        df=fake_df,ufl=fake_ufl,residual=lambda problem:MassVector(canonical_force[mapping])))
+    monkeypatch.setitem(sys.modules,'petsc4py',SimpleNamespace(PETSc=SimpleNamespace(KSP=MassSolver)))
+    fields={name:np.ones(3) for name in ('u','u_old','v_old','a_old')}
+    problem=SimpleNamespace(u_space=V,parameters={'rho':1000.,'p':SimpleNamespace(assign=lambda value:None)})
+    model=SimpleNamespace(ndof=3,problem=problem,parts=[mapping],
+        assign=lambda name,value:fields.__setitem__(name,value.copy()))
+    native=Native.__new__(Native);native.model=model;native.rank=0
+    native.comm=SimpleNamespace(gather=lambda x,root=0:[x],bcast=lambda x,root=0:x)
+    native.pressure=lambda t:0.;native.plan={'policy':{'quadrature_ladder':[8,10,12]}}
+    if inaccurate:
+        with pytest.raises(AssertionError):native.initial()
+    else:
+        state=native.initial()
+        np.testing.assert_allclose(state.a,np.linalg.solve(canonical_mass,-canonical_force),atol=1e-12)
+        np.testing.assert_array_equal(state.u,0.)
+        np.testing.assert_array_equal(state.v,0.)
+    assert len(assembled)==1
+    for values in fields.values():np.testing.assert_array_equal(values,0.)
