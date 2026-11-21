@@ -1,0 +1,65 @@
+ADAPTIVE REFERENCE PILOT — separate numerical protocol
+
+Purpose
+Recover upstream of the endpoint anomalies without inheriting the late coarse
+histories. This is a new pilot from rest through 0.35 s, not a continuation of or
+replacement for the original 554-state reference. Native convergence and the
+engineering tolerances below have not been established on the full model.
+
+Unchanged physical inputs
+Cached geometry, facet labels, fibers, passive constitutive model, density,
+pressure ODE, weak boundary supports and alpha_m=.2 / alpha_f=.4 are retained.
+Initial u and velocity are zero; initial acceleration is computed from the
+continuous mass balance instead of resetting a late checkpoint's histories.
+No material constant or force/positivity tolerance is relaxed.
+
+Numerical recovery
+- Use the native Jacobian with GMRES and host GAMG, CUDA matrix products, and an
+  unshifted Newton direction. A failed or inadmissible solve rejects the entire
+  tentative time interval; no normal-equation/local-ILU direction is used.
+- Start with a macro interval of 0.000625 s. Compare one full step with two half
+  steps. Compare the half-step pair at Q8 and Q10. If quadrature dominates the
+  error, retry at Q10/Q12 from the same accepted histories before reducing time.
+- Only the higher-quadrature pair is committed. Each tentative native solve
+  requires custom force <1e-9 N, a zero-update native check <1e-8 N, and whole-cell
+  positivity >1e-9 at both endpoint and stress stage. Native history updates are
+  checked against the generalized-alpha/Newmark formulas.
+- Maximum componentwise errors in u, v and a use relative tolerance 1e-3 and
+  absolute tolerances 1e-7 m, 1e-5 m/s, 1e-2 m/s^2. The known hotspot patch has a
+  separate maximum deformation-gradient error with atol=rtol=1e-3. These are
+  declared pilot numerical controls, not physical acceptance thresholds or an
+  established global error bound. The patch does not cover every cell; the force
+  field comparisons and positivity proof retain global scope.
+- Endpoint/stress-stage changes are limited to .25 in log(det(F)) and .5 in the
+  isotropic material exponential argument at the monitored patch points. These
+  controls limit per-step resolution error, not the absolute material response.
+- Reduce macro dt by two when temporal error, stage change or nonlinear failure
+  requires it; minimum macro dt is the original dt/64. Two very accurate pairs
+  allow growth, capped at the original macro dt. Unresolved quadrature at Q12 or
+  a failure at the minimum dt stops the pilot with its accepted prefix preserved.
+
+Forcing
+All allowed steps are dyadic. The native pressure ODE is evaluated on the exact
+fifth-subdivision lattice of the smallest physical substep. New loading values
+are not interpolated from the coarse reference. Original loading reproduction
+near states 550-555 must pass before solving.
+
+Recovery and qualification
+Acceptance records are registered only after both checkpoints are durably saved.
+A kill between JSON creation and registration leaves a tentative tail, which is
+not counted as accepted. Accepted pairs remain available for explicit resume.
+An eight-hour computational slice budget pauses the pilot; no successor is
+submitted automatically. PBS resources remain 28 CPUs, 240 GB, four GPUs and a
+168-hour allocation limit. The computational budget is checked at collective
+solver and control-loop boundaries; it is not a watchdog against a stalled MPI
+runtime. Such a stall still requires operator intervention.
+
+A planned budget pause or an interrupted allocation may resume after the PBS
+idle-job check. A completed numerical failure does not resume automatically. The physical model, code, source data and
+forcing hashes must still match. Resuming requires an explicit command.
+
+At the target time, fresh serial CPU reassembly verifies force, positivity and
+histories for the last three accepted pairs (six consecutive physical substeps).
+The full accepted chain retains hashes and the temporal/quadrature diagnostics.
+This is a bounded pilot qualification, not proof of full-cycle mesh/time
+convergence and not admission to the original reference or downstream dataset.
