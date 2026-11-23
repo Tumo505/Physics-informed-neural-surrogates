@@ -1,0 +1,8 @@
+{
+  "origin": "User-supplied HPC terminal transcript",
+  "original_attachment": "/Users/tumokgabeng/.codex/attachments/5f78e1c9-0f25-4489-a0cb-c6b43e0a6013/Pasted text.txt",
+  "attachment_sha256": "214a789e85f10ec2b1a72a62d20c0d1db4f1060d2db903e17796a02664abf388",
+  "extracted_result_sha256": "c6f0b21f3fa9caf040f353173ca74733b830bb992ae86262d41c6ece9f0869b6",
+  "independent_cluster_access": false,
+  "scope": "Reported accuracy only. Timing and per-geometry files were not supplied."
+}

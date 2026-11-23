@@ -1,0 +1,10 @@
+N=64, single: Graph 2.802 mm, Pointwise 2.850 mm; relative error reduction 1.7%; paired difference -0.048 mm [95% conditional interval -0.136, 0.036].
+N=64, ensemble: Graph 2.670 mm, Pointwise 2.806 mm; relative error reduction 4.8%; paired difference -0.136 mm [95% conditional interval -0.231, -0.049].
+N=256, single: Graph 2.257 mm, Pointwise 2.137 mm; relative error reduction -5.6%; paired difference 0.120 mm [95% conditional interval 0.073, 0.169].
+N=256, ensemble: Graph 2.169 mm, Pointwise 2.102 mm; relative error reduction -3.2%; paired difference 0.067 mm [95% conditional interval 0.020, 0.116].
+N=1024, single: Graph 1.781 mm, Pointwise 1.967 mm; relative error reduction 9.5%; paired difference -0.186 mm [95% conditional interval -0.234, -0.139].
+N=1024, ensemble: Graph 1.656 mm, Pointwise 1.909 mm; relative error reduction 13.3%; paired difference -0.253 mm [95% conditional interval -0.304, -0.204].
+N=2250, single: Graph 1.383 mm, Pointwise 1.874 mm; relative error reduction 26.2%; paired difference -0.491 mm [95% conditional interval -0.546, -0.438].
+N=2250, ensemble: Graph 1.270 mm, Pointwise 1.816 mm; relative error reduction 30.1%; paired difference -0.546 mm [95% conditional interval -0.602, -0.492].
+
+Repeated benchmark evaluation: this test cohort was inspected in previous work. Results concern approximation of supplied discrete FE displacement labels on the supplied geometry distribution; no clinical, continuum-convergence or physics-informed claim. Geometry-bootstrap intervals are conditional on the fixed training subsets and three model seeds. They do not capture training-subset uncertainty or represent population-level anatomical validation. Intervals are pointwise 95% intervals without multiple-comparison adjustment.

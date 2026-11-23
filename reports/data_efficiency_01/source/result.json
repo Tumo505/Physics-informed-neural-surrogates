@@ -1,0 +1,200 @@
+{
+  "complete": true,
+  "comparisons": [
+    {
+      "size": 64,
+      "comparison": "single",
+      "gnn_mean_mm": 2.8023617267608643,
+      "point_mean_mm": 2.849931240081787,
+      "gnn_minus_point_mm": -0.04756947606801987,
+      "paired_geometry_bootstrap_95_ci_mm": [
+        -0.136230044439435,
+        0.035883900243788944
+      ],
+      "per_seed_mean_mm": {
+        "gnn": [
+          2.750260591506958,
+          2.813248872756958,
+          2.8435752391815186
+        ],
+        "point": [
+          2.869039535522461,
+          2.8405063152313232,
+          2.840247392654419
+        ]
+      }
+    },
+    {
+      "size": 64,
+      "comparison": "ensemble",
+      "gnn_mean_mm": 2.669832229614258,
+      "point_mean_mm": 2.8057732582092285,
+      "gnn_minus_point_mm": -0.13594096899032593,
+      "paired_geometry_bootstrap_95_ci_mm": [
+        -0.2305121686309576,
+        -0.04860769445076585
+      ],
+      "per_seed_mean_mm": {
+        "gnn": [
+          2.750260591506958,
+          2.813248872756958,
+          2.8435752391815186
+        ],
+        "point": [
+          2.869039535522461,
+          2.8405063152313232,
+          2.840247392654419
+        ]
+      }
+    },
+    {
+      "size": 256,
+      "comparison": "single",
+      "gnn_mean_mm": 2.2565691471099854,
+      "point_mean_mm": 2.1368284225463867,
+      "gnn_minus_point_mm": 0.11974092572927475,
+      "paired_geometry_bootstrap_95_ci_mm": [
+        0.07316287178546191,
+        0.16852019764482976
+      ],
+      "per_seed_mean_mm": {
+        "gnn": [
+          2.2377021312713623,
+          2.296128273010254,
+          2.235877275466919
+        ],
+        "point": [
+          2.1368768215179443,
+          2.148167848587036,
+          2.1254405975341797
+        ]
+      }
+    },
+    {
+      "size": 256,
+      "comparison": "ensemble",
+      "gnn_mean_mm": 2.1689844131469727,
+      "point_mean_mm": 2.10221004486084,
+      "gnn_minus_point_mm": 0.06677436828613281,
+      "paired_geometry_bootstrap_95_ci_mm": [
+        0.019931499753147366,
+        0.11568290032446385
+      ],
+      "per_seed_mean_mm": {
+        "gnn": [
+          2.2377021312713623,
+          2.296128273010254,
+          2.235877275466919
+        ],
+        "point": [
+          2.1368768215179443,
+          2.148167848587036,
+          2.1254405975341797
+        ]
+      }
+    },
+    {
+      "size": 1024,
+      "comparison": "single",
+      "gnn_mean_mm": 1.7809549570083618,
+      "point_mean_mm": 1.9672956466674805,
+      "gnn_minus_point_mm": -0.186340793967247,
+      "paired_geometry_bootstrap_95_ci_mm": [
+        -0.23448682948946953,
+        -0.13879931047558786
+      ],
+      "per_seed_mean_mm": {
+        "gnn": [
+          1.800008773803711,
+          1.826498031616211,
+          1.716357707977295
+        ],
+        "point": [
+          1.9647563695907593,
+          1.9725158214569092,
+          1.9646146297454834
+        ]
+      }
+    },
+    {
+      "size": 1024,
+      "comparison": "ensemble",
+      "gnn_mean_mm": 1.6563981771469116,
+      "point_mean_mm": 1.909467101097107,
+      "gnn_minus_point_mm": -0.2530689835548401,
+      "paired_geometry_bootstrap_95_ci_mm": [
+        -0.30432609617710116,
+        -0.20423186980187896
+      ],
+      "per_seed_mean_mm": {
+        "gnn": [
+          1.800008773803711,
+          1.826498031616211,
+          1.716357707977295
+        ],
+        "point": [
+          1.9647563695907593,
+          1.9725158214569092,
+          1.9646146297454834
+        ]
+      }
+    },
+    {
+      "size": 2250,
+      "comparison": "single",
+      "gnn_mean_mm": 1.3832353353500366,
+      "point_mean_mm": 1.8742656707763672,
+      "gnn_minus_point_mm": -0.4910305142402649,
+      "paired_geometry_bootstrap_95_ci_mm": [
+        -0.545999002456665,
+        -0.43800135552883146
+      ],
+      "per_seed_mean_mm": {
+        "gnn": [
+          1.3334237337112427,
+          1.4065558910369873,
+          1.4097261428833008
+        ],
+        "point": [
+          1.8834092617034912,
+          1.857826590538025,
+          1.8815616369247437
+        ]
+      }
+    },
+    {
+      "size": 2250,
+      "comparison": "ensemble",
+      "gnn_mean_mm": 1.2696367502212524,
+      "point_mean_mm": 1.815516710281372,
+      "gnn_minus_point_mm": -0.5458799004554749,
+      "paired_geometry_bootstrap_95_ci_mm": [
+        -0.6021464049816132,
+        -0.49168921485543254
+      ],
+      "per_seed_mean_mm": {
+        "gnn": [
+          1.3334237337112427,
+          1.4065558910369873,
+          1.4097261428833008
+        ],
+        "point": [
+          1.8834092617034912,
+          1.857826590538025,
+          1.8815616369247437
+        ]
+      }
+    }
+  ],
+  "seeds": [
+    11,
+    22,
+    33
+  ],
+  "test_geometries": 567,
+  "evaluation_role": "repeated benchmark evaluation; test cohort inspected in previous work",
+  "scope": "Discrete finite-element-label approximation on the supplied geometry distribution. No clinical, continuum-convergence or physics-informed claim.",
+  "bootstrap_scope": "Paired geometries, conditional on fixed subsets and seeds; seed variation reported separately",
+  "ensemble_members": 3,
+  "protocol_sha256": "817af95b12196835ee1879c81657796a2221665a97ce9f9c204d4ffbc66c0989"
+}

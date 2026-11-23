@@ -1,0 +1,120 @@
+{
+  "status": "accuracy_only",
+  "accuracy": [
+    {
+      "training_geometries": 64,
+      "comparison": "single",
+      "graph_mean_mm": 2.8023617267608643,
+      "pointwise_mean_mm": 2.849931240081787,
+      "graph_seed_sd_mm": 0.04760048239596804,
+      "pointwise_seed_sd_mm": 0.016548913317884672,
+      "graph_minus_pointwise_mm": -0.04756947606801987,
+      "paired_geometry_ci95_low_mm": -0.136230044439435,
+      "paired_geometry_ci95_high_mm": 0.035883900243788944,
+      "graph_relative_error_reduction_pct": 1.669146000854312
+    },
+    {
+      "training_geometries": 64,
+      "comparison": "ensemble",
+      "graph_mean_mm": 2.669832229614258,
+      "pointwise_mean_mm": 2.8057732582092285,
+      "graph_seed_sd_mm": "",
+      "pointwise_seed_sd_mm": "",
+      "graph_minus_pointwise_mm": -0.13594096899032593,
+      "paired_geometry_ci95_low_mm": -0.2305121686309576,
+      "paired_geometry_ci95_high_mm": -0.04860769445076585,
+      "graph_relative_error_reduction_pct": 4.845046840375634
+    },
+    {
+      "training_geometries": 256,
+      "comparison": "single",
+      "graph_mean_mm": 2.2565691471099854,
+      "pointwise_mean_mm": 2.1368284225463867,
+      "graph_seed_sd_mm": 0.03427128740449022,
+      "pointwise_seed_sd_mm": 0.011363702827433802,
+      "graph_minus_pointwise_mm": 0.11974092572927475,
+      "paired_geometry_ci95_low_mm": 0.07316287178546191,
+      "paired_geometry_ci95_high_mm": 0.16852019764482976,
+      "graph_relative_error_reduction_pct": -5.6036658488896185
+    },
+    {
+      "training_geometries": 256,
+      "comparison": "ensemble",
+      "graph_mean_mm": 2.1689844131469727,
+      "pointwise_mean_mm": 2.10221004486084,
+      "graph_seed_sd_mm": "",
+      "pointwise_seed_sd_mm": "",
+      "graph_minus_pointwise_mm": 0.06677436828613281,
+      "paired_geometry_ci95_low_mm": 0.019931499753147366,
+      "paired_geometry_ci95_high_mm": 0.11568290032446385,
+      "graph_relative_error_reduction_pct": -3.1763889840300465
+    },
+    {
+      "training_geometries": 1024,
+      "comparison": "single",
+      "graph_mean_mm": 1.7809549570083618,
+      "pointwise_mean_mm": 1.9672956466674805,
+      "graph_seed_sd_mm": 0.057489234477186596,
+      "pointwise_seed_sd_mm": 0.004521393846804683,
+      "graph_minus_pointwise_mm": -0.186340793967247,
+      "paired_geometry_ci95_low_mm": -0.23448682948946953,
+      "paired_geometry_ci95_high_mm": -0.13879931047558786,
+      "graph_relative_error_reduction_pct": 9.471921008658372
+    },
+    {
+      "training_geometries": 1024,
+      "comparison": "ensemble",
+      "graph_mean_mm": 1.6563981771469116,
+      "pointwise_mean_mm": 1.909467101097107,
+      "graph_seed_sd_mm": "",
+      "pointwise_seed_sd_mm": "",
+      "graph_minus_pointwise_mm": -0.2530689835548401,
+      "paired_geometry_ci95_low_mm": -0.30432609617710116,
+      "paired_geometry_ci95_high_mm": -0.20423186980187896,
+      "graph_relative_error_reduction_pct": 13.253379636904535
+    },
+    {
+      "training_geometries": 2250,
+      "comparison": "single",
+      "graph_mean_mm": 1.3832353353500366,
+      "pointwise_mean_mm": 1.8742656707763672,
+      "graph_seed_sd_mm": 0.0431671568389416,
+      "pointwise_seed_sd_mm": 0.014266739923467182,
+      "graph_minus_pointwise_mm": -0.4910305142402649,
+      "paired_geometry_ci95_low_mm": -0.545999002456665,
+      "paired_geometry_ci95_high_mm": -0.43800135552883146,
+      "graph_relative_error_reduction_pct": 26.198545013254908
+    },
+    {
+      "training_geometries": 2250,
+      "comparison": "ensemble",
+      "graph_mean_mm": 1.2696367502212524,
+      "pointwise_mean_mm": 1.815516710281372,
+      "graph_seed_sd_mm": "",
+      "pointwise_seed_sd_mm": "",
+      "graph_minus_pointwise_mm": -0.5458799004554749,
+      "paired_geometry_ci95_low_mm": -0.6021464049816132,
+      "paired_geometry_ci95_high_mm": -0.49168921485543254,
+      "graph_relative_error_reduction_pct": 30.06747098326174
+    }
+  ],
+  "cost_and_tail": [],
+  "source_sha256": {
+    "/Users/tumokgabeng/Projects/CMBBE/cardiac-lv-surrogate/reports/data_efficiency_01/source/result.json": "c6f0b21f3fa9caf040f353173ca74733b830bb992ae86262d41c6ece9f0869b6"
+  },
+  "reporting_source_sha256": "18e7fca6208990483baa8f00ab2dd52d3584afb1d0ed1e74ced608323e4c9554",
+  "result_protocol_sha256": "817af95b12196835ee1879c81657796a2221665a97ce9f9c204d4ffbc66c0989",
+  "test_geometries": 567,
+  "runtime_metadata_files": [],
+  "model_seeds": [
+    11,
+    22,
+    33
+  ],
+  "limitations": "Repeated benchmark evaluation: this test cohort was inspected in previous work. Results concern approximation of supplied discrete FE displacement labels on the supplied geometry distribution; no clinical, continuum-convergence or physics-informed claim. Geometry-bootstrap intervals are conditional on the fixed training subsets and three model seeds. They do not capture training-subset uncertainty or represent population-level anatomical validation. Intervals are pointwise 95% intervals without multiple-comparison adjustment.",
+  "missing_measurements": [
+    "Measured training and inference times",
+    "Per-geometry tail errors"
+  ],
+  "total_training_worker_hours": null
+}

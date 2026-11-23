@@ -64,3 +64,24 @@ benchmark evaluation. Results support approximation of supplied discrete FE
 labels on this geometry distribution, not clinical validation, continuum
 verification, or a physics-informed claim. Scientific results and conference
 acceptance cannot be inferred from software checks.
+
+Consolidate the completed experiment for conference figures/tables, without
+training, new test inference, or a PBS allocation:
+  run="$HOME/CMBBE/cardiac-lv-surrogate/experiments/hpc/cmbbe-data-efficiency-01"
+  .hpc/surrogate-ml/bin/python scripts/report_data_efficiency.py \
+    --run "$run" --output "$run/conference-report"
+  tar -czf "$run/conference-report.tar.gz" -C "$run" conference-report
+
+The report includes four 300-dpi PNG/vector SVG figures, accuracy and cost/tail
+tables in CSV and LaTeX, captions/limitations, numerical results text, the raw
+per-geometry table, original timing measurements, runtime metadata and input
+hashes. Existing output directories are preserved; choose a new directory to
+repeat the report. Only saved metrics are read. The report does not need CUDA,
+model weights, a new training run or the original multi-gigabyte dataset.
+
+scripts/report_data_efficiency.py --summary /path/to/result.json --output NEW_DIR
+can generate an explicitly accuracy-only review when detailed HPC artifacts
+have not been transferred. Missing timings and tails remain marked unavailable.
+The workstation review under reports/data_efficiency_01/accuracy-review uses
+the supplied terminal transcript and is accuracy-only. The cluster command
+above generates the full measured-cost/tail report from original artifacts.

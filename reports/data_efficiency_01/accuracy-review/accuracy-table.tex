@@ -1,0 +1,17 @@
+\begin{tabular}{rlrrr}
+\hline
+$N$ & Evaluation & Graph (mm) & Pointwise (mm) & $\Delta$ [95\% CI] (mm) \\
+\hline
+64 & single & 2.802 $\pm$ 0.048 & 2.850 $\pm$ 0.017 & -0.048 [-0.136, 0.036] \\
+64 & ensemble & 2.670 & 2.806 & -0.136 [-0.231, -0.049] \\
+256 & single & 2.257 $\pm$ 0.034 & 2.137 $\pm$ 0.011 & 0.120 [0.073, 0.169] \\
+256 & ensemble & 2.169 & 2.102 & 0.067 [0.020, 0.116] \\
+1024 & single & 1.781 $\pm$ 0.057 & 1.967 $\pm$ 0.005 & -0.186 [-0.234, -0.139] \\
+1024 & ensemble & 1.656 & 1.909 & -0.253 [-0.304, -0.204] \\
+2250 & single & 1.383 $\pm$ 0.043 & 1.874 $\pm$ 0.014 & -0.491 [-0.546, -0.438] \\
+2250 & ensemble & 1.270 & 1.816 & -0.546 [-0.602, -0.492] \\
+\hline
+\end{tabular}
+% Single: mean +/- sample SD across seeds; ensemble: three-member prediction average.
+% Delta = Graph - Pointwise; negative values favor Graph.
+% Repeated benchmark evaluation: this test cohort was inspected in previous work. Results concern approximation of supplied discrete FE displacement labels on the supplied geometry distribution; no clinical, continuum-convergence or physics-informed claim. Geometry-bootstrap intervals are conditional on the fixed training subsets and three model seeds. They do not capture training-subset uncertainty or represent population-level anatomical validation. Intervals are pointwise 95% intervals without multiple-comparison adjustment.
