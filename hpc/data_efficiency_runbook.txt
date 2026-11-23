@@ -1,0 +1,66 @@
+Cardiac deformation surrogate data-efficiency experiment
+
+Submit from gw01:
+  cd "$HOME/CMBBE/cardiac-lv-surrogate" &&
+  git -c http.version=HTTP/1.1 pull --ff-only &&
+  .venv/bin/python hpc/launch_data_efficiency.py submit --run-id cmbbe-data-efficiency-01
+
+The submit command checks the original raw train/validation/test arrays and fixed
+author clustering before allocating compute. These ignored data files do not
+travel through git. If absent, copy the corresponding original benchmark data
+from the workstation to the same repository-relative paths on the cluster.
+
+The job creates .hpc/surrogate-ml independently of the FE runtime, using the
+existing native-v2 Python 3.11 as a venv seed. It downloads binary wheels for
+PyTorch 2.5.1 CUDA 11.8, numpy, scipy and matplotlib. Compute-node network access
+is required on the first allocation. If downloads are unavailable there, run
+bash hpc/setup_surrogate_torch.sh on a permitted internet-connected cluster host
+before resubmitting. A real CUDA graph forward/backward and CPU agreement check
+is required on each GPU; GPU discovery alone is insufficient. A compatible
+pre-existing Python can be supplied with --python /absolute/path/to/python.
+
+Allocation: iworkq, 28 CPU cores, 240 GB RAM, four GPUs, exclusive placement,
+168 hours per PBS allocation. Four independent GPU processes claim the next
+unfinished training task; six CPU threads per process leave four cores spare.
+No MPI or transformer context parallelism is needed for these small models.
+The existing FE experiment is neither cancelled nor modified by this launcher.
+
+Walltime pauses automatically queue another full allocation. There is no total
+experiment-hour cap. Models have a frozen scientific training policy: at most
+500 epochs, validation every five epochs, patience 25 validation checks. No
+hyperparameters or stopping decisions use test labels. Failures stop the run
+with checkpoints retained, rather than automatically spending further jobs.
+After an interrupted job has ended, resume the same experiment with:
+  .venv/bin/python hpc/launch_data_efficiency.py resume --run-id cmbbe-data-efficiency-01
+Do not edit the frozen source, protocol, prepared data or Python environment
+while running; the next allocation rejects changed sources or cached inputs.
+
+Monitor, including successor jobs:
+  watch -n 30 'run="$HOME/CMBBE/cardiac-lv-surrogate/experiments/hpc/cmbbe-data-efficiency-01"; cat "$run/state.json"; qstat -u "$USER"; for log in "$run"/worker-*.log; do [ -f "$log" ] && tail -n 2 "$log"; done'
+
+Protocol:
+- Training sizes 64, 256, 1024, 2250, nested under a single seed-2027 permutation.
+- Model seeds 11, 22, 33 paired across architectures, 24 total models.
+- Fixed supplied graph and raw coordinates, node features and four global
+  features. Supplied shape coefficients, weights and normalizers are unused.
+- Normalization fits only each chosen training subset. Initialization is random.
+- Pointwise parameter count matches the graph network within 2%.
+- Identical AdamW, scheduler, query schedule, validation and early-stop rules.
+- All 150 author validation geometries select checkpoints by mean nodal error.
+- Test evaluation of all 567 geometries waits for all 24 models to finish.
+- Report individual paired models and equally sized three-member ensembles.
+- Mean Euclidean nodal displacement error in mm (raw displacement unit cm),
+  per-geometry nodal p95 and maximum, model parameters, training seconds and
+  synchronized batch-one full-field device inference time (transfers excluded).
+- 10,000 paired bootstrap replicates over geometries, conditional on the fixed
+  subsets and seeds. Seed means are reported separately; no node-level resampling.
+
+Outputs: immutable protocol/plan and source/input hashes; per-task checkpoints,
+validation histories and manifests; GPU qualification/hardware/environment logs;
+evaluation/per-geometry.csv; evaluation/result.json; per-model timing JSON;
+evaluation/learning-curves.png. state.json reports actual experiment completion.
+Original test data have been inspected in previous work: this is repeated
+benchmark evaluation. Results support approximation of supplied discrete FE
+labels on this geometry distribution, not clinical validation, continuum
+verification, or a physics-informed claim. Scientific results and conference
+acceptance cannot be inferred from software checks.

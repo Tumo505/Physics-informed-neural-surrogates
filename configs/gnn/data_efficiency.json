@@ -1,0 +1,22 @@
+{
+  "sizes": [64, 256, 1024, 2250],
+  "seeds": [11, 22, 33],
+  "subset_seed": 2027,
+  "epochs": 500,
+  "validation_every": 5,
+  "patience_checks": 25,
+  "batch_size": 32,
+  "sample_nodes": 256,
+  "width": 64,
+  "steps": 3,
+  "lr": 0.001,
+  "minimum_lr": 0.00001,
+  "weight_decay": 0.00001,
+  "threads_per_worker": 6,
+  "bootstrap_replicates": 10000,
+  "inference_repetitions": 100,
+  "inference_warmup": 20,
+  "raw_units": "cm",
+  "evaluation_role": "repeated benchmark evaluation; test cohort inspected in previous work",
+  "scope": "Discrete finite-element-label approximation on the supplied geometry distribution. No clinical, continuum-convergence or physics-informed claim."
+}
